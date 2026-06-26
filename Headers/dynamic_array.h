@@ -7,8 +7,8 @@
 #include "../Headers/token.h"
 #include "../Headers/macros.h"
 
-STRUCT_MACRO(Token, dynamicToken)
-STRUCT_MACRO(int, dynamicInt)
+STRUCT_DYNAMIC_ARR_MACRO(Token, dynamicToken)
+STRUCT_DYNAMIC_ARR_MACRO(int, dynamicInt)
 
 void test();
 

@@ -12,8 +12,8 @@ source of code: https://www.youtube.com/watch?v=95M6V3mZgrI (Tsoding)
 
 #include "../Headers/macros.h"
 
-STRUCT_MACRO(Token, dynamicToken)
-STRUCT_MACRO(int, dynamicInt)
+STRUCT_DYNAMIC_ARR_MACRO(Token, dynamicToken)
+STRUCT_DYNAMIC_ARR_MACRO(int, dynamicInt)
 
 
 void test(){
@@ -24,6 +24,7 @@ void test(){
     DYN_PUSH(12, a);
     DYN_PUSH(13, a);
     DYN_PUSH(14, a);
+    DYN_INDEX_DEL(a, 3);
 
     for (int i = 0; i < a.count; i++){
         printf("%d\n", a.items[i]);
