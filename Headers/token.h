@@ -19,7 +19,7 @@ typedef enum {
 } TokenType;
 
 
-typedef struct{
+typedef struct Token{
     const char* value; //can this point to array? We will see
     const TokenType identifier;
     const Position pos;
