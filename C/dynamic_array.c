@@ -24,6 +24,12 @@ void test(){
     DYN_PUSH(12, a);
     DYN_PUSH(13, a);
     DYN_PUSH(14, a);
+    
+    for (int i = 0; i < a.count; i++){
+        printf("%d\n", a.items[i]);
+    }
+    
+    printf("---\n");
     DYN_INDEX_DEL(a, 3);
 
     for (int i = 0; i < a.count; i++){

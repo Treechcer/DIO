@@ -8,7 +8,7 @@ typedef struct {
 } Position;
 
 typedef enum {
-    PLUS = 0,
+    PLUS = 1,
     MINUS,
     MUL,
     DIV,
@@ -20,9 +20,9 @@ typedef enum {
 
 
 typedef struct Token{
-    const char* value; //can this point to array? We will see
-    const TokenType identifier;
-    const Position pos;
+    char* value; //can this point to array? We will see
+    TokenType identifier;
+    Position pos;
 } Token;
 
 #endif

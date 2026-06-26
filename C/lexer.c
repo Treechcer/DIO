@@ -5,47 +5,22 @@
 #include"../Headers/token.h"
 #include"..\Headers\dynamic_array.h"
 
-Token* lex(const char* code) {
-    //TODO: add dynymic array?
-    Token* toks;
+Token createToken(char* value, TokenType identifier, Position pos){
+    return (Token) {.value = value, .identifier = identifier, .pos = pos};
+}
 
-    int line = 1;
-    int char_ = 1;
+Position createPosition(int* start, int* end, int* line){
+    return (Position) {.start = start, .end = end, .line = line};
+}
 
-    while (strlen(code) > 0){
-        char c = *code;
-
-        switch (c) {
-            case '+':
-                //pseudo code - will redo, when dynamic array or something filling the role of it
-                
-                /*
-                
-                "toks.append(createToken('+', PLUS, createPosition(char_, char_, line)))"
-
-                /*
-                */
-                break;
-            case '-':
-                
-                break;
-            case '*':
-                
-                break;
-            case '/':
-        
-                break;
-            case '\n':
-                line++;
-                char_ = 1;
-            default:
-
-                break;
+void writeToksOut(dynamicToken tok){
+    for(int i = 0; i < tok.count; i++){
+        if (tok.items[i].value){
+            printf("(%i : %s)", tok.items[i].identifier, tok.items[i].value);
         }
-
-        code++;
-        char_++;
-        printf("%c\n", c);
+        else{
+            printf("(%i)", (tok.items[i].identifier));
+        }
     }
 }
 
@@ -56,10 +31,54 @@ bool isDigit(char ch){
     return false;
 }
 
-Token createToken(char* value, TokenType identifier, Position pos){
-    return (Token) {.value = value, .identifier = identifier, .pos = pos};
-}
+Token* lex(const char* code) {
+    //Token* toks;
 
-Position createPosition(int* start, int* end, int* line){
-    return (Position) {.start = start, .end = end, .line = line};
+    dynamicToken toks = {0,0,0};
+
+    int line = 1;
+    int charPos_ = 1;
+
+    while (strlen(code) > 0){
+        char c = *code;
+        Token tok = {0};
+
+        if (isDigit(c)){
+            code++;
+            charPos_++;
+            continue;
+        }
+
+        switch (c) {
+            case '+':
+                tok = createToken("+", PLUS, createPosition(&charPos_, &charPos_, &line));
+                break;
+            case '-':
+                tok = createToken("-", MINUS, createPosition(&charPos_, &charPos_, &line));
+                break;
+            case '*':
+                tok = createToken("*", MUL, createPosition(&charPos_, &charPos_, &line));
+                break;
+            case '/':
+                tok = createToken("/", DIV, createPosition(&charPos_, &charPos_, &line));
+                break;
+            case '\n':
+                line++;
+                charPos_ = 1;
+                break;
+            case ' ':
+                break;
+            default:
+
+                break;
+        }
+        if (tok.identifier){
+            DYN_PUSH(tok, toks);
+        }
+
+        code++;
+        charPos_++;
+    }
+
+    writeToksOut(toks);
 }
