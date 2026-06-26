@@ -14,11 +14,9 @@ Token* lex(const char* code) {
 }
 
 Token createToken(char* value, TokenType* identifier, Position* pos){
-    Token tok = {.value = value, .identifier = identifier, .pos = pos};
-    return tok;
+    return (Token) {.value = value, .identifier = identifier, .pos = pos};
 }
 
 Position createPosition(int* start, int* end, int* line){
-    Position pos = {.start = start, .end = end, .line = line};
-    return pos;
+    return (Position) {.start = start, .end = end, .line = line};
 }
