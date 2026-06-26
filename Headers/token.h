@@ -1,17 +1,11 @@
-#ifndef token.h
-#define token.h
+#ifndef TOKEN_H
+#define TOKEN_H
 
 typedef struct {
-    int start;
-    int end;
-    int line;
+    int* start;
+    int* end;
+    int* line;
 } Position;
-
-typedef struct{
-    const char* value; //can this point to array? We will see
-    const char* identifier;
-    const Position pos;
-} Token;
 
 typedef enum {
     PLUS = 0,
@@ -23,5 +17,12 @@ typedef enum {
     LPAREN,
     RPAREN,
 } TokenType;
+
+
+typedef struct{
+    const char* value; //can this point to array? We will see
+    const TokenType* identifier;
+    const Position* pos;
+} Token;
 
 #endif
