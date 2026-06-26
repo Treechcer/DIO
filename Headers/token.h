@@ -21,8 +21,8 @@ typedef enum {
 
 typedef struct{
     const char* value; //can this point to array? We will see
-    const TokenType* identifier;
-    const Position* pos;
+    const TokenType identifier;
+    const Position pos;
 } Token;
 
 #endif
