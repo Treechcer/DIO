@@ -84,7 +84,7 @@ dynamicToken lex(const char* code) {
                                     isFloat = 1;
                                 }
                             }
-                            printf("%s : %c\n", "digit char", c);
+                            //printf("%s : %c\n", "digit char", c);
                             DYN_PUSH(c, token);
 
                             code++;
@@ -92,18 +92,18 @@ dynamicToken lex(const char* code) {
                             c = *code;
                         }
 
-                        for (int i = 0; i < token.count; i++){
-                            printf("%c", token.items[i]);
-                        }
+                        //for (int i = 0; i < token.count; i++){
+                        //    printf("%c", token.items[i]);
+                        //}
 
-                        printf("\n");
+                        //printf("\n");
                         DYN_PUSH('\0', token);
                         tok = createToken(token.items, isFloat ? FLOAT : INT, createPosition(&charPos_, &charPos_, &line));
                     }
-                    else{
+                    else if (isAlpha(c)){
                         dynamicChar token = {0,0,0};
                         while(isAlpha(c)){
-                            printf("%s : %c\n", "non-digit char", c);
+                            //printf("%s : %c\n", "non-digit char", c);
                             DYN_PUSH(c, token);
 
                             code++;
@@ -111,13 +111,17 @@ dynamicToken lex(const char* code) {
                             c = *code;
                         }
 
-                        for (int i = 0; i < token.count; i++){
-                            printf("%c", token.items[i]);
-                        }
+                        //for (int i = 0; i < token.count; i++){
+                        //    printf("%c", token.items[i]);
+                        //}
                         
-                        printf("\n");
+                        //printf("\n");
                         DYN_PUSH('\0', token);
                         tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line));
+                    }
+                    else{
+                        //TODO: raise error, when error added
+                        printf("Invalid character: %c", c);
                     }
                 break;
         }
