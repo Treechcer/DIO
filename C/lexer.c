@@ -130,4 +130,5 @@ dynamicToken lex(const char* code) {
     }
 
     writeToksOut(toks);
+    return toks;
 }
