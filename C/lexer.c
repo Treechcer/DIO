@@ -60,6 +60,12 @@ dynamicToken lex(const char* code) {
             case '/':
                 tok = createToken("/", DIV, createPosition(&charPos_, &charPos_, &line));
                 break;
+            case '(':
+                tok = createToken("(", LPAREN, createPosition(&charPos_, &charPos_, &line));
+                break;
+            case ')':
+                tok = createToken(")", RPAREN, createPosition(&charPos_, &charPos_, &line));
+                break;
             case '\n':
                 line++;
                 charPos_ = 1;
