@@ -9,6 +9,7 @@
 
 STRUCT_DYNAMIC_ARR_MACRO(Token, dynamicToken)
 STRUCT_DYNAMIC_ARR_MACRO(int, dynamicInt)
+STRUCT_DYNAMIC_ARR_MACRO(char, dynamicChar)
 
 void test();
 

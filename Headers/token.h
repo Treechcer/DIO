@@ -16,6 +16,7 @@ typedef enum {
     FLOAT,
     LPAREN,
     RPAREN,
+    IDENTIFIER,
 } TokenType;
 
 

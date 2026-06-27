@@ -31,7 +31,11 @@ bool isDigit(char ch){
     return false;
 }
 
-Token* lex(const char* code) {
+bool isAlpha(char c){
+    return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+}
+
+dynamicToken lex(const char* code) {
     //Token* toks;
 
     dynamicToken toks = {0,0,0};
@@ -42,12 +46,6 @@ Token* lex(const char* code) {
     while (strlen(code) > 0){
         char c = *code;
         Token tok = {0};
-
-        if (isDigit(c)){
-            code++;
-            charPos_++;
-            continue;
-        }
 
         switch (c) {
             case '+':
@@ -69,7 +67,52 @@ Token* lex(const char* code) {
             case ' ':
                 break;
             default:
+                    if (isDigit(c)){
+                        dynamicChar token = {0,0,0};
+                        int isFloat = false;
+                        while(isDigit(c) || c == '.'){
+                            if (c == '.') {
+                                if (isFloat) {
+                                    isFloat = 1; //TODO: raise error?
+                                } else {
+                                    isFloat = 1;
+                                }
+                            }
+                            printf("%s : %c\n", "digit char", c);
+                            DYN_PUSH(c, token);
 
+                            code++;
+                            charPos_++;
+                            c = *code;
+                        }
+
+                        for (int i = 0; i < token.count; i++){
+                            printf("%c", token.items[i]);
+                        }
+
+                        printf("\n");
+                        DYN_PUSH('\0', token);
+                        tok = createToken(token.items, isFloat ? FLOAT : INT, createPosition(&charPos_, &charPos_, &line));
+                    }
+                    else{
+                        dynamicChar token = {0,0,0};
+                        while(isAlpha(c)){
+                            printf("%s : %c\n", "non-digit char", c);
+                            DYN_PUSH(c, token);
+
+                            code++;
+                            charPos_++;
+                            c = *code;
+                        }
+
+                        for (int i = 0; i < token.count; i++){
+                            printf("%c", token.items[i]);
+                        }
+                        
+                        printf("\n");
+                        DYN_PUSH('\0', token);
+                        tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line));
+                    }
                 break;
         }
         if (tok.identifier){

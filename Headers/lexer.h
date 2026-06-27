@@ -1,8 +1,8 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-typedef struct Token Token;
+#include "../Headers/dynamic_array.h"
 
-Token* lex(const char* code);
+dynamicToken lex(const char* code);
 
 #endif
