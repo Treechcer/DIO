@@ -22,6 +22,8 @@ void writeToksOut(dynamicToken tok){
             printf("(%i)", (tok.items[i].identifier));
         }
     }
+
+    printf("\n");
 }
 
 bool isDigit(char ch){

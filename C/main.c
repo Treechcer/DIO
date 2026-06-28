@@ -1,6 +1,7 @@
 #include"..\Headers\lexer.h"
+#include"..\Headers\ast.h"
 
 int main(int argc, char **argv){
-    lex("5 + 7 - 82 * 9 / 5.2 sdaafhsblskgd");
+    buildAst(lex("5 + 7 - 82 * 9 / 5.2"));
     return 0;
 }

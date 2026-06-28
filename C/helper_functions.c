@@ -9,6 +9,6 @@ long int convertToInt(char* value){
     return atol(value);
 }
 
-double convertToDouble(char* value){
+float convertToFloat(char* value){
     return atof(value);
 }

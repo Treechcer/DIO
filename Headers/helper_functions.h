@@ -3,6 +3,6 @@
 
 long int convertToLongInt(char* value);
 int convertToInt(char* value);
-double convertToDouble(char* value);
+float convertToFloat(char* value);
 
 #endif
