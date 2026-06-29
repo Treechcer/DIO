@@ -4,13 +4,14 @@
 
 #include"../Headers/token.h"
 #include"..\Headers\dynamic_array.h"
+#include"../Headers/errors.h"
 
 Token createToken(char* value, TokenType identifier, Position pos){
     return (Token) {.value = value, .identifier = identifier, .pos = pos};
 }
 
-Position createPosition(int* start, int* end, int* line){
-    return (Position) {.start = start, .end = end, .line = line};
+Position createPosition(int* start, int* end, int* line, const char* file){
+    return (Position) {.start = start, .end = end, .line = line, .file = file};
 }
 
 void writeToksOut(dynamicToken tok){
@@ -37,7 +38,7 @@ bool isAlpha(char c){
     return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }
 
-dynamicToken lex(const char* code) {
+dynamicToken lex(const char* code, char* file) {
     //Token* toks;
 
     dynamicToken toks = {0,0,0};
@@ -46,34 +47,35 @@ dynamicToken lex(const char* code) {
     int charPos_ = 1;
 
     while (strlen(code) > 0){
+        printf("%i, %i\n", line, charPos_);
         char c = *code;
         Token tok = {0};
 
         switch (c) {
             case '+':
-                tok = createToken("+", PLUS, createPosition(&charPos_, &charPos_, &line));
+                tok = createToken("+", PLUS, createPosition(&charPos_, &charPos_, &line, file));
                 break;
             case '-':
-                tok = createToken("-", MINUS, createPosition(&charPos_, &charPos_, &line));
+                tok = createToken("-", MINUS, createPosition(&charPos_, &charPos_, &line, file));
                 break;
             case '*':
-                tok = createToken("*", MUL, createPosition(&charPos_, &charPos_, &line));
+                tok = createToken("*", MUL, createPosition(&charPos_, &charPos_, &line, file));
                 break;
             case '/':
-                tok = createToken("/", DIV, createPosition(&charPos_, &charPos_, &line));
+                tok = createToken("/", DIV, createPosition(&charPos_, &charPos_, &line, file));
                 break;
             case '(':
-                tok = createToken("(", LPAREN, createPosition(&charPos_, &charPos_, &line));
+                tok = createToken("(", LPAREN, createPosition(&charPos_, &charPos_, &line, file));
                 break;
             case ')':
-                tok = createToken(")", RPAREN, createPosition(&charPos_, &charPos_, &line));
+                tok = createToken(")", RPAREN, createPosition(&charPos_, &charPos_, &line, file));
                 break;
             case '\n':
                 line++;
                 charPos_ = 1;
                 break;
             case '=':
-                tok = createToken("=", EQUALS, createPosition(&charPos_, &charPos_, &line));
+                tok = createToken("=", EQUALS, createPosition(&charPos_, &charPos_, &line, file));
             case ' ':
                 break;
             default:
@@ -83,7 +85,7 @@ dynamicToken lex(const char* code) {
                         while(isDigit(c) || c == '.'){
                             if (c == '.') {
                                 if (isFloat) {
-                                    isFloat = 1; //TODO: raise error?
+                                    errorOut((Error){"", twoDotsFloat, createPosition(&charPos_, &charPos_, &line, file)});
                                 } else {
                                     isFloat = 1;
                                 }
@@ -102,7 +104,7 @@ dynamicToken lex(const char* code) {
 
                         //printf("\n");
                         DYN_PUSH('\0', token);
-                        tok = createToken(token.items, isFloat ? FLOAT : INT, createPosition(&charPos_, &charPos_, &line));
+                        tok = createToken(token.items, isFloat ? FLOAT : INT, createPosition(&charPos_, &charPos_, &line, file));
                     }
                     else if (isAlpha(c)){
                         dynamicChar token = {0,0,0};
@@ -121,11 +123,10 @@ dynamicToken lex(const char* code) {
                         
                         //printf("\n");
                         DYN_PUSH('\0', token);
-                        tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line));
+                        tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line, file));
                     }
                     else{
-                        //TODO: raise error, when error added
-                        printf("Invalid character: %c", c);
+                        errorOut((Error){"", genericLexError, createPosition(&charPos_, &charPos_, &line, file)});
                     }
                 break;
         }

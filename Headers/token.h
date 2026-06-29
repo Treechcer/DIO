@@ -5,6 +5,7 @@ typedef struct {
     int* start;
     int* end;
     int* line;
+    char* file;
 } Position;
 
 typedef enum {

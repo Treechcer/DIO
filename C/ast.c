@@ -10,6 +10,10 @@ int g_index = 0;
 
 binOpNode* parseExpression(dynamicToken toks);
 
+binOpNode* createNode(){
+    return malloc(sizeof(binOpNode));
+}
+
 Token checkCurrenToken(dynamicToken toks){
     if (g_index  < toks.count){
         return toks.items[g_index];
@@ -31,7 +35,7 @@ binOpNode* parseFactor(dynamicToken toks){
 
     if (tok.identifier == INT || tok.identifier == FLOAT){
         shiftToken(toks);
-        binOpNode* node = malloc(sizeof(binOpNode));
+        binOpNode* node = createNode();
         node->left = NULL;
         node->right = NULL;
         node->valueLeft = convertToFloat(tok.value);
@@ -57,7 +61,7 @@ binOpNode* parseTerm(dynamicToken toks){
     while (checkCurrenToken(toks).identifier == MUL || checkCurrenToken(toks).identifier == DIV){
         Token operatorTok = shiftToken(toks);
         binOpNode* rightNode = parseFactor(toks);
-        binOpNode* parentNode = malloc(sizeof(binOpNode));
+        binOpNode* parentNode = createNode();
         parentNode->left = leftNode;
         parentNode->op = operatorTok.identifier;
         parentNode->right = rightNode;
@@ -76,7 +80,7 @@ binOpNode* parseExpression(dynamicToken toks){
     while (checkCurrenToken(toks).identifier == PLUS || checkCurrenToken(toks).identifier == MINUS){
         Token operatorTok = shiftToken(toks);
         binOpNode* rightNode = parseTerm(toks);
-        binOpNode* parentNode = malloc(sizeof(binOpNode));
+        binOpNode* parentNode = createNode();
         parentNode->left = leftNode;
         parentNode->op = operatorTok.identifier;
         parentNode->right = rightNode;
