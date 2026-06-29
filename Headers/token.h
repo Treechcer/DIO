@@ -17,6 +17,7 @@ typedef enum {
     LPAREN,
     RPAREN,
     IDENTIFIER,
+    EQUALS,
 } TokenType;
 
 

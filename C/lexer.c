@@ -72,6 +72,8 @@ dynamicToken lex(const char* code) {
                 line++;
                 charPos_ = 1;
                 break;
+            case '=':
+                tok = createToken("=", EQUALS, createPosition(&charPos_, &charPos_, &line));
             case ' ':
                 break;
             default:
