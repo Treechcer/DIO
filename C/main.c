@@ -2,6 +2,6 @@
 #include"..\Headers\ast.h"
 
 int main(int argc, char **argv){
-    buildAst(lex("5 + 7 - 82 * 9 / 5.24", "shell"));
+    buildAst(lex("5 + 7 - 82 * 9 / 5.24š", "shell"));
     return 0;
 }

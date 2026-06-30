@@ -20,4 +20,6 @@ typedef struct {
 
 void errorOut(Error err);
 
+void warningOut(Error err, int majority);
+
 #endif

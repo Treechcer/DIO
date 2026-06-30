@@ -2,17 +2,18 @@
 #include<stdio.h>
 #include"..\Headers\token.h"
 #include"..\Headers\errors.h"
+#include"..\Headers\macros.h"
 
 char* genericMessages[] = { //if message is not provided
     "genericLexError",
     "unsupportedCharacters",
     "genericUnknownError",
-    "Flaot values can't have two dots"
+    "Float values can't have two dots"
 };
 
 void errorOut(Error err){
     char* message;
-    if (err.errorMessage != NULL && err.errorMessage[0] != '\0'){
+    if (sizeof(err.errorMessage)/sizeof(' ') < 2){
         message = err.errorMessage;
     }
     else {
@@ -20,7 +21,7 @@ void errorOut(Error err){
     }
     
     char* file;
-    if (err.errorPos.file != NULL && err.errorPos.file[0] != '\0'){
+    if (sizeof(err.errorPos.file)/sizeof(' ') < 2){
         file = err.errorPos.file;
     }
     else {
@@ -40,4 +41,25 @@ void errorOut(Error err){
     }
 
     exit(1);
+}
+
+void warningOut(Error err, int majority){
+    char* message;
+    if (sizeof(err.errorMessage)/sizeof(' ') < 2){
+        message = err.errorMessage;
+    }
+    else {
+        message = genericMessages[err.errorType];
+    }
+
+    //higher number = higher severity
+    char* cols[] = {
+        ANSI_COLOR_GREEN,
+        ANSI_COLOR_YELLOW,
+        ANSI_COLOR_RED,
+    };
+
+    majority = majority%(sizeof(cols)/sizeof(cols[0])); //prevents overflow
+    
+    printf("%sWARNING : %s %s\n", cols[majority], message, ANSI_COLOR_RESET);
 }
