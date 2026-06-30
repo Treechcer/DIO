@@ -10,7 +10,7 @@ Token createToken(char* value, TokenType identifier, Position pos){
     return (Token) {.value = value, .identifier = identifier, .pos = pos};
 }
 
-Position createPosition(int* start, int* end, int* line, const char* file){
+Position createPosition(int* start, int* end, int* line, char* file){
     return (Position) {.start = start, .end = end, .line = line, .file = file};
 }
 
@@ -123,7 +123,12 @@ dynamicToken lex(const char* code, char* file) {
                         
                         //printf("\n");
                         DYN_PUSH('\0', token);
-                        tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line, file));
+                        if (getKeyWord(token.items)){
+                            tok = createToken(token.items, KEYWORD, createPosition(&charPos_, &charPos_, &line, file));
+                        }
+                        else {
+                            tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line, file));
+                        }
                     }
                     else{
                         errorOut((Error){"", genericLexError, createPosition(&charPos_, &charPos_, &line, file)});

@@ -19,13 +19,17 @@ typedef enum {
     RPAREN,
     IDENTIFIER,
     EQUALS,
+    LESSOREQUALS,
+    MOREOREQUALS,
+    KEYWORD,
 } TokenType;
-
 
 typedef struct Token{
     char* value; //can this point to array? We will see
     TokenType identifier;
     Position pos;
 } Token;
+
+int getKeyWord(char* possibleKeyWord);
 
 #endif
