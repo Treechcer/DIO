@@ -6,6 +6,13 @@
 
 int g_index = 0;
 
+/*
+
+How can I make this correctly? This seems impossibler because of type and how can I make like struct have node of "different" type or something
+I clearly don't know C enough... That's why I'll learn it more lol
+
+*/
+
 //FUNCTION PREDEF
 
 binOpNode* parseExpression(dynamicToken toks);
