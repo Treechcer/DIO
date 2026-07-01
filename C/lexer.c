@@ -47,9 +47,10 @@ dynamicToken lex(const char* code, char* file) {
     int charPos_ = 1;
 
     while (strlen(code) > 0){
-        printf("%i, %i\n", line, charPos_);
         char c = *code;
         Token tok = {0};
+
+        printf("%i, %i, %c\n", line, charPos_, c);
 
         switch (c) {
             case '+':
@@ -105,6 +106,10 @@ dynamicToken lex(const char* code, char* file) {
                         //printf("\n");
                         DYN_PUSH('\0', token);
                         tok = createToken(token.items, isFloat ? FLOAT : INT, createPosition(&charPos_, &charPos_, &line, file));
+
+                        code--;
+                        charPos_--;
+                        c = *code;
                     }
                     else if (isAlpha(c)){
                         dynamicChar token = {0,0,0};
@@ -121,7 +126,6 @@ dynamicToken lex(const char* code, char* file) {
                         //    printf("%c", token.items[i]);
                         //}
                         
-                        //printf("\n");
                         DYN_PUSH('\0', token);
                         if (getKeyWord(token.items)){
                             tok = createToken(token.items, KEYWORD, createPosition(&charPos_, &charPos_, &line, file));
@@ -129,6 +133,12 @@ dynamicToken lex(const char* code, char* file) {
                         else {
                             tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line, file));
                         }
+
+                        //if I had another token right after keyword it didn't really work, so I added this and it works lol
+
+                        code--;
+                        charPos_--;
+                        c = *code;
                     }
                     else{
                         errorOut((Error){"", genericLexError, createPosition(&charPos_, &charPos_, &line, file)});

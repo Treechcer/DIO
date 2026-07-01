@@ -8,13 +8,11 @@ const char* keywords[] = {
 };
 
 int getKeyWord(char* possibleKeyWord){
-
     //This has a few more runs, but it's okay, it won't bottleneck lexing!
 
-    int i = 0;
-    while (1){
-        if (strcmp(keywords[i++], possibleKeyWord) != 0){
-            return 1;
+    for (int i = 0; i < (sizeof(keywords) / sizeof(keywords[0])); i++) {
+        if (strcmp(keywords[i], possibleKeyWord) == 0) {
+            return 1; // Found
         }
     }
 
