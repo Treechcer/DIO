@@ -9,12 +9,23 @@ typedef struct {
 } numberNode;
 
 typedef struct binOpNode{
-    struct binOpNode* left;
-    float valueLeft; //if valueLeft / valueRight is not set, then we have to do binOp because value is either calculated or just number (because that part of operator had just number vaue)
-    struct binOpNode* right;
-    float valueRight; //in this language all numbers will be float for easier work
+    union left {
+        struct binOpNode* left;
+        float value;
+    };
+    union right {
+        struct binOpNode* right;
+        float value;  
+    };
     TokenType op; //NOTE: we only use PLUS, MINUS, DIV, MUL    
 } binOpNode;
+
+typedef struct node {
+    union nodeType {
+        struct binOpNode* binOpNode;
+    };
+} node;
+
 
 binOpNode* buildAst(dynamicToken toks);
 

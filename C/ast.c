@@ -6,13 +6,6 @@
 
 int g_index = 0;
 
-/*
-
-How can I make this correctly? This seems impossibler because of type and how can I make like struct have node of "different" type or something
-I clearly don't know C enough... That's why I'll learn it more lol
-
-*/
-
 //FUNCTION PREDEF
 
 binOpNode* parseExpression(dynamicToken toks);
@@ -34,6 +27,9 @@ Token shiftToken(dynamicToken toks){
         return toks.items[g_index-1];
     }
 }
+/*
+
+TODO: REIMPLEMENT THIS!!! THIS WAS MADE... INCORRECTLY!!
 
 binOpNode* parseFactor(dynamicToken toks){
     Token tok = checkCurrenToken(toks);
@@ -97,8 +93,7 @@ binOpNode* parseExpression(dynamicToken toks){
 
     return leftNode;
 }
-
+*/
 binOpNode* buildAst(dynamicToken toks){
-    binOpNode* start = parseExpression(toks);
-    return start;
+
 }
