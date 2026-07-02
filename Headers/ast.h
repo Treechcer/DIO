@@ -3,30 +3,30 @@
 
 #include"..\Headers\token.h"
 
-typedef struct {
-    Token tok;
+typedef enum {
+    BINOPNODE,
+    NUMBERNODE
+} nodeType;
+
+typedef struct numberNode{
     double value;
 } numberNode;
 
 typedef struct binOpNode{
-    union left {
-        struct binOpNode* left;
-        float value;
-    };
-    union right {
-        struct binOpNode* right;
-        float value;  
-    };
+    Node* left;
+    Node* right;
     TokenType op; //NOTE: we only use PLUS, MINUS, DIV, MUL    
 } binOpNode;
 
-typedef struct node {
-    union nodeType {
+typedef struct Node {
+    nodeType type;
+    union {
         struct binOpNode* binOpNode;
-    };
-} node;
+        struct numberNode* numberNode;
+    } data;
+} Node;
 
-
-binOpNode* buildAst(dynamicToken toks);
+// function predef
+Node* buildAst(dynamicToken toks);
 
 #endif
