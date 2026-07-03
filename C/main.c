@@ -4,6 +4,6 @@
 #include"..\Headers\parser.h"
 
 int main(int argc, char **argv){
-    parse(buildAst(lex("(5 + 7) * 2", "shell")));
+    parse(buildAst(lex("2^0", "shell")));
     return 0;
 }

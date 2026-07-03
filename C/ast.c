@@ -61,7 +61,7 @@ Node* parseFactor(dynamicToken* toks){
 Node* parseTerm(dynamicToken* toks){
     Node* left = parseFactor(toks);
 
-    while (checkCurrenToken(toks).identifier == MUL || checkCurrenToken(toks).identifier == DIV) {
+    while (checkCurrenToken(toks).identifier == MUL || checkCurrenToken(toks).identifier == DIV || checkCurrenToken(toks).identifier == POW) {
         Token tokOp = shiftToken(toks);
         Node* right = parseFactor(toks);
 

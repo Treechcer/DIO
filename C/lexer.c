@@ -47,6 +47,9 @@ dynamicToken lex(const char* code, char* file) {
             case '/':
                 tok = createToken("/", DIV, createPosition(&charPos_, &charPos_, &line, file));
                 break;
+            case '^':
+                tok = createToken("^", POW, createPosition(&charPos_, &charPos_, &line, file));
+                break;
             case '(':
                 tok = createToken("(", LPAREN, createPosition(&charPos_, &charPos_, &line, file));
                 break;

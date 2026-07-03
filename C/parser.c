@@ -23,6 +23,13 @@ double eval(Node* node){
                 if (right == 0) errorOut((Error){NULL, divisionByZero, NULL});
                 return left / right;
                 break;
+            case POW:
+                if (right == 0) return 1;
+                double num = left;
+                for (size_t i = 0; i < right-1; i++){
+                    num *= left;
+                }
+                return num;
             default:
                 break;
         }
