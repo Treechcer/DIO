@@ -6,7 +6,7 @@
 typedef struct Node Node;
 
 typedef enum {
-    BINOPNODE,
+    BINOPNODE = 0,
     NUMBERNODE
 } nodeType;
 
@@ -30,5 +30,7 @@ typedef struct Node {
 
 // function predef
 Node* buildAst(dynamicToken toks);
+
+STRUCT_DYNAMIC_ARR_MACRO(Node, dynamicNode);
 
 #endif

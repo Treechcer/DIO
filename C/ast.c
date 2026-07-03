@@ -6,8 +6,6 @@
 #include"..\Headers\macros.h"
 #include"..\Headers\errors.h"
 
-STRUCT_DYNAMIC_ARR_MACRO(Node, dynamicNode);
-
 int g_index = 0;
 
 //FUNCTION PREDEF
@@ -41,6 +39,7 @@ Node* parseFactor(dynamicToken* toks){
         shiftToken(toks);
         Node* node = createNode();
         node->type = NUMBERNODE;
+        node->data.numberNode = malloc(sizeof(numberNode));
         node->data.numberNode->value = convertToDouble(tok.value);
 
         return node;
@@ -68,35 +67,37 @@ Node* parseTerm(dynamicToken* toks){
 
         Node* pNode = createNode();
         pNode->type = BINOPNODE;
+        pNode->data.binOpNode = malloc(sizeof(binOpNode));
         pNode->data.binOpNode->left = left;
         pNode->data.binOpNode->op = tokOp.identifier;
         pNode->data.binOpNode->right = right;
 
-        left = right;
+        left = pNode;
     }
 
     return left;
 }
 
 Node* parseExpression(dynamicToken* toks){
-    Node* left = parseFactor(toks);
+    Node* left = parseTerm(toks);
 
     while (checkCurrenToken(toks).identifier == PLUS || checkCurrenToken(toks).identifier == MINUS) {
         Token tokOp = shiftToken(toks);
-        Node* right = parseFactor(toks);
+        Node* right = parseTerm(toks);
 
         Node* pNode = createNode();
         pNode->type = BINOPNODE;
+        pNode->data.binOpNode = malloc(sizeof(binOpNode));
         pNode->data.binOpNode->left = left;
         pNode->data.binOpNode->op = tokOp.identifier;
         pNode->data.binOpNode->right = right;
 
-        left = right;
+        left = pNode;
     }
 
     return left;
 }
 
 Node* buildAst(dynamicToken toks){
-
+    return parseExpression(&toks);
 }

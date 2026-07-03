@@ -10,6 +10,7 @@ typedef enum {
     unsupportedCharacter,
     genericUnknownError,
     twoDotsFloat,
+    divisionByZero,
 } ErrorType;
 
 typedef struct {

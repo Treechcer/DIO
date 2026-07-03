@@ -8,7 +8,8 @@ char* genericMessages[] = { //if message is not provided
     "genericLexError",
     "unsupportedCharacters",
     "genericUnknownError",
-    "Float values can't have two dots"
+    "Float values can't have two dots",
+    "You can't divide by zero"
 };
 
 void errorOut(Error err){

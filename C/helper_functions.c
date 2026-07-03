@@ -17,7 +17,8 @@ float convertToFloat(char* value){
 }
 
 double convertToDouble(char* value){
-    return atof(value);
+    char* endptr;
+    return strtod(value, &endptr);
 }
 
 bool isDigit(char c){

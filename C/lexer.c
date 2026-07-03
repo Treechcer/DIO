@@ -32,7 +32,7 @@ dynamicToken lex(const char* code, char* file) {
         char c = *code;
         Token tok = {0};
 
-        printf("%i, %i, %c\n", line, charPos_, c);
+        //printf("%i, %i, %c\n", line, charPos_, c);
 
         switch (c) {
             case '+':
@@ -135,6 +135,6 @@ dynamicToken lex(const char* code, char* file) {
         charPos_++;
     }
 
-    writeToksOut(toks);
+    //writeToksOut(toks);
     return toks;
 }
