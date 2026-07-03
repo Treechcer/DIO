@@ -3,6 +3,8 @@
 
 #include"..\Headers\token.h"
 
+typedef struct Node Node;
+
 typedef enum {
     BINOPNODE,
     NUMBERNODE

@@ -4,12 +4,15 @@
 #include"..\Headers\ast.h"
 #include"..\Headers\helper_functions.h"
 #include"..\Headers\macros.h"
+#include"..\Headers\errors.h"
 
 STRUCT_DYNAMIC_ARR_MACRO(Node, dynamicNode);
 
 int g_index = 0;
 
 //FUNCTION PREDEF
+
+Node* parseExpression(dynamicToken* toks);
 
 //Node* parseExpression(dynamicToken toks);
 
@@ -43,7 +46,15 @@ Node* parseFactor(dynamicToken* toks){
         return node;
     }
 
-    //TODO: LPAREN
+    if (tok.identifier == LPAREN){
+        shiftToken(toks);
+        Node* node = parseExpression(toks);
+        if (checkCurrenToken(toks).identifier != RPAREN){
+            errorOut((Error){"", genericLexError, createPosition(NULL, NULL, NULL, NULL)});
+        }
+        shiftToken(toks);
+        return node;
+    }
 
     return NULL;
 }

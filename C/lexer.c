@@ -5,14 +5,7 @@
 #include"../Headers/token.h"
 #include"..\Headers\dynamic_array.h"
 #include"../Headers/errors.h"
-
-Token createToken(char* value, TokenType identifier, Position pos){
-    return (Token) {.value = value, .identifier = identifier, .pos = pos};
-}
-
-Position createPosition(int* start, int* end, int* line, char* file){
-    return (Position) {.start = start, .end = end, .line = line, .file = file};
-}
+#include"..\Headers\helper_functions.h"
 
 void writeToksOut(dynamicToken tok){
     for(int i = 0; i < tok.count; i++){
@@ -25,17 +18,6 @@ void writeToksOut(dynamicToken tok){
     }
 
     printf("\n");
-}
-
-bool isDigit(char ch){
-    if (ch == '0' || ch == '1' || ch == '2' || ch == '3' || ch == '4' || ch == '5' || ch == '6' || ch == '7' || ch == '8' || ch == '9'){
-        return true;
-    }
-    return false;
-}
-
-bool isAlpha(char c){
-    return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }
 
 dynamicToken lex(const char* code, char* file) {
