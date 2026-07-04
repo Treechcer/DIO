@@ -1,1 +1,2 @@
 (true + true + true) * 5 + true
+>> output is 16

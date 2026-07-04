@@ -31,7 +31,7 @@ int main(int argc, char **argv){
         fclose(filePointer);
 
         string[fsize] = '\0';
-        printf("%s\n", string);
+        //printf("%s\n", string);
 
         parse(buildAst(lex(string, filePath)));
     }

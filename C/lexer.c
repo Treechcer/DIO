@@ -77,6 +77,12 @@ dynamicToken lex(const char* code, char* fileName) {
                 if (c == '='){
                     tok = createToken(">=", MOREOREQUAL, createPosition(&charPos_, &charPos_, &line, fileName));
                 }
+                else if (c == '>') {
+                    while (c != '\n'){
+                    code++;
+                    c = *code; 
+                    }
+                }
                 else{
                     tok = createToken(">", MORETHAN, createPosition(&charPos_, &charPos_, &line, fileName));
                     code--;
