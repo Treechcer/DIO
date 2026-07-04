@@ -57,11 +57,16 @@ dynamicToken lex(const char* code, char* file) {
                 tok = createToken(")", RPAREN, createPosition(&charPos_, &charPos_, &line, file));
                 break;
             case '\n':
+                tok = createToken("\n", END, createPosition(&charPos_, &charPos_, &line, file));
                 line++;
                 charPos_ = 1;
                 break;
+            case ';':
+                tok = createToken(";", END, createPosition(&charPos_, &charPos_, &line, file));
+                break;
             case '=':
                 tok = createToken("=", EQUALS, createPosition(&charPos_, &charPos_, &line, file));
+                break;
             case ' ':
                 break;
             default:

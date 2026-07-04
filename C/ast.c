@@ -98,6 +98,32 @@ Node* parseExpression(dynamicToken* toks){
     return left;
 }
 
+Node* parseProgram(dynamicToken* toks) {
+    Node* pNode = createNode();
+    pNode->type = PROGRAMNODE;
+    pNode->data.programNode = malloc(sizeof(programNode));
+    
+    pNode->data.programNode->nodes.count = 0;
+    pNode->data.programNode->nodes.size = 0;
+    pNode->data.programNode->nodes.items = NULL;
+
+    while (g_index < (toks->count)-1) {
+        //printf("%i : %i\n", g_index, (toks->count)-1);
+        Node* node = parseExpression(toks);
+        if (checkCurrenToken(toks).identifier == END){
+            shiftToken(toks);
+        }
+        if (node == NULL){
+            printf("ERR: %i : %i\n", g_index, (toks->count)-1);
+            errorOut((Error){"", ASTERROR});
+        }
+
+        DYN_PUSH(node, pNode->data.programNode->nodes);
+    }
+    
+    return pNode;
+}
+
 Node* buildAst(dynamicToken toks){
-    return parseExpression(&toks);
+    return parseProgram(&toks);
 }

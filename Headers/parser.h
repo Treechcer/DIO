@@ -3,6 +3,6 @@
 
 #include"..\Headers\ast.h"
 
-double parse(Node* ast);
+void parse(Node* ast);
 
 #endif

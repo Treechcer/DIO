@@ -4,11 +4,17 @@
 #include"..\Headers\token.h"
 
 typedef struct Node Node;
+STRUCT_DYNAMIC_ARR_MACRO(Node*, dynamicNode);
 
 typedef enum {
     BINOPNODE = 0,
-    NUMBERNODE
+    NUMBERNODE,
+    PROGRAMNODE,
 } nodeType;
+
+typedef struct programNode {
+    dynamicNode nodes;
+} programNode;
 
 typedef struct numberNode{
     double value;
@@ -17,7 +23,7 @@ typedef struct numberNode{
 typedef struct binOpNode{
     Node* left;
     Node* right;
-    TokenType op; //NOTE: we only use PLUS, MINUS, DIV, MUL    
+    TokenType op; //NOTE: we only use PLUS, MINUS, DIV, MUL, POW
 } binOpNode;
 
 typedef struct Node {
@@ -25,12 +31,11 @@ typedef struct Node {
     union {
         struct binOpNode* binOpNode;
         struct numberNode* numberNode;
+        struct programNode* programNode;
     } data;
 } Node;
 
 // function predef
 Node* buildAst(dynamicToken toks);
-
-STRUCT_DYNAMIC_ARR_MACRO(Node, dynamicNode);
 
 #endif

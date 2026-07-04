@@ -2,12 +2,12 @@
 #include"..\Headers\ast.h"
 #include"..\Headers\errors.h"
 
-double eval(Node* node){
+double evalBinOp(Node* node){
     if (node->type == NUMBERNODE) return node->data.numberNode->value;
 
     if (node->type == BINOPNODE){
-        double left = eval(node->data.binOpNode->left);
-        double right = eval(node->data.binOpNode->right);
+        double left = evalBinOp(node->data.binOpNode->left);
+        double right = evalBinOp(node->data.binOpNode->right);
 
         switch (node->data.binOpNode->op) {
             case PLUS:
@@ -38,7 +38,19 @@ double eval(Node* node){
     return 0;
 }
 
-double parse(Node* ast){
-    printf("%f", eval(ast));
-    return eval(ast);
+Node* astToNode(Node* ast){
+    return &(Node){.type = ast->type, .data = ast->data};
+}
+
+void parse(Node* ast){
+    for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
+        Node* node = astToNode(ast->data.programNode->nodes.items[i]);
+        switch (node->type) {
+            case BINOPNODE:
+                printf("%f\n", evalBinOp(node));
+                break;
+            default:
+                break;
+        }
+    }
 }

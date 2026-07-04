@@ -10,6 +10,7 @@ char* genericMessages[] = { //if message is not provided
     "genericUnknownError",
     "Float values can't have two dots",
     "You can't divide by zero"
+    "Non specific error in AST"
 };
 
 void errorOut(Error err){

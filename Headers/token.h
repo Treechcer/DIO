@@ -22,7 +22,8 @@ typedef enum {
     LESSOREQUALS,
     MOREOREQUALS,
     KEYWORD,
-    POW
+    POW,
+    END,
 } TokenType;
 
 typedef struct Token{
