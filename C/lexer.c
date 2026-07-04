@@ -61,33 +61,27 @@ dynamicToken lex(const char* code, char* fileName) {
                 tok = createToken(")", RPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
             case '<':
-                {
-                    char lastC = c;
-                    code++;
-                    c = *code;
-                    if (c == '='){
-                        tok = createToken("<=", LESSOREQAUL, createPosition(&charPos_, &charPos_, &line, fileName));
-                    }
-                    else{
-                        tok = createToken("<", LESSTHAN, createPosition(&charPos_, &charPos_, &line, fileName));
-                        code--;
-                    }
-                    break;
+                code++;
+                c = *code;
+                if (c == '='){
+                    tok = createToken("<=", LESSOREQAUL, createPosition(&charPos_, &charPos_, &line, fileName));
                 }
+                else{
+                    tok = createToken("<", LESSTHAN, createPosition(&charPos_, &charPos_, &line, fileName));
+                    code--;
+                }
+                break;
             case '>':
-                {
-                    char lastC = c;
-                    code++;
-                    c = *code;
-                    if (c == '='){
-                        tok = createToken(">=", MOREOREQUAL, createPosition(&charPos_, &charPos_, &line, fileName));
-                    }
-                    else{
-                        tok = createToken(">", MORETHAN, createPosition(&charPos_, &charPos_, &line, fileName));
-                        code--;
-                    }
-                    break;
+                code++;
+                c = *code;
+                if (c == '='){
+                    tok = createToken(">=", MOREOREQUAL, createPosition(&charPos_, &charPos_, &line, fileName));
                 }
+                else{
+                    tok = createToken(">", MORETHAN, createPosition(&charPos_, &charPos_, &line, fileName));
+                    code--;
+                }
+                break;
             case '\n':
                 tok = createToken("\n", END, createPosition(&charPos_, &charPos_, &line, fileName));
                 line++;
@@ -97,7 +91,15 @@ dynamicToken lex(const char* code, char* fileName) {
                 tok = createToken(";", END, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
             case '=':
-                tok = createToken("=", EQUALS, createPosition(&charPos_, &charPos_, &line, fileName));
+                code++;
+                c = *code;
+                if (c == '='){
+                    tok = createToken("==", LEFTRIGHTEQUAL, createPosition(&charPos_, &charPos_, &line, fileName));
+                }
+                else{
+                    tok = createToken("=", EQUALS, createPosition(&charPos_, &charPos_, &line, fileName));
+                    code--;
+                }
                 break;
             case ' ':
                 break;

@@ -38,6 +38,8 @@ double evalBinOp(Node* node){
                 return (left > right);
             case MOREOREQUAL:
                 return (left >= right);
+            case LEFTRIGHTEQUAL:
+                return (left == right);
             default:
                 break;
         }

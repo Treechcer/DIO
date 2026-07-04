@@ -4,6 +4,6 @@
 #include"..\Headers\parser.h"
 
 int main(int argc, char **argv){
-    parse(buildAst(lex("1 < 2; 1 > 2; 1 >= 1", "shell")));
+    parse(buildAst(lex("1 == 2; 1 == 1", "shell")));
     return 0;
 }

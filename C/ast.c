@@ -81,7 +81,7 @@ Node* parseTerm(dynamicToken* toks){
 Node* parseExpression(dynamicToken* toks){
     Node* left = parseTerm(toks);
 
-    while (checkCurrenToken(toks).identifier == PLUS || checkCurrenToken(toks).identifier == MINUS || checkCurrenToken(toks).identifier == LESSOREQAUL || checkCurrenToken(toks).identifier == LESSTHAN || checkCurrenToken(toks).identifier == MOREOREQUAL || checkCurrenToken(toks).identifier == MORETHAN) {
+    while (checkCurrenToken(toks).identifier == PLUS || checkCurrenToken(toks).identifier == MINUS || checkCurrenToken(toks).identifier == LESSOREQAUL || checkCurrenToken(toks).identifier == LESSTHAN || checkCurrenToken(toks).identifier == MOREOREQUAL || checkCurrenToken(toks).identifier == MORETHAN || checkCurrenToken(toks).identifier == LEFTRIGHTEQUAL) {
         Token tokOp = shiftToken(toks);
         Node* right = parseTerm(toks);
 

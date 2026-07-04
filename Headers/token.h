@@ -19,6 +19,7 @@ typedef enum {
     MORETHAN,
     LESSOREQAUL,
     MOREOREQUAL,
+    LEFTRIGHTEQUAL,
     LPAREN,
     RPAREN,
     IDENTIFIER,
