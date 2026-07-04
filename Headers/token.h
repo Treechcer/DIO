@@ -36,5 +36,7 @@ typedef struct Token{
 } Token;
 
 int getKeyWord(char* possibleKeyWord);
+int isBool(char* word);
+char* strToBoolStr(char* str);
 
 #endif

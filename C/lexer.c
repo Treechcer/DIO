@@ -143,6 +143,9 @@ dynamicToken lex(const char* code, char* fileName) {
                         if (getKeyWord(token.items)){
                             tok = createToken(token.items, KEYWORD, createPosition(&charPos_, &charPos_, &line, fileName));
                         }
+                        else if (isBool(token.items)) {
+                            tok = createToken(strToBoolStr(token.items), INT, createPosition(&charPos_, &charPos_, &line, fileName));
+                        }
                         else {
                             tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line, fileName));
                         }
