@@ -1,40 +1,52 @@
 #include<stdlib.h>
 #include<stdio.h>
+
 #include"..\Headers\token.h"
 #include"..\Headers\errors.h"
 #include"..\Headers\macros.h"
+#include"..\Headers\helper_functions.h"
 
 char* genericMessages[] = { //if message is not provided
     "genericLexError",
     "unsupportedCharacters",
     "genericUnknownError",
     "Float values can't have two dots",
-    "You can't divide by zero"
-    "Non specific error in AST"
+    "You can't divide by zero",
+    "Non specific error in AST",
 };
 
 void errorOut(Error err){
     char* message;
-    if (sizeof(err.errorMessage)/sizeof(' ') < 2){
-        message = err.errorMessage;
+    if (err.errorMessage != NULL){
+        if (getStringSize(err.errorMessage) != 0){
+            message = err.errorMessage;
+        }
+        else{
+            message = genericMessages[err.errorType];    
+        }
     }
     else {
         message = genericMessages[err.errorType];
     }
-    
+
     char* file;
-    if (sizeof(err.errorPos.file)/sizeof(' ') < 2){
-        file = err.errorPos.file;
+    if (err.errorPos.file != NULL){
+        if ((getStringSize(err.errorPos.file))){
+            file = err.errorPos.file;
+        }
+        else{
+            file = "Unknown file";    
+        }
     }
     else {
         file = "Unknown file";
     }
 
-    if (*err.errorPos.line != -1 && *err.errorPos.start != -1 && *err.errorPos.end != -1){
+    if (err.errorPos.line != NULL && err.errorPos.start != NULL && err.errorPos.end != NULL){
         printf("Error: \"%d\" has occored with message:%s\n((%s), %i:%i-%i)", err.errorType, message, file, *err.errorPos.line, *err.errorPos.start, *err.errorPos.end);
     }
     else {
-        if (err.errorPos.file != ""){
+        if (err.errorPos.file != NULL){
             printf("Error: \"%d\" has occored with message:%s\n(%s)", err.errorType, message, file);
         }
         else{
@@ -47,8 +59,13 @@ void errorOut(Error err){
 
 void warningOut(Error err, int majority){
     char* message;
-    if (sizeof(err.errorMessage)/sizeof(' ') < 2){
-        message = err.errorMessage;
+    if (err.errorMessage != NULL){
+        if (getStringSize(err.errorMessage) != 0){
+            message = err.errorMessage;
+        }
+        else{
+            message = genericMessages[err.errorType];    
+        }
     }
     else {
         message = genericMessages[err.errorType];

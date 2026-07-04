@@ -7,6 +7,10 @@
 #include"../Headers/errors.h"
 #include"..\Headers\helper_functions.h"
 
+bool isAllowed(char c){ //special characters that are allowed and handled differently!
+    return (c == '<' || c == '>');
+}
+
 void writeToksOut(dynamicToken tok){
     for(int i = 0; i < tok.count; i++){
         if (tok.items[i].value){
@@ -20,7 +24,7 @@ void writeToksOut(dynamicToken tok){
     printf("\n");
 }
 
-dynamicToken lex(const char* code, char* file) {
+dynamicToken lex(const char* code, char* fileName) {
     //Token* toks;
 
     dynamicToken toks = {0,0,0};
@@ -36,36 +40,64 @@ dynamicToken lex(const char* code, char* file) {
 
         switch (c) {
             case '+':
-                tok = createToken("+", PLUS, createPosition(&charPos_, &charPos_, &line, file));
+                tok = createToken("+", PLUS, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
             case '-':
-                tok = createToken("-", MINUS, createPosition(&charPos_, &charPos_, &line, file));
+                tok = createToken("-", MINUS, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
             case '*':
-                tok = createToken("*", MUL, createPosition(&charPos_, &charPos_, &line, file));
+                tok = createToken("*", MUL, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
             case '/':
-                tok = createToken("/", DIV, createPosition(&charPos_, &charPos_, &line, file));
+                tok = createToken("/", DIV, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
             case '^':
-                tok = createToken("^", POW, createPosition(&charPos_, &charPos_, &line, file));
+                tok = createToken("^", POW, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
             case '(':
-                tok = createToken("(", LPAREN, createPosition(&charPos_, &charPos_, &line, file));
+                tok = createToken("(", LPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
             case ')':
-                tok = createToken(")", RPAREN, createPosition(&charPos_, &charPos_, &line, file));
+                tok = createToken(")", RPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
+            case '<':
+                {
+                    char lastC = c;
+                    code++;
+                    c = *code;
+                    if (c == '='){
+                        tok = createToken("<=", LESSOREQAUL, createPosition(&charPos_, &charPos_, &line, fileName));
+                    }
+                    else{
+                        tok = createToken("<", LESSTHAN, createPosition(&charPos_, &charPos_, &line, fileName));
+                        code--;
+                    }
+                    break;
+                }
+            case '>':
+                {
+                    char lastC = c;
+                    code++;
+                    c = *code;
+                    if (c == '='){
+                        tok = createToken(">=", MOREOREQUAL, createPosition(&charPos_, &charPos_, &line, fileName));
+                    }
+                    else{
+                        tok = createToken(">", MORETHAN, createPosition(&charPos_, &charPos_, &line, fileName));
+                        code--;
+                    }
+                    break;
+                }
             case '\n':
-                tok = createToken("\n", END, createPosition(&charPos_, &charPos_, &line, file));
+                tok = createToken("\n", END, createPosition(&charPos_, &charPos_, &line, fileName));
                 line++;
                 charPos_ = 1;
                 break;
             case ';':
-                tok = createToken(";", END, createPosition(&charPos_, &charPos_, &line, file));
+                tok = createToken(";", END, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
             case '=':
-                tok = createToken("=", EQUALS, createPosition(&charPos_, &charPos_, &line, file));
+                tok = createToken("=", EQUALS, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
             case ' ':
                 break;
@@ -76,12 +108,11 @@ dynamicToken lex(const char* code, char* file) {
                         while(isDigit(c) || c == '.'){
                             if (c == '.') {
                                 if (isFloat) {
-                                    errorOut((Error){"", twoDotsFloat, createPosition(&charPos_, &charPos_, &line, file)});
+                                    errorOut((Error){"", twoDotsFloat, createPosition(&charPos_, &charPos_, &line, fileName)});
                                 } else {
                                     isFloat = 1;
                                 }
                             }
-                            //printf("%s : %c\n", "digit char", c);
                             DYN_PUSH(c, token);
 
                             code++;
@@ -89,13 +120,8 @@ dynamicToken lex(const char* code, char* file) {
                             c = *code;
                         }
 
-                        //for (int i = 0; i < token.count; i++){
-                        //    printf("%c", token.items[i]);
-                        //}
-
-                        //printf("\n");
                         DYN_PUSH('\0', token);
-                        tok = createToken(token.items, isFloat ? FLOAT : INT, createPosition(&charPos_, &charPos_, &line, file));
+                        tok = createToken(token.items, isFloat ? FLOAT : INT, createPosition(&charPos_, &charPos_, &line, fileName));
 
                         code--;
                         charPos_--;
@@ -104,24 +130,19 @@ dynamicToken lex(const char* code, char* file) {
                     else if (isAlpha(c)){
                         dynamicChar token = {0,0,0};
                         while(isAlpha(c)){
-                            //printf("%s : %c\n", "non-digit char", c);
                             DYN_PUSH(c, token);
 
                             code++;
                             charPos_++;
                             c = *code;
                         }
-
-                        //for (int i = 0; i < token.count; i++){
-                        //    printf("%c", token.items[i]);
-                        //}
                         
                         DYN_PUSH('\0', token);
                         if (getKeyWord(token.items)){
-                            tok = createToken(token.items, KEYWORD, createPosition(&charPos_, &charPos_, &line, file));
+                            tok = createToken(token.items, KEYWORD, createPosition(&charPos_, &charPos_, &line, fileName));
                         }
                         else {
-                            tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line, file));
+                            tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line, fileName));
                         }
 
                         //if I had another token right after keyword it didn't really work, so I added this and it works lol
@@ -131,7 +152,7 @@ dynamicToken lex(const char* code, char* file) {
                         c = *code;
                     }
                     else{
-                        errorOut((Error){"", genericLexError, createPosition(&charPos_, &charPos_, &line, file)});
+                        errorOut((Error){"", genericLexError, createPosition(&charPos_, &charPos_, &line, fileName)});
                     }
                 break;
         }

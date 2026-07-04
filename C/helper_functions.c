@@ -39,3 +39,16 @@ Token createToken(char* value, TokenType identifier, Position pos){
 Position createPosition(int* start, int* end, int* line, char* file){
     return (Position) {.start = start, .end = end, .line = line, .file = file};
 }
+
+size_t getStringSize(const char* string){
+    if (string == NULL) return 0;
+    const char *ch = string;
+    size_t len = 0;
+    
+    while (*ch != '\0'){
+        ch++;
+        len++;
+    }
+
+    return len;
+}

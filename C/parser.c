@@ -30,6 +30,14 @@ double evalBinOp(Node* node){
                     num *= left;
                 }
                 return num;
+            case LESSTHAN:
+                return (left < right);
+            case LESSOREQAUL:
+                return (left <= right);
+            case MORETHAN:
+                return (left > right);
+            case MOREOREQUAL:
+                return (left >= right);
             default:
                 break;
         }

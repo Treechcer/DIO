@@ -13,5 +13,6 @@ bool isDigit(char ch);
 bool isAlpha(char c);
 Token createToken(char* value, TokenType identifier, Position pos);
 Position createPosition(int* start, int* end, int* line, char* file);
+size_t getStringSize(char* string);
 
 #endif

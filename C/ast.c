@@ -81,7 +81,7 @@ Node* parseTerm(dynamicToken* toks){
 Node* parseExpression(dynamicToken* toks){
     Node* left = parseTerm(toks);
 
-    while (checkCurrenToken(toks).identifier == PLUS || checkCurrenToken(toks).identifier == MINUS) {
+    while (checkCurrenToken(toks).identifier == PLUS || checkCurrenToken(toks).identifier == MINUS || checkCurrenToken(toks).identifier == LESSOREQAUL || checkCurrenToken(toks).identifier == LESSTHAN || checkCurrenToken(toks).identifier == MOREOREQUAL || checkCurrenToken(toks).identifier == MORETHAN) {
         Token tokOp = shiftToken(toks);
         Node* right = parseTerm(toks);
 
@@ -114,7 +114,7 @@ Node* parseProgram(dynamicToken* toks) {
             shiftToken(toks);
         }
         if (node == NULL){
-            printf("ERR: %i : %i\n", g_index, (toks->count)-1);
+            //printf("ERR: %i : %i\n", g_index, (toks->count)-1);
             errorOut((Error){"", ASTERROR});
         }
 
