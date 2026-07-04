@@ -1,10 +1,12 @@
 #include<stdio.h>
+#include<string.h>
 
 #include"..\Headers\dynamic_array.h"
 #include"..\Headers\ast.h"
 #include"..\Headers\helper_functions.h"
 #include"..\Headers\macros.h"
 #include"..\Headers\errors.h"
+#include"..\Headers\token.h"
 
 int g_index = 0;
 
@@ -30,6 +32,7 @@ Token shiftToken(dynamicToken* toks){
         g_index++;
         return toks->items[g_index-1];
     }
+    return (Token){0};
 }
 
 Node* parseFactor(dynamicToken* toks){
@@ -45,11 +48,23 @@ Node* parseFactor(dynamicToken* toks){
         return node;
     }
 
+    if (tok.identifier == IDENTIFIER){
+        shiftToken(toks);
+        Node* node = createNode();
+        node->type = VARIABLENODE;
+        node->data.variableNode = malloc(sizeof(variableNode));
+        node->data.variableNode->name = tok.value;
+        node->data.variableNode->type = INTVAR;
+        node->data.variableNode->value = NULL;
+
+        return node;
+    }
+
     if (tok.identifier == LPAREN){
         shiftToken(toks);
         Node* node = parseExpression(toks);
         if (checkCurrenToken(toks).identifier != RPAREN){
-            errorOut((Error){"", genericLexError, createPosition(NULL, NULL, NULL, NULL)});
+            errorOut((Error){"", ASTERROR, createPosition(NULL, NULL, NULL, NULL)});
         }
         shiftToken(toks);
         return node;
@@ -60,6 +75,7 @@ Node* parseFactor(dynamicToken* toks){
 
 Node* parseTerm(dynamicToken* toks){
     Node* left = parseFactor(toks);
+    if (left == NULL) return NULL;
 
     while (checkCurrenToken(toks).identifier == MUL || checkCurrenToken(toks).identifier == DIV || checkCurrenToken(toks).identifier == POW) {
         Token tokOp = shiftToken(toks);
@@ -98,6 +114,46 @@ Node* parseExpression(dynamicToken* toks){
     return left;
 }
 
+Node* parseNewVariable(dynamicToken* toks){
+    Node* pNode = createNode();
+
+    char* tv = checkCurrenToken(toks).value;
+
+    if (checkCurrenToken(toks).identifier == KEYWORD && (strcmp(tv, "int") == 0 || strcmp(tv, "float") == 0 || strcmp(tv, "bool") == 0)){
+        shiftToken(toks); // skips int | float ........
+        char* name = checkCurrenToken(toks).value;
+        shiftToken(toks); // skips name
+        shiftToken(toks); // skips =
+
+        Node* value = parseExpression(toks);
+        if (value == NULL) {
+            return NULL; 
+        }
+        
+        TokenType tokT;
+        if (strcmp(tv, "int") == 0){
+            tokT = INTVAR;
+        }
+        else if (strcmp(tv, "float") == 0) {
+            tokT = FLOATVAR;
+        }
+        else{
+            tokT = BOOLVAR;
+        }
+
+        Node* retNode = createNode();
+        retNode->type = VARIABLENODE;
+        retNode->data.variableNode = malloc(sizeof(variableNode));
+        retNode->data.variableNode->name = name;
+        retNode->data.variableNode->type = tokT;
+        retNode->data.variableNode->value = value;
+
+        return retNode;
+    }
+
+    return NULL;
+}
+
 Node* parseProgram(dynamicToken* toks) {
     Node* pNode = createNode();
     pNode->type = PROGRAMNODE;
@@ -108,11 +164,16 @@ Node* parseProgram(dynamicToken* toks) {
     pNode->data.programNode->nodes.items = NULL;
 
     while (g_index < (toks->count)-1) {
-        //printf("%i : %i\n", g_index, (toks->count)-1);
-        Node* node = parseExpression(toks);
         if (checkCurrenToken(toks).identifier == END){
             shiftToken(toks);
+            continue;
         }
+
+        Node* node = parseExpression(toks);
+        if (node == NULL){
+            node = parseNewVariable(toks);
+        }
+
         if (node == NULL){
             //printf("ERR: %i : %i\n", g_index, (toks->count)-1);
             errorOut((Error){"", ASTERROR});
@@ -120,7 +181,6 @@ Node* parseProgram(dynamicToken* toks) {
 
         DYN_PUSH(node, pNode->data.programNode->nodes);
     }
-    
     return pNode;
 }
 

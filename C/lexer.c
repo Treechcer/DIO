@@ -96,6 +96,9 @@ dynamicToken lex(const char* code, char* fileName) {
             case ';':
                 tok = createToken(";", END, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
+            case '\0':
+                tok = createToken(";", END, createPosition(&charPos_, &charPos_, &line, fileName));
+                break;
             case '=':
                 code++;
                 c = *code;

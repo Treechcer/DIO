@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "..\Headers\token.h"
 
@@ -30,6 +31,18 @@ bool isDigit(char c){
 
 bool isAlpha(char c){
     return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+}
+
+bool isAlphaString(char* c){
+    for (int i = 0; i < strlen(c); i++){
+        char ch = *c;
+        if (!isAlpha(ch)){
+            return 0;
+        }
+        c++;
+    }
+
+    return 1;
 }
 
 Token createToken(char* value, TokenType identifier, Position pos){

@@ -30,7 +30,7 @@ int main(int argc, char **argv){
         fread(string, fsize, 1, filePointer);
         fclose(filePointer);
 
-        string[fsize] = '\0';
+        string[fsize-1] = '\0';
         //printf("%s\n", string);
 
         parse(buildAst(lex(string, filePath)));
