@@ -17,6 +17,10 @@ int main(int argc, char **argv){
     //get file
     char* filePath = getvalueByIndex(fileArgIndex);
     if (filePath != NULL && strlen(filePath) > 0){
+        //FILE READ source (modified):
+        // Source - https://stackoverflow.com/a/14002993
+        // Posted by user529758, modified by community. See post 'Timeline' for change history
+        // Retrieved 2026-07-04, License - CC BY-SA 4.0
         FILE* filePointer = fopen(getvalueByIndex(fileArgIndex), "r");
         fseek(filePointer, 0, SEEK_END);
         long fsize = ftell(filePointer);
