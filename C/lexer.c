@@ -15,9 +15,11 @@ void writeToksOut(dynamicToken tok){
     for(int i = 0; i < tok.count; i++){
         if (tok.items[i].value){
             printf("(%i : %s)", tok.items[i].identifier, tok.items[i].value);
+            if (tok.items[i].identifier == END) printf("\n");
         }
         else{
             printf("(%i)", (tok.items[i].identifier));
+            if (tok.items[i].identifier == END) printf("\n");
         }
     }
 
@@ -78,7 +80,7 @@ dynamicToken lex(const char* code, char* fileName) {
                     tok = createToken(">=", MOREOREQUAL, createPosition(&charPos_, &charPos_, &line, fileName));
                 }
                 else if (c == '>') {
-                    while (c != '\n' && c != '\r' && c != '\0'){
+                    while (c != '\n' && c != '\r' && c != '\0' && strlen(code) > 0){
                         code++;
                         c = *code;
                     }
@@ -88,8 +90,42 @@ dynamicToken lex(const char* code, char* fileName) {
                     code--;
                 }
                 break;
+            case ':':
+                code++;
+                c = *code;
+                if (c == ':'){
+                    code++;
+                    c = *code;
+                    char* str = "";
+                    dynamicChar token = {0,0,0};
+                    while(isAlpha(c) && strlen(code) > 0){
+                        DYN_PUSH(c, token);
+
+                        code++;
+                        charPos_++;
+                        c = *code;
+                    }
+                    DYN_PUSH('\0', token);
+                    if (c == ':'){
+                        code++;
+                        c = *code;
+                        if (c == ':'){
+                            tok = createToken(token.items, GOTONAME, createPosition(&charPos_, &charPos_, &line, fileName));
+                        }
+                        else{
+                            errorOut((Error){"", UNSUPORTEDCHARACTERSEQUENCE, createPosition(&charPos_, &charPos_, &line, fileName)});
+                        }
+                    }
+                    else{
+                        errorOut((Error){"", UNSUPORTEDCHARACTERSEQUENCE, createPosition(&charPos_, &charPos_, &line, fileName)});
+                    }
+                }
+                else{
+                    errorOut((Error){"", UNSUPORTEDCHARACTERSEQUENCE, createPosition(&charPos_, &charPos_, &line, fileName)});
+                }
+                break;
             case '\n':
-                tok = createToken("\n", END, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("", END, createPosition(&charPos_, &charPos_, &line, fileName));
                 line++;
                 charPos_ = 1;
                 break;
@@ -116,7 +152,7 @@ dynamicToken lex(const char* code, char* fileName) {
                     if (isDigit(c)){
                         dynamicChar token = {0,0,0};
                         int isFloat = false;
-                        while(isDigit(c) || c == '.'){
+                        while((isDigit(c) || c == '.') && strlen(code) > 0){
                             if (c == '.') {
                                 if (isFloat) {
                                     errorOut((Error){"", twoDotsFloat, createPosition(&charPos_, &charPos_, &line, fileName)});
@@ -140,7 +176,7 @@ dynamicToken lex(const char* code, char* fileName) {
                     }
                     else if (isAlpha(c)){
                         dynamicChar token = {0,0,0};
-                        while(isAlpha(c)){
+                        while(isAlpha(c) && strlen(code) > 0){
                             DYN_PUSH(c, token);
 
                             code++;
@@ -181,6 +217,6 @@ dynamicToken lex(const char* code, char* fileName) {
         charPos_++;
     }
 
-    //writeToksOut(toks);
+    writeToksOut(toks);
     return toks;
 }

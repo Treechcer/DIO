@@ -17,6 +17,8 @@ typedef enum {
     BINOPNODE = 0,
     NUMBERNODE,
     VARIABLENODE,
+    GOTONODE,
+    GOTOIDENTIFIER,
     PROGRAMNODE,
 } nodeType;
 
@@ -40,6 +42,14 @@ typedef struct variableNode {
     Node* value;
 } variableNode;
 
+typedef struct gotoNode {
+    char* name;
+} gotoNode;
+
+typedef struct gotoIdefier {
+    char* name;
+} gotoIdefier;
+
 typedef struct Node {
     nodeType type;
     union {
@@ -47,6 +57,8 @@ typedef struct Node {
         struct numberNode* numberNode;
         struct programNode* programNode;
         struct variableNode* variableNode;
+        struct gotoNode* gotoNode;
+        struct gotoIdefier* gotoIdefier;
     } data;
 } Node;
 

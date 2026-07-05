@@ -27,6 +27,7 @@ typedef enum {
     KEYWORD,
     POW,
     END,
+    GOTONAME,
 } TokenType;
 
 typedef struct Token{

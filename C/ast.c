@@ -181,6 +181,24 @@ Node* parseNewVariable(dynamicToken* toks){
     return NULL;
 }
 
+Node* parseGoto(dynamicToken* toks){
+    Node* pNode = createNode();
+    if (toks->items[g_index].identifier == KEYWORD && strcmp(toks->items[g_index].value, "goto") == 0){
+        pNode->type = GOTONODE;
+        pNode->data.gotoNode = malloc(sizeof(gotoNode));
+        pNode->data.gotoNode->name = shiftToken(toks).value;
+
+        return pNode;
+    }
+    else if (toks->items[g_index].identifier == GOTONAME) {
+        pNode->type = GOTOIDENTIFIER;
+        pNode->data.gotoIdefier = malloc(sizeof(gotoIdefier));
+        pNode->data.gotoIdefier->name = shiftToken(toks).value;
+
+        return pNode;
+    }
+}
+
 Node* parseProgram(dynamicToken* toks) {
     Node* pNode = createNode();
     pNode->type = PROGRAMNODE;
@@ -197,6 +215,9 @@ Node* parseProgram(dynamicToken* toks) {
         }
 
         Node* node = parseExpression(toks);
+        if (node == NULL){
+            node = parseNewVariable(toks);
+        }
         if (node == NULL){
             node = parseNewVariable(toks);
         }

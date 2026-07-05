@@ -11,7 +11,8 @@ typedef enum {
     genericUnknownError,
     twoDotsFloat,
     divisionByZero,
-    ASTERROR
+    ASTERROR,
+    UNSUPORTEDCHARACTERSEQUENCE
 } ErrorType;
 
 typedef struct {

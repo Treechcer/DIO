@@ -1,0 +1,4 @@
+int a = 1
+::aaa::
+a = a * 2
+goto ::aaa::

@@ -13,6 +13,7 @@ char* genericMessages[] = { //if message is not provided
     "Float values can't have two dots",
     "You can't divide by zero",
     "Non specific error in AST",
+    "Unsuported character sequnce was found in Lexer",
 };
 
 void errorOut(Error err){
