@@ -35,6 +35,14 @@ Token shiftToken(dynamicToken* toks){
     return (Token){0};
 }
 
+Token checkTokenAt(dynamicToken* toks, int offset){
+    int index = g_index + offset;
+    if (index >= 0 && index < toks->count){
+        return toks->items[index];
+    }
+    return (Token){0};
+}
+
 Node* parseFactor(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
 
@@ -95,6 +103,25 @@ Node* parseTerm(dynamicToken* toks){
 }
 
 Node* parseExpression(dynamicToken* toks){
+    if (checkCurrenToken(toks).identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == EQUALS){
+        Token nameTok = shiftToken(toks);
+        shiftToken(toks);
+
+        Node* value = parseExpression(toks);
+        if (value == NULL) {
+            return NULL;
+        }
+
+        Node* pNode = createNode();
+        pNode->type = VARIABLENODE;
+        pNode->data.variableNode = malloc(sizeof(variableNode));
+        pNode->data.variableNode->name = nameTok.value;
+        pNode->data.variableNode->type = INTVAR;
+        pNode->data.variableNode->value = value;
+
+        return pNode;
+    }
+
     Node* left = parseTerm(toks);
 
     while (checkCurrenToken(toks).identifier == PLUS || checkCurrenToken(toks).identifier == MINUS || checkCurrenToken(toks).identifier == LESSOREQAUL || checkCurrenToken(toks).identifier == LESSTHAN || checkCurrenToken(toks).identifier == MOREOREQUAL || checkCurrenToken(toks).identifier == MORETHAN || checkCurrenToken(toks).identifier == LEFTRIGHTEQUAL) {

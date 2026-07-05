@@ -16,7 +16,7 @@ int getVarIndexByName(char* name){
         }
     }
 
-    return NAN;
+    return -1;
 }
 
 double getVarValueIntByName(char* name){
@@ -115,19 +115,25 @@ double BinOpEvalBinOp(binOpNode* node){
 dynamicVar evalVariable(Node* node){
     char* tempArr[] = {"int", "float", "string", "bool",};
 
-    int index = g_vars.count;
     char* type = tempArr[node->data.variableNode->type];
     char* name = node->data.variableNode->name;
-    //binOpNode* value;
     varStruct tempVar;
+
     if (strcmp(type, "int") == 0 || strcmp(type, "float") == 0){
         double value = evalBinOp(node->data.variableNode->value);
 
-        tempVar = (varStruct){.index = index, .type = type, .name = name, .data.intVal = value };
+        tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value };
         printf("%f\n", value);
     }
     else if (strcmp(type, "string") == 0){
         //TODO: implement later
+    }
+
+    int existingIndex = getVarIndexByName(name);
+    if (existingIndex >= 0){
+        tempVar.index = existingIndex;
+        g_vars.items[existingIndex] = tempVar;
+        return g_vars;
     }
 
     DYN_PUSH(tempVar, g_vars);

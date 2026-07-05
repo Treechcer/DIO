@@ -1,2 +1,5 @@
 int a = 8 + 1;
 a + 6;
+b = 7;
+c = a + b;
+>>seems to work

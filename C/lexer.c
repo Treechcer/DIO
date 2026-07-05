@@ -78,9 +78,9 @@ dynamicToken lex(const char* code, char* fileName) {
                     tok = createToken(">=", MOREOREQUAL, createPosition(&charPos_, &charPos_, &line, fileName));
                 }
                 else if (c == '>') {
-                    while (c != '\n'){
-                    code++;
-                    c = *code; 
+                    while (c != '\n' && c != '\r' && c != '\0'){
+                        code++;
+                        c = *code;
                     }
                 }
                 else{
@@ -172,6 +172,9 @@ dynamicToken lex(const char* code, char* fileName) {
         }
         if (tok.identifier){
             DYN_PUSH(tok, toks);
+        }
+        if (c == '\0'){
+            break;
         }
 
         code++;
