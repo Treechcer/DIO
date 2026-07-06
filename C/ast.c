@@ -219,9 +219,8 @@ Node* parseProgram(dynamicToken* toks) {
             node = parseNewVariable(toks);
         }
         if (node == NULL){
-            node = parseNewVariable(toks);
+            node = parseGoto(toks);
         }
-
         if (node == NULL){
             //printf("ERR: %i : %i\n", g_index, (toks->count)-1);
             errorOut((Error){"", ASTERROR});
