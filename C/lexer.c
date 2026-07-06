@@ -33,9 +33,9 @@ dynamicToken lex(const char* code, char* fileName) {
 
     int line = 1;
     int charPos_ = 1;
-
-    while (strlen(code) > 0){
-        char c = *code;
+    char c = ' ';
+    while (strlen(code) > 0 && c != '\0'){
+        c = *code;
         Token tok = {0};
 
         //printf("%i, %i, %c\n", line, charPos_, c);
@@ -146,6 +146,8 @@ dynamicToken lex(const char* code, char* fileName) {
                     code--;
                 }
                 break;
+            case '\r':
+            case '\t':
             case ' ':
                 break;
             default:

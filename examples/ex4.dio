@@ -1,4 +1,4 @@
-int a = 5
+int a = 2
 ::aaa::
 a = a * 2
 goto (a < 10000) ::aaa::

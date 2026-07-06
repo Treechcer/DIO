@@ -1,0 +1,11 @@
+fibOne = 0
+fibTwo = 1
+
+::start::
+
+fibThree = fibOne + fibTwo
+fibOne = fibTwo
+fibTwo = fibThree
+
+goto (fibThree < 215445) ::start::
+>> This should do fibunacci sequence
