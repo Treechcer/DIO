@@ -1,1 +1,1 @@
--file examples/ex5.dio
+-file examples/ex6.dio
