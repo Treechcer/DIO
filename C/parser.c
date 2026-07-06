@@ -208,7 +208,6 @@ Node* astToNode(Node* ast){
 void parse(Node* ast){
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
-        printf("%i\n", i);
         Node* node = ast->data.programNode->nodes.items[i];
         switch (node->type) {
             case BINOPNODE:
@@ -217,10 +216,10 @@ void parse(Node* ast){
             case VARIABLENODE:
                 g_vars = evalVariable(node);
                 break;
-            case GOTONODE:
+            case GOTOIDENTIFIER:
                 g_gotos = parseGotoNode(node, g_gotos);
                 break;
-            case GOTOIDENTIFIER:
+            case GOTONODE:
                 i = parseGotoNameNode(node, &g_gotos, ast)-1;
                 break;
             default:
