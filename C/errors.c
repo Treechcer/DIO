@@ -14,6 +14,8 @@ char* genericMessages[] = { //if message is not provided
     "You can't divide by zero",
     "Non specific error in AST",
     "Unsuported character sequnce was found in Lexer",
+    "Unknown error occured somewhere",
+    "Goto name was not found",
 };
 
 void errorOut(Error err){

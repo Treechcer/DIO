@@ -12,7 +12,9 @@ typedef enum {
     twoDotsFloat,
     divisionByZero,
     ASTERROR,
-    UNSUPORTEDCHARACTERSEQUENCE
+    UNSUPORTEDCHARACTERSEQUENCE,
+    UNKNOWNERROR,
+    PARSERNOTFOUNDGOTO,
 } ErrorType;
 
 typedef struct {

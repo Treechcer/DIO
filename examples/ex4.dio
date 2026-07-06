@@ -3,4 +3,4 @@ int a = 5
 a = a * 2
 goto ::aaa::
 
->> This makes infinite loop (variables doesn't work????)
+>> This makes infinite loop, making 5 * n until it you stop it

@@ -163,9 +163,7 @@ int isGotoIncialised(char* name, dynamicGoto* dg){
 
 int parseGotoNameNode(Node* node, dynamicGoto* dg, Node* ast){
     if (isGotoIncialised(node->data.gotoNode->name, dg) == -1){
-        //TODO: RRAISE ERROR
-        printf("temp exit, no error, goto doesn't exist!");
-        exit(1);
+        errorOut((Error){.errorMessage = "Goto not found", .errorType = PARSERNOTFOUNDGOTO});
     }
 
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
@@ -181,9 +179,7 @@ int parseGotoNameNode(Node* node, dynamicGoto* dg, Node* ast){
         }
     }
 
-    //TODO: RRAISE ERROR
-    printf("temp exit, no error, goto not found? Shouldn't it be found tho?");
-    exit(1);
+    errorOut((Error){.errorMessage = "This shouldn't happen. Parser error", .errorType = UNKNOWNERROR});
 }
 
 dynamicGoto prescanForGotos(Node* wholeAst, dynamicGoto dg){
