@@ -44,6 +44,7 @@ typedef struct variableNode {
 
 typedef struct gotoNode {
     char* name;
+    struct Node* binOpNode; // (condition that makes it run)
 } gotoNode;
 
 typedef struct gotoIdefier {

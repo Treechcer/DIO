@@ -187,6 +187,20 @@ Node* parseGoto(dynamicToken* toks){
         pNode->type = GOTONODE;
         pNode->data.gotoNode = malloc(sizeof(gotoNode));
         shiftToken(toks);
+        if (checkCurrenToken(toks).identifier == LPAREN){
+            pNode->data.gotoNode->binOpNode = parseExpression(toks);
+        }
+        else{
+            pNode->data.gotoNode->binOpNode = malloc(sizeof(Node));
+            pNode->data.gotoNode->binOpNode->type = BINOPNODE;
+
+            pNode->data.gotoNode->binOpNode->data.binOpNode = malloc(sizeof(struct binOpNode));
+            
+            pNode->data.gotoNode->binOpNode->data.binOpNode->left = malloc(sizeof(Node));
+            pNode->data.gotoNode->binOpNode->data.binOpNode->left->type = NUMBERNODE;
+            pNode->data.gotoNode->binOpNode->data.binOpNode->left->data.numberNode = malloc(sizeof(numberNode));
+            pNode->data.gotoNode->binOpNode->data.binOpNode->left->data.numberNode->value = 1;
+        }
         pNode->data.gotoNode->name = shiftToken(toks).value;
         //printf("%s", pNode->data.gotoNode->name);
 

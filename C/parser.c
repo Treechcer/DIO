@@ -166,6 +166,10 @@ int parseGotoNameNode(Node* node, dynamicGoto* dg, Node* ast){
         errorOut((Error){.errorMessage = "Goto not found", .errorType = PARSERNOTFOUNDGOTO});
     }
 
+    if (!evalBinOp(node->data.gotoNode->binOpNode)){
+        return -1;
+    }
+
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node_ = ast->data.programNode->nodes.items[i];
         switch (node_->type) {
@@ -216,7 +220,10 @@ void parse(Node* ast){
                 g_gotos = parseGotoNode(node, g_gotos);
                 break;
             case GOTONODE:
-                i = parseGotoNameNode(node, &g_gotos, ast)-1;
+                int temp = parseGotoNameNode(node, &g_gotos, ast);
+                if (temp != -1){
+                    i = temp-1;
+                }
                 break;
             default:
                 break;
