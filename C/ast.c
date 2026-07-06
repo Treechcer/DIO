@@ -186,7 +186,9 @@ Node* parseGoto(dynamicToken* toks){
     if (toks->items[g_index].identifier == KEYWORD && strcmp(toks->items[g_index].value, "goto") == 0){
         pNode->type = GOTONODE;
         pNode->data.gotoNode = malloc(sizeof(gotoNode));
+        shiftToken(toks);
         pNode->data.gotoNode->name = shiftToken(toks).value;
+        //printf("%s", pNode->data.gotoNode->name);
 
         return pNode;
     }

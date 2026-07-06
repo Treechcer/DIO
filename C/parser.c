@@ -8,6 +8,7 @@
 #include"..\Headers\helper_functions.h"
 
 dynamicVar g_vars = {0,0,0};
+dynamicGoto g_gotos = {0,0,0};
 
 int getVarIndexByName(char* name){
     for(int i = 0; i < g_vars.count; i++){
@@ -140,12 +141,74 @@ dynamicVar evalVariable(Node* node){
     return g_vars;
 }
 
+gotoStruct createNewGoto(char* name){
+    return (gotoStruct){.index = g_gotos.count, .intialised = 1, .name = name};
+}
+
+dynamicGoto parseGotoNode(Node* node, dynamicGoto dg){
+    DYN_PUSH(createNewGoto(node->data.gotoNode->name), dg);
+    return dg;
+}
+
+int isGotoIncialised(char* name, dynamicGoto* dg){
+    for (int i = 0; i < dg->count; i++){
+        //printf("%s, %s\n", dg->items[i].name, name);
+        if (strcmp(dg->items[i].name, name) == 0){
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+int parseGotoNameNode(Node* node, dynamicGoto* dg, Node* ast){
+    if (isGotoIncialised(node->data.gotoNode->name, dg) == -1){
+        //TODO: RRAISE ERROR
+        printf("temp exit, no error, goto doesn't exist!");
+        exit(1);
+    }
+
+    for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
+        Node* node_ = ast->data.programNode->nodes.items[i];
+        switch (node_->type) {
+            case GOTOIDENTIFIER:
+                if (strcmp(node_->data.gotoIdefier->name, node->data.gotoIdefier->name) == 0){
+                    return i;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    //TODO: RRAISE ERROR
+    printf("temp exit, no error, goto not found? Shouldn't it be found tho?");
+    exit(1);
+}
+
+dynamicGoto prescanForGotos(Node* wholeAst, dynamicGoto dg){
+    for (size_t i = 0; i < wholeAst->data.programNode->nodes.count; i++){        
+        Node* node = wholeAst->data.programNode->nodes.items[i];
+        switch (node->type) {
+            case GOTONODE:
+                dg = parseGotoNode(node, dg);
+                break;
+            default:
+                break;
+        }
+    }
+
+    return dg;
+}
+
 Node* astToNode(Node* ast){
     return &(Node){.type = ast->type, .data = ast->data};
 }
 
 void parse(Node* ast){
-    for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){        
+    g_gotos = prescanForGotos(ast, g_gotos);
+    for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
+        printf("%i\n", i);
         Node* node = ast->data.programNode->nodes.items[i];
         switch (node->type) {
             case BINOPNODE:
@@ -153,6 +216,12 @@ void parse(Node* ast){
                 break;
             case VARIABLENODE:
                 g_vars = evalVariable(node);
+                break;
+            case GOTONODE:
+                g_gotos = parseGotoNode(node, g_gotos);
+                break;
+            case GOTOIDENTIFIER:
+                i = parseGotoNameNode(node, &g_gotos, ast)-1;
                 break;
             default:
                 break;

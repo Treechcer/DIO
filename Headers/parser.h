@@ -6,6 +6,7 @@
 
 typedef struct varStruct {
     int index;
+    int intialised; //TODO: check and use this
     char* type;
     char* name;
     union {
@@ -15,7 +16,14 @@ typedef struct varStruct {
     } data;
 } varStruct;
 
+typedef struct gotoStruct {
+    int index;
+    int intialised;
+    char* name;
+} gotoStruct;
+
 STRUCT_DYNAMIC_ARR_MACRO(varStruct, dynamicVar)
+STRUCT_DYNAMIC_ARR_MACRO(gotoStruct, dynamicGoto)
 
 void parse(Node* ast);
 

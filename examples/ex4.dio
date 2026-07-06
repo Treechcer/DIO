@@ -1,4 +1,6 @@
-int a = 1
+int a = 5
 ::aaa::
 a = a * 2
 goto ::aaa::
+
+>> This makes infinite loop (variables doesn't work????)
