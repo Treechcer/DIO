@@ -50,7 +50,7 @@ void checkInuts(int argc, char **argv){
 
     for (int i = 0; i < g_args.count; i++){
         if (g_args.items[i].found == 0 && g_args.items[i].isNecesary == 1){
-            printf("Input for '%s', was not found, exiting program.", g_args.items[i].name);
+            printf("Input for '%s', was not found, exiting program.\n", g_args.items[i].name);
             exit(1);
         }
     }
