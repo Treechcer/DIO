@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 
-#include"..\Headers\token.h"
+#include"../Headers/token.h"
 
 const char* keywords[] = {
     "if", "elseif", "else", "for", "while", "int", "float", "string", "bool", "goto"

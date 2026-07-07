@@ -1,10 +1,10 @@
 #include<string.h>
 
-#include"..\Headers\lexer.h"
-#include"..\Headers\ast.h"
-#include"..\Headers\token.h"
-#include"..\Headers\parser.h"
-#include"..\Headers\inputargs.h"
+#include"../Headers/lexer.h"
+#include"../Headers/ast.h"
+#include"../Headers/token.h"
+#include"../Headers/parser.h"
+#include"../Headers/inputargs.h"
 
 int main(int argc, char **argv){
     //BUILD INPUTS!!

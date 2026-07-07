@@ -1,7 +1,7 @@
 #include<string.h>
 
-#include "..\Headers\inputargs.h"
-#include "..\Headers\token.h"
+#include "../Headers/inputargs.h"
+#include "../Headers/token.h"
 
 dynamicArg g_args;
 

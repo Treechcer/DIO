@@ -1,11 +1,11 @@
 #include<string.h>
 #include <math.h>
 
-#include"..\Headers\dynamic_array.h"
-#include"..\Headers\ast.h"
-#include"..\Headers\errors.h"
-#include"..\Headers\parser.h"
-#include"..\Headers\helper_functions.h"
+#include"../Headers/dynamic_array.h"
+#include"../Headers/ast.h"
+#include"../Headers/errors.h"
+#include"../Headers/parser.h"
+#include"../Headers/helper_functions.h"
 
 dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};

@@ -1,8 +1,8 @@
 #ifndef PARSER__H
 #define PARSER__H
 
-#include"..\Headers\ast.h"
-#include"..\Headers\macros.h"
+#include"../Headers/ast.h"
+#include"../Headers/macros.h"
 
 typedef struct varStruct {
     int index;

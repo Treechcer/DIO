@@ -2,7 +2,7 @@
 #define ERRORS__H
 
 #include<stdio.h>
-#include"..\Headers\token.h"
+#include"../Headers/token.h"
 #include <stdlib.h>
 
 typedef enum {

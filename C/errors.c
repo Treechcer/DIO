@@ -1,10 +1,10 @@
 #include<stdlib.h>
 #include<stdio.h>
 
-#include"..\Headers\token.h"
-#include"..\Headers\errors.h"
-#include"..\Headers\macros.h"
-#include"..\Headers\helper_functions.h"
+#include"../Headers/token.h"
+#include"../Headers/errors.h"
+#include"../Headers/macros.h"
+#include"../Headers/helper_functions.h"
 
 char* genericMessages[] = { //if message is not provided
     "genericLexError",

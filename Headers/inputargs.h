@@ -4,7 +4,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#include"..\Headers\macros.h"
+#include"../Headers/macros.h"
 
 typedef enum argType {
     BOOLEAN = 0,

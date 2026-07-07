@@ -1,12 +1,12 @@
 #include<stdio.h>
 #include<string.h>
 
-#include"..\Headers\dynamic_array.h"
-#include"..\Headers\ast.h"
-#include"..\Headers\helper_functions.h"
-#include"..\Headers\macros.h"
-#include"..\Headers\errors.h"
-#include"..\Headers\token.h"
+#include"../Headers/dynamic_array.h"
+#include"../Headers/ast.h"
+#include"../Headers/helper_functions.h"
+#include"../Headers/macros.h"
+#include"../Headers/errors.h"
+#include"../Headers/token.h"
 
 int g_index = 0;
 
