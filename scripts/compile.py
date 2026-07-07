@@ -11,11 +11,11 @@ def getFiles():
 
 try:
     filename = "lang"
-    subprocess.run("gcc " + getFiles() + f" -o {filename}", shell=True, check=True)
     slash = "/"
     if platform.system() == "Windows":
         filename = "lang.exe"
         slash = "\\"
+    subprocess.run("gcc " + getFiles() + f" -o {filename}", shell=True, check=True)
     with open(os.path.abspath(os.path.join("scripts", "CompileRunParams.txt")), "r") as f:
         subprocess.run(f".{slash}{filename}" + " " + f.read(), shell=True)
 except Exception as e:
