@@ -4,7 +4,7 @@
 #include"../Headers/token.h"
 
 const char* keywords[] = {
-    "if", "elseif", "else", "for", "while", "int", "float", "string", "bool", "goto"
+    "if", "elseif", "else", "for", "while", "int", "float", "string", "bool", "goto", "end"
 };
 
 int getKeyWord(char* possibleKeyWord){

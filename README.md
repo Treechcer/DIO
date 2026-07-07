@@ -8,3 +8,4 @@ This is test of making a programming language in C with the least amount of help
 
 - (probably fixed too?) lexer lexes more things than the string has or something? Not sure but it seems it tries to parse (in specific codes) some text like "Buffer underflow" or so I guess at least (not sure how to write the whole message out)
 - Make variable types work somehow differently
+- Reading files doesn't really work? If I try to read them, sometimes it end with some weird characters (that aren't even there)?

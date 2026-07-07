@@ -17,6 +17,9 @@ int main(int argc, char **argv){
     //get file
     char* filePath = getvalueByIndex(fileArgIndex);
     if (filePath != NULL && strlen(filePath) > 0){
+
+        //TODO: fix this (for some reason this reads incorrectly and adds incorrect characters at the end? I have to figure out how to do better!)
+
         //FILE READ source (modified):
         // Source - https://stackoverflow.com/a/14002993
         // Posted by user529758, modified by community. See post 'Timeline' for change history
