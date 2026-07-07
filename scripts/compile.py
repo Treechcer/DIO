@@ -10,8 +10,8 @@ def getFiles():
     return string[:-1]
 
 try:
-    subprocess.run("gcc " + getFiles() + " -o lang.exe", shell=True, check=True)
     filename = "lang"
+    subprocess.run("gcc " + getFiles() + f" -o {filename}", shell=True, check=True)
     slash = "/"
     if platform.system() == "Windows":
         filename = "lang.exe"
