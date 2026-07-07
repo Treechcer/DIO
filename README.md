@@ -4,7 +4,7 @@ This is test of making a programming language in C with the least amount of help
 
 >NOTE: this is my first C code. I only used C++ (as the most SIMILAR language to C).
 
-## FIXES
+## ISSUES (right now)
 
 - it seems that variables doesn't need to be initialized (incorrect behavior) - fix later
 - lexer lexes more things than the string has or something? Not sure but it seems it tries to parse (in specific codes) some text like "Buffer underflow" or so I guess at least (not sure how to write the whole message out)
