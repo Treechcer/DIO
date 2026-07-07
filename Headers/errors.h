@@ -15,6 +15,7 @@ typedef enum {
     UNSUPORTEDCHARACTERSEQUENCE,
     UNKNOWNERROR,
     PARSERNOTFOUNDGOTO,
+    UNKNOWNVARIABLETYPE
 } ErrorType;
 
 typedef struct {

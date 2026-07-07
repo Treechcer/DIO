@@ -145,19 +145,27 @@ Node* parseNewVariable(dynamicToken* toks){
     Node* pNode = createNode();
 
     char* tv = checkCurrenToken(toks).value;
+    TokenType tokT = UNKNOWNVARTYPE;
+    int initialise = 0;
+    int createNodeBool = 0;
+    char* name;
+    Node* value;
 
-    if (checkCurrenToken(toks).identifier == KEYWORD && (strcmp(tv, "int") == 0 || strcmp(tv, "float") == 0 || strcmp(tv, "bool") == 0)){
-        shiftToken(toks); // skips int | float ........
-        char* name = checkCurrenToken(toks).value;
+    if (checkCurrenToken(toks).identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == EQUALS){
+        createNodeBool = 1;
+        name = checkCurrenToken(toks).value;
         shiftToken(toks); // skips name
         shiftToken(toks); // skips =
 
-        Node* value = parseExpression(toks);
-        if (value == NULL) {
-            return NULL; 
-        }
+        tokT = UNKNOWNVARTYPE;
+    }
+    else if (checkCurrenToken(toks).identifier == KEYWORD && (strcmp(tv, "int") == 0 || strcmp(tv, "float") == 0 || strcmp(tv, "bool") == 0)){
+        createNodeBool = 1;
+        shiftToken(toks); // skips int | float ........
+        name = checkCurrenToken(toks).value;
+        shiftToken(toks); // skips name
+        shiftToken(toks); // skips =
         
-        TokenType tokT;
         if (strcmp(tv, "int") == 0){
             tokT = INTVAR;
         }
@@ -167,6 +175,14 @@ Node* parseNewVariable(dynamicToken* toks){
         else{
             tokT = BOOLVAR;
         }
+        initialise = 1;
+    }
+
+    if (createNodeBool){
+        value = parseExpression(toks);
+        if (value == NULL) {
+            return NULL; 
+        }
 
         Node* retNode = createNode();
         retNode->type = VARIABLENODE;
@@ -174,6 +190,7 @@ Node* parseNewVariable(dynamicToken* toks){
         retNode->data.variableNode->name = name;
         retNode->data.variableNode->type = tokT;
         retNode->data.variableNode->value = value;
+        retNode->data.variableNode->initialise = initialise;
 
         return retNode;
     }

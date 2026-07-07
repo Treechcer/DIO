@@ -1,5 +1,5 @@
 int a = 8 + 1;
-a + 6;
-b = 7;
-c = a + b;
+a = a + 6;
+int b = 7;
+int c = a + b;
 >>seems to work, even without defining the var type????? it cretes variable even when it's not intiliased (TODO: FIX)

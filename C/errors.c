@@ -16,6 +16,7 @@ char* genericMessages[] = { //if message is not provided
     "Unsuported character sequnce was found in Lexer",
     "Unknown error occured somewhere",
     "Goto name was not found",
+    "You have to intiliase variable with it's type"
 };
 
 void errorOut(Error err){

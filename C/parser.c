@@ -120,6 +120,11 @@ dynamicVar evalVariable(Node* node){
     char* name = node->data.variableNode->name;
     varStruct tempVar;
 
+    int existingIndex = getVarIndexByName(name);
+    if (existingIndex < 0 && node->data.variableNode->initialise == 0){
+        errorOut((Error){"", UNKNOWNVARIABLETYPE});
+    }
+
     if (strcmp(type, "int") == 0 || strcmp(type, "float") == 0){
         double value = evalBinOp(node->data.variableNode->value);
 
@@ -130,7 +135,6 @@ dynamicVar evalVariable(Node* node){
         //TODO: implement later
     }
 
-    int existingIndex = getVarIndexByName(name);
     if (existingIndex >= 0){
         tempVar.index = existingIndex;
         g_vars.items[existingIndex] = tempVar;

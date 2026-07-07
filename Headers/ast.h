@@ -10,7 +10,8 @@ typedef enum variableTypes {
     INTVAR = 0,
     FLOATVAR,
     STRINGVAR,
-    BOOLVAR
+    BOOLVAR,
+    UNKNOWNVARTYPE,
 } variableTypes;
 
 typedef enum {
@@ -40,6 +41,7 @@ typedef struct variableNode {
     variableTypes type;
     char* name;
     Node* value;
+    int initialise;
 } variableNode;
 
 typedef struct gotoNode {
