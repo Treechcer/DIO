@@ -7,3 +7,4 @@ This is test of making a programming language in C with the least amount of help
 ## ISSUES (right now)
 
 - (probably fixed too?) lexer lexes more things than the string has or something? Not sure but it seems it tries to parse (in specific codes) some text like "Buffer underflow" or so I guess at least (not sure how to write the whole message out)
+- Make variable types work somehow differently

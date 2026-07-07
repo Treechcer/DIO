@@ -1,0 +1,3 @@
+int a = 5;
+b = 7;
+>> This will crash because 'b' isn't initialised
