@@ -8,4 +8,3 @@ fibOne = fibTwo
 fibTwo = fibThree
 
 goto (fibThree < 1000000) ::start::
->> This should do fibunacci sequence (until fibThree is more or equal to 1000000)

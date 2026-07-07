@@ -36,8 +36,12 @@ dynamicToken lex(const char* code, char* fileName) {
     char c = ' ';
     while (strlen(code) > 0 && c != '\0'){
         c = *code;
+        //printf("%i\n", c);
         Token tok = {0};
-
+        if (c == -31){
+            //why does the last character always become -31?
+            break;
+        }
         //printf("%i, %i, %c\n", line, charPos_, c);
 
         switch (c) {
