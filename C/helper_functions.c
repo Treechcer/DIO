@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "..\Headers\token.h"
+#include "../Headers/token.h"
 
 long int convertToLongInt(char* value){
     return atol(value);
