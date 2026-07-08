@@ -59,9 +59,16 @@ typedef struct gotoIdefier {
     char* name;
 } gotoIdefier;
 
+typedef enum{
+    IFCONDITION,
+    ELSEIFCONDITION,
+    ELSECONDITION
+} conditionType;
+
 typedef struct condition{
     Node* binOpNode; //Nodes
     Node* codeBlock; //Nodes
+    conditionType conditionType;
 } condition;
 
 typedef struct Node {

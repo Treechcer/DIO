@@ -9,6 +9,7 @@
 
 dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
+int g_skipelse = 0;
 
 int getVarIndexByName(char* name){
     for(int i = 0; i < g_vars.count; i++){
@@ -205,6 +206,18 @@ dynamicGoto prescanForGotos(Node* wholeAst, dynamicGoto dg){
     return dg;
 }
 
+void parseCondition_(Node* node){
+
+    if (node->data.condition->conditionType == IFCONDITION){
+        g_skipelse = 0;
+    }
+
+    if (evalBinOp(node->data.condition->binOpNode) && g_skipelse == 0){
+        g_skipelse = 1;
+        parse(node->data.condition->codeBlock);
+    }
+}
+
 Node* astToNode(Node* ast){
     return &(Node){.type = ast->type, .data = ast->data};
 }
@@ -228,6 +241,9 @@ void parse(Node* ast){
                 if (temp != -1){
                     i = temp-1;
                 }
+                break;
+            case CONDITION:
+                parseCondition_(node);
                 break;
             default:
                 break;

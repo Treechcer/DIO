@@ -13,6 +13,7 @@ int g_index = 0;
 //FUNCTION PREDEF
 
 Node* parseExpression(dynamicToken* toks);
+Node* parseGenericNode(dynamicToken* toks);
 
 //Node* parseExpression(dynamicToken toks);
 
@@ -229,10 +230,41 @@ Node* parseGoto(dynamicToken* toks){
     return NULL;
 }
 
+Node* parsecodeBlock(dynamicToken* toks){
+    Node* pNode = createNode();
+    pNode->type = CODEBLOCK;
+    pNode->data.codeBlock = malloc(sizeof(codeBlock));
+    
+    pNode->data.codeBlock->nodes.count = 0;
+    pNode->data.codeBlock->nodes.size = 0;
+    pNode->data.codeBlock->nodes.items = NULL;
+
+    while (g_index < (toks->count)-1) {
+        Token tok = checkCurrenToken(toks);
+        if (tok.identifier == KEYWORD && (strcmp(tok.value, "end") == 0 || strcmp(tok.value, "elseif") == 0 || strcmp(tok.value, "else") == 0)){
+            break;
+        }
+
+        if (tok.identifier == END){
+            shiftToken(toks);
+            continue;
+        }
+
+        Node* node = parseGenericNode(toks);
+
+        DYN_PUSH(node, pNode->data.codeBlock->nodes);
+    }
+    return pNode;
+}
+
 Node* parseCondition(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
 
-    if (tok.identifier == KEYWORD && (strcmp(tok.value, "if") == 0) || strcmp(tok.value, "elseif") || strcmp(tok.value, "else")){
+    int if_ = strcmp(tok.value, "if") == 0;
+    int elseif_ = strcmp(tok.value, "elseif") == 0;
+    int else_ = strcmp(tok.value, "else") == 0;
+
+    if (tok.identifier == KEYWORD && (if_ || elseif_ || else_)){
         shiftToken(toks);
         if (strcmp(checkCurrenToken(toks).value, "(") != 0 && strcmp(tok.value, "else") != 0){
             printf("RAISE ERROR LATER");
@@ -246,11 +278,18 @@ Node* parseCondition(dynamicToken* toks){
         pNode->data.condition->binOpNode = malloc(sizeof(binOpNode));
         pNode->data.condition->codeBlock = malloc(sizeof(codeBlock));
 
-        pNode->data.condition->binOpNode = parseExpression(toks);
+        pNode->data.condition->binOpNode = parseExpression(toks);        
+        pNode->data.condition->codeBlock = parsecodeBlock(toks);
         
-        //TODO: implement codeBlock Parse
-        
-        //pNode->data.condition->codeBlock = parsecodeBlock(toks);
+        if (if_){
+            pNode->data.condition->conditionType = IFCONDITION;
+        }
+        else if (elseif_) {
+            pNode->data.condition->conditionType = ELSEIFCONDITION;
+        }
+        else{
+            pNode->data.condition->conditionType = ELSECONDITION;
+        }
 
         return pNode;
     }
@@ -273,24 +312,30 @@ Node* parseProgram(dynamicToken* toks) {
             continue;
         }
 
-        Node* node = parseExpression(toks);
-        if (node == NULL){
-            node = parseNewVariable(toks);
-        }
-        if (node == NULL){
-            node = parseGoto(toks);
-        }
-        if (node == NULL){
-            node = parseCondition(toks);
-        }
-        if (node == NULL){
-            //printf("ERR: %i : %i\n", g_index, (toks->count)-1);
-            errorOut((Error){"", ASTERROR});
-        }
+        Node* node = parseGenericNode(toks);
 
         DYN_PUSH(node, pNode->data.programNode->nodes);
     }
     return pNode;
+}
+
+Node* parseGenericNode(dynamicToken* toks){
+    Node* node = parseExpression(toks);
+    if (node == NULL){
+        node = parseNewVariable(toks);
+    }
+    if (node == NULL){
+        node = parseGoto(toks);
+    }
+    if (node == NULL){
+        node = parseCondition(toks);
+    }
+    if (node == NULL){
+        //printf("ERR: %i : %i\n", g_index, (toks->count)-1);
+        errorOut((Error){"", ASTERROR});
+    }
+
+    return node;
 }
 
 Node* buildAst(dynamicToken toks){
