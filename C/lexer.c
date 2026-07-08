@@ -219,6 +219,6 @@ dynamicToken lex(const char* code, char* fileName) {
         charPos_++;
     }
 
-    writeToksOut(toks);
+    //writeToksOut(toks);
     return toks;
 }

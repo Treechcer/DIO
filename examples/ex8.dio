@@ -2,13 +2,13 @@ int a = 7;
 int b = 7;
 
 if (a == 1)
-a = a * a
+    a = a * a
 elseif (a == 2)
-b = b * a
+    b = b * a
 elseif (a == 3)
-b = b * a + 2
+    b = b * a + 2
 elseif (b > a)
-b = b * a
+    b = b * a
 else
-a = 0
+    a = 0
 end
