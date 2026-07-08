@@ -223,6 +223,7 @@ Node* astToNode(Node* ast){
 }
 
 void parse(Node* ast){
+    //printf("PARSER");
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node = ast->data.programNode->nodes.items[i];

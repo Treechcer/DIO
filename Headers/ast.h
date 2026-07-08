@@ -22,6 +22,8 @@ typedef enum {
     GOTOIDENTIFIER,
     CONDITION,
     CODEBLOCK,
+    FUNCTION,
+    FUNCTIONCALL,
     PROGRAMNODE,
 } nodeType;
 
@@ -71,6 +73,16 @@ typedef struct condition{
     conditionType conditionType;
 } condition;
 
+typedef struct function{
+    char* name;
+    Node* codeBlock; 
+    //TODO: Add parametres (also local variables lol)
+} function;
+
+typedef struct functionCall {
+    char* name;
+} functionCall;
+
 typedef struct Node {
     nodeType type;
     union {
@@ -82,6 +94,8 @@ typedef struct Node {
         struct gotoIdefier* gotoIdefier;
         struct condition* condition;
         struct codeBlock* codeBlock;
+        struct function* function;
+        struct functionCall* functionCall;
     } data;
 } Node;
 

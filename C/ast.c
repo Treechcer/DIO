@@ -31,6 +31,7 @@ Token checkCurrenToken(dynamicToken* toks){
 Token shiftToken(dynamicToken* toks){
     if (g_index+1 < toks->count){
         g_index++;
+        //printf("%s\n", toks->items[g_index-1].value);
         return toks->items[g_index-1];
     }
     return (Token){0};
@@ -230,7 +231,7 @@ Node* parseGoto(dynamicToken* toks){
     return NULL;
 }
 
-Node* parsecodeBlock(dynamicToken* toks){
+Node* parseCodeBlock(dynamicToken* toks, nodeType nt){
     Node* pNode = createNode();
     pNode->type = CODEBLOCK;
     pNode->data.codeBlock = malloc(sizeof(codeBlock));
@@ -241,7 +242,8 @@ Node* parsecodeBlock(dynamicToken* toks){
 
     while (g_index < (toks->count)-1) {
         Token tok = checkCurrenToken(toks);
-        if (tok.identifier == KEYWORD && (strcmp(tok.value, "end") == 0 || strcmp(tok.value, "elseif") == 0 || strcmp(tok.value, "else") == 0)){
+        if (tok.identifier == KEYWORD && (strcmp(tok.value, "end") == 0 || (nt == CONDITION && (strcmp(tok.value, "elseif") == 0 || strcmp(tok.value, "else") == 0)))){
+            shiftToken(toks);
             break;
         }
 
@@ -279,7 +281,7 @@ Node* parseCondition(dynamicToken* toks){
         pNode->data.condition->codeBlock = malloc(sizeof(codeBlock));
 
         pNode->data.condition->binOpNode = parseExpression(toks);        
-        pNode->data.condition->codeBlock = parsecodeBlock(toks);
+        pNode->data.condition->codeBlock = parseCodeBlock(toks, CONDITION);
         
         if (if_){
             pNode->data.condition->conditionType = IFCONDITION;
@@ -290,6 +292,47 @@ Node* parseCondition(dynamicToken* toks){
         else{
             pNode->data.condition->conditionType = ELSECONDITION;
         }
+
+        return pNode;
+    }
+
+    return NULL;
+}
+
+Node* parseFunctionCreate(dynamicToken* toks){
+    Token tok = checkCurrenToken(toks);
+
+    if (tok.identifier == KEYWORD && strcmp(tok.value, "def") == 0){
+        shiftToken(toks); //def
+        char* name = checkCurrenToken(toks).value;
+        shiftToken(toks); //name
+        //NO SUPPORT FOR inputs for now!
+        shiftToken(toks); //(
+        shiftToken(toks); //)
+        
+        Node* pNode = createNode();
+        pNode->type = FUNCTION;
+        pNode->data.function = malloc(sizeof(function));
+
+        pNode->data.function->codeBlock = parseCodeBlock(toks, FUNCTION);
+
+        return pNode;
+    }
+
+    return NULL;
+}
+
+Node* parseFunctionCall(dynamicToken* toks){
+    Token tok = checkCurrenToken(toks);
+    if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == LPAREN){
+        //for now I assume that I never call it with inputs (because there isn't like local variables)
+        Node* pNode = createNode();
+        pNode->type = FUNCTIONCALL;
+        pNode->data.functionCall->name = checkCurrenToken(toks).value;
+
+        shiftToken(toks); // name ->
+        shiftToken(toks); // ( ->
+        shiftToken(toks); // ) ->
 
         return pNode;
     }
@@ -320,7 +363,11 @@ Node* parseProgram(dynamicToken* toks) {
 }
 
 Node* parseGenericNode(dynamicToken* toks){
-    Node* node = parseExpression(toks);
+    Node* node = parseFunctionCall(toks);
+
+    if (node == NULL){
+        node = parseExpression(toks);        
+    }
     if (node == NULL){
         node = parseNewVariable(toks);
     }
@@ -329,6 +376,9 @@ Node* parseGenericNode(dynamicToken* toks){
     }
     if (node == NULL){
         node = parseCondition(toks);
+    }
+    if (node == NULL){
+        node = parseFunctionCreate(toks);
     }
     if (node == NULL){
         //printf("ERR: %i : %i\n", g_index, (toks->count)-1);

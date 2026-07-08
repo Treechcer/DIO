@@ -1,0 +1,5 @@
+def aaa()
+    a = 5;
+end
+
+a()
