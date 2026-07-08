@@ -28,6 +28,7 @@ typedef enum {
     POW,
     END,
     GOTONAME,
+    COMMA,
 } TokenType;
 
 typedef struct Token{
