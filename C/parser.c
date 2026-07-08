@@ -1,5 +1,5 @@
 #include<string.h>
-#include <math.h>
+#include<math.h>
 
 #include"../Headers/dynamic_array.h"
 #include"../Headers/ast.h"
@@ -9,7 +9,28 @@
 
 dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
+dynamicFunc g_funcs = {0,0,0};
 int g_skipelse = 0;
+
+int getFuncIndexByName(char* name){
+    for(int i = 0; i < g_funcs.count; i++){
+        if (strcmp(name, g_funcs.items[i].name) == 0){
+            return g_funcs.items[i].index;
+        }
+    }
+
+    return -1;
+}
+
+void callFunctionByName(char* name){
+    for(int i = 0; i < g_funcs.count; i++){
+        if (strcmp(name, g_funcs.items[i].name) == 0){
+            parse(g_funcs.items[i].codeBlock);
+            break;
+        }
+    }
+
+}
 
 int getVarIndexByName(char* name){
     for(int i = 0; i < g_vars.count; i++){
@@ -127,9 +148,15 @@ dynamicVar evalVariable(Node* node){
     }
 
     if (strcmp(type, "int") == 0 || strcmp(type, "float") == 0){
+        if (getVarIndexByName(name) != -1){
+            //TODO: properly raise error
+            printf("ERROR, initialise variable twice");
+            exit(1);
+        }
+
         double value = evalBinOp(node->data.variableNode->value);
 
-        tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value };
+        tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value, .intialised = 1 };
         printf("%f\n", value);
     }
     else if (strcmp(type, "string") == 0){
@@ -218,6 +245,27 @@ void parseCondition_(Node* node){
     }
 }
 
+void parseFunction(Node* node){
+    if (getFuncIndexByName(node->data.function->name) != -1){
+        //TODO: properly raise error
+        printf("ERROR, initialise function twice");
+        exit(1);
+    }
+
+    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = 1, .codeBlock = node->data.function->codeBlock};
+    DYN_PUSH(tempFunc, g_funcs);
+}
+
+void parseFunctionCall_(Node* node){
+    if (getFuncIndexByName(node->data.functionCall->name) == -1){
+        //TODO: properly raise error
+        printf("ERROR, can't call uninitialised function\n");
+        exit(1);
+    }
+
+    callFunctionByName(node->data.functionCall->name);
+}
+
 Node* astToNode(Node* ast){
     return &(Node){.type = ast->type, .data = ast->data};
 }
@@ -227,6 +275,7 @@ void parse(Node* ast){
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node = ast->data.programNode->nodes.items[i];
+        printf("parse: i=%zu type=%d\n", i, node->type);
         switch (node->type) {
             case BINOPNODE:
                 printf("%f\n", evalBinOp(node));
@@ -245,6 +294,13 @@ void parse(Node* ast){
                 break;
             case CONDITION:
                 parseCondition_(node);
+                break;
+            case FUNCTION:
+                parseFunction(node);
+                printf("%i\n", i);
+                break;
+            case FUNCTIONCALL:
+                parseFunctionCall_(node);
                 break;
             default:
                 break;

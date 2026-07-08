@@ -1,5 +1,5 @@
 def aaa()
-    a = 5;
+    int a = 5;
 end
 
-a()
+aaa()

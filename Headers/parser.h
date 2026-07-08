@@ -16,6 +16,13 @@ typedef struct varStruct {
     } data;
 } varStruct;
 
+typedef struct funcStruct {
+    int index;
+    int initialised;
+    char* name;
+    Node* codeBlock;
+} funcStruct;
+
 typedef struct gotoStruct {
     int index;
     int intialised;
@@ -23,6 +30,7 @@ typedef struct gotoStruct {
 } gotoStruct;
 
 STRUCT_DYNAMIC_ARR_MACRO(varStruct, dynamicVar)
+STRUCT_DYNAMIC_ARR_MACRO(funcStruct, dynamicFunc)
 STRUCT_DYNAMIC_ARR_MACRO(gotoStruct, dynamicGoto)
 
 void parse(Node* ast);

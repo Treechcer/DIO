@@ -314,6 +314,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
         pNode->type = FUNCTION;
         pNode->data.function = malloc(sizeof(function));
 
+        pNode->data.function->name = name;
         pNode->data.function->codeBlock = parseCodeBlock(toks, FUNCTION);
 
         return pNode;
@@ -328,6 +329,7 @@ Node* parseFunctionCall(dynamicToken* toks){
         //for now I assume that I never call it with inputs (because there isn't like local variables)
         Node* pNode = createNode();
         pNode->type = FUNCTIONCALL;
+        pNode->data.functionCall = malloc(sizeof(functionCall));
         pNode->data.functionCall->name = checkCurrenToken(toks).value;
 
         shiftToken(toks); // name ->
