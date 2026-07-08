@@ -20,12 +20,18 @@ typedef enum {
     VARIABLENODE,
     GOTONODE,
     GOTOIDENTIFIER,
+    CONDITION,
+    CODEBLOCK,
     PROGRAMNODE,
 } nodeType;
 
 typedef struct programNode {
     dynamicNode nodes;
 } programNode;
+
+typedef struct codeBlock {
+    dynamicNode nodes;
+} codeBlock;
 
 typedef struct numberNode{
     double value;
@@ -53,6 +59,11 @@ typedef struct gotoIdefier {
     char* name;
 } gotoIdefier;
 
+typedef struct condition{
+    Node* binOpNode; //Nodes
+    Node* codeBlock; //Nodes
+} condition;
+
 typedef struct Node {
     nodeType type;
     union {
@@ -62,6 +73,8 @@ typedef struct Node {
         struct variableNode* variableNode;
         struct gotoNode* gotoNode;
         struct gotoIdefier* gotoIdefier;
+        struct condition* condition;
+        struct codeBlock* codeBlock;
     } data;
 } Node;
 

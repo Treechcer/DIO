@@ -3,7 +3,7 @@ b = 2;
 
 if (a < b)
 a = a * a
-eleif (b > a)
+elseif (b > a)
 b = b * a
 else
 a = 0

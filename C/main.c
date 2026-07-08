@@ -24,7 +24,7 @@ int main(int argc, char **argv){
         // Source - https://stackoverflow.com/a/14002993
         // Posted by user529758, modified by community. See post 'Timeline' for change history
         // Retrieved 2026-07-04, License - CC BY-SA 4.0
-        FILE* filePointer = fopen(getvalueByIndex(fileArgIndex), "r");
+        FILE* filePointer = fopen(getvalueByIndex(fileArgIndex), "rb");
         fseek(filePointer, 0, SEEK_END);
         long fsize = ftell(filePointer);
         fseek(filePointer, 0, SEEK_SET);

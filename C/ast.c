@@ -225,6 +225,37 @@ Node* parseGoto(dynamicToken* toks){
 
         return pNode;
     }
+
+    return NULL;
+}
+
+Node* parseCondition(dynamicToken* toks){
+    Token tok = checkCurrenToken(toks);
+
+    if (tok.identifier == KEYWORD && (strcmp(tok.value, "if") == 0) || strcmp(tok.value, "elseif") || strcmp(tok.value, "else")){
+        shiftToken(toks);
+        if (strcmp(checkCurrenToken(toks).value, "(") != 0 && strcmp(tok.value, "else") != 0){
+            printf("RAISE ERROR LATER");
+            exit(1);
+        }
+
+        Node* pNode = createNode();
+        pNode->type = CONDITION;
+        pNode->data.condition = malloc(sizeof(condition));
+
+        pNode->data.condition->binOpNode = malloc(sizeof(binOpNode));
+        pNode->data.condition->codeBlock = malloc(sizeof(codeBlock));
+
+        pNode->data.condition->binOpNode = parseExpression(toks);
+        
+        //TODO: implement codeBlock Parse
+        
+        //pNode->data.condition->codeBlock = parsecodeBlock(toks);
+
+        return pNode;
+    }
+
+    return NULL;
 }
 
 Node* parseProgram(dynamicToken* toks) {
@@ -248,6 +279,9 @@ Node* parseProgram(dynamicToken* toks) {
         }
         if (node == NULL){
             node = parseGoto(toks);
+        }
+        if (node == NULL){
+            node = parseCondition(toks);
         }
         if (node == NULL){
             //printf("ERR: %i : %i\n", g_index, (toks->count)-1);

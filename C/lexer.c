@@ -36,7 +36,7 @@ dynamicToken lex(const char* code, char* fileName) {
     char c = ' ';
     while (strlen(code) > 0 && c != '\0'){
         c = *code;
-        printf("(%i, %c)\n", c, c);
+        //printf("(%i, %c)\n", c, c);
         Token tok = {0};
         //printf("%i, %i, %c\n", line, charPos_, c);
 
@@ -219,6 +219,6 @@ dynamicToken lex(const char* code, char* fileName) {
         charPos_++;
     }
 
-    //writeToksOut(toks);
+    writeToksOut(toks);
     return toks;
 }
