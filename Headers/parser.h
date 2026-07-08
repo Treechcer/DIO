@@ -19,6 +19,7 @@ typedef struct varStruct {
 typedef struct funcStruct {
     int index;
     int initialised;
+    int isLowLevel;
     char* name;
     Node* codeBlock;
 } funcStruct;
@@ -34,5 +35,6 @@ STRUCT_DYNAMIC_ARR_MACRO(funcStruct, dynamicFunc)
 STRUCT_DYNAMIC_ARR_MACRO(gotoStruct, dynamicGoto)
 
 void parse(Node* ast);
+void createLowLevelFunc(char* name);
 
 #endif

@@ -2,12 +2,26 @@ import subprocess
 import os
 import platform
 
+def makeSTDlib():
+    std = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "scripts"), "STD.dio")
+    stdC = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "C"), "STD.c")
+    strStd = ""
+
+    with open(std, "r") as f:
+        for i in f.readlines():
+            strStd+= i
+    os.remove(stdC)
+    with open(stdC, "x") as f:
+        f.write(strStd)
+
 def getFiles():
     curPath = os.path.join(os.path.abspath(os.path.curdir), "C")
     files = os.listdir(curPath)
     string = ""
     for o in files: string += os.path.join(curPath, o) + " "
     return string[:-1]
+
+#makeSTDlib()
 
 try:
     filename = "lang"

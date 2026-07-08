@@ -12,6 +12,18 @@ dynamicGoto g_gotos = {0,0,0};
 dynamicFunc g_funcs = {0,0,0};
 int g_skipelse = 0;
 
+void createLowLevelFunc(char* name){
+    funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .isLowLevel = 1};
+    DYN_PUSH(tempFunc, g_funcs);
+}
+
+void callLowLevelFunc(int index){
+    char* name = g_funcs.items[index].name;
+    if (strcmp(name, "out") == 0){
+        printf("out test");
+    }
+}
+
 int getFuncIndexByName(char* name){
     for(int i = 0; i < g_funcs.count; i++){
         if (strcmp(name, g_funcs.items[i].name) == 0){
@@ -30,6 +42,10 @@ void callFunctionByName(char* name){
         }
     }
 
+}
+
+int isFunctionLowLevel(int index){
+    return g_funcs.items[index].isLowLevel;
 }
 
 int getVarIndexByName(char* name){
@@ -252,18 +268,24 @@ void parseFunction(Node* node){
         exit(1);
     }
 
-    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = 1, .codeBlock = node->data.function->codeBlock};
+    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = 1, .codeBlock = node->data.function->codeBlock, .isLowLevel = 0};
     DYN_PUSH(tempFunc, g_funcs);
 }
 
 void parseFunctionCall_(Node* node){
-    if (getFuncIndexByName(node->data.functionCall->name) == -1){
+    int index = getFuncIndexByName(node->data.functionCall->name);
+    if (index == -1){
         //TODO: properly raise error
         printf("ERROR, can't call uninitialised function\n");
         exit(1);
     }
 
-    callFunctionByName(node->data.functionCall->name);
+    if (isFunctionLowLevel(index) == 1){
+        callLowLevelFunc(index);
+    }
+    else{
+        callFunctionByName(node->data.functionCall->name);
+    }
 }
 
 Node* astToNode(Node* ast){
@@ -275,7 +297,6 @@ void parse(Node* ast){
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node = ast->data.programNode->nodes.items[i];
-        printf("parse: i=%zu type=%d\n", i, node->type);
         switch (node->type) {
             case BINOPNODE:
                 printf("%f\n", evalBinOp(node));

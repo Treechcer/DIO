@@ -33,6 +33,8 @@ int main(int argc, char **argv){
         string[fsize] = '\0';
         //printf("%s\n", string);
 
+        createLowLevelFunc("out");
+
         parse(buildAst(lex(string, filePath)));
     }
     
