@@ -1,4 +1,4 @@
-#include"..\Headers\std_loader.h"
+#include"../Headers/std_loader.h"
 
 char* getSTD(){
     
