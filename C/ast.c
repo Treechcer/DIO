@@ -31,7 +31,7 @@ Token checkCurrenToken(dynamicToken* toks){
 Token shiftToken(dynamicToken* toks){
     if (g_index+1 < toks->count){
         g_index++;
-        printf("%s\n", toks->items[g_index-1].value);
+        //printf("%s\n", toks->items[g_index-1].value);
         return toks->items[g_index-1];
     }
     return (Token){0};
@@ -299,6 +299,39 @@ Node* parseCondition(dynamicToken* toks){
     return NULL;
 }
 
+Node* createFunctionParams(dynamicToken* toks, Node* pNode){
+    shiftToken(toks); // name ->
+    shiftToken(toks); // ( ->
+    dynamicNode nodes = {0,0,0};
+
+    int count = 0;
+    while (checkCurrenToken(toks).identifier != RPAREN){
+        Token tok = checkCurrenToken(toks);
+        //printf("%i\n", tok.identifier);
+        if (tok.identifier == COMMA){
+            shiftToken(toks);
+        }
+        else if (tok.identifier == KEYWORD || tok.identifier == INT || tok.identifier == FLOAT || tok.identifier == IDENTIFIER){
+            DYN_PUSH(parseGenericNode(toks), nodes);
+            count++;
+            shiftToken(toks);
+        }
+        else if (tok.identifier == END){
+            shiftToken(toks);
+            break;
+        }
+    }
+
+    pNode->data.functionCall->countOfinputs = count;
+    for (size_t i = 0; i < count; i++){
+        pNode->data.functionCall->inputs[i] = nodes.items[i];
+    }
+
+    shiftToken(toks); // ) ->
+
+    return pNode;
+}
+
 Node* parseFunctionCreate(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
 
@@ -308,12 +341,13 @@ Node* parseFunctionCreate(dynamicToken* toks){
         shiftToken(toks); //name
         //NO SUPPORT FOR inputs for now!
         shiftToken(toks); //(
-        shiftToken(toks); //)
+        //shiftToken(toks); //)
         
         Node* pNode = createNode();
         pNode->type = FUNCTION;
         pNode->data.function = malloc(sizeof(function));
 
+        pNode = createFunctionParams(toks, pNode);
         pNode->data.function->name = name;
         pNode->data.function->codeBlock = parseCodeBlock(toks, FUNCTION);
 
@@ -332,27 +366,7 @@ Node* parseFunctionCall(dynamicToken* toks){
         pNode->data.functionCall = malloc(sizeof(functionCall));
         pNode->data.functionCall->name = checkCurrenToken(toks).value;
 
-        shiftToken(toks); // name ->
-        shiftToken(toks); // ( ->
-        dynamicNode nodes = {0,0,0};
-
-        int count = 0;
-        while (checkCurrenToken(toks).identifier != RPAREN){
-            DYN_PUSH(parseGenericNode(toks), nodes);
-            count++;
-            shiftToken(toks);
-
-            if (checkCurrenToken(toks).identifier == COMMA){
-                shiftToken(toks);
-            }
-        }
-
-        pNode->data.functionCall->countOfinputs = count;
-        for (size_t i = 0; i < count; i++){
-            pNode->data.functionCall->inputs[i] = nodes.items[i];
-        }
-
-        shiftToken(toks); // ) ->
+        pNode = createFunctionParams(toks, pNode);
 
         return pNode;
     }

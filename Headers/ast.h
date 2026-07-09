@@ -75,7 +75,8 @@ typedef struct condition{
 
 typedef struct function{
     char* name;
-    Node* codeBlock; 
+    Node* codeBlock;
+    Node* inputs[];
     //TODO: Add parametres (also local variables lol)
 } function;
 
