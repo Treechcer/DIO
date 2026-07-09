@@ -7,6 +7,12 @@
 #include"../Headers/parser.h"
 #include"../Headers/helper_functions.h"
 
+//predef
+
+int getVarIndexByName(char* name);
+int getVariableIntValue(int index);
+double getVariableFloatValue(int index);
+
 dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
 dynamicFunc g_funcs = {0,0,0};
@@ -14,13 +20,24 @@ int g_skipelse = 0;
 
 void createLowLevelFunc(char* name){
     funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .isLowLevel = 1};
+
+    Node* input = createNode();
+    input->type = VARIABLENODE;
+    input->data.variableNode = malloc(sizeof(variableNode));
+    input->data.variableNode->initialise = 1;
+    input->data.variableNode->name = "a";
+    input->data.variableNode->type = STRINGVAR;
+    input->data.variableNode->value = NULL;
+
+    tempFunc.inputs = input;
     DYN_PUSH(tempFunc, g_funcs);
 }
 
 void callLowLevelFunc(int index){
     char* name = g_funcs.items[index].name;
     if (strcmp(name, "out") == 0){
-        printf("out test");
+        char* name = "a";
+        printf("%f", getVariableFloatValue(getVarIndexByName(name)));
     }
 }
 
@@ -173,7 +190,7 @@ dynamicVar evalVariable(Node* node){
         double value = evalBinOp(node->data.variableNode->value);
 
         tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value, .intialised = 1 };
-        printf("%f\n", value);
+        //printf("%f\n", value);
     }
     else if (strcmp(type, "string") == 0){
         //TODO: implement later
@@ -280,6 +297,13 @@ void parseFunctionCall_(Node* node){
         exit(1);
     }
 
+    for (size_t i = 0; i < node->data.functionCall->countOfinputs; i++){
+        if (getVarIndexByName(node->data.functionCall->inputs[i]->data.variableNode->name) == -1){
+            varStruct tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = node->specialData.varName, .data.floatVal = evalBinOp(node->data.functionCall->inputs[i]), .intialised = 1 };
+            DYN_PUSH(tempVar, g_vars);
+        }
+    }
+
     if (isFunctionLowLevel(index) == 1){
         callLowLevelFunc(index);
     }
@@ -299,7 +323,8 @@ void parse(Node* ast){
         Node* node = ast->data.programNode->nodes.items[i];
         switch (node->type) {
             case BINOPNODE:
-                printf("%f\n", evalBinOp(node));
+                //printf("%f\n", evalBinOp(node));
+                evalBinOp(node);
                 break;
             case VARIABLENODE:
                 g_vars = evalVariable(node);
@@ -318,7 +343,7 @@ void parse(Node* ast){
                 break;
             case FUNCTION:
                 parseFunction(node);
-                printf("%i\n", i);
+                //printf("%i\n", i);
                 break;
             case FUNCTIONCALL:
                 parseFunctionCall_(node);

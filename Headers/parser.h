@@ -22,6 +22,7 @@ typedef struct funcStruct {
     int isLowLevel;
     char* name;
     Node* codeBlock;
+    Node* inputs;
 } funcStruct;
 
 typedef struct gotoStruct {

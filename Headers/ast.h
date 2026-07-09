@@ -100,6 +100,9 @@ typedef struct Node {
         struct function* function;
         struct functionCall* functionCall;
     } data;
+    union {
+        char* varName;
+    } specialData;
 } Node;
 
 // function predef

@@ -312,7 +312,11 @@ Node* createFunctionParams(dynamicToken* toks, Node* pNode){
             shiftToken(toks);
         }
         else if (tok.identifier == KEYWORD || tok.identifier == INT || tok.identifier == FLOAT || tok.identifier == IDENTIFIER){
-            DYN_PUSH(parseGenericNode(toks), nodes);
+            char* name = tok.value;
+            Node* t = parseGenericNode(toks);
+            t->specialData.varName = name;
+            //printf("%s", t->specialData.varName);
+            DYN_PUSH(t, nodes);
             count++;
             shiftToken(toks);
         }
