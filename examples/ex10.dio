@@ -1,3 +1,1 @@
-out()
-
->> can't pass in values, for now at least
+out(a,b, c)

@@ -80,7 +80,9 @@ typedef struct function{
 } function;
 
 typedef struct functionCall {
+    int countOfinputs;
     char* name;
+    Node* inputs[];
 } functionCall;
 
 typedef struct Node {

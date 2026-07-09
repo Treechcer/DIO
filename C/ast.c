@@ -31,7 +31,7 @@ Token checkCurrenToken(dynamicToken* toks){
 Token shiftToken(dynamicToken* toks){
     if (g_index+1 < toks->count){
         g_index++;
-        //printf("%s\n", toks->items[g_index-1].value);
+        printf("%s\n", toks->items[g_index-1].value);
         return toks->items[g_index-1];
     }
     return (Token){0};
@@ -334,6 +334,24 @@ Node* parseFunctionCall(dynamicToken* toks){
 
         shiftToken(toks); // name ->
         shiftToken(toks); // ( ->
+        dynamicNode nodes = {0,0,0};
+
+        int count = 0;
+        while (checkCurrenToken(toks).identifier != RPAREN){
+            DYN_PUSH(parseGenericNode(toks), nodes);
+            count++;
+            shiftToken(toks);
+
+            if (checkCurrenToken(toks).identifier == COMMA){
+                shiftToken(toks);
+            }
+        }
+
+        pNode->data.functionCall->countOfinputs = count;
+        for (size_t i = 0; i < count; i++){
+            pNode->data.functionCall->inputs[i] = nodes.items[i];
+        }
+
         shiftToken(toks); // ) ->
 
         return pNode;
@@ -384,7 +402,8 @@ Node* parseGenericNode(dynamicToken* toks){
     }
     if (node == NULL){
         //printf("ERR: %i : %i\n", g_index, (toks->count)-1);
-        errorOut((Error){"", ASTERROR});
+        //printf("ERR: %s \n", checkCurrenToken(toks).value);
+        errorOut((Error){"", ASTERROR, toks->items[g_index].pos});
     }
 
     return node;
