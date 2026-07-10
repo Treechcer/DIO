@@ -29,6 +29,7 @@ typedef enum {
     END,
     GOTONAME,
     COMMA,
+    COLON,
 } TokenType;
 
 typedef struct Token{

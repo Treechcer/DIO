@@ -1,2 +1,3 @@
-int b = 10;
-out(b)
+def a(int : a, float : b)
+
+end

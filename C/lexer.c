@@ -124,7 +124,10 @@ dynamicToken lex(const char* code, char* fileName) {
                     }
                 }
                 else{
-                    errorOut((Error){"", UNSUPORTEDCHARACTERSEQUENCE, createPosition(&charPos_, &charPos_, &line, fileName)});
+                    code--;
+                    c = *code;
+                    tok = createToken(":", COLON, createPosition(&charPos_, &charPos_, &line, fileName));
+                    break;
                 }
                 break;
             case '\n':
@@ -222,6 +225,6 @@ dynamicToken lex(const char* code, char* fileName) {
         charPos_++;
     }
 
-    //writeToksOut(toks);
+    writeToksOut(toks);
     return toks;
 }

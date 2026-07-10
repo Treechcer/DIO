@@ -100,9 +100,7 @@ typedef struct Node {
         struct function* function;
         struct functionCall* functionCall;
     } data;
-    union {
-        char* varName;
-    } specialData;
+    Position* pos;
 } Node;
 
 // function predef

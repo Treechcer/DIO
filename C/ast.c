@@ -304,33 +304,6 @@ Node* createFunctionParams(dynamicToken* toks, Node* pNode){
     shiftToken(toks); // ( ->
     dynamicNode nodes = {0,0,0};
 
-    int count = 0;
-    while (checkCurrenToken(toks).identifier != RPAREN){
-        Token tok = checkCurrenToken(toks);
-        //printf("%i\n", tok.identifier);
-        if (tok.identifier == COMMA){
-            shiftToken(toks);
-        }
-        else if (tok.identifier == KEYWORD || tok.identifier == INT || tok.identifier == FLOAT || tok.identifier == IDENTIFIER){
-            char* name = tok.value;
-            Node* t = parseGenericNode(toks);
-            t->specialData.varName = name;
-            //printf("%s", t->specialData.varName);
-            DYN_PUSH(t, nodes);
-            count++;
-            shiftToken(toks);
-        }
-        else if (tok.identifier == END){
-            shiftToken(toks);
-            break;
-        }
-    }
-
-    pNode->data.functionCall->countOfinputs = count;
-    for (size_t i = 0; i < count; i++){
-        pNode->data.functionCall->inputs[i] = nodes.items[i];
-    }
-
     shiftToken(toks); // ) ->
 
     return pNode;
@@ -351,7 +324,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
         pNode->type = FUNCTION;
         pNode->data.function = malloc(sizeof(function));
 
-        pNode = createFunctionParams(toks, pNode);
+        //pNode = createFunctionParams(toks, pNode);
         pNode->data.function->name = name;
         pNode->data.function->codeBlock = parseCodeBlock(toks, FUNCTION);
 
@@ -364,7 +337,6 @@ Node* parseFunctionCreate(dynamicToken* toks){
 Node* parseFunctionCall(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
     if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == LPAREN){
-        //for now I assume that I never call it with inputs (because there isn't like local variables)
         Node* pNode = createNode();
         pNode->type = FUNCTIONCALL;
         pNode->data.functionCall = malloc(sizeof(functionCall));

@@ -297,13 +297,6 @@ void parseFunctionCall_(Node* node){
         exit(1);
     }
 
-    for (size_t i = 0; i < node->data.functionCall->countOfinputs; i++){
-        if (getVarIndexByName(node->data.functionCall->inputs[i]->data.variableNode->name) == -1){
-            varStruct tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = node->specialData.varName, .data.floatVal = evalBinOp(node->data.functionCall->inputs[i]), .intialised = 1 };
-            DYN_PUSH(tempVar, g_vars);
-        }
-    }
-
     if (isFunctionLowLevel(index) == 1){
         callLowLevelFunc(index);
     }
