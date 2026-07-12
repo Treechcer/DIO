@@ -87,7 +87,7 @@ Node* parseTerm(dynamicToken* toks){
     Node* left = parseFactor(toks);
     if (left == NULL) return NULL;
 
-    while (checkCurrenToken(toks).identifier == MUL || checkCurrenToken(toks).identifier == DIV || checkCurrenToken(toks).identifier == POW) {
+    while (checkCurrenToken(toks).identifier == MUL || checkCurrenToken(toks).identifier == DIV) {
         Token tokOp = shiftToken(toks);
         Node* right = parseFactor(toks);
 
@@ -316,7 +316,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
         Node* pNode = createNode();
         pNode->type = FUNCTION;
         pNode->data.function = malloc(sizeof(function));
-        pNode->data.function->inputs = (dynamicinputVar){0,0,0};
+        pNode->data.function->inputs = (dynamicNode){0,0,0};
 
 
         shiftToken(toks); //def
@@ -338,12 +338,25 @@ Node* parseFunctionCreate(dynamicToken* toks){
 
             //in created fuction we HAVE to define variable, in call we can call prettymuch whatever...
 
-            Node* varNode = createNode();
-            varNode->type = VARIABLENODE;
-            varNode->data.variableNode->name = name;
-            varNode->data.variableNode->type = type;
+            Node* dynNode = createNode();
+            dynNode->type = VARIABLENODE;
+            dynNode->data.variableNode->name = name;
 
-            DYN_PUSH(varNode, pNode->data.function->inputs);
+            if (strcmp("int", type) == 0){
+                dynNode->data.variableNode->type = INTVAR;
+            }
+            else if (strcmp("float", type) == 0) {
+                dynNode->data.variableNode->type = FLOATVAR;
+            }
+            else if (strcmp("bool", type) == 0) {
+                dynNode->data.variableNode->type = BOOLVAR;
+            }
+            else{
+                printf("TODO: RAISE ERROR, NO VAR TYPE or whatever");
+                exit(1);
+            }
+
+            DYN_PUSH(dynNode, pNode->data.function->inputs);
 
             //printf("%s. %s\n", name, type);
         }

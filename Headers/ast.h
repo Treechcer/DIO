@@ -4,9 +4,7 @@
 #include"../Headers/token.h"
 
 typedef struct Node Node;
-typedef struct inputVar inputVar;
 STRUCT_DYNAMIC_ARR_MACRO(Node*, dynamicNode);
-STRUCT_DYNAMIC_ARR_MACRO(inputVar*, dynamicinputVar);
 
 typedef enum variableTypes {
     INTVAR = 0,
@@ -78,17 +76,13 @@ typedef struct condition{
 typedef struct function{
     char* name;
     Node* codeBlock;
-    dynamicinputVar inputs;
+    dynamicNode inputs;
 } function;
 
 typedef struct functionCall {
     char* name;
-    dynamicinputVar inputs;
+    dynamicNode inputs;
 } functionCall;
-
-typedef struct inputVar{
-    Node* input;
-} inputVar;
 
 typedef struct Node {
     nodeType type;
