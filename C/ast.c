@@ -31,7 +31,7 @@ Token checkCurrenToken(dynamicToken* toks){
 Token shiftToken(dynamicToken* toks){
     if (g_index+1 < toks->count){
         g_index++;
-        //printf("%s\n", toks->items[g_index-1].value);
+        printf("%s\n", toks->items[g_index-1].value);
         return toks->items[g_index-1];
     }
     return (Token){0};
@@ -313,16 +313,42 @@ Node* parseFunctionCreate(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
 
     if (tok.identifier == KEYWORD && strcmp(tok.value, "def") == 0){
-        shiftToken(toks); //def
-        char* name = checkCurrenToken(toks).value;
-        shiftToken(toks); //name
-        //NO SUPPORT FOR inputs for now!
-        shiftToken(toks); //(
-        //shiftToken(toks); //)
-        
         Node* pNode = createNode();
         pNode->type = FUNCTION;
         pNode->data.function = malloc(sizeof(function));
+        pNode->data.function->inputs = (dynamicinputVar){0,0,0};
+
+
+        shiftToken(toks); //def
+        char* name = checkCurrenToken(toks).value;
+        shiftToken(toks); //name
+        shiftToken(toks); //(
+
+        while (checkCurrenToken(toks).identifier != RPAREN){
+            char* type = shiftToken(toks).value;
+            if (shiftToken(toks).identifier != COLON){
+                printf("TODO: RAISE ERROR LATER, NO ':'\n");
+                exit(1);
+            }
+            char* name = checkCurrenToken(toks).value;
+            shiftToken(toks);
+            if (checkCurrenToken(toks).identifier == COMMA){
+                shiftToken(toks);
+            }
+
+            //in created fuction we HAVE to define variable, in call we can call prettymuch whatever...
+
+            Node* varNode = createNode();
+            varNode->type = VARIABLENODE;
+            varNode->data.variableNode->name = name;
+            varNode->data.variableNode->type = type;
+
+            DYN_PUSH(varNode, pNode->data.function->inputs);
+
+            //printf("%s. %s\n", name, type);
+        }
+
+        //shiftToken(toks);
 
         //pNode = createFunctionParams(toks, pNode);
         pNode->data.function->name = name;
