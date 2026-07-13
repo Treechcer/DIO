@@ -304,7 +304,11 @@ Node* createFunctionParams(dynamicToken* toks, Node* pNode){
     shiftToken(toks); // ( ->
     dynamicNode nodes = {0,0,0};
 
-    shiftToken(toks); // ) ->
+    while (checkCurrenToken(toks).identifier != RPAREN){
+        //lowkey should work
+        Node* n = parseGenericNode(toks);
+        DYN_PUSH(n, nodes)
+    }
 
     return pNode;
 }
@@ -325,16 +329,12 @@ Node* parseFunctionCreate(dynamicToken* toks){
         shiftToken(toks); //(
 
         while (checkCurrenToken(toks).identifier != RPAREN){
-            char* type = shiftToken(toks).value;
+            char* type = shiftToken(toks).value; // int
             if (shiftToken(toks).identifier != COLON){
                 printf("TODO: RAISE ERROR LATER, NO ':'\n");
                 exit(1);
             }
-            char* name = checkCurrenToken(toks).value;
-            shiftToken(toks);
-            if (checkCurrenToken(toks).identifier == COMMA){
-                shiftToken(toks);
-            }
+            char* name = shiftToken(toks).value;
 
             //in created fuction we HAVE to define variable, in call we can call prettymuch whatever...
 
@@ -356,9 +356,8 @@ Node* parseFunctionCreate(dynamicToken* toks){
                 exit(1);
             }
 
+            printf("%s. %s\n", name, type);
             DYN_PUSH(dynNode, pNode->data.function->inputs);
-
-            //printf("%s. %s\n", name, type);
         }
 
         //shiftToken(toks);
