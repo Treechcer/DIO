@@ -31,7 +31,10 @@ try:
         slash = "\\"
     subprocess.run("gcc " + getFiles() + f" -o {filename}", shell=True, check=True)
     with open(os.path.abspath(os.path.join("scripts", "CompileRunParams.txt")), "r") as f:
-        subprocess.run(f".{slash}{filename}" + " " + f.read(), shell=True)
+        if platform.system() == "Windows":
+            subprocess.run(f".{slash}{filename}" + " " + f.read(), shell=True)
+        else:
+            subprocess.run(f'gdb -ex r -ex "if $_exitcode == 0; quit; end" --args .{slash}{filename} {f.read()}', shell=True)
 except Exception as e:
     print(e)
     print("failed :(")
