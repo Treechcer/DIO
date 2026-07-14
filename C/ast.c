@@ -331,6 +331,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
         while (checkCurrenToken(toks).identifier != RPAREN){
             char* type = shiftToken(toks).value; // int
             if (shiftToken(toks).identifier != COLON){
+                printf("%s", checkCurrenToken(toks).value);
                 printf("TODO: RAISE ERROR LATER, NO ':'\n");
                 exit(1);
             }
@@ -340,6 +341,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
 
             Node* dynNode = createNode();
             dynNode->type = VARIABLENODE;
+            dynNode->data.variableNode = malloc(sizeof(variableNode));
             dynNode->data.variableNode->name = name;
 
             if (strcmp("int", type) == 0){
@@ -358,6 +360,9 @@ Node* parseFunctionCreate(dynamicToken* toks){
 
             printf("%s. %s\n", name, type);
             DYN_PUSH(dynNode, pNode->data.function->inputs);
+            if (checkCurrenToken(toks).identifier != RPAREN){
+                shiftToken(toks);
+            }
         }
 
         //shiftToken(toks);
