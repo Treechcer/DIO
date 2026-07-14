@@ -364,8 +364,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
                 shiftToken(toks);
             }
         }
-
-        //shiftToken(toks);
+        shiftToken(toks);
 
         //pNode = createFunctionParams(toks, pNode);
         pNode->data.function->name = name;
