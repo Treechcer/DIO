@@ -23,15 +23,20 @@ int main(int argc, char **argv){
         // Retrieved 2026-07-04, License - CC BY-SA 4.0
         FILE* filePointer = fopen(getvalueByIndex(fileArgIndex), "rb");
         fseek(filePointer, 0, SEEK_END);
-        long fsize = ftell(filePointer);
+        long fsize = ftell(filePointer) + 3;
         fseek(filePointer, 0, SEEK_SET);
 
         char *string = malloc(fsize + 1);
         fread(string, fsize, 1, filePointer);
         fclose(filePointer);
 
+        //lmao this actually fixed it (I'll keep it though)
+
+        string[fsize - 3] = '\n';
+        string[fsize - 2] = '>';
+        string[fsize - 1] = '>';
         string[fsize] = '\0';
-        //printf("%s\n", string);
+        printf("%s\n", string);
 
         createLowLevelFunc("out");
 

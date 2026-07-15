@@ -9,4 +9,3 @@ fibOne = fibTwo
 fibTwo = fibThree
 
 goto (fibThree < 1000000) ::start::
->>
