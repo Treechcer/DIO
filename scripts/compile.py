@@ -33,7 +33,10 @@ try:
     subprocess.run("gcc -g " + getFiles() + f" -o {filename}", shell=True, check=True)
 
     with open(os.path.abspath(os.path.join("scripts", "CompileRunParams.txt")), "r") as f:
-        subprocess.run(f".{slash}{filename}" + " " + f.read(), shell=True)
+        if platform.system() == "Windows":
+            subprocess.run(f".{slash}{filename}" + " " + f.read(), shell=True)
+        else:
+            subprocess.run(f'gdb -ex run -ex bt --args .{slash}{filename} {f.read()}', shell=True)
 except Exception as e:
     print(e)
     print("failed :(")
