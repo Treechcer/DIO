@@ -19,6 +19,8 @@ dynamicFunc g_funcs = {0,0,0};
 int g_skipelse = 0;
 
 void createLowLevelFunc(char* name){
+    /*
+
     funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .isLowLevel = 1};
 
     Node* input = createNode();
@@ -31,6 +33,8 @@ void createLowLevelFunc(char* name){
 
     tempFunc.inputs = input;
     DYN_PUSH(tempFunc, g_funcs);
+
+    */
 }
 
 void callLowLevelFunc(int index){
@@ -68,10 +72,11 @@ int isFunctionLowLevel(int index){
 int getVarIndexByName(char* name){
     for(int i = 0; i < g_vars.count; i++){
         if (strcmp(name, g_vars.items[i].name) == 0){
+            //printf("%i\n", i);
             return g_vars.items[i].index;
         }
     }
-
+    //printf("-1\n");
     return -1;
 }
 
@@ -169,23 +174,26 @@ double BinOpEvalBinOp(binOpNode* node){
 }
 */
 dynamicVar evalVariable(Node* node){
-    char* tempArr[] = {"int", "float", "string", "bool",};
-
-    char* type = tempArr[node->data.variableNode->type];
+    int varType = node->data.variableNode->type;
     char* name = node->data.variableNode->name;
     varStruct tempVar;
 
     int existingIndex = getVarIndexByName(name);
-    if (existingIndex < 0 && node->data.variableNode->initialise == 0){
+    if (varType == UNKNOWNVARTYPE && node->data.variableNode->initialise == 0){
         errorOut((Error){"", UNKNOWNVARIABLETYPE});
     }
 
+    char* tempArr[] = {"int", "float", "string", "bool"};
+    char* type = tempArr[varType];
+
     if (strcmp(type, "int") == 0 || strcmp(type, "float") == 0){
-        if (getVarIndexByName(name) != -1){
-            //TODO: properly raise error
-            printf("ERROR, initialise variable twice");
-            exit(1);
-        }
+        //if (existingIndex != -1){
+        //    //TODO: properly raise error
+        //    printf("ERROR, initialise variable twice");
+        //    exit(1);
+        //}
+
+        printf("%f\n", evalBinOp(node->data.variableNode->value));
 
         double value = evalBinOp(node->data.variableNode->value);
 
@@ -285,7 +293,13 @@ void parseFunction(Node* node){
         exit(1);
     }
 
-    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = 1, .codeBlock = node->data.function->codeBlock, .isLowLevel = 0};
+    dynamicNode input = {0,0,0};
+
+    for (size_t i = 0; i < node->data.function->inputs.count; i++){
+        DYN_PUSH(node->data.function->inputs.items[i], input);
+    }
+
+    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = 1, .codeBlock = node->data.function->codeBlock, .isLowLevel = 0, .inputs = input};
     DYN_PUSH(tempFunc, g_funcs);
 }
 
@@ -295,6 +309,16 @@ void parseFunctionCall_(Node* node){
         //TODO: properly raise error
         printf("ERROR, can't call uninitialised function\n");
         exit(1);
+    }
+
+    if (node->data.functionCall->inputs.count != g_funcs.items[index].inputs.count){
+        printf("ERROR, Incorrect ammount of inputs\n");
+        exit(1);
+    }
+
+    for (size_t i = 0; i < node->data.functionCall->inputs.count; i++){
+        //TODO: initialise vars
+        //varStruct tempVar = (varStruct){.index = g_vars.count, .type = node->data, .name = name, .data.intVal = value, .intialised = 1 };
     }
 
     if (isFunctionLowLevel(index) == 1){
@@ -316,7 +340,7 @@ void parse(Node* ast){
         Node* node = ast->data.programNode->nodes.items[i];
         switch (node->type) {
             case BINOPNODE:
-                //printf("%f\n", evalBinOp(node));
+                printf("%f\n", evalBinOp(node));
                 evalBinOp(node);
                 break;
             case VARIABLENODE:

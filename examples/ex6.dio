@@ -1,5 +1,6 @@
-fibOne = 0
-fibTwo = 1
+int fibOne = 0
+int fibTwo = 1
+int fibThree = 0
 
 ::start::
 
@@ -8,3 +9,4 @@ fibOne = fibTwo
 fibTwo = fibThree
 
 goto (fibThree < 1000000) ::start::
+>>

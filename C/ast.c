@@ -31,7 +31,7 @@ Token checkCurrenToken(dynamicToken* toks){
 Token shiftToken(dynamicToken* toks){
     if (g_index+1 < toks->count){
         g_index++;
-        printf("%s\n", toks->items[g_index-1].value);
+        //printf("%s\n", toks->items[g_index-1].value);
         return toks->items[g_index-1];
     }
     return (Token){0};
@@ -356,7 +356,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
                 exit(1);
             }
 
-            printf("%s. %s\n", name, type);
+            //printf("%s. %s\n", name, type);
             DYN_PUSH(dynNode, pNode->data.function->inputs);
         }
 

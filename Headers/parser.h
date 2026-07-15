@@ -4,7 +4,7 @@
 #include"../Headers/ast.h"
 #include"../Headers/macros.h"
 
-typedef struct varStruct {
+typedef struct {
     int index;
     int intialised; //TODO: check and use this
     char* type;
@@ -16,26 +16,26 @@ typedef struct varStruct {
     } data;
 } varStruct;
 
-typedef struct funcStruct {
+typedef struct {
     int index;
     int initialised;
     int isLowLevel;
     char* name;
     Node* codeBlock;
-    Node* inputs;
+    dynamicNode inputs;
 } funcStruct;
 
-typedef struct gotoStruct {
+typedef struct {
     int index;
     int intialised;
     char* name;
 } gotoStruct;
 
+void parse(Node* ast);
+void createLowLevelFunc(char* name);
+
 STRUCT_DYNAMIC_ARR_MACRO(varStruct, dynamicVar)
 STRUCT_DYNAMIC_ARR_MACRO(funcStruct, dynamicFunc)
 STRUCT_DYNAMIC_ARR_MACRO(gotoStruct, dynamicGoto)
-
-void parse(Node* ast);
-void createLowLevelFunc(char* name);
 
 #endif
