@@ -3,6 +3,5 @@ def aaa()
 end
 
 aaa()
-
 >>Error: "5" has occored with message:Non specific error in AST
 >>((examples/ex9.dio), 41:1103100312-1103100312)

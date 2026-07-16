@@ -299,18 +299,34 @@ Node* parseCondition(dynamicToken* toks){
     return NULL;
 }
 
-Node* createFunctionParams(dynamicToken* toks, Node* pNode){
-    shiftToken(toks); // name ->
-    shiftToken(toks); // ( ->
+dynamicNode createFunctionParams(dynamicToken* toks){
     dynamicNode nodes = {0,0,0};
 
-    while (checkCurrenToken(toks).identifier != RPAREN){
-        //lowkey should work
-        Node* n = parseGenericNode(toks);
-        DYN_PUSH(n, nodes)
+    if (checkCurrenToken(toks).identifier == LPAREN){
+        shiftToken(toks);
     }
 
-    return pNode;
+    while (checkCurrenToken(toks).identifier != RPAREN){
+        Node* n = parseGenericNode(toks);
+        if (n == NULL){
+            errorOut((Error){"Unable to parse node", ASTERROR, createPosition(NULL, NULL, NULL, NULL)});
+        }
+
+        DYN_PUSH(n, nodes);
+
+        if (checkCurrenToken(toks).identifier == COMMA){
+            shiftToken(toks);
+        }
+        else if (checkCurrenToken(toks).identifier != RPAREN){
+            errorOut((Error){"Unexpected token while function arguments", ASTERROR, createPosition(NULL, NULL, NULL, NULL)});
+        }
+    }
+
+    if (checkCurrenToken(toks).identifier == RPAREN){
+        shiftToken(toks);
+    }
+
+    return nodes;
 }
 
 Node* parseFunctionCreate(dynamicToken* toks){
@@ -379,12 +395,13 @@ Node* parseFunctionCreate(dynamicToken* toks){
 Node* parseFunctionCall(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
     if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == LPAREN){
+        char* functionName = shiftToken(toks).value;
         Node* pNode = createNode();
         pNode->type = FUNCTIONCALL;
         pNode->data.functionCall = malloc(sizeof(functionCall));
-        pNode->data.functionCall->name = checkCurrenToken(toks).value;
+        pNode->data.functionCall->name = functionName;
 
-        pNode = createFunctionParams(toks, pNode);
+        pNode->data.functionCall->inputs = createFunctionParams(toks);
 
         return pNode;
     }
