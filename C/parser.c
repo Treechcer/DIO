@@ -319,6 +319,11 @@ void parseFunctionCall_(Node* node){
     for (size_t i = 0; i < node->data.functionCall->inputs.count; i++){
         //TODO: initialise vars
         //varStruct tempVar = (varStruct){.index = g_vars.count, .type = node->data, .name = name, .data.intVal = value, .intialised = 1 };
+        varStruct tempVar;
+        if (node->data.functionCall->inputs.items[i]->type == NUMBERNODE){
+            tempVar = (varStruct){.index = g_vars.count, .type = "int", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.intVal = node->data.functionCall->inputs.items[i]->data.numberNode->value, .intialised = 1 };
+        }
+        DYN_PUSH(tempVar, g_vars);
     }
 
     if (isFunctionLowLevel(index) == 1){

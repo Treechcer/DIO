@@ -1,3 +1,7 @@
-def a(int : a, float : b)
+def a(int : b, float : c)
+    b + c;
+end
 
->>work in progress
+a(6, 7)
+
+>>holy damn
