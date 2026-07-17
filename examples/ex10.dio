@@ -1,7 +1,9 @@
 def a(int : b, float : c)
-    b + c;
+    b = b + c;
 end
 
 a(6, 7)
+
+out(54453)
 
 >>holy damn

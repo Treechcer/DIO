@@ -12,6 +12,7 @@
 int getVarIndexByName(char* name);
 int getVariableIntValue(int index);
 double getVariableFloatValue(int index);
+char* getVariableStringValue(int index);
 
 dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
@@ -19,9 +20,9 @@ dynamicFunc g_funcs = {0,0,0};
 int g_skipelse = 0;
 
 void createLowLevelFunc(char* name){
-    /*
-
     funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .isLowLevel = 1};
+
+    dynamicNode inputs = {0,0,0};
 
     Node* input = createNode();
     input->type = VARIABLENODE;
@@ -31,17 +32,16 @@ void createLowLevelFunc(char* name){
     input->data.variableNode->type = STRINGVAR;
     input->data.variableNode->value = NULL;
 
-    tempFunc.inputs = input;
-    DYN_PUSH(tempFunc, g_funcs);
+    DYN_PUSH(input, inputs)
 
-    */
+    tempFunc.inputs = inputs;
+    DYN_PUSH(tempFunc, g_funcs);
 }
 
 void callLowLevelFunc(int index){
     char* name = g_funcs.items[index].name;
     if (strcmp(name, "out") == 0){
-        char* name = "a";
-        printf("%f", getVariableFloatValue(getVarIndexByName(name)));
+        printf("%i", getVariableStringValue(getVarIndexByName("a")));
     }
 }
 
@@ -193,7 +193,7 @@ dynamicVar evalVariable(Node* node){
         //    exit(1);
         //}
 
-        printf("%f\n", evalBinOp(node->data.variableNode->value));
+        //printf("%f\n", evalBinOp(node->data.variableNode->value));
 
         double value = evalBinOp(node->data.variableNode->value);
 
@@ -345,7 +345,7 @@ void parse(Node* ast){
         Node* node = ast->data.programNode->nodes.items[i];
         switch (node->type) {
             case BINOPNODE:
-                printf("%f\n", evalBinOp(node));
+                //printf("%f\n", evalBinOp(node));
                 evalBinOp(node);
                 break;
             case VARIABLENODE:
