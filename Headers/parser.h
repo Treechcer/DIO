@@ -14,6 +14,7 @@ typedef struct {
         double floatVal;
         char* stringVal;
     } data;
+    variableTypes typedVar;
 } varStruct;
 
 typedef struct {

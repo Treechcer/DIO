@@ -41,7 +41,20 @@ void createLowLevelFunc(char* name){
 void callLowLevelFunc(int index){
     char* name = g_funcs.items[index].name;
     if (strcmp(name, "out") == 0){
-        printf("%i", getVariableStringValue(getVarIndexByName("a")));
+        int varIndex = getVarIndexByName("a");
+        if (g_vars.items[varIndex].typedVar == STRINGVAR){
+            printf("%s\n", getVariableStringValue(varIndex));
+        }
+        else if (g_vars.items[varIndex].typedVar == FLOATVAR){
+            printf("%.1f\n", getVariableFloatValue(varIndex));
+        }
+        else if (g_vars.items[varIndex].typedVar == INTVAR){
+            printf("%i\n", getVariableIntValue(varIndex));
+        }
+        else{
+            printf("TODO: RAISE ERROR PROPERLY, INCORRECT VAR TYPE");
+            exit(1);
+        }
     }
 }
 
@@ -197,7 +210,7 @@ dynamicVar evalVariable(Node* node){
 
         double value = evalBinOp(node->data.variableNode->value);
 
-        tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value, .intialised = 1 };
+        tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value, .intialised = 1, .typedVar = FLOATVAR };
         //printf("%f\n", value);
     }
     else if (strcmp(type, "string") == 0){
@@ -321,8 +334,15 @@ void parseFunctionCall_(Node* node){
         //varStruct tempVar = (varStruct){.index = g_vars.count, .type = node->data, .name = name, .data.intVal = value, .intialised = 1 };
         varStruct tempVar;
         if (node->data.functionCall->inputs.items[i]->type == NUMBERNODE){
-            tempVar = (varStruct){.index = g_vars.count, .type = "int", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.intVal = node->data.functionCall->inputs.items[i]->data.numberNode->value, .intialised = 1 };
+            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = node->data.functionCall->inputs.items[i]->data.numberNode->value, .intialised = 1, .typedVar = FLOATVAR };
         }
+        else if (node->data.functionCall->inputs.items[i]->type == VARIABLENODE){
+            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = evalBinOp(node->data.functionCall->inputs.items[i]), .intialised = 1, .typedVar = FLOATVAR };
+        }
+        else if (node->data.functionCall->inputs.items[i]->type == BINOPNODE){
+            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = evalBinOp(node->data.functionCall->inputs.items[i]), .intialised = 1, .typedVar = FLOATVAR };
+        }
+
         DYN_PUSH(tempVar, g_vars);
     }
 
