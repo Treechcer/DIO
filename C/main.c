@@ -36,7 +36,7 @@ int main(int argc, char **argv){
         string[fsize - 2] = '>';
         string[fsize - 1] = '>';
         string[fsize] = '\0';
-        printf("%s\n", string);
+        //printf("%s\n", string);
 
         createLowLevelFunc("out");
 
