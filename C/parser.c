@@ -19,6 +19,18 @@ dynamicGoto g_gotos = {0,0,0};
 dynamicFunc g_funcs = {0,0,0};
 int g_skipelse = 0;
 
+int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes action){
+    if ((var1 == INTVAR || var1 == FLOATVAR) && (var2 == INTVAR || var2 == FLOATVAR) && (action == SUM || action == SUB || action == MULT || action == DIVI)){
+        return 1;
+    }
+    else if ((action == CONVERT) && (var1 == INTVAR || var1 == FLOATVAR || var1 == STRINGVAR) && (var2 == INTVAR || var2 == FLOATVAR || var2 == STRINGVAR)){
+        //this is more of an generally converting to another type, that shall be handled elsewhere
+        return 1;
+    }
+
+    return 0;
+}
+
 void createLowLevelFunc(char* name){
     funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .isLowLevel = 1};
 

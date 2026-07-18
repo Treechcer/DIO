@@ -4,6 +4,14 @@
 #include"../Headers/ast.h"
 #include"../Headers/macros.h"
 
+typedef enum{
+    SUM = 0,
+    SUB,
+    MULT,
+    DIVI,
+    CONVERT,
+} actionTypes;
+
 typedef struct {
     int index;
     int intialised; //TODO: check and use this
