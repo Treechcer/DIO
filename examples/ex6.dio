@@ -7,5 +7,6 @@ int fibThree = 0
 fibThree = fibOne + fibTwo
 fibOne = fibTwo
 fibTwo = fibThree
+out(fibThree)
 
 goto (fibThree < 1000000) ::start::

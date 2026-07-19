@@ -143,7 +143,13 @@ char* getVariableStringValue(int index) {
 double evalBinOp(Node* node){
     if (node == NULL) return NAN;
     if (node->type == NUMBERNODE) return node->data.numberNode->value;
-    if (node->type == VARIABLENODE) return getVarValueByName(node->data.variableNode->name);
+    if (node->type == VARIABLENODE) {
+        if (node->data.variableNode->type == INTVAR || node->data.variableNode->type == FLOATVAR) 
+            return getVarValueByName(node->data.variableNode->name);
+        
+        printf("ERROR!!! NOT CORRECT VARTYPE FOR BINOP, todo: rais correctly error");
+        exit(1);
+    }
 
     if (node->type == BINOPNODE){
         double left = evalBinOp(node->data.binOpNode->left);
