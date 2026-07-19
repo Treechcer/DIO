@@ -347,6 +347,8 @@ void parseFunctionCall_(Node* node){
         exit(1);
     }
 
+    dynamicVar l_vars = {0,0,0};
+
     for (size_t i = 0; i < node->data.functionCall->inputs.count; i++){
         //TODO: initialise vars
         //varStruct tempVar = (varStruct){.index = g_vars.count, .type = node->data, .name = name, .data.intVal = value, .intialised = 1 };
@@ -360,6 +362,16 @@ void parseFunctionCall_(Node* node){
         else if (node->data.functionCall->inputs.items[i]->type == BINOPNODE){
             tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = evalBinOp(node->data.functionCall->inputs.items[i]), .intialised = 1, .typedVar = FLOATVAR };
         }
+        else{
+            printf("TODO: RAISE ERROR WRONG FORMAT (or not implemented)");
+            exit(1);
+        }
+
+        int _inx = getVarIndexByName(tempVar.name);
+        if (_inx != -1){
+            DYN_PUSH(g_vars.items[_inx], l_vars);
+            g_vars.items[_inx] = tempVar;
+        }
 
         DYN_PUSH(tempVar, g_vars);
     }
@@ -369,6 +381,12 @@ void parseFunctionCall_(Node* node){
     }
     else{
         callFunctionByName(node->data.functionCall->name);
+    }
+
+    for (size_t i = 0; i < l_vars.count; i++){
+        //This does soemthign like local vars (not really) and "flushes" the value
+        int _inx = getVarIndexByName(l_vars.items[i].name);
+        g_vars.items[_inx] = l_vars.items[i];
     }
 }
 
