@@ -31,7 +31,7 @@ Token checkCurrenToken(dynamicToken* toks){
 Token shiftToken(dynamicToken* toks){
     if (g_index+1 < toks->count){
         g_index++;
-        //printf("%s\n", toks->items[g_index-1].value);
+        printf("%s\n", toks->items[g_index-1].value);
         return toks->items[g_index-1];
     }
     return (Token){0};
@@ -452,8 +452,8 @@ Node* parseLoop(dynamicToken* toks){
             shiftToken(toks);
         }
 
-        shiftToken(toks);
-
+        int old_g_index = g_index;
+        g_index = 0;
         Node* init = parseGenericNode(&tokForInit);
 
         Node* binOp = parseExpression(toks);
@@ -462,17 +462,19 @@ Node* parseLoop(dynamicToken* toks){
             exit(1);
         }
 
-        shiftToken(toks); // ;
-
         dynamicToken tokForEndStatement = {0,0,0};
-        
-        while (checkCurrenToken(toks).identifier != END){
+        //TODO: TEST IF THIS IS '-1' is correct
+        g_index = old_g_index + g_index-1;
+        while (checkCurrenToken(toks).identifier != RPAREN){
             Token to = checkCurrenToken(toks);
             DYN_PUSH(to, tokForEndStatement);
             shiftToken(toks);
         }
-
-        Node* endStatement = parseGenericNode(&tokForInit);
+        shiftToken(toks); // )
+        old_g_index += g_index;
+        g_index = 0;
+        Node* endStatement = parseExpression(&tokForEndStatement);
+        g_index = old_g_index;
 
         shiftToken(toks); // )
 
