@@ -88,6 +88,12 @@ typedef struct functionCall {
 typedef struct loopNode {
     Node* codeBlock;
     Node* binOpNode;
+    Node* init;
+    Node* endStatement;
+    enum loopType {
+        WHILE,
+        FOR,
+    } loopType;
 } loopNode;
 
 typedef struct Node {

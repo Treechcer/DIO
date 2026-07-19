@@ -335,8 +335,17 @@ void parseFunction(Node* node){
 }
 
 void parseLoopNode(Node *node){
-    while (evalBinOp(node->data.loopNode->binOpNode)){
-        parse(node->data.loopNode->codeBlock);
+    if (node->data.loopNode->loopType == WHILE){
+        while (evalBinOp(node->data.loopNode->binOpNode)){
+           parse(node->data.loopNode->codeBlock);
+        }
+    }
+    else{
+        parse(node->data.loopNode->init);
+        while (evalBinOp(node->data.loopNode->binOpNode)){
+           parse(node->data.loopNode->codeBlock);
+           parse(node->data.loopNode->endStatement);
+        }
     }
 }
 
