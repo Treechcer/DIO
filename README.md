@@ -106,6 +106,17 @@ goto (condition) ::gotoName::
 
 > NOTE: if you don't use condition, it will run always
 
+### Standard Library
+
+#### out
+
+```py
+int a = 5
+out(a)
+```
+
+Out is print function that prints out the variables or what you put into it.
+
 ## ISSUES (right now)
 
 - Make variable types work somehow differently
