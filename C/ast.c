@@ -427,13 +427,11 @@ Node* parseLoop(dynamicToken* toks){
         shiftToken(toks); //)
 
         Node* pNode = createNode();
-        pNode;
-
+        
         pNode->type = LOOPNODE;
         pNode->data.loopNode = malloc(sizeof(loopNode));
         pNode->data.loopNode->codeBlock = parseCodeBlock(toks, LOOPNODE);
         pNode->data.loopNode->binOpNode = binOp;
-
 
         return pNode;
     }
