@@ -5,7 +5,7 @@
 
 const char* keywords[] = {
     //for and while are commented out because goto can do theirs job, maybe I'll add them later
-    "if", "elseif", "else", /*"for", "while",*/ "int", "float", "string", "bool", "goto", "end", "def"
+    "if", "elseif", "else", "for", "while", "int", "float", "string", "bool", "goto", "end", "def"
 };
 
 int getKeyWord(char* possibleKeyWord){

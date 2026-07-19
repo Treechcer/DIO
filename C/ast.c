@@ -409,6 +409,38 @@ Node* parseFunctionCall(dynamicToken* toks){
     return NULL;
 }
 
+Node* parseLoop(dynamicToken* toks){
+    Token t = checkCurrenToken(toks);
+    //printf("%i ; %s\n", t.identifier, t.value);
+    if (t.identifier == KEYWORD && strcmp(t.value, "while") == 0){
+        shiftToken(toks); //while
+        if (checkCurrenToken(toks).identifier != LPAREN){
+            printf("TODO: RAISE CORRECTLY ERROR, AST LOOP");
+            exit(1);
+        }
+        shiftToken(toks); //(
+        Node* binOp = parseExpression(toks);
+        if (binOp == NULL){
+            printf("TODO: RAISE CORRECTLY ERROR, AST LOOP NULL BINOP");
+            exit(1);
+        }
+        shiftToken(toks); //)
+
+        Node* pNode = createNode();
+        pNode;
+
+        pNode->type = LOOPNODE;
+        pNode->data.loopNode = malloc(sizeof(loopNode));
+        pNode->data.loopNode->codeBlock = parseCodeBlock(toks, LOOPNODE);
+        pNode->data.loopNode->binOpNode = binOp;
+
+
+        return pNode;
+    }
+
+    return NULL;
+}
+
 Node* parseProgram(dynamicToken* toks) {
     Node* pNode = createNode();
     pNode->type = PROGRAMNODE;
@@ -436,6 +468,9 @@ Node* parseGenericNode(dynamicToken* toks){
 
     if (node == NULL){
         node = parseExpression(toks);        
+    }
+    if (node == NULL){
+        node = parseLoop(toks);        
     }
     if (node == NULL){
         node = parseNewVariable(toks);
