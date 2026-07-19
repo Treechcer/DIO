@@ -334,6 +334,12 @@ void parseFunction(Node* node){
     DYN_PUSH(tempFunc, g_funcs);
 }
 
+void parseLoopNode(Node *node){
+    while (evalBinOp(node->data.loopNode->binOpNode)){
+        parse(node->data.loopNode->codeBlock);
+    }
+}
+
 void parseFunctionCall_(Node* node){
     int index = getFuncIndexByName(node->data.functionCall->name);
     if (index == -1){
@@ -426,7 +432,12 @@ void parse(Node* ast){
             case FUNCTIONCALL:
                 parseFunctionCall_(node);
                 break;
+            case LOOPNODE:
+                parseLoopNode(node);
+                break;
             default:
+                printf("TODO: ADD THIS NODETYPE : %i", node->type);
+                exit(1);
                 break;
         }
     }
