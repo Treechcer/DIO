@@ -31,7 +31,7 @@ Token checkCurrenToken(dynamicToken* toks){
 Token shiftToken(dynamicToken* toks){
     if (g_index+1 < toks->count){
         g_index++;
-        printf("%s\n", toks->items[g_index-1].value);
+        //printf("%s\n", toks->items[g_index-1].value);
         return toks->items[g_index-1];
     }
     return (Token){0};
@@ -420,10 +420,7 @@ Node* parseLoop(dynamicToken* toks){
         }
         shiftToken(toks); //(
         Node* binOp = parseExpression(toks);
-        if (binOp == NULL){
-            printf("TODO: RAISE CORRECTLY ERROR, AST LOOP NULL BINOP");
-            exit(1);
-        }
+
         shiftToken(toks); //)
 
         Node* pNode = createNode();
@@ -443,40 +440,17 @@ Node* parseLoop(dynamicToken* toks){
             exit(1);
         }
         shiftToken(toks); //(
-        
-        dynamicToken tokForInit = {0,0,0};
-
-        while (checkCurrenToken(toks).identifier != END){
-            Token to = checkCurrenToken(toks);
-            DYN_PUSH(to, tokForInit);
-            shiftToken(toks);
-        }
-
-        int old_g_index = g_index;
-        g_index = 0;
-        Node* init = parseGenericNode(&tokForInit);
-
+        Node* init = parseGenericNode(toks);
+        shiftToken(toks);
         Node* binOp = parseExpression(toks);
-        if (binOp == NULL){
-            printf("TODO: RAISE CORRECTLY ERROR, AST LOOP NULL BINOP");
-            exit(1);
-        }
-
-        dynamicToken tokForEndStatement = {0,0,0};
-        //TODO: TEST IF THIS IS '-1' is correct
-        g_index = old_g_index + g_index-1;
-        while (checkCurrenToken(toks).identifier != RPAREN){
-            Token to = checkCurrenToken(toks);
-            DYN_PUSH(to, tokForEndStatement);
-            shiftToken(toks);
-        }
-        shiftToken(toks); // )
-        old_g_index += g_index;
-        g_index = 0;
-        Node* endStatement = parseExpression(&tokForEndStatement);
-        g_index = old_g_index;
-
-        shiftToken(toks); // )
+        shiftToken(toks);
+        Node* endStatement = parseGenericNode(toks);
+        shiftToken(toks);
+        
+        //printf("%i", init->type);
+        //printf("%i", endStatement->type);
+        
+        shiftToken(toks); //)
 
         Node* pNode = createNode();
 
@@ -484,8 +458,8 @@ Node* parseLoop(dynamicToken* toks){
         pNode->data.loopNode = malloc(sizeof(loopNode));
         pNode->data.loopNode->codeBlock = parseCodeBlock(toks, LOOPNODE);
         pNode->data.loopNode->binOpNode = binOp;
-        pNode->data.loopNode->endStatement = endStatement;
         pNode->data.loopNode->init = init;
+        pNode->data.loopNode->endStatement = endStatement;
         pNode->data.loopNode->loopType = FOR;
 
         return pNode;

@@ -340,7 +340,7 @@ void parseLoopNode(Node *node){
            parse(node->data.loopNode->codeBlock);
         }
     }
-    else{
+    else if (node->data.loopNode->loopType == FOR){
         parse(node->data.loopNode->init);
         while (evalBinOp(node->data.loopNode->binOpNode)){
            parse(node->data.loopNode->codeBlock);
