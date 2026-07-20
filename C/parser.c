@@ -13,6 +13,7 @@ int getVarIndexByName(char* name);
 int getVariableIntValue(int index);
 double getVariableFloatValue(int index);
 char* getVariableStringValue(int index);
+void parseGeneric(Node* node);
 
 dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
@@ -335,8 +336,17 @@ void parseFunction(Node* node){
 }
 
 void parseLoopNode(Node *node){
-    while (evalBinOp(node->data.loopNode->binOpNode)){
-        parse(node->data.loopNode->codeBlock);
+    if (node->data.loopNode->loopType == WHILE){
+        while (evalBinOp(node->data.loopNode->binOpNode)){
+           parse(node->data.loopNode->codeBlock);
+        }
+    }
+    else if (node->data.loopNode->loopType == FOR){
+        parseGeneric(node->data.loopNode->init);
+        while (evalBinOp(node->data.loopNode->binOpNode)){
+           parse(node->data.loopNode->codeBlock);
+           parseGeneric(node->data.loopNode->endStatement);
+        }
     }
 }
 
@@ -400,45 +410,51 @@ Node* astToNode(Node* ast){
     return &(Node){.type = ast->type, .data = ast->data};
 }
 
+void parseGeneric(Node* node){
+    switch (node->type) {
+        case BINOPNODE:
+            //printf("%f\n", evalBinOp(node));
+            evalBinOp(node);
+            break;
+        case VARIABLENODE:
+            g_vars = evalVariable(node);
+            break;
+        case GOTOIDENTIFIER:
+            g_gotos = parseGotoNode(node, g_gotos);
+            break;
+        case CONDITION:
+            parseCondition_(node);
+            break;
+        case FUNCTION:
+            parseFunction(node);
+            //printf("%i\n", i);
+            break;
+        case FUNCTIONCALL:
+            parseFunctionCall_(node);
+            break;
+        case LOOPNODE:
+            parseLoopNode(node);
+            break;
+        default:
+            printf("TODO: ADD THIS NODETYPE : %i", node->type);
+            exit(1);
+            break;
+    }
+}
+
 void parse(Node* ast){
     //printf("PARSER");
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node = ast->data.programNode->nodes.items[i];
-        switch (node->type) {
-            case BINOPNODE:
-                //printf("%f\n", evalBinOp(node));
-                evalBinOp(node);
-                break;
-            case VARIABLENODE:
-                g_vars = evalVariable(node);
-                break;
-            case GOTOIDENTIFIER:
-                g_gotos = parseGotoNode(node, g_gotos);
-                break;
-            case GOTONODE:
-                int temp = parseGotoNameNode(node, &g_gotos, ast);
-                if (temp != -1){
-                    i = temp-1;
-                }
-                break;
-            case CONDITION:
-                parseCondition_(node);
-                break;
-            case FUNCTION:
-                parseFunction(node);
-                //printf("%i\n", i);
-                break;
-            case FUNCTIONCALL:
-                parseFunctionCall_(node);
-                break;
-            case LOOPNODE:
-                parseLoopNode(node);
-                break;
-            default:
-                printf("TODO: ADD THIS NODETYPE : %i", node->type);
-                exit(1);
-                break;
+        if (node->type == GOTONODE){
+            int temp = parseGotoNameNode(node, &g_gotos, ast);
+            if (temp != -1){
+                i = temp-1;
+            }
+        }
+        else{
+            parseGeneric(node);
         }
     }
 }

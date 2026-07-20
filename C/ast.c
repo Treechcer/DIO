@@ -194,6 +194,11 @@ Node* parseNewVariable(dynamicToken* toks){
         retNode->data.variableNode->value = value;
         retNode->data.variableNode->initialise = initialise;
 
+        //printf("%s\n", name);
+        //printf("%i\n", tokT);
+        //printf("%s\n", value);
+        //printf("%i\n", initialise);
+
         return retNode;
     }
 
@@ -420,18 +425,46 @@ Node* parseLoop(dynamicToken* toks){
         }
         shiftToken(toks); //(
         Node* binOp = parseExpression(toks);
-        if (binOp == NULL){
-            printf("TODO: RAISE CORRECTLY ERROR, AST LOOP NULL BINOP");
-            exit(1);
-        }
+
         shiftToken(toks); //)
 
         Node* pNode = createNode();
-        
         pNode->type = LOOPNODE;
         pNode->data.loopNode = malloc(sizeof(loopNode));
         pNode->data.loopNode->codeBlock = parseCodeBlock(toks, LOOPNODE);
         pNode->data.loopNode->binOpNode = binOp;
+        pNode->data.loopNode->loopType = WHILE;
+
+        return pNode;
+    }
+    else if (t.identifier == KEYWORD && strcmp(t.value, "for") == 0){
+        shiftToken(toks); //for
+        if (checkCurrenToken(toks).identifier != LPAREN){
+            printf("TODO: RAISE CORRECTLY ERROR, AST LOOP");
+            exit(1);
+        }
+        shiftToken(toks); //(
+        Node* init = parseGenericNode(toks);
+        shiftToken(toks);
+        Node* binOp = parseExpression(toks);
+        shiftToken(toks);
+        Node* endStatement = parseGenericNode(toks);
+        shiftToken(toks);
+        
+        //printf("%i", init->type);
+        //printf("%i", endStatement->type);
+        
+        shiftToken(toks); //)
+
+        Node* pNode = createNode();
+
+        pNode->type = LOOPNODE;
+        pNode->data.loopNode = malloc(sizeof(loopNode));
+        pNode->data.loopNode->codeBlock = parseCodeBlock(toks, LOOPNODE);
+        pNode->data.loopNode->binOpNode = binOp;
+        pNode->data.loopNode->init = init;
+        pNode->data.loopNode->endStatement = endStatement;
+        pNode->data.loopNode->loopType = FOR;
 
         return pNode;
     }
