@@ -194,6 +194,11 @@ Node* parseNewVariable(dynamicToken* toks){
         retNode->data.variableNode->value = value;
         retNode->data.variableNode->initialise = initialise;
 
+        //printf("%s\n", name);
+        //printf("%i\n", tokT);
+        //printf("%s\n", value);
+        //printf("%i\n", initialise);
+
         return retNode;
     }
 
