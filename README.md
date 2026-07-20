@@ -56,10 +56,10 @@ withParams(a, 10) >> example, use variable and 10
 #### WHILE Loops
 
 ```py
-int a = 0;
-while(a < 10)
-    a = a + 1
-    out(a)
+int i = 0;
+while(i < 10)
+    i = i + 1
+    out(i)
 end
 
 >>outputs 1 -> 10
@@ -76,6 +76,10 @@ end
 ```
 
 > NOTE: walrus operators are not implemented, you have to use "n = n ..."
+
+##### Loop note
+
+You can't use `a` as main var for loops, it won't work because of how "local vars" work
 
 #### Branching
 
