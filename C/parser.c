@@ -338,7 +338,7 @@ void parseFunction(Node* node){
 void parseLoopNode(Node *node){
     if (node->data.loopNode->loopType == WHILE){
         while (evalBinOp(node->data.loopNode->binOpNode)){
-           parse(node->data.loopNode->codeBlock);
+            parse(node->data.loopNode->codeBlock);
         }
     }
     else if (node->data.loopNode->loopType == FOR){

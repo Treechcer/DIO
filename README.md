@@ -53,7 +53,7 @@ withParams(a, 10) >> example, use variable and 10
 
 ### Control Flow
 
-#### Loops
+#### WHILE Loops
 
 ```py
 int a = 0;
@@ -65,7 +65,17 @@ end
 >>outputs 1 -> 10
 ```
 
-> NOTE: for loop not added yet, might be added in future
+#### FOR Loops
+
+```py
+for (int i = 0; i < 10; i = i + 1)
+    out(i)
+end
+
+>>outputs 0 -> 9
+```
+
+> NOTE: walrus operators are not implemented, you have to use "n = n ..."
 
 #### Branching
 
