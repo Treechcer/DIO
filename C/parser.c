@@ -96,7 +96,7 @@ int isFunctionLowLevel(int index){
 }
 
 int getVarIndexByName(char* name){
-    for(int i = 0; i < g_vars.count; i++){
+    for(int i = g_vars.count - 1; i >= 0; i--){
         if (strcmp(name, g_vars.items[i].name) == 0){
             //printf("%i\n", i);
             return g_vars.items[i].index;

@@ -77,10 +77,6 @@ end
 
 > NOTE: walrus operators are not implemented, you have to use "n = n ..."
 
-##### Loop note
-
-You can't use `a` as main var for loops, it won't work because of how "local vars" work
-
 #### Branching
 
 ```py

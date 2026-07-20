@@ -1,5 +1,5 @@
-int x = 0
-while (x < 10)
-    out(x)
-    x = x + 1
+int a = 0
+while (a < 10)
+    out(a)
+    a = a + 1
 end
