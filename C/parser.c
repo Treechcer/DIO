@@ -154,7 +154,7 @@ double evalBinOp(Node* node){
         exit(1);
     }
     if (node->type == MAYBENODE){
-        return (int) rand() % 2;
+        return (int) rand() & 1;
     }
 
     if (node->type == BINOPNODE){

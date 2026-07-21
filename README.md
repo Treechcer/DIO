@@ -31,7 +31,11 @@ int a = 10;
 int b = a + 1;
 ```
 
-> NOTE: true and false are in lexer made into 1 and 0, so `true * 10` is valid code and is 10.
+#### Booleans
+
+All normal booleans (true, false) are here, represented by either the word "true" or "false" (this is changed in lexer to 1 and 0 respectively). Dio also has special boolean, maybe, which is either 1 or 0.
+
+> NOTE: in loops for some reason it never generates a new number making the loop behave same??? 
 
 ### Functions
 
