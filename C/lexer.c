@@ -199,6 +199,10 @@ dynamicToken lex(const char* code, char* fileName) {
                         else if (isBool(token.items)) {
                             tok = createToken(strToBoolStr(token.items), INT, createPosition(&charPos_, &charPos_, &line, fileName));
                         }
+                        //Use maybe as identifier?
+                        //else if (isMaybe(token.items)){
+                        //    tok = createToken("maybe", MAYBE, createPosition(&charPos_, &charPos_, &line, fileName));
+                        //}
                         else {
                             tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line, fileName));
                         }

@@ -30,6 +30,7 @@ typedef enum {
     GOTONAME,
     COMMA,
     COLON,
+    MAYBE,
 } TokenType;
 
 typedef struct Token{
@@ -41,5 +42,6 @@ typedef struct Token{
 int getKeyWord(char* possibleKeyWord);
 int isBool(char* word);
 char* strToBoolStr(char* str);
+int isMaybe(char* word);
 
 #endif

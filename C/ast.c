@@ -48,6 +48,14 @@ Token checkTokenAt(dynamicToken* toks, int offset){
 Node* parseFactor(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
 
+    if (strcmp("maybe", tok.value) == 0) {
+        shiftToken(toks);
+        Node* retNode = createNode();
+        retNode->type = MAYBENODE;
+        retNode->data.maybeNode = malloc(sizeof(maybeNode));
+        return retNode;
+    }
+
     if (tok.identifier == INT || tok.identifier == FLOAT){
         shiftToken(toks);
         Node* node = createNode();
@@ -182,6 +190,9 @@ Node* parseNewVariable(dynamicToken* toks){
 
     if (createNodeBool){
         value = parseExpression(toks);
+        if (value == NULL && strcmp(checkCurrenToken(toks).value, "maybe") == 0){
+            printf("??SADA");
+        }
         if (value == NULL) {
             return NULL; 
         }

@@ -1,0 +1,5 @@
+int a = maybe + maybe + maybe;
+
+out(a)
+
+>>this code writes any number from 0 to 3

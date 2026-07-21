@@ -26,6 +26,7 @@ typedef enum {
     FUNCTIONCALL,
     PROGRAMNODE,
     LOOPNODE,
+    MAYBENODE,
 } nodeType;
 
 typedef struct programNode {
@@ -96,6 +97,10 @@ typedef struct loopNode {
     } loopType;
 } loopNode;
 
+typedef struct maybeNode{
+
+} maybeNode;
+
 typedef struct Node {
     nodeType type;
     union {
@@ -110,6 +115,7 @@ typedef struct Node {
         struct function* function;
         struct functionCall* functionCall;
         struct loopNode* loopNode;
+        struct maybeNode* maybeNode;
     } data;
     //TODO: add position
     //Position* pos;

@@ -31,6 +31,14 @@ int isBool(char* word){
     return 0;
 }
 
+int isMaybe(char* word){
+    if (strcmp("maybe", word) == 0) {
+        return 1;
+    }
+
+    return 0;
+}
+
 char* strToBoolStr(char* str){//this returns 1 if input string is true
     if (strcmp(str, "true") == 0) {
         return "1";

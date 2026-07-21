@@ -1,5 +1,7 @@
 #include<string.h>
 #include<math.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include"../Headers/dynamic_array.h"
 #include"../Headers/ast.h"
@@ -150,6 +152,9 @@ double evalBinOp(Node* node){
         
         printf("ERROR!!! NOT CORRECT VARTYPE FOR BINOP, todo: rais correctly error");
         exit(1);
+    }
+    if (node->type == MAYBENODE){
+        return (int) rand() % 2;
     }
 
     if (node->type == BINOPNODE){
@@ -443,6 +448,7 @@ void parseGeneric(Node* node){
 }
 
 void parse(Node* ast){
+    srand(time(NULL)); //for pseudo random Num
     //printf("PARSER");
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
