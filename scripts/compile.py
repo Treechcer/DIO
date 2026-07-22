@@ -1,6 +1,15 @@
 import subprocess
 import os
 import platform
+import sys
+
+arguments = {
+    "debug" : False
+}
+
+for arg in sys.argv[1:]:
+    arg = arg.split("--") if arg[1] == "-" else arg.split("-")
+    arguments[arg[1]] = not arguments[arg[1]]
 
 def makeSTDlib():
     std = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "scripts"), "STD.dio")
@@ -33,10 +42,10 @@ try:
     subprocess.run("gcc -g " + getFiles() + f" -o {filename}", shell=True, check=True)
 
     with open(os.path.abspath(os.path.join("scripts", "CompileRunParams.txt")), "r") as f:
-        if platform.system() == "Windows":
-            subprocess.run(f".{slash}{filename}" + " " + f.read(), shell=True)
-        else:
+        if arguments["debug"]:
             subprocess.run(f'gdb -ex run -ex bt --args .{slash}{filename} {f.read()}', shell=True)
+        else:
+            subprocess.run(f".{slash}{filename}" + " " + f.read(), shell=True)
 except Exception as e:
     print(e)
     print("failed :(")
