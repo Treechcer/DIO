@@ -156,6 +156,11 @@ dynamicToken lex(const char* code, char* fileName) {
             case '\t':
             case ' ':
                 break;
+            case '\'':
+            case '"':
+            //TODO: make value everythin IN string for easier workflo in AST/parser
+                tok = createToken("'", QUOTE, createPosition(&charPos_, &charPos_, &line, fileName));
+                break;
             default:
                     if (isDigit(c)){
                         dynamicChar token = {0,0,0};
@@ -218,6 +223,7 @@ dynamicToken lex(const char* code, char* fileName) {
                     }
                 break;
         }
+
         if (tok.identifier){
             DYN_PUSH(tok, toks);
         }

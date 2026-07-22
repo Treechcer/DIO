@@ -28,10 +28,10 @@ int main(int argc, char **argv){
         // Retrieved 2026-07-04, License - CC BY-SA 4.0
         FILE* filePointer = fopen(getvalueByIndex(fileArgIndex), "rb");
         fseek(filePointer, 0, SEEK_END);
-        long fsize = ftell(filePointer) + 3;
+        long fsize = ftell(filePointer);
         fseek(filePointer, 0, SEEK_SET);
 
-        char *string = malloc(fsize + 1);
+        char *string = malloc(fsize + 1 + 3);
         fread(string, fsize, 1, filePointer);
         fclose(filePointer);
 
@@ -47,9 +47,14 @@ int main(int argc, char **argv){
         int STDSize = (int)strlen(STD);
         char codeWithStd[STDSize + 1 + fsize];
         strcpy(codeWithStd, STD);
-        codeWithStd[STDSize] = '\n';
         strcat(codeWithStd, string);
+        codeWithStd[STDSize-1] = '\n';
+        printf("%s\n", STD);
+        printf("----------\n");
+        printf("%s\n", string);
+        printf("----------\n");
         printf("%s\n", codeWithStd);
+        printf("----------\n");
 
         createLowLevelFunc("out");
 

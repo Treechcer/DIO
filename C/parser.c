@@ -238,7 +238,9 @@ dynamicVar evalVariable(Node* node){
         //printf("%f\n", value);
     }
     else if (strcmp(type, "string") == 0){
-        //TODO: implement later
+        printf("?");
+        //double value = evalBinOp(node->data.variableNode->value);
+        //tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value, .intialised = 1, .typedVar = FLOATVAR };
     }
 
     if (existingIndex >= 0){

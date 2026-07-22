@@ -133,4 +133,9 @@ Out is print function that prints out the variables or what you put into it.
 
 ## ISSUES (right now)
 
-- Make variable types work somehow differently
+- TODO: TEST so I can update this
+
+## NEXT
+
+- loading files (essentially same as I use STD by dynamically in lexer, add like file identifiers, something like "#FILE:NAME" to correctly add file in or start a new lex and add everything to it, whatever is easier)
+- Make variable types work differently and check them + make like "any" as parameter for functions or add overloading (either wold work)

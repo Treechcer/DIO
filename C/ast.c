@@ -187,6 +187,23 @@ Node* parseNewVariable(dynamicToken* toks){
         }
         initialise = 1;
     }
+    else if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(tv, "string") == 0){
+        createNodeBool = 1;
+        shiftToken(toks); // string
+        name = checkCurrenToken(toks).value;
+        shiftToken(toks); // skips name
+        shiftToken(toks); // skips =
+        
+        tokT = STRINGVAR;
+        shiftToken(toks); // '
+
+        char* val;
+        while (checkCurrenToken(toks).identifier != QUOTE){
+
+        }
+
+        initialise = 1;
+    }
 
     if (createNodeBool){
         value = parseExpression(toks);

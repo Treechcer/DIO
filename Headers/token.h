@@ -31,6 +31,7 @@ typedef enum {
     COMMA,
     COLON,
     MAYBE,
+    QUOTE,
 } TokenType;
 
 typedef struct Token{
