@@ -14,14 +14,38 @@ for arg in sys.argv[1:]:
 def makeSTDlib():
     std = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "scripts"), "STD.dio")
     stdC = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "C"), "STD.c")
-    strStd = ""
+    stdH = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "Headers"), "STD.h")
+    strStd = """char* getSTD(){
+    return \"\\
+"""
 
     with open(std, "r") as f:
         for i in f.readlines():
-            strStd+= i
-    os.remove(stdC)
+            strStd+= i.replace("\n", "\\\n")
+
+    strStd += """\\
+\";
+}"""
+    try:
+        os.remove(stdC)
+    except:
+        pass
+
     with open(stdC, "x") as f:
         f.write(strStd)
+
+    try:
+        os.remove(stdH)
+    except:
+        pass
+
+    with open(stdH, "x") as f:
+        f.write("""#ifndef STD__H
+#define STD__H
+
+char* getSTD();
+
+#endif""")
 
 def getFiles():
     curPath = os.path.join(os.path.abspath(os.path.curdir), "C")
@@ -30,7 +54,7 @@ def getFiles():
     for o in files: string += os.path.join(curPath, o) + " "
     return string[:-1]
 
-#makeSTDlib()
+makeSTDlib()
 
 try:
     filename = "lang"
