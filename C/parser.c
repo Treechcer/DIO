@@ -448,7 +448,6 @@ void parseGeneric(Node* node){
 }
 
 void parse(Node* ast){
-    srand(time(NULL)); //for pseudo random Num
     //printf("PARSER");
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){

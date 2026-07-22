@@ -1,4 +1,6 @@
 #include<string.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include"../Headers/lexer.h"
 #include"../Headers/ast.h"
@@ -13,6 +15,8 @@ int main(int argc, char **argv){
 
     //CHECK INPUTS!
     checkInuts(argc, argv);
+
+    srand(time(NULL)); //for pseudo random Num
 
     //get file
     char* filePath = getvalueByIndex(fileArgIndex);
