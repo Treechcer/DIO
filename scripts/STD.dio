@@ -1,3 +1,3 @@
-def SUMOUT(a : int, b : int)
+def SUMOUT(int : a, int : b)
     out(a + b)
 end

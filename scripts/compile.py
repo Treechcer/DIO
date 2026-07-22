@@ -21,9 +21,9 @@ def makeSTDlib():
 
     with open(std, "r") as f:
         for i in f.readlines():
-            strStd+= i.replace("\n", "\\\n")
+            strStd+= i.replace("\n", "\\n\\\n")
 
-    strStd += """\\
+    strStd += """\\n\\n\\
 \";
 }"""
     try:

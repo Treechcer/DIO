@@ -7,6 +7,7 @@
 #include"../Headers/token.h"
 #include"../Headers/parser.h"
 #include"../Headers/inputargs.h"
+#include"../Headers/STD.h"
 
 int main(int argc, char **argv){
     //BUILD INPUTS!!
@@ -42,9 +43,17 @@ int main(int argc, char **argv){
         string[fsize] = '\0';
         //printf("%s\n", string);
 
+        char* STD = getSTD();
+        int STDSize = (int)strlen(STD);
+        char codeWithStd[STDSize + 1 + fsize];
+        strcpy(codeWithStd, STD);
+        codeWithStd[STDSize] = '\n';
+        strcat(codeWithStd, string);
+        printf("%s\n", codeWithStd);
+
         createLowLevelFunc("out");
 
-        parse(buildAst(lex(string, filePath)));
+        parse(buildAst(lex(codeWithStd, filePath)));
     }
     
     return 0;

@@ -1,7 +1,7 @@
 char* getSTD(){
     return "\
-def SUMOUT(a : int, b : int)\
-    out(a + b)\
-end\
+def SUMOUT(int : a, int : b)\n\
+    out(a + b)\n\
+end\n\n\
 ";
 }
