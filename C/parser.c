@@ -238,7 +238,11 @@ dynamicVar evalVariable(Node* node){
         //printf("%f\n", value);
     }
     else if (strcmp(type, "string") == 0){
-        printf("?");
+        //TODO: PARSE STRING!! TEMP EXIT
+        printf("NOT PARSED STRING");
+        exit(1);
+        
+        //printf("?");
         //double value = evalBinOp(node->data.variableNode->value);
         //tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value, .intialised = 1, .typedVar = FLOATVAR };
     }

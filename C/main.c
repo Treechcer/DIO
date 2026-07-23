@@ -37,9 +37,6 @@ int main(int argc, char **argv){
 
         //lmao this actually fixed it (I'll keep it though)
 
-        string[fsize - 3] = '\n';
-        string[fsize - 2] = '>';
-        string[fsize - 1] = '>';
         string[fsize] = '\0';
         //printf("%s\n", string);
 
@@ -48,13 +45,14 @@ int main(int argc, char **argv){
         char codeWithStd[STDSize + 1 + fsize];
         strcpy(codeWithStd, STD);
         strcat(codeWithStd, string);
+        strcat(codeWithStd, "\n>>");
         codeWithStd[STDSize-1] = '\n';
-        printf("%s\n", STD);
-        printf("----------\n");
-        printf("%s\n", string);
-        printf("----------\n");
-        printf("%s\n", codeWithStd);
-        printf("----------\n");
+        //printf("%s\n", STD);
+        //printf("----------\n");
+        //printf("%s\n", string);
+        //printf("----------\n");
+        //printf("%s\n", codeWithStd);
+        //printf("----------\n");
 
         createLowLevelFunc("out");
 

@@ -34,6 +34,7 @@ dynamicToken lex(const char* code, char* fileName) {
     int line = 1;
     int charPos_ = 1;
     char c = ' ';
+    int skipSapces = 1;
     while (strlen(code) > 0 && c != '\0'){
         c = *code;
         //printf("(%i, %c)\n", c, c);
@@ -154,12 +155,16 @@ dynamicToken lex(const char* code, char* fileName) {
                 break;
             case '\r':
             case '\t':
+                break;
             case ' ':
+                if (!skipSapces){
+                    tok = createToken(" ", SPACE, createPosition(&charPos_, &charPos_, &line, fileName));
+                }
                 break;
             case '\'':
             case '"':
-            //TODO: make value everythin IN string for easier workflo in AST/parser
                 tok = createToken("'", QUOTE, createPosition(&charPos_, &charPos_, &line, fileName));
+                skipSapces = !skipSapces;
                 break;
             default:
                     if (isDigit(c)){

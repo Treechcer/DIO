@@ -198,11 +198,46 @@ Node* parseNewVariable(dynamicToken* toks){
         shiftToken(toks); // '
 
         char* val;
-        while (checkCurrenToken(toks).identifier != QUOTE){
-
+        int len = 0;
+        int pos = g_index;
+        while (toks->items[pos].identifier != QUOTE){
+            len += strlen(toks->items[pos].value);
+            pos++;
         }
+        char* value = "";
+        if (len > 0){
+            char buffer[len];
+            
+            strcpy(buffer, checkCurrenToken(toks).value);
+            shiftToken(toks);
+            while(checkCurrenToken(toks).identifier != QUOTE){
+                strcat(buffer, checkCurrenToken(toks).value);
+                shiftToken(toks);
+            }
+
+            value = buffer;
+            //printf("'%s'", buffer);
+        }
+        
+        //printf("%s", checkCurrenToken(toks).value);
+        shiftToken(toks); //'
 
         initialise = 1;
+
+        Node* strNode = createNode();
+        strNode->type = STRINGNODE;
+        strNode->data.stringNode = malloc(sizeof(stringNode));
+        strNode->data.stringNode = &(stringNode){.value = value, .length = len};
+
+        Node* retNode = createNode();
+        retNode->type = VARIABLENODE;
+        retNode->data.variableNode = malloc(sizeof(variableNode));
+        retNode->data.variableNode->name = name;
+        retNode->data.variableNode->type = tokT;
+        retNode->data.variableNode->value = strNode; 
+        retNode->data.variableNode->initialise = initialise;
+
+        return retNode;
     }
 
     if (createNodeBool){
@@ -510,6 +545,7 @@ Node* parseProgram(dynamicToken* toks) {
     pNode->data.programNode->nodes.items = NULL;
 
     while (g_index < (toks->count)-1) {
+        //printf("%i : %li\n", g_index, (toks->count)-1);
         if (checkCurrenToken(toks).identifier == END){
             shiftToken(toks);
             continue;
@@ -544,8 +580,9 @@ Node* parseGenericNode(dynamicToken* toks){
         node = parseFunctionCreate(toks);
     }
     if (node == NULL){
-        //printf("ERR: %i : %i\n", g_index, (toks->count)-1);
-        //printf("ERR: %s \n", checkCurrenToken(toks).value);
+        printf("ERR: %i : %li\n", g_index, (toks->count)-1);
+        printf("ERR: %s \n", checkCurrenToken(toks).value);
+
         errorOut((Error){"", ASTERROR, toks->items[g_index].pos});
     }
 
