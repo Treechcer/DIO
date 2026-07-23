@@ -440,6 +440,9 @@ Node* parseFunctionCreate(dynamicToken* toks){
             else if (strcmp("bool", type) == 0) {
                 dynNode->data.variableNode->type = BOOLVAR;
             }
+            else if (strcmp("any", type) == 0) {
+                dynNode->data.variableNode->type = UNKNOWNVARTYPE;
+            }
             else{
                 printf("TODO: RAISE ERROR, NO VAR TYPE or whatever");
                 exit(1);

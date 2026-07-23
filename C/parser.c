@@ -23,11 +23,14 @@ dynamicFunc g_funcs = {0,0,0};
 int g_skipelse = 0;
 
 int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes action){
-    if ((var1 == INTVAR || var1 == FLOATVAR) && (var2 == INTVAR || var2 == FLOATVAR) && (action == SUM || action == SUB || action == MULT || action == DIVI)){
+    if ((action == SUM || action == SUB || action == MULT || action == DIVI) &&  (var1 == INTVAR || var1 == FLOATVAR) && (var2 == INTVAR || var2 == FLOATVAR)){
         return 1;
     }
     else if ((action == CONVERT) && (var1 == INTVAR || var1 == FLOATVAR || var1 == STRINGVAR) && (var2 == INTVAR || var2 == FLOATVAR || var2 == STRINGVAR)){
         //this is more of an generally converting to another type, that shall be handled elsewhere
+        return 1;
+    }
+    else if ((action == FCALL) && ((var1 == UNKNOWNVARTYPE || var2 == UNKNOWNVARTYPE) || ((var1 == INTVAR || var1 == FLOATVAR || var1 == BOOLVAR) || (var2 == INTVAR || var2 == FLOATVAR || var2 == BOOLVAR) ))){
         return 1;
     }
 
@@ -44,7 +47,7 @@ void createLowLevelFunc(char* name){
     input->data.variableNode = malloc(sizeof(variableNode));
     input->data.variableNode->initialise = 1;
     input->data.variableNode->name = "a";
-    input->data.variableNode->type = STRINGVAR;
+    input->data.variableNode->type = UNKNOWNVARTYPE;
     input->data.variableNode->value = NULL;
 
     DYN_PUSH(input, inputs)
@@ -402,6 +405,11 @@ void parseFunctionCall_(Node* node){
         if (_inx != -1){
             DYN_PUSH(g_vars.items[_inx], l_vars);
             g_vars.items[_inx] = tempVar;
+        }
+
+        if (!checkCompatibleVarType(tempVar.typedVar, g_funcs.items[index].inputs.items[i]->data.variableNode->type, FCALL)){
+            printf("TODO: RAISE ERROR, INCORRECT CALL FUNCTIO TYPE");
+            exit(1);
         }
 
         DYN_PUSH(tempVar, g_vars);

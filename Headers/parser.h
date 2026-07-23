@@ -10,6 +10,7 @@ typedef enum{
     MULT,
     DIVI,
     CONVERT,
+    FCALL,
 } actionTypes;
 
 typedef struct {
