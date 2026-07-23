@@ -206,7 +206,7 @@ Node* parseNewVariable(dynamicToken* toks){
         }
         char* value = "";
         if (len > 0){
-            char buffer[len];
+            char* buffer = malloc(len);
             
             strcpy(buffer, checkCurrenToken(toks).value);
             shiftToken(toks);
@@ -218,6 +218,7 @@ Node* parseNewVariable(dynamicToken* toks){
             value = buffer;
             //printf("'%s'", buffer);
         }
+        //printf("%s\n", value);
         
         //printf("%s", checkCurrenToken(toks).value);
         shiftToken(toks); //'
@@ -227,7 +228,9 @@ Node* parseNewVariable(dynamicToken* toks){
         Node* strNode = createNode();
         strNode->type = STRINGNODE;
         strNode->data.stringNode = malloc(sizeof(stringNode));
-        strNode->data.stringNode = &(stringNode){.value = value, .length = len};
+        strNode->data.stringNode->value = value;
+        strNode->data.stringNode->length = len;
+        //printf("%s : %s\n", value, strNode->data.stringNode->value);
 
         Node* retNode = createNode();
         retNode->type = VARIABLENODE;
