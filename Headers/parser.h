@@ -5,7 +5,8 @@
 #include"../Headers/macros.h"
 
 typedef enum{
-    SUM = 0,
+    INTSUM = 0,
+    CONCATSUM,
     SUB,
     MULT,
     DIVI,
@@ -40,6 +41,15 @@ typedef struct {
     int intialised;
     char* name;
 } gotoStruct;
+
+typedef struct {
+    variableTypes varType;
+    union {
+        char* stringVal;
+        int intVal;
+        float floatVar;
+    } value;
+} binOpResult;
 
 void parse(Node* ast);
 void createLowLevelFunc(char* name);

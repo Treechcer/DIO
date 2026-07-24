@@ -23,7 +23,7 @@ dynamicFunc g_funcs = {0,0,0};
 int g_skipelse = 0;
 
 int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes action){
-    if ((action == SUM || action == SUB || action == MULT || action == DIVI) &&  (var1 == INTVAR || var1 == FLOATVAR) && (var2 == INTVAR || var2 == FLOATVAR)){
+    if ((action == INTSUM || action == SUB || action == MULT || action == DIVI) &&  (var1 == INTVAR || var1 == FLOATVAR) && (var2 == INTVAR || var2 == FLOATVAR)){
         return 1;
     }
     else if ((action == CONVERT) && (var1 == INTVAR || var1 == FLOATVAR || var1 == STRINGVAR) && (var2 == INTVAR || var2 == FLOATVAR || var2 == STRINGVAR)){
@@ -147,61 +147,238 @@ char* getVariableStringValue(int index) {
     return g_vars.items[index].data.stringVal;
 }
 
-double evalBinOp(Node* node){
-    if (node == NULL) return NAN;
-    if (node->type == NUMBERNODE) return node->data.numberNode->value;
+binOpResult* evalBinOp(Node* node){
+    binOpResult* res = malloc(sizeof(binOpResult));
+
+    if (node == NULL) {
+        res->varType = FLOATVAR;
+        res->value.floatVar = NAN;
+        return res;
+    }
+    if (node->type == NUMBERNODE) {
+        res->varType = FLOATVAR;
+        res->value.floatVar = node->data.numberNode->value;
+        return res;
+    }
     if (node->type == VARIABLENODE) {
-        if (node->data.variableNode->type == INTVAR || node->data.variableNode->type == FLOATVAR) 
-            return getVarValueByName(node->data.variableNode->name);
+        if (node->data.variableNode->type == INTVAR || node->data.variableNode->type == FLOATVAR){
+            res->varType = FLOATVAR;
+            res->value.floatVar = getVarValueByName(node->data.variableNode->name);
+            return res;
+        }
         
         printf("ERROR!!! NOT CORRECT VARTYPE FOR BINOP, todo: rais correctly error");
         exit(1);
     }
     if (node->type == MAYBENODE){
-        return (int) rand() & 1;
+        res->varType = FLOATVAR;
+        res->value.floatVar = (int) rand() & 1;
+        return res;
     }
 
     if (node->type == BINOPNODE){
-        double left = evalBinOp(node->data.binOpNode->left);
-        double right = evalBinOp(node->data.binOpNode->right);
+        binOpResult* left = evalBinOp(node->data.binOpNode->left);
+        binOpResult* right = evalBinOp(node->data.binOpNode->right);
 
         switch (node->data.binOpNode->op) {
             case PLUS:
-                return left + right;
+                if (checkCompatibleVarType(left->varType, right->varType, INTSUM)){
+                    double vLeft, vRight = 0;
+                    if (left->varType == INTVAR)
+                        vLeft = left->value.intVal;
+                    else if (left->varType == FLOATVAR)
+                        vLeft = left->value.floatVar;
+                    if (right->varType == INTVAR)
+                        vLeft = left->value.intVal;
+                    else if (right->varType == FLOATVAR)
+                        vLeft = left->value.floatVar;
+
+                    res->varType = FLOATVAR;
+                    res->value.floatVar = vLeft + vRight;
+
+                    return res;
+                }
+
+                printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES +");
+                exit(1);
+
                 break;
             case MINUS:
-                return left - right;
+                if (checkCompatibleVarType(left->varType, right->varType, MINUS)){
+                    double vLeft, vRight = 0;
+                    if (left->varType == INTVAR)
+                        vLeft = left->value.intVal;
+                    else if (left->varType == FLOATVAR)
+                        vLeft = left->value.floatVar;
+                    if (right->varType == INTVAR)
+                        vLeft = left->value.intVal;
+                    else if (right->varType == FLOATVAR)
+                        vLeft = left->value.floatVar;
+
+                    res->varType = FLOATVAR;
+                    res->value.floatVar = vLeft - vRight;
+
+                    return res;
+                }
+
+                printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES -");
+                exit(1);
                 break;
             case MUL:
-                return left * right;
+                if (checkCompatibleVarType(left->varType, right->varType, MUL)){
+                    double vLeft, vRight = 0;
+                    if (left->varType == INTVAR)
+                        vLeft = left->value.intVal;
+                    else if (left->varType == FLOATVAR)
+                        vLeft = left->value.floatVar;
+                    if (right->varType == INTVAR)
+                        vLeft = left->value.intVal;
+                    else if (right->varType == FLOATVAR)
+                        vLeft = left->value.floatVar;
+
+                    res->varType = FLOATVAR;
+                    res->value.floatVar = vLeft * vRight;
+
+                    return res;
+                }
+
+                printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES *");
+                exit(1);
                 break;
             case DIV:
-                if (right == 0) errorOut((Error){NULL, divisionByZero, NULL});
-                return left / right;
+                if (checkCompatibleVarType(left->varType, right->varType, DIV)){
+                    double vLeft, vRight = 0;
+                    if (left->varType == INTVAR)
+                        vLeft = left->value.intVal;
+                    else if (left->varType == FLOATVAR)
+                        vLeft = left->value.floatVar;
+                    if (right->varType == INTVAR)
+                        vLeft = left->value.intVal;
+                    else if (right->varType == FLOATVAR)
+                        vLeft = left->value.floatVar;
+
+                    if (vRight == 0) errorOut((Error){NULL, divisionByZero, NULL});
+
+                    res->varType = FLOATVAR;
+                    res->value.floatVar = vLeft / vRight;
+
+                    return res;
+                }
+
+                printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES /");
+                exit(1);
                 break;
             case POW:
-                if (right == 0) return 1;
-                double num = left;
-                for (size_t i = 0; i < right-1; i++){
-                    num *= left;
+                if (checkCompatibleVarType(left->varType, right->varType, MUL)){
+                    double vLeft, vRight = 0;
+                    if (left->varType == INTVAR)
+                        vLeft = left->value.intVal;
+                    else if (left->varType == FLOATVAR)
+                        vLeft = left->value.floatVar;
+                    if (right->varType == INTVAR)
+                        vLeft = left->value.intVal;
+                    else if (right->varType == FLOATVAR)
+                        vLeft = left->value.floatVar;
+
+                    res->varType = FLOATVAR;
+                    if (vRight == 0) {
+                        res->value.floatVar = 1;
+                        return res;
+                    }
+                    double num = vLeft;
+                    for (size_t i = 0; i < vRight-1; i++){
+                        num *= vLeft;
+                    }
+
+                    return res;
                 }
-                return num;
+
+                printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES *");
+                exit(1);
             case LESSTHAN:
-                return (left < right);
+                double vLeft, vRight = 0;
+                if (left->varType == INTVAR)
+                    vLeft = left->value.intVal;
+                else if (left->varType == FLOATVAR)
+                    vLeft = left->value.floatVar;
+                if (right->varType == INTVAR)
+                    vLeft = left->value.intVal;
+                else if (right->varType == FLOATVAR)
+                    vLeft = left->value.floatVar;
+
+                res->varType = FLOATVAR;
+                res->value.floatVar = (vLeft < vRight);
+                
+                return res;
             case LESSOREQAUL:
-                return (left <= right);
+                double vLeft, vRight = 0;
+                if (left->varType == INTVAR)
+                    vLeft = left->value.intVal;
+                else if (left->varType == FLOATVAR)
+                    vLeft = left->value.floatVar;
+                if (right->varType == INTVAR)
+                    vLeft = left->value.intVal;
+                else if (right->varType == FLOATVAR)
+                    vLeft = left->value.floatVar;
+
+                res->varType = FLOATVAR;
+                res->value.floatVar = (vLeft <= vRight);
+                
+                return res;
             case MORETHAN:
-                return (left > right);
+                double vLeft, vRight = 0;
+                if (left->varType == INTVAR)
+                    vLeft = left->value.intVal;
+                else if (left->varType == FLOATVAR)
+                    vLeft = left->value.floatVar;
+                if (right->varType == INTVAR)
+                    vLeft = left->value.intVal;
+                else if (right->varType == FLOATVAR)
+                    vLeft = left->value.floatVar;
+
+                res->varType = FLOATVAR;
+                res->value.floatVar = (vLeft > vRight);
+                
+                return res;
             case MOREOREQUAL:
-                return (left >= right);
+                double vLeft, vRight = 0;
+                if (left->varType == INTVAR)
+                    vLeft = left->value.intVal;
+                else if (left->varType == FLOATVAR)
+                    vLeft = left->value.floatVar;
+                if (right->varType == INTVAR)
+                    vLeft = left->value.intVal;
+                else if (right->varType == FLOATVAR)
+                    vLeft = left->value.floatVar;
+
+                res->varType = FLOATVAR;
+                res->value.floatVar = (vLeft >= vRight);
+                
+                return res;
             case LEFTRIGHTEQUAL:
-                return (left == right);
+                double vLeft, vRight = 0;
+                if (left->varType == INTVAR)
+                    vLeft = left->value.intVal;
+                else if (left->varType == FLOATVAR)
+                    vLeft = left->value.floatVar;
+                if (right->varType == INTVAR)
+                    vLeft = left->value.intVal;
+                else if (right->varType == FLOATVAR)
+                    vLeft = left->value.floatVar;
+
+                res->varType = FLOATVAR;
+                res->value.floatVar = (vLeft == vRight);
+
+                return res;
             default:
                 break;
         }
     }
 
-    return 0;
+    res->varType = FLOATVAR;
+    res->value.floatVar = 0;
+
+    return res;
 }
 
 /*
@@ -236,9 +413,9 @@ dynamicVar evalVariable(Node* node){
 
         //printf("%f\n", evalBinOp(node->data.variableNode->value));
 
-        double value = evalBinOp(node->data.variableNode->value);
-
-        tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value, .intialised = 1, .typedVar = FLOATVAR };
+        binOpResult* value = evalBinOp(node->data.variableNode->value);
+        
+        tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
         //printf("%f\n", value);
     }
     else if (strcmp(type, "string") == 0){
@@ -387,14 +564,14 @@ void parseFunctionCall_(Node* node){
             //TODO: make binop possible on strings (concat)
             //printf("%i", g_funcs.items[index].inputs.items[i]->data.variableNode->type);
             if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == INTVAR || g_funcs.items[index].inputs.items[i]->data.variableNode->type == FLOATVAR || g_funcs.items[index].inputs.items[i]->data.variableNode->type == BOOLVAR){
-                tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = evalBinOp(node->data.functionCall->inputs.items[i]), .intialised = 1, .typedVar = FLOATVAR };
+                tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = evalBinOp(node->data.functionCall->inputs.items[i])->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
             }
             else if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == STRINGVAR){
                 tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringVal = getVariableStringValue(getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->name)), .intialised = 1, .typedVar = STRINGVAR };
             }
         }
         else if (node->data.functionCall->inputs.items[i]->type == BINOPNODE){
-            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = evalBinOp(node->data.functionCall->inputs.items[i]), .intialised = 1, .typedVar = FLOATVAR };
+            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = evalBinOp(node->data.functionCall->inputs.items[i])->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
         }
         else{
             printf("TODO: RAISE ERROR WRONG FORMAT (or not implemented)");
