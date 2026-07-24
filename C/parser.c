@@ -181,9 +181,9 @@ binOpResult* evalBinOp(Node* node){
         binOpResult* right = evalBinOp(node->data.binOpNode->right);
 
         switch (node->data.binOpNode->op) {
-            case PLUS:
+            case PLUS:{
                 if (checkCompatibleVarType(left->varType, right->varType, INTSUM)){
-                    double vLeft, vRight = 0;
+                    double vLeft, vRight = 0.0;
                     if (left->varType == INTVAR)
                         vLeft = left->value.intVal;
                     else if (left->varType == FLOATVAR)
@@ -203,9 +203,10 @@ binOpResult* evalBinOp(Node* node){
                 exit(1);
 
                 break;
-            case MINUS:
+            }
+            case MINUS:{
                 if (checkCompatibleVarType(left->varType, right->varType, MINUS)){
-                    double vLeft, vRight = 0;
+                    double vLeft, vRight = 0.0;
                     if (left->varType == INTVAR)
                         vLeft = left->value.intVal;
                     else if (left->varType == FLOATVAR)
@@ -224,9 +225,10 @@ binOpResult* evalBinOp(Node* node){
                 printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES -");
                 exit(1);
                 break;
-            case MUL:
+            }
+            case MUL:{
                 if (checkCompatibleVarType(left->varType, right->varType, MUL)){
-                    double vLeft, vRight = 0;
+                    double vLeft, vRight = 0.0;
                     if (left->varType == INTVAR)
                         vLeft = left->value.intVal;
                     else if (left->varType == FLOATVAR)
@@ -245,9 +247,10 @@ binOpResult* evalBinOp(Node* node){
                 printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES *");
                 exit(1);
                 break;
-            case DIV:
+            }
+            case DIV:{
                 if (checkCompatibleVarType(left->varType, right->varType, DIV)){
-                    double vLeft, vRight = 0;
+                    double vLeft, vRight = 0.0;
                     if (left->varType == INTVAR)
                         vLeft = left->value.intVal;
                     else if (left->varType == FLOATVAR)
@@ -268,9 +271,10 @@ binOpResult* evalBinOp(Node* node){
                 printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES /");
                 exit(1);
                 break;
-            case POW:
+            }
+            case POW:{
                 if (checkCompatibleVarType(left->varType, right->varType, MUL)){
-                    double vLeft, vRight = 0;
+                    double vLeft, vRight = 0.0;
                     if (left->varType == INTVAR)
                         vLeft = left->value.intVal;
                     else if (left->varType == FLOATVAR)
@@ -295,8 +299,9 @@ binOpResult* evalBinOp(Node* node){
 
                 printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES *");
                 exit(1);
-            case LESSTHAN:
-                double vLeft, vRight = 0;
+            }
+            case LESSTHAN:{
+                double vLeft, vRight = 0.0;
                 if (left->varType == INTVAR)
                     vLeft = left->value.intVal;
                 else if (left->varType == FLOATVAR)
@@ -310,8 +315,9 @@ binOpResult* evalBinOp(Node* node){
                 res->value.floatVar = (vLeft < vRight);
                 
                 return res;
-            case LESSOREQAUL:
-                double vLeft, vRight = 0;
+            }
+            case LESSOREQAUL:{
+                double vLeft, vRight = 0.0;
                 if (left->varType == INTVAR)
                     vLeft = left->value.intVal;
                 else if (left->varType == FLOATVAR)
@@ -325,8 +331,9 @@ binOpResult* evalBinOp(Node* node){
                 res->value.floatVar = (vLeft <= vRight);
                 
                 return res;
-            case MORETHAN:
-                double vLeft, vRight = 0;
+            }
+            case MORETHAN:{
+                double vLeft, vRight = 0.0;
                 if (left->varType == INTVAR)
                     vLeft = left->value.intVal;
                 else if (left->varType == FLOATVAR)
@@ -340,8 +347,9 @@ binOpResult* evalBinOp(Node* node){
                 res->value.floatVar = (vLeft > vRight);
                 
                 return res;
-            case MOREOREQUAL:
-                double vLeft, vRight = 0;
+            }
+            case MOREOREQUAL:{
+                double vLeft, vRight = 0.0;
                 if (left->varType == INTVAR)
                     vLeft = left->value.intVal;
                 else if (left->varType == FLOATVAR)
@@ -355,8 +363,9 @@ binOpResult* evalBinOp(Node* node){
                 res->value.floatVar = (vLeft >= vRight);
                 
                 return res;
-            case LEFTRIGHTEQUAL:
-                double vLeft, vRight = 0;
+            }
+            case LEFTRIGHTEQUAL:{
+                double vLeft, vRight = 0.0;
                 if (left->varType == INTVAR)
                     vLeft = left->value.intVal;
                 else if (left->varType == FLOATVAR)
@@ -370,6 +379,7 @@ binOpResult* evalBinOp(Node* node){
                 res->value.floatVar = (vLeft == vRight);
 
                 return res;
+            }
             default:
                 break;
         }
