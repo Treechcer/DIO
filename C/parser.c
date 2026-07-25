@@ -60,7 +60,7 @@ void callLowLevelFunc(int index){
     char* name = g_funcs.items[index].name;
     if (strcmp(name, "out") == 0){
         int varIndex = getVarIndexByName("a");
-        printf("%i\n", g_vars.items[varIndex].typedVar);
+        //printf("%i\n", g_vars.items[varIndex].typedVar);
         if (g_vars.items[varIndex].typedVar == STRINGVAR){
             printf("%s\n", getVariableStringValue(varIndex));
         }
@@ -294,6 +294,8 @@ binOpResult* evalBinOp(Node* node){
                         num *= vLeft;
                     }
 
+                    res->value.floatVar = num;
+
                     return res;
                 }
 
@@ -424,9 +426,11 @@ dynamicVar evalVariable(Node* node){
 
         binOpResult* value = evalBinOp(node->data.variableNode->value);
         if (value->varType == FLOATVAR){
+            //printf("%f\n", value->value.floatVar);
             tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.floatVal = value->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
         }
         else{
+            //printf("%i\n", value->value.intVal);
             tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
         }
         //printf("%f\n", value);
@@ -583,18 +587,21 @@ void parseFunctionCall_(Node* node){
                 tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringVal = getVariableStringValue(getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->name)), .intialised = 1, .typedVar = STRINGVAR };
             }
             else if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == UNKNOWNVARTYPE){
-                binOpResult* res = evalBinOp(node->data.functionCall->inputs.items[i]);
-                if (res->varType == INTVAR){
-                    tempVar = (varStruct){.index = g_vars.count, .type = "int", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.intVal = res->value.intVal, .intialised = 1, .typedVar = INTVAR };
+                //binOpResult* res = evalBinOp(node->data.functionCall->inputs.items[i]);
+                int index = getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->name);
+                //printf("index: %i\n", index);
+                if (g_vars.items[index].typedVar == INTVAR){
+                    double value = getVariableIntValue(index);
+                    tempVar = (varStruct){.index = g_vars.count, .type = "int", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.intVal = value, .intialised = 1, .typedVar = INTVAR };
                 }
-                else if (res->varType == FLOATVAR){
-                    printf("%f;;;\n", res->value.floatVar);
-                    tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = res->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
+                else if (g_vars.items[index].typedVar == FLOATVAR){
+                    double value = getVariableFloatValue(index);
+                    tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = value, .intialised = 1, .typedVar = FLOATVAR };
                 }
                 else{
                     printf("TOOD RAISE ERROR, BINOP NOT CORRECT RETURN?");
                     exit(1);
-                }
+                } 
             }
             else{
                 printf("TODO: ADD ERROR NO THING SOMETHING VARIABLE NODE");
