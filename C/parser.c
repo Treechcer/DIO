@@ -183,7 +183,7 @@ binOpResult* evalBinOp(Node* node){
         switch (node->data.binOpNode->op) {
             case PLUS:{
                 if (checkCompatibleVarType(left->varType, right->varType, INTSUM)){
-                    double vLeft, vRight = 0.0;
+                    double vLeft = 0.0, vRight = 0.0;
                     if (left->varType == INTVAR)
                         vLeft = left->value.intVal;
                     else if (left->varType == FLOATVAR)
@@ -206,7 +206,7 @@ binOpResult* evalBinOp(Node* node){
             }
             case MINUS:{
                 if (checkCompatibleVarType(left->varType, right->varType, MINUS)){
-                    double vLeft, vRight = 0.0;
+                    double vLeft = 0.0, vRight = 0.0;;
                     if (left->varType == INTVAR)
                         vLeft = left->value.intVal;
                     else if (left->varType == FLOATVAR)
@@ -228,7 +228,7 @@ binOpResult* evalBinOp(Node* node){
             }
             case MUL:{
                 if (checkCompatibleVarType(left->varType, right->varType, MUL)){
-                    double vLeft, vRight = 0.0;
+                    double vLeft = 0.0, vRight = 0.0;;
                     if (left->varType == INTVAR)
                         vLeft = left->value.intVal;
                     else if (left->varType == FLOATVAR)
@@ -250,7 +250,7 @@ binOpResult* evalBinOp(Node* node){
             }
             case DIV:{
                 if (checkCompatibleVarType(left->varType, right->varType, DIV)){
-                    double vLeft, vRight = 0.0;
+                    double vLeft = 0.0, vRight = 0.0;;
                     if (left->varType == INTVAR)
                         vLeft = left->value.intVal;
                     else if (left->varType == FLOATVAR)
@@ -274,7 +274,7 @@ binOpResult* evalBinOp(Node* node){
             }
             case POW:{
                 if (checkCompatibleVarType(left->varType, right->varType, MUL)){
-                    double vLeft, vRight = 0.0;
+                    double vLeft = 0.0, vRight = 0.0;;
                     if (left->varType == INTVAR)
                         vLeft = left->value.intVal;
                     else if (left->varType == FLOATVAR)
@@ -301,7 +301,7 @@ binOpResult* evalBinOp(Node* node){
                 exit(1);
             }
             case LESSTHAN:{
-                double vLeft, vRight = 0.0;
+                double vLeft = 0.0, vRight = 0.0;;
                 if (left->varType == INTVAR)
                     vLeft = left->value.intVal;
                 else if (left->varType == FLOATVAR)
@@ -317,7 +317,7 @@ binOpResult* evalBinOp(Node* node){
                 return res;
             }
             case LESSOREQAUL:{
-                double vLeft, vRight = 0.0;
+                double vLeft = 0.0, vRight = 0.0;;
                 if (left->varType == INTVAR)
                     vLeft = left->value.intVal;
                 else if (left->varType == FLOATVAR)
@@ -333,7 +333,7 @@ binOpResult* evalBinOp(Node* node){
                 return res;
             }
             case MORETHAN:{
-                double vLeft, vRight = 0.0;
+                double vLeft = 0.0, vRight = 0.0;;
                 if (left->varType == INTVAR)
                     vLeft = left->value.intVal;
                 else if (left->varType == FLOATVAR)
@@ -349,7 +349,7 @@ binOpResult* evalBinOp(Node* node){
                 return res;
             }
             case MOREOREQUAL:{
-                double vLeft, vRight = 0.0;
+                double vLeft = 0.0, vRight = 0.0;;
                 if (left->varType == INTVAR)
                     vLeft = left->value.intVal;
                 else if (left->varType == FLOATVAR)
@@ -365,7 +365,7 @@ binOpResult* evalBinOp(Node* node){
                 return res;
             }
             case LEFTRIGHTEQUAL:{
-                double vLeft, vRight = 0.0;
+                double vLeft = 0.0, vRight = 0.0;;
                 if (left->varType == INTVAR)
                     vLeft = left->value.intVal;
                 else if (left->varType == FLOATVAR)
@@ -427,7 +427,7 @@ dynamicVar evalVariable(Node* node){
             tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.floatVal = value->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
         }
         else{
-            tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.floatVal = value->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
+            tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
         }
         //printf("%f\n", value);
     }
