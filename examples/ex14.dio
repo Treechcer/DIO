@@ -1,5 +1,5 @@
-int a = maybe + maybe + maybe;
+int x = maybe + maybe * 10;
 
-out(a)
+out(x)
 
 >>this code writes any number from 0 to 3

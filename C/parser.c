@@ -60,7 +60,7 @@ void callLowLevelFunc(int index){
     char* name = g_funcs.items[index].name;
     if (strcmp(name, "out") == 0){
         int varIndex = getVarIndexByName("a");
-        //printf("%i\n", g_vars.items[varIndex].typedVar);
+        printf("%i\n", g_vars.items[varIndex].typedVar);
         if (g_vars.items[varIndex].typedVar == STRINGVAR){
             printf("%s\n", getVariableStringValue(varIndex));
         }
@@ -189,9 +189,9 @@ binOpResult* evalBinOp(Node* node){
                     else if (left->varType == FLOATVAR)
                         vLeft = left->value.floatVar;
                     if (right->varType == INTVAR)
-                        vLeft = left->value.intVal;
+                        vRight = right->value.intVal;
                     else if (right->varType == FLOATVAR)
-                        vLeft = left->value.floatVar;
+                        vRight = right->value.floatVar;
 
                     res->varType = FLOATVAR;
                     res->value.floatVar = vLeft + vRight;
@@ -212,9 +212,9 @@ binOpResult* evalBinOp(Node* node){
                     else if (left->varType == FLOATVAR)
                         vLeft = left->value.floatVar;
                     if (right->varType == INTVAR)
-                        vLeft = left->value.intVal;
+                        vRight = right->value.intVal;
                     else if (right->varType == FLOATVAR)
-                        vLeft = left->value.floatVar;
+                        vRight = right->value.floatVar;
 
                     res->varType = FLOATVAR;
                     res->value.floatVar = vLeft - vRight;
@@ -234,10 +234,10 @@ binOpResult* evalBinOp(Node* node){
                     else if (left->varType == FLOATVAR)
                         vLeft = left->value.floatVar;
                     if (right->varType == INTVAR)
-                        vLeft = left->value.intVal;
+                        vRight = right->value.intVal;
                     else if (right->varType == FLOATVAR)
-                        vLeft = left->value.floatVar;
-
+                        vRight = right->value.floatVar;
+                    
                     res->varType = FLOATVAR;
                     res->value.floatVar = vLeft * vRight;
 
@@ -256,9 +256,9 @@ binOpResult* evalBinOp(Node* node){
                     else if (left->varType == FLOATVAR)
                         vLeft = left->value.floatVar;
                     if (right->varType == INTVAR)
-                        vLeft = left->value.intVal;
+                        vRight = right->value.intVal;
                     else if (right->varType == FLOATVAR)
-                        vLeft = left->value.floatVar;
+                        vRight = right->value.floatVar;
 
                     if (vRight == 0) errorOut((Error){NULL, divisionByZero, NULL});
 
@@ -280,9 +280,9 @@ binOpResult* evalBinOp(Node* node){
                     else if (left->varType == FLOATVAR)
                         vLeft = left->value.floatVar;
                     if (right->varType == INTVAR)
-                        vLeft = left->value.intVal;
+                        vRight = right->value.intVal;
                     else if (right->varType == FLOATVAR)
-                        vLeft = left->value.floatVar;
+                        vRight = right->value.floatVar;
 
                     res->varType = FLOATVAR;
                     if (vRight == 0) {
@@ -307,9 +307,9 @@ binOpResult* evalBinOp(Node* node){
                 else if (left->varType == FLOATVAR)
                     vLeft = left->value.floatVar;
                 if (right->varType == INTVAR)
-                    vLeft = left->value.intVal;
+                    vRight = right->value.intVal;
                 else if (right->varType == FLOATVAR)
-                    vLeft = left->value.floatVar;
+                    vRight = right->value.floatVar;
 
                 res->varType = FLOATVAR;
                 res->value.floatVar = (vLeft < vRight);
@@ -323,9 +323,9 @@ binOpResult* evalBinOp(Node* node){
                 else if (left->varType == FLOATVAR)
                     vLeft = left->value.floatVar;
                 if (right->varType == INTVAR)
-                    vLeft = left->value.intVal;
+                    vRight = right->value.intVal;
                 else if (right->varType == FLOATVAR)
-                    vLeft = left->value.floatVar;
+                    vRight = right->value.floatVar;
 
                 res->varType = FLOATVAR;
                 res->value.floatVar = (vLeft <= vRight);
@@ -339,9 +339,9 @@ binOpResult* evalBinOp(Node* node){
                 else if (left->varType == FLOATVAR)
                     vLeft = left->value.floatVar;
                 if (right->varType == INTVAR)
-                    vLeft = left->value.intVal;
+                    vRight = right->value.intVal;
                 else if (right->varType == FLOATVAR)
-                    vLeft = left->value.floatVar;
+                    vRight = right->value.floatVar;
 
                 res->varType = FLOATVAR;
                 res->value.floatVar = (vLeft > vRight);
@@ -355,9 +355,9 @@ binOpResult* evalBinOp(Node* node){
                 else if (left->varType == FLOATVAR)
                     vLeft = left->value.floatVar;
                 if (right->varType == INTVAR)
-                    vLeft = left->value.intVal;
+                    vRight = right->value.intVal;
                 else if (right->varType == FLOATVAR)
-                    vLeft = left->value.floatVar;
+                    vRight = right->value.floatVar;
 
                 res->varType = FLOATVAR;
                 res->value.floatVar = (vLeft >= vRight);
@@ -371,9 +371,9 @@ binOpResult* evalBinOp(Node* node){
                 else if (left->varType == FLOATVAR)
                     vLeft = left->value.floatVar;
                 if (right->varType == INTVAR)
-                    vLeft = left->value.intVal;
+                    vRight = right->value.intVal;
                 else if (right->varType == FLOATVAR)
-                    vLeft = left->value.floatVar;
+                    vRight = right->value.floatVar;
 
                 res->varType = FLOATVAR;
                 res->value.floatVar = (vLeft == vRight);
@@ -385,8 +385,7 @@ binOpResult* evalBinOp(Node* node){
         }
     }
 
-    res->varType = FLOATVAR;
-    res->value.floatVar = 0;
+    res->varType = UNKNOWNVARTYPE;
 
     return res;
 }
@@ -424,8 +423,12 @@ dynamicVar evalVariable(Node* node){
         //printf("%f\n", evalBinOp(node->data.variableNode->value));
 
         binOpResult* value = evalBinOp(node->data.variableNode->value);
-        
-        tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
+        if (value->varType == FLOATVAR){
+            tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.floatVal = value->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
+        }
+        else{
+            tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.floatVal = value->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
+        }
         //printf("%f\n", value);
     }
     else if (strcmp(type, "string") == 0){
@@ -572,12 +575,30 @@ void parseFunctionCall_(Node* node){
         }
         else if (node->data.functionCall->inputs.items[i]->type == VARIABLENODE){
             //TODO: make binop possible on strings (concat)
-            //printf("%i", g_funcs.items[index].inputs.items[i]->data.variableNode->type);
+            //printf("%i\n", g_funcs.items[index].inputs.items[i]->data.variableNode->type);
             if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == INTVAR || g_funcs.items[index].inputs.items[i]->data.variableNode->type == FLOATVAR || g_funcs.items[index].inputs.items[i]->data.variableNode->type == BOOLVAR){
                 tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = evalBinOp(node->data.functionCall->inputs.items[i])->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
             }
             else if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == STRINGVAR){
                 tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringVal = getVariableStringValue(getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->name)), .intialised = 1, .typedVar = STRINGVAR };
+            }
+            else if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == UNKNOWNVARTYPE){
+                binOpResult* res = evalBinOp(node->data.functionCall->inputs.items[i]);
+                if (res->varType == INTVAR){
+                    tempVar = (varStruct){.index = g_vars.count, .type = "int", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.intVal = res->value.intVal, .intialised = 1, .typedVar = INTVAR };
+                }
+                else if (res->varType == FLOATVAR){
+                    printf("%f;;;\n", res->value.floatVar);
+                    tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = res->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
+                }
+                else{
+                    printf("TOOD RAISE ERROR, BINOP NOT CORRECT RETURN?");
+                    exit(1);
+                }
+            }
+            else{
+                printf("TODO: ADD ERROR NO THING SOMETHING VARIABLE NODE");
+                exit(1);
             }
         }
         else if (node->data.functionCall->inputs.items[i]->type == BINOPNODE){
