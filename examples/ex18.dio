@@ -1,7 +1,11 @@
-string a = "aaa"
-string b = "bbb"
+string a = "Hello "
+string b = "World"
 
 out(a)
 out(b)
 
+>>prints: Hello\nWorld
+
 out(a + b)
+
+>>prints: Hello World

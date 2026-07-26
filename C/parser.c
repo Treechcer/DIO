@@ -163,8 +163,21 @@ binOpResult* evalBinOp(Node* node){
         res->value.floatVar = node->data.numberNode->value;
         return res;
     }
-    if (node->type == VARIABLENODE) {
-        if (node->data.variableNode->type == INTVAR || node->data.variableNode->type == FLOATVAR){
+if (node->type == VARIABLENODE) {
+        int varIndex = getVarIndexByName(node->data.variableNode->name);
+        if (varIndex != -1) {
+            if (g_vars.items[varIndex].typedVar == STRINGVAR) {
+                res->varType = STRINGVAR;
+                res->value.stringVal = getVariableStringValue(varIndex);
+                return res;
+            } else if (g_vars.items[varIndex].typedVar == INTVAR || g_vars.items[varIndex].typedVar == FLOATVAR) {
+                res->varType = FLOATVAR;
+                res->value.floatVar = getVarValueByName(node->data.variableNode->name);
+                return res;
+            }
+        }
+
+        /*if (node->data.variableNode->type == INTVAR || node->data.variableNode->type == FLOATVAR){
             res->varType = FLOATVAR;
             res->value.floatVar = getVarValueByName(node->data.variableNode->name);
             return res;
@@ -173,7 +186,7 @@ binOpResult* evalBinOp(Node* node){
             res->varType = STRINGVAR;
             res->value.stringVal = getVariableStringValue(getVarIndexByName(node->data.variableNode->name));
             return res;
-        }
+        }*/
         
         printf("ERROR!!! NOT CORRECT VARTYPE FOR BINOP, todo: rais correctly error");
         exit(1);
@@ -218,7 +231,7 @@ binOpResult* evalBinOp(Node* node){
                     res->varType = STRINGVAR;
                     res->value.stringVal = buffer;
 
-                    printf("%s", buffer);
+                    //printf("%s", buffer);
 
                     return res;
                 }
@@ -638,7 +651,6 @@ void parseFunctionCall_(Node* node){
         }
         else if (node->data.functionCall->inputs.items[i]->type == BINOPNODE){
             binOpResult* res = evalBinOp(node->data.functionCall->inputs.items[i]);
-            printf("|%i|\n", res->varType);
             if (res->varType == FLOATVAR)
                 tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = res->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
             else if (res->varType == STRINGVAR)
