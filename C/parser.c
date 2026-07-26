@@ -33,6 +33,9 @@ int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes a
     else if ((action == FCALL) && ((var1 == UNKNOWNVARTYPE || var2 == UNKNOWNVARTYPE) || ((var1 == INTVAR || var1 == FLOATVAR || var1 == BOOLVAR) || (var2 == INTVAR || var2 == FLOATVAR || var2 == BOOLVAR) ))){
         return 1;
     }
+    else if ((action == CONCATSUM) && (var1 == STRINGVAR) && (var2 == STRINGVAR)){
+        return 1;
+    }
 
     return 0;
 }
@@ -166,6 +169,11 @@ binOpResult* evalBinOp(Node* node){
             res->value.floatVar = getVarValueByName(node->data.variableNode->name);
             return res;
         }
+        else if (node->data.variableNode->type == STRINGVAR){
+            res->varType = STRINGVAR;
+            res->value.stringVal = getVariableStringValue(getVarIndexByName(node->data.variableNode->name));
+            return res;
+        }
         
         printf("ERROR!!! NOT CORRECT VARTYPE FOR BINOP, todo: rais correctly error");
         exit(1);
@@ -195,6 +203,22 @@ binOpResult* evalBinOp(Node* node){
 
                     res->varType = FLOATVAR;
                     res->value.floatVar = vLeft + vRight;
+
+                    return res;
+                }
+                else if (checkCompatibleVarType(left->varType, right->varType, CONCATSUM)){
+                    char* vLeft = left->value.stringVal;
+                    char* vRight = right->value.stringVal;
+
+                    char buffer[strlen(vLeft) + strlen(vRight)];
+
+                    strcpy(buffer, vLeft);
+                    strcat(buffer, vRight);
+                    
+                    res->varType = STRINGVAR;
+                    res->value.stringVal = buffer;
+
+                    printf("%s", buffer);
 
                     return res;
                 }
@@ -598,6 +622,10 @@ void parseFunctionCall_(Node* node){
                     double value = getVariableFloatValue(index);
                     tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = value, .intialised = 1, .typedVar = FLOATVAR };
                 }
+                else if (g_vars.items[index].typedVar == STRINGVAR){
+                    char* value = getVariableStringValue(index);
+                    tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringVal = value, .intialised = 1, .typedVar = STRINGVAR };
+                }
                 else{
                     printf("TOOD RAISE ERROR, BINOP NOT CORRECT RETURN?");
                     exit(1);
@@ -609,7 +637,12 @@ void parseFunctionCall_(Node* node){
             }
         }
         else if (node->data.functionCall->inputs.items[i]->type == BINOPNODE){
-            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = evalBinOp(node->data.functionCall->inputs.items[i])->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
+            binOpResult* res = evalBinOp(node->data.functionCall->inputs.items[i]);
+            printf("|%i|\n", res->varType);
+            if (res->varType == FLOATVAR)
+                tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = res->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
+            else if (res->varType == STRINGVAR)
+                tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringVal = res->value.stringVal, .intialised = 1, .typedVar = STRINGVAR };
         }
         else{
             printf("TODO: RAISE ERROR WRONG FORMAT (or not implemented)");

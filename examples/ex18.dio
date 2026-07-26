@@ -1,0 +1,7 @@
+string a = "aaa"
+string b = "bbb"
+
+out(a)
+out(b)
+
+out(a + b)
