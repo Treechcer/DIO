@@ -383,7 +383,7 @@ dynamicNode createFunctionParams(dynamicToken* toks){
             errorOut((Error){"Unable to parse node", ASTERROR, createPosition(NULL, NULL, NULL, NULL)});
         }
 
-        DYN_PUSH(n, nodes); // <- stringnode crash
+        DYN_PUSH(n, nodes);
 
         if (checkCurrenToken(toks).identifier == COMMA){
             shiftToken(toks);
@@ -569,7 +569,7 @@ Node* parseStringGeneral(dynamicToken* toks){
 
         Node* stringNode = malloc(sizeof(stringNode));
         stringNode->type = STRINGNODE;
-
+        stringNode->data.stringNode = malloc(sizeof(stringNode));
         stringNode->data.stringNode->value = value;
         stringNode->data.stringNode->length = len;
 
