@@ -656,6 +656,9 @@ void parseFunctionCall_(Node* node){
             else if (res->varType == STRINGVAR)
                 tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringVal = res->value.stringVal, .intialised = 1, .typedVar = STRINGVAR };
         }
+        else if (node->data.functionCall->inputs.items[i]->type == STRINGNODE){
+            tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringVal = node->data.functionCall->inputs.items[i]->data.stringNode->value, .intialised = 1, .typedVar = STRINGVAR };
+        }
         else{
             printf("TODO: RAISE ERROR WRONG FORMAT (or not implemented)");
             exit(1);
@@ -726,7 +729,7 @@ void parseGeneric(Node* node){
 }
 
 void parse(Node* ast){
-    printf("PARSER");
+    //printf("PARSER");
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node = ast->data.programNode->nodes.items[i];

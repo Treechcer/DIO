@@ -589,7 +589,7 @@ Node* parseProgram(dynamicToken* toks) {
     pNode->data.programNode->nodes.items = NULL;
 
     while (g_index < (toks->count)-1) {
-        printf("%i : %li\n", g_index, (toks->count)-1);
+        //printf("%i : %li\n", g_index, (toks->count)-1);
         if (checkCurrenToken(toks).identifier == END){
             shiftToken(toks);
             continue;
