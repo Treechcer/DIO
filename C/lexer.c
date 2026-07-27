@@ -14,11 +14,11 @@ bool isAllowed(char c){ //special characters that are allowed and handled differ
 void writeToksOut(dynamicToken tok){
     for(int i = 0; i < tok.count; i++){
         if (tok.items[i].value){
-            printf("(%i : %s)", tok.items[i].identifier, tok.items[i].value);
+            printf("((%i) %i : %s)", i, tok.items[i].identifier, tok.items[i].value);
             if (tok.items[i].identifier == END) printf("\n");
         }
         else{
-            printf("(%i)", (tok.items[i].identifier));
+            printf("(%i) %i)", i, (tok.items[i].identifier));
             if (tok.items[i].identifier == END) printf("\n");
         }
     }

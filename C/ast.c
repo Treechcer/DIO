@@ -383,7 +383,7 @@ dynamicNode createFunctionParams(dynamicToken* toks){
             errorOut((Error){"Unable to parse node", ASTERROR, createPosition(NULL, NULL, NULL, NULL)});
         }
 
-        DYN_PUSH(n, nodes);
+        DYN_PUSH(n, nodes); // <- stringnode crash
 
         if (checkCurrenToken(toks).identifier == COMMA){
             shiftToken(toks);
@@ -474,7 +474,6 @@ Node* parseFunctionCall(dynamicToken* toks){
         pNode->type = FUNCTIONCALL;
         pNode->data.functionCall = malloc(sizeof(functionCall));
         pNode->data.functionCall->name = functionName;
-
         pNode->data.functionCall->inputs = createFunctionParams(toks);
 
         return pNode;
@@ -541,6 +540,45 @@ Node* parseLoop(dynamicToken* toks){
     return NULL;
 }
 
+Node* parseStringGeneral(dynamicToken* toks){
+    if (checkCurrenToken(toks).identifier == QUOTE){
+        shiftToken(toks);
+        char* val;
+        int len = 0;
+        int pos = g_index;
+
+        while (toks->items[pos].identifier != QUOTE){
+            len += strlen(toks->items[pos].value);
+            pos++;
+        }
+        char* value = "";
+        if (len > 0){
+            char* buffer = malloc(len);
+            
+            strcpy(buffer, checkCurrenToken(toks).value);
+            shiftToken(toks);
+            while(checkCurrenToken(toks).identifier != QUOTE){
+                strcat(buffer, checkCurrenToken(toks).value);
+                shiftToken(toks);
+            }
+
+            value = buffer;
+        }
+
+        shiftToken(toks); //'
+
+        Node* stringNode = malloc(sizeof(stringNode));
+        stringNode->type = STRINGNODE;
+
+        stringNode->data.stringNode->value = value;
+        stringNode->data.stringNode->length = len;
+
+        return stringNode;
+    }
+
+    return NULL;
+}
+
 Node* parseProgram(dynamicToken* toks) {
     Node* pNode = createNode();
     pNode->type = PROGRAMNODE;
@@ -551,7 +589,7 @@ Node* parseProgram(dynamicToken* toks) {
     pNode->data.programNode->nodes.items = NULL;
 
     while (g_index < (toks->count)-1) {
-        //printf("%i : %li\n", g_index, (toks->count)-1);
+        printf("%i : %li\n", g_index, (toks->count)-1);
         if (checkCurrenToken(toks).identifier == END){
             shiftToken(toks);
             continue;
@@ -567,6 +605,9 @@ Node* parseProgram(dynamicToken* toks) {
 Node* parseGenericNode(dynamicToken* toks){
     Node* node = parseFunctionCall(toks);
 
+    if (node == NULL){
+        node = parseStringGeneral(toks);
+    }
     if (node == NULL){
         node = parseExpression(toks);        
     }

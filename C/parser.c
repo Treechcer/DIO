@@ -726,7 +726,7 @@ void parseGeneric(Node* node){
 }
 
 void parse(Node* ast){
-    //printf("PARSER");
+    printf("PARSER");
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node = ast->data.programNode->nodes.items[i];
