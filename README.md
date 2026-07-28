@@ -6,7 +6,7 @@ This is test of making a programming language in C with the least amount of help
 
 ## Documentation
 
-Dio is procedural, statically typed that's weakly typed programming language.
+Dio is procedural, statically typed that's weakly typed programming language. Working directory is generated through "-file" input, if you input "-file example/ex2.dio", DIO uses ./examples/ as it's working directory.
 
 ### Origins
 
@@ -134,6 +134,15 @@ out(a)
 ```
 
 Out is print function that prints out the variables or what you put into it.
+
+### middle-processor
+
+Middle processor is kind of middle ware used to add code or change how lexing works. This is imitating (in a way\*) pre-processor from C (or that's the idea behind itq*). All mid processor calls are prefixed with '#'.
+
+#### get
+
+- Takes argument of file.
+- Adds the file into the program you're making, this is used to import to other file for multi-file support.
 
 ## ISSUES (right now)
 

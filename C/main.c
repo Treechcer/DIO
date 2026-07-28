@@ -1,6 +1,9 @@
 #include<string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h> 
+#include <libgen.h>
+#include <direct.h>
 
 #include"../Headers/lexer.h"
 #include"../Headers/ast.h"
@@ -44,8 +47,16 @@ int main(int argc, char **argv){
 
     //get file
     char* filePath = getvalueByIndex(fileArgIndex);
+
     if (filePath != NULL && strlen(filePath) > 0){
-        fileReadReturn mainFile = readFile(getvalueByIndex(fileArgIndex));
+        char* fName = getvalueByIndex(fileArgIndex);
+        char *dir_copy = strdup(fName);
+        chdir(dirname(dir_copy));
+
+        char *base_copy = strdup(fName);
+        char *realName = basename(base_copy);
+
+        fileReadReturn mainFile = readFile(realName);
 
         char code[mainFile.size + 3];
         strcpy(code, mainFile.content);
