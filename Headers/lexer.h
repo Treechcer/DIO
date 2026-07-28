@@ -3,6 +3,6 @@
 
 #include "../Headers/dynamic_array.h"
 
-dynamicToken lex(const char* code, const char* file);
+dynamicToken lex(const char* code, char* fileName, dynamicToken toks);
 
 #endif

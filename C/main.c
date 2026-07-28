@@ -53,32 +53,19 @@ int main(int argc, char **argv){
         long fsize = ftell(filePointer);
         fseek(filePointer, 0, SEEK_SET);
 
-        char *string = malloc(fsize + 1 + 3);
-        fread(string, fsize, 1, filePointer);
+        char *mainFile = malloc(fsize + 1);
+        fread(mainFile, fsize, 1, filePointer);
         fclose(filePointer);
 
-        //lmao this actually fixed it (I'll keep it though)
+        mainFile[fsize] = '\0';
 
-        string[fsize] = '\0';
-        //printf("%s\n", string);
-
-        char* STD = getSTD();
-        int STDSize = (int)strlen(STD);
-        char codeWithStd[STDSize + 1 + fsize];
-        strcpy(codeWithStd, STD);
-        strcat(codeWithStd, string);
-        strcat(codeWithStd, "\n>>");
-        codeWithStd[STDSize-1] = '\n';
-        //printf("%s\n", STD);
-        //printf("----------\n");
-        //printf("%s\n", string);
-        //printf("----------\n");
-        //printf("%s\n", codeWithStd);
-        //printf("----------\n");
+        char code[fsize + 3];
+        strcpy(code, mainFile);
+        strcat(code, "\n>>");
 
         initLowLevelFuncs();
-
-        parse(buildAst(lex(codeWithStd, filePath)));
+        dynamicToken toks = {0,0,0};
+        parse(buildAst(lex(code, filePath, lex(getSTD(), "STDlib.dio", toks))));
     }
     
     return 0;

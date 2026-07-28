@@ -26,10 +26,8 @@ void writeToksOut(dynamicToken tok){
     printf("\n");
 }
 
-dynamicToken lex(const char* code, char* fileName) {
+dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
     //Token* toks;
-
-    dynamicToken toks = {0,0,0};
 
     int line = 1;
     int charPos_ = 1;
