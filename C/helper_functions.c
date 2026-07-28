@@ -4,12 +4,13 @@
 #include <string.h>
 
 #include "../Headers/token.h"
+#include "../Headers/helper_functions.h"
 
 long int convertToLongInt(char* value){
     return atol(value);
 }
 
-long int convertToInt(char* value){
+int convertToInt(char* value){
     return atol(value);
 }
 
@@ -64,4 +65,27 @@ size_t getStringSize(const char* string){
     }
 
     return len;
+}
+
+fileReadReturn readFile(char* fName){
+    // FILE READ source (modified):
+    // Source - https://stackoverflow.com/a/14002993
+    // Posted by user529758, modified by community. See post 'Timeline' for change history
+    // Retrieved 2026-07-04, License - CC BY-SA 4.0
+    FILE* filePointer = fopen(fName, "rb");
+    if (filePointer == NULL)
+        return (fileReadReturn){.size = 0, .content = "", .exists = 0};
+
+    fseek(filePointer, 0, SEEK_END);
+    long fsize = ftell(filePointer);
+    fseek(filePointer, 0, SEEK_SET);
+
+    char *mainFile = malloc(fsize + 1);
+    fread(mainFile, fsize, 1, filePointer);
+    fclose(filePointer);
+
+    mainFile[fsize] = '\0';
+
+    fileReadReturn ret = (fileReadReturn){.size = fsize, .content = mainFile, .exists = 1};
+    return ret;
 }

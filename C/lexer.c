@@ -100,7 +100,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     c = *code;
                     char* str = "";
                     dynamicChar token = {0,0,0};
-                    while(isAlpha(c) && strlen(code) > 0){
+                    while(isAlpha(c)){
                         DYN_PUSH(c, token);
 
                         code++;
@@ -164,11 +164,51 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                 tok = createToken("'", QUOTE, createPosition(&charPos_, &charPos_, &line, fileName));
                 skipSapces = !skipSapces;
                 break;
+            case '#':
+                code++; //#
+                charPos_++;
+                c = *code;
+                
+                if (isAlpha(c)) {
+                    dynamicChar action = {0,0,0};
+                    while (isAlpha(c) && c != '\0') {
+                        DYN_PUSH(c, action);
+                        code++;
+                        charPos_++;
+                        c = *code;
+                    }
+                    DYN_PUSH('\0', action);
+
+                    while ((c == ' ' || c == '\t') && c != '\0') {
+                        code++;
+                        charPos_++;
+                        c = *code;
+                    }
+
+                    dynamicChar arg = {0,0,0};
+                    while ((isAlpha(c) || c == '/' || c == '\\' || c == '.' || isDigit(c)) && c != '\0') {
+                        DYN_PUSH(c, arg);
+                        code++;
+                        charPos_++;
+                        c = *code;
+                    }
+                    DYN_PUSH('\0', arg);
+
+                    if (strcmp(action.items, "get") == 0) {
+                        fileReadReturn fileNext = readFile(arg.items);
+                        if (fileNext.exists == 0) {
+                            printf("TODO ADD ERROR FOR NO FILE!");
+                            exit(1);
+                        }
+                        toks = lex(fileNext.content, arg.items, toks);
+                    }
+                }
+                break;
             default:
                     if (isDigit(c)){
                         dynamicChar token = {0,0,0};
                         int isFloat = false;
-                        while((isDigit(c) || c == '.') && strlen(code) > 0){
+                        while((isDigit(c) || c == '.')){
                             if (c == '.') {
                                 if (isFloat) {
                                     errorOut((Error){"", twoDotsFloat, createPosition(&charPos_, &charPos_, &line, fileName)});
@@ -192,7 +232,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     }
                     else if (isAlpha(c)){
                         dynamicChar token = {0,0,0};
-                        while(isAlpha(c) && strlen(code) > 0){
+                        while(isAlpha(c)){
                             DYN_PUSH(c, token);
 
                             code++;
@@ -222,6 +262,8 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         c = *code;
                     }
                     else{
+                        printf("%s\n", code);
+                        writeToksOut(toks);
                         errorOut((Error){"", genericLexError, createPosition(&charPos_, &charPos_, &line, fileName)});
                     }
                 break;
@@ -238,6 +280,6 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
         charPos_++;
     }
 
-    writeToksOut(toks);
+    //writeToksOut(toks);
     return toks;
 }

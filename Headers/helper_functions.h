@@ -2,8 +2,15 @@
 #define HELPER_FUNCTIONS__H
 
 #include <stdbool.h>
+#include<string.h>
 
 #include"token.h"
+
+typedef struct fileReadReturn{
+    int size;
+    char* content;
+    int exists;
+} fileReadReturn;
 
 long int convertToLongInt(char* value);
 int convertToInt(char* value);
@@ -13,7 +20,8 @@ bool isDigit(char ch);
 bool isAlpha(char c);
 Token createToken(char* value, TokenType identifier, Position pos);
 Position createPosition(int* start, int* end, int* line, char* file);
-size_t getStringSize(char* string);
+size_t getStringSize(const char* string);
 bool isAlphaString(char* c);
+fileReadReturn readFile(char* fName);
 
 #endif

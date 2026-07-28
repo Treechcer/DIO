@@ -8,6 +8,7 @@
 #include"../Headers/parser.h"
 #include"../Headers/inputargs.h"
 #include"../Headers/STD.h"
+#include"../Headers/helper_functions.h"
 
 Node* createInput(char* name, variableTypes type){
     Node* input = createNode();
@@ -44,23 +45,10 @@ int main(int argc, char **argv){
     //get file
     char* filePath = getvalueByIndex(fileArgIndex);
     if (filePath != NULL && strlen(filePath) > 0){
-        // FILE READ source (modified):
-        // Source - https://stackoverflow.com/a/14002993
-        // Posted by user529758, modified by community. See post 'Timeline' for change history
-        // Retrieved 2026-07-04, License - CC BY-SA 4.0
-        FILE* filePointer = fopen(getvalueByIndex(fileArgIndex), "rb");
-        fseek(filePointer, 0, SEEK_END);
-        long fsize = ftell(filePointer);
-        fseek(filePointer, 0, SEEK_SET);
+        fileReadReturn mainFile = readFile(getvalueByIndex(fileArgIndex));
 
-        char *mainFile = malloc(fsize + 1);
-        fread(mainFile, fsize, 1, filePointer);
-        fclose(filePointer);
-
-        mainFile[fsize] = '\0';
-
-        char code[fsize + 3];
-        strcpy(code, mainFile);
+        char code[mainFile.size + 3];
+        strcpy(code, mainFile.content);
         strcat(code, "\n>>");
 
         initLowLevelFuncs();
