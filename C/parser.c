@@ -30,7 +30,7 @@ int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes a
         //this is more of an generally converting to another type, that shall be handled elsewhere
         return 1;
     }
-    else if ((action == FCALL) && ((var1 == UNKNOWNVARTYPE || var2 == UNKNOWNVARTYPE) || ((var1 == INTVAR || var1 == FLOATVAR || var1 == BOOLVAR) || (var2 == INTVAR || var2 == FLOATVAR || var2 == BOOLVAR) ))){
+    else if ((action == FCALL) && ((var1 == UNKNOWNVARTYPE || var2 == UNKNOWNVARTYPE) ||  (var1 == var2))){
         return 1;
     }
     else if ((action == CONCATSUM) && (var1 == STRINGVAR) && (var2 == STRINGVAR)){
@@ -40,21 +40,8 @@ int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes a
     return 0;
 }
 
-void createLowLevelFunc(char* name){
+void createLowLevelFunc(char* name, dynamicNode inputs){
     funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .isLowLevel = 1};
-
-    dynamicNode inputs = {0,0,0};
-
-    Node* input = createNode();
-    input->type = VARIABLENODE;
-    input->data.variableNode = malloc(sizeof(variableNode));
-    input->data.variableNode->initialise = 1;
-    input->data.variableNode->name = "a";
-    input->data.variableNode->type = UNKNOWNVARTYPE;
-    input->data.variableNode->value = NULL;
-
-    DYN_PUSH(input, inputs)
-
     tempFunc.inputs = inputs;
     DYN_PUSH(tempFunc, g_funcs);
 }
@@ -78,6 +65,10 @@ void callLowLevelFunc(int index){
             exit(1);
         }
     }
+    else if (strcmp(name, "exec") == 0){
+        system(getVariableStringValue(getVarIndexByName("a")));
+    }
+
 }
 
 int getFuncIndexByName(char* name){
@@ -671,6 +662,7 @@ void parseFunctionCall_(Node* node){
         }
 
         if (!checkCompatibleVarType(tempVar.typedVar, g_funcs.items[index].inputs.items[i]->data.variableNode->type, FCALL)){
+            printf("%i : %i\n", tempVar.typedVar, g_funcs.items[index].inputs.items[i]->data.variableNode->type);
             printf("TODO: RAISE ERROR, INCORRECT CALL FUNCTIO TYPE");
             exit(1);
         }

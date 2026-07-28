@@ -9,6 +9,28 @@
 #include"../Headers/inputargs.h"
 #include"../Headers/STD.h"
 
+Node* createInput(char* name, variableTypes type){
+    Node* input = createNode();
+    input->type = VARIABLENODE;
+    input->data.variableNode = malloc(sizeof(variableNode));
+    input->data.variableNode->initialise = 1;
+    input->data.variableNode->name = name;
+    input->data.variableNode->type = type;
+    input->data.variableNode->value = NULL;
+
+    return input;
+}
+
+void initLowLevelFuncs(){
+    dynamicNode inputs = {0,0,0};
+    DYN_PUSH(createInput("a", UNKNOWNVARTYPE), inputs);
+    createLowLevelFunc("out", inputs);
+    
+    inputs = (dynamicNode){0,0,0};
+    DYN_PUSH(createInput("a", STRINGVAR), inputs);
+    createLowLevelFunc("exec", inputs);
+}
+
 int main(int argc, char **argv){
     //BUILD INPUTS!!
 
@@ -54,7 +76,7 @@ int main(int argc, char **argv){
         //printf("%s\n", codeWithStd);
         //printf("----------\n");
 
-        createLowLevelFunc("out");
+        initLowLevelFuncs();
 
         parse(buildAst(lex(codeWithStd, filePath)));
     }

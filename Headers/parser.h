@@ -52,7 +52,7 @@ typedef struct {
 } binOpResult;
 
 void parse(Node* ast);
-void createLowLevelFunc(char* name);
+void createLowLevelFunc(char* name, dynamicNode inputs);
 
 STRUCT_DYNAMIC_ARR_MACRO(varStruct, dynamicVar)
 STRUCT_DYNAMIC_ARR_MACRO(funcStruct, dynamicFunc)
