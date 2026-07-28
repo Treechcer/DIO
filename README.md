@@ -4,6 +4,16 @@ This is test of making a programming language in C with the least amount of help
 
 >NOTE: this is my first C code. I only used C++ (as the most SIMILAR language to C).
 
+## Compiling and Running
+
+To compile it run in the root of this repository command:
+
+```sh
+python3 ./scripts/compile.py
+```
+
+This automatically runs the language with params from ./scripts/CompileRunParams.txt (which is usually examples/ex[num].dio).
+
 ## Documentation
 
 Dio is procedural, statically typed that's weakly typed programming language. Working directory is generated through "-file" input, if you input "-file example/ex2.dio", DIO uses ./examples/ as it's working directory.
