@@ -3,7 +3,11 @@
 #include <time.h>
 #include <stdio.h> 
 #include <libgen.h>
-#include <direct.h>
+#ifdef _WIN32
+    #include <direct.h>
+#else
+    #include <unistd.h>
+#endif
 
 #include"../Headers/lexer.h"
 #include"../Headers/ast.h"
