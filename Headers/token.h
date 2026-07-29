@@ -33,6 +33,8 @@ typedef enum {
     MAYBE,
     QUOTE,
     SPACE,
+    LSQUAREPAREN,
+    RSQUAREPAREN,
 } TokenType;
 
 typedef struct Token{

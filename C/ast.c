@@ -579,6 +579,25 @@ Node* parseStringGeneral(dynamicToken* toks){
     return NULL;
 }
 
+Node* parseArrayAcessNode(dynamicToken* toks){
+
+    if (checkCurrenToken(toks).identifier == LSQUAREPAREN && checkTokenAt(toks, 2).identifier == RSQUAREPAREN){
+        shiftToken(toks);
+        int num = convertToInt(checkCurrenToken(toks).value);
+        shiftToken(toks);
+        shiftToken(toks);
+
+        Node* ret = createNode();
+        ret->type = ARRAYACESSNODE;
+        ret->data.arrayAcessNode = malloc(sizeof(arrayAcessNode));
+        ret->data.arrayAcessNode->index = num;
+
+        return ret;
+    }
+
+    return NULL;
+}
+
 Node* parseProgram(dynamicToken* toks) {
     Node* pNode = createNode();
     pNode->type = PROGRAMNODE;
@@ -622,6 +641,9 @@ Node* parseGenericNode(dynamicToken* toks){
     }
     if (node == NULL){
         node = parseCondition(toks);
+    }
+    if (node == NULL){
+        node = parseArrayAcessNode(toks);
     }
     if (node == NULL){
         node = parseFunctionCreate(toks);

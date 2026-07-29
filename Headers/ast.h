@@ -28,6 +28,7 @@ typedef enum {
     LOOPNODE,
     MAYBENODE,
     STRINGNODE,
+    ARRAYACESSNODE,
 } nodeType;
 
 typedef struct programNode {
@@ -107,6 +108,10 @@ typedef struct stringNode {
     int length;
 } stringNode;
 
+typedef struct arrayAcessNode {
+    int index;
+} arrayAcessNode;
+
 typedef struct Node {
     nodeType type;
     union {
@@ -123,6 +128,7 @@ typedef struct Node {
         struct loopNode* loopNode;
         struct maybeNode* maybeNode;
         struct stringNode* stringNode;
+        struct arrayAcessNode* arrayAcessNode;
     } data;
     //TODO: add position
     //Position* pos;

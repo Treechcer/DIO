@@ -28,7 +28,7 @@ The name `Dio` comes from ancient Greek philosopher [Diogenes of Sinope](https:/
 
 - [x] int - basic number type, it's internally used as float
 - [x] float - basic number type, can be used with +, -, *, /, <, >, <=, >=, ==
-- [x] string - basic text (can only (for now) be used as output)
+- [x] string - basic text (can only be used as output and be concatenated with "+")
 - [ ] bool
 
 ### Comments
