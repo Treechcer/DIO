@@ -200,6 +200,9 @@ Node* parseNewVariable(dynamicToken* toks){
         char* val;
         int len = 0;
         int pos = g_index;
+
+        //TODO: make it so "string a = b" makes a = b also add support for a = b[1]?
+
         while (toks->items[pos].identifier != QUOTE){
             len += strlen(toks->items[pos].value);
             pos++;
@@ -381,6 +384,18 @@ dynamicNode createFunctionParams(dynamicToken* toks){
         Node* n = parseGenericNode(toks);
         if (n == NULL){
             errorOut((Error){"Unable to parse node", ASTERROR, createPosition(NULL, NULL, NULL, NULL)});
+        }
+
+        if (n->type == VARIABLENODE && checkCurrenToken(toks).identifier == LSQUAREPAREN){
+            shiftToken(toks); // [
+            n->data.variableNode->lastIndex = checkCurrenToken(toks).value;
+            shiftToken(toks); // num
+            shiftToken(toks); // ]
+        }
+        else {
+            //is this needed?
+            n->data.variableNode->lastIndex = "";
+            n->data.variableNode->maxIndex = -1;
         }
 
         DYN_PUSH(n, nodes);
@@ -580,7 +595,7 @@ Node* parseStringGeneral(dynamicToken* toks){
 }
 
 Node* parseArrayAcessNode(dynamicToken* toks){
-
+    //TODO: maybe not use this? Just add the value into variables?
     if (checkCurrenToken(toks).identifier == LSQUAREPAREN && checkTokenAt(toks, 2).identifier == RSQUAREPAREN){
         shiftToken(toks);
         int num = convertToInt(checkCurrenToken(toks).value);
@@ -628,10 +643,10 @@ Node* parseGenericNode(dynamicToken* toks){
         node = parseStringGeneral(toks);
     }
     if (node == NULL){
-        node = parseExpression(toks);        
+        node = parseExpression(toks);
     }
     if (node == NULL){
-        node = parseLoop(toks);        
+        node = parseLoop(toks);
     }
     if (node == NULL){
         node = parseNewVariable(toks);
@@ -642,9 +657,9 @@ Node* parseGenericNode(dynamicToken* toks){
     if (node == NULL){
         node = parseCondition(toks);
     }
-    if (node == NULL){
-        node = parseArrayAcessNode(toks);
-    }
+    //if (node == NULL){
+    //    node = parseArrayAcessNode(toks);
+    //}
     if (node == NULL){
         node = parseFunctionCreate(toks);
     }

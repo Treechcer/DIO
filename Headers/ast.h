@@ -55,6 +55,8 @@ typedef struct variableNode {
     char* name;
     Node* value;
     int initialise;
+    char* lastIndex; // only used for special stuff (function calls eg.)
+    int maxIndex;
 } variableNode;
 
 typedef struct gotoNode {

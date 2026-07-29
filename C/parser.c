@@ -1,5 +1,5 @@
-#include<string.h>
-#include<math.h>
+#include <string.h>
+#include <math.h>
 #include <time.h>
 #include <stdlib.h>
 
@@ -599,15 +599,11 @@ void parseFunctionCall_(Node* node){
     dynamicVar l_vars = {0,0,0};
 
     for (size_t i = 0; i < node->data.functionCall->inputs.count; i++){
-        //TODO: initialise vars
-        //varStruct tempVar = (varStruct){.index = g_vars.count, .type = node->data, .name = name, .data.intVal = value, .intialised = 1 };
         varStruct tempVar;
         if (node->data.functionCall->inputs.items[i]->type == NUMBERNODE){
             tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = node->data.functionCall->inputs.items[i]->data.numberNode->value, .intialised = 1, .typedVar = FLOATVAR };
         }
         else if (node->data.functionCall->inputs.items[i]->type == VARIABLENODE){
-            //TODO: make binop possible on strings (concat)
-            //printf("%i\n", g_funcs.items[index].inputs.items[i]->data.variableNode->type);
             if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == INTVAR || g_funcs.items[index].inputs.items[i]->data.variableNode->type == FLOATVAR || g_funcs.items[index].inputs.items[i]->data.variableNode->type == BOOLVAR){
                 tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = evalBinOp(node->data.functionCall->inputs.items[i])->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
             }
@@ -616,9 +612,7 @@ void parseFunctionCall_(Node* node){
                 tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringArray.value = value, .data.stringArray.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
             }
             else if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == UNKNOWNVARTYPE){
-                //binOpResult* res = evalBinOp(node->data.functionCall->inputs.items[i]);
                 int index = getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->name);
-                //printf("index: %i\n", index);
                 if (g_vars.items[index].typedVar == INTVAR){
                     double value = getVariableIntValue(index);
                     tempVar = (varStruct){.index = g_vars.count, .type = "int", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.intVal = value, .intialised = 1, .typedVar = INTVAR };
@@ -628,7 +622,35 @@ void parseFunctionCall_(Node* node){
                     tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = value, .intialised = 1, .typedVar = FLOATVAR };
                 }
                 else if (g_vars.items[index].typedVar == STRINGVAR){
-                    char* value = getVariableStringValue(index);
+                    char* valueOrig = getVariableStringValue(getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->name));
+                    char* value = strdup(valueOrig);
+                    int index_ = getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex);
+
+                    if (index_ != -1){
+                        if (g_vars.items[index_].typedVar == FLOATVAR){
+                            index_ = getVariableFloatValue(index_);
+                        }
+                        else if (g_vars.items[index_].typedVar == INTVAR){
+                            index_ = getVariableIntValue(index_);
+                        }
+                        else{
+                            printf("TODO: ADD ERROR, INCORRECT VAR TYPE NO HASMAP OR WHATEVER IDC");
+                        }
+                    }
+                    
+                    printf("INDEX : %i (max: %i ; %s)\n", index_, strlen(valueOrig), valueOrig);
+
+                    if (index_ >= 0){
+                        if (index_ >= strlen(valueOrig)){
+                            printf("TOOD: RAISE ERROR, NOT CORRECT INDEX : %i (max: %i ; %s)\n", index_, strlen(valueOrig), valueOrig);
+                            exit(1);
+                        }
+                        char* buf = malloc(sizeof(char)*2);
+                        buf[0] = value[index_];
+                        buf[1] = '\0';
+                        value = buf;
+                    }
+
                     tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringArray.value = value, .data.stringArray.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
                 }
                 else{
@@ -726,6 +748,7 @@ void parseGeneric(Node* node){
 
 void parse(Node* ast){
     //printf("PARSER");
+    //TODO: this might be problem? g_gotos will have duplicit values if codeblock?
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node = ast->data.programNode->nodes.items[i];
