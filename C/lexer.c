@@ -210,6 +210,11 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     }
                 }
                 break;
+            case '.':
+            case '!':
+            case '?':
+                tok = createToken(&c, STRINGLITERAL, createPosition(&charPos_, &charPos_, &line, fileName));
+                break;
             default:
                     if (isDigit(c)){
                         dynamicChar token = {0,0,0};

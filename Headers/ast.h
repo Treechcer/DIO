@@ -11,6 +11,7 @@ typedef enum variableTypes {
     FLOATVAR,
     STRINGVAR,
     BOOLVAR,
+    NUMBERARRAY,
     UNKNOWNVARTYPE,
 } variableTypes;
 

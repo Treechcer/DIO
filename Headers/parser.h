@@ -14,6 +14,16 @@ typedef enum{
     FCALL,
 } actionTypes;
 
+typedef struct stringArray{ 
+    char* value;
+    int length;
+} stringArray; 
+
+typedef struct numberArray{ 
+    float* value;
+    int length;
+} numberArray; 
+
 typedef struct {
     int index;
     int intialised; //TODO: check and use this
@@ -22,7 +32,9 @@ typedef struct {
     union {
         int intVal;
         double floatVal;
-        char* stringVal;
+        //char* stringVal;
+        stringArray stringArray;
+        numberArray numberArray;
     } data;
     variableTypes typedVar;
 } varStruct;
