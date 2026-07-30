@@ -170,22 +170,37 @@ Node* parseNewVariable(dynamicToken* toks){
         tokT = UNKNOWNVARTYPE;
     }
     else if (checkCurrenToken(toks).identifier == KEYWORD && (strcmp(tv, "int") == 0 || strcmp(tv, "float") == 0 || strcmp(tv, "bool") == 0)){
-        createNodeBool = 1;
-        shiftToken(toks); // skips int | float ........
-        name = checkCurrenToken(toks).value;
-        shiftToken(toks); // skips name
-        shiftToken(toks); // skips =
+        if (checkTokenAt(toks, 3).identifier == INT || checkTokenAt(toks, 3).identifier == FLOAT){
+            createNodeBool = 1;
+            shiftToken(toks); // skips int | float ........
+            name = checkCurrenToken(toks).value;
+            shiftToken(toks); // skips name
+            shiftToken(toks); // skips =
+            
+            if (strcmp(tv, "int") == 0){
+                tokT = INTVAR;
+            }
+            else if (strcmp(tv, "float") == 0) {
+                tokT = FLOATVAR;
+            }
+            else{
+                tokT = BOOLVAR;
+            }
+            initialise = 1;
+        }
+        else {
+            createNodeBool = 1;
+            shiftToken(toks); // skips int | float ........
+            name = checkCurrenToken(toks).value;
+            shiftToken(toks); // skips name
+            shiftToken(toks); // skips =
+
+            tokT = NUMBERARRAY;
+            initialise = 1;
+
+            //TODO: parse array?
+        }
         
-        if (strcmp(tv, "int") == 0){
-            tokT = INTVAR;
-        }
-        else if (strcmp(tv, "float") == 0) {
-            tokT = FLOATVAR;
-        }
-        else{
-            tokT = BOOLVAR;
-        }
-        initialise = 1;
     }
     else if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(tv, "string") == 0){
         createNodeBool = 1;

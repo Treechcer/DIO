@@ -111,6 +111,11 @@ typedef struct stringNode {
     int length;
 } stringNode;
 
+typedef struct numberArray {
+    char* value;
+    int length;
+} numberArray;
+
 typedef struct arrayAcessNode {
     int index;
 } arrayAcessNode;
@@ -132,6 +137,7 @@ typedef struct Node {
         struct maybeNode* maybeNode;
         struct stringNode* stringNode;
         struct arrayAcessNode* arrayAcessNode;
+        struct numberArray* numberArray;
     } data;
     //TODO: add position
     //Position* pos;

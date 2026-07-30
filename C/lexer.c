@@ -67,6 +67,12 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
             case ']':
                 tok = createToken("]", RSQUAREPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
+            case '{':
+                tok = createToken("{", LSQUIGLYPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
+                break;
+            case '}':
+                tok = createToken("}", RSQUIGLYPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
+                break;
             case ',':
                 tok = createToken(",", COMMA, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;

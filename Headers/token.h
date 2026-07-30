@@ -36,6 +36,8 @@ typedef enum {
     LSQUAREPAREN,
     RSQUAREPAREN,
     STRINGLITERAL,
+    LSQUIGLYPAREN,
+    RSQUIGLYPAREN,
 } TokenType;
 
 typedef struct Token{
