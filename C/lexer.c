@@ -70,6 +70,14 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
             case ',':
                 tok = createToken(",", COMMA, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
+            case '.':
+            case '!':
+            case '?':
+                char* buf = malloc(2 * sizeof(char));
+                buf[0] = c;
+                buf[1] = '\0';
+                tok = createToken(buf, STRINGLITERAL, createPosition(&charPos_, &charPos_, &line, fileName));
+                break;
             case '<':
                 code++;
                 c = *code;
@@ -210,11 +218,6 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     }
                 }
                 break;
-            case '.':
-            case '!':
-            case '?':
-                tok = createToken(&c, STRINGLITERAL, createPosition(&charPos_, &charPos_, &line, fileName));
-                break;
             default:
                     if (isDigit(c)){
                         dynamicChar token = {0,0,0};
@@ -291,6 +294,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
         charPos_++;
     }
 
-    //writeToksOut(toks);
+    writeToksOut(toks);
+    printf("\n");
     return toks;
 }

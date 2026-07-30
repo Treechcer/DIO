@@ -201,11 +201,8 @@ Node* parseNewVariable(dynamicToken* toks){
         int len = 0;
         int pos = g_index;
 
-        //TODO: make it so "string a = b" makes a = b also add support for a = b[1]?
-
-        while (toks->items[pos].identifier != QUOTE){
+        while (toks->items[pos++].identifier != QUOTE){
             len += strlen(toks->items[pos].value);
-            pos++;
         }
         char* value = "";
         if (len > 0){
@@ -562,9 +559,8 @@ Node* parseStringGeneral(dynamicToken* toks){
         int len = 0;
         int pos = g_index;
 
-        while (toks->items[pos].identifier != QUOTE){
+        while (toks->items[pos++].identifier != QUOTE){
             len += strlen(toks->items[pos].value);
-            pos++;
         }
         char* value = "";
         if (len > 0){

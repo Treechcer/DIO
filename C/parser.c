@@ -413,16 +413,6 @@ binOpResult* evalBinOp(Node* node){
     return res;
 }
 
-/*
-double BinOpEvalBinOp(binOpNode* node){
-    Node* nNode = createNode();
-    nNode->type = BINOPNODE;
-    nNode->data.binOpNode = malloc(sizeof(binOpNode));
-    nNode->data.binOpNode = node;
-
-    return evalBinOp(nNode);
-}
-*/
 dynamicVar evalVariable(Node* node){
     int varType = node->data.variableNode->type;
     char* name = node->data.variableNode->name;
@@ -446,7 +436,6 @@ dynamicVar evalVariable(Node* node){
         }
     }
     else if (strcmp(type, "string") == 0){
-        //double value = evalBinOp(node->data.variableNode->value);
         //printf("||%s\n", node->data.variableNode->value->data.stringNode->value);
         tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.stringArray.value = node->data.variableNode->value->data.stringNode->value, .data.stringArray.length = node->data.variableNode->value->data.stringNode->length, .intialised = 1, .typedVar = STRINGVAR };
     }
