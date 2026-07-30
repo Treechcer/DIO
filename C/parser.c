@@ -161,25 +161,18 @@ binOpResult* evalBinOp(Node* node){
                 res->varType = STRINGVAR;
                 res->value.stringVal = getVariableStringValue(varIndex);
                 return res;
-            } else if (g_vars.items[varIndex].typedVar == INTVAR || g_vars.items[varIndex].typedVar == FLOATVAR) {
+            } else if (g_vars.items[varIndex].typedVar == INTVAR) {
+                res->varType = INTVAR;
+                res->value.intVal = getVariableIntValue(varIndex);
+                return res;
+            } else if (g_vars.items[varIndex].typedVar == FLOATVAR) {
                 res->varType = FLOATVAR;
-                res->value.floatVar = getVarValueByName(node->data.variableNode->name);
+                res->value.floatVar = getVariableFloatValue(varIndex);
                 return res;
             }
         }
-
-        /*if (node->data.variableNode->type == INTVAR || node->data.variableNode->type == FLOATVAR){
-            res->varType = FLOATVAR;
-            res->value.floatVar = getVarValueByName(node->data.variableNode->name);
-            return res;
-        }
-        else if (node->data.variableNode->type == STRINGVAR){
-            res->varType = STRINGVAR;
-            res->value.stringVal = getVariableStringValue(getVarIndexByName(node->data.variableNode->name));
-            return res;
-        }*/
         
-        printf("ERROR!!! NOT CORRECT VARTYPE FOR BINOP, todo: rais correctly error");
+        printf("ERROR!!! NOT CORRECT VARTYPE FOR BINOP\n");
         exit(1);
     }
     if (node->type == MAYBENODE){
@@ -207,7 +200,7 @@ binOpResult* evalBinOp(Node* node){
 
                     res->varType = FLOATVAR;
                     res->value.floatVar = vLeft + vRight;
-
+                    
                     return res;
                 }
                 else if (checkCompatibleVarType(left->varType, right->varType, CONCATSUM)){
@@ -444,24 +437,13 @@ dynamicVar evalVariable(Node* node){
     char* type = tempArr[varType];
 
     if (strcmp(type, "int") == 0 || strcmp(type, "float") == 0){
-        //if (existingIndex != -1){
-        //    //TODO: properly raise error
-        //    printf("ERROR, initialise variable twice");
-        //    exit(1);
-        //}
-
-        //printf("%f\n", evalBinOp(node->data.variableNode->value));
-
         binOpResult* value = evalBinOp(node->data.variableNode->value);
         if (value->varType == FLOATVAR){
-            //printf("%f\n", value->value.floatVar);
             tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.floatVal = value->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
         }
         else{
-            //printf("%i\n", value->value.intVal);
             tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
         }
-        //printf("%f\n", value);
     }
     else if (strcmp(type, "string") == 0){
         //double value = evalBinOp(node->data.variableNode->value);
@@ -470,6 +452,7 @@ dynamicVar evalVariable(Node* node){
     }
 
     if (existingIndex >= 0){
+        //printf("existingIndex: %i (count: %i)\n", existingIndex, g_vars.count);
         tempVar.index = existingIndex;
         g_vars.items[existingIndex] = tempVar;
         return g_vars;
@@ -570,13 +553,14 @@ void parseFunction(Node* node){
 
 void parseLoopNode(Node *node){
     if (node->data.loopNode->loopType == WHILE){
-        while (evalBinOp(node->data.loopNode->binOpNode)){
+        while (evalBinOp(node->data.loopNode->binOpNode)->value.floatVar){
             parse(node->data.loopNode->codeBlock);
         }
     }
     else if (node->data.loopNode->loopType == FOR){
         parseGeneric(node->data.loopNode->init);
-        while (evalBinOp(node->data.loopNode->binOpNode)){
+        //TODO: can this be int?
+        while (evalBinOp(node->data.loopNode->binOpNode)->value.floatVar){
            parse(node->data.loopNode->codeBlock);
            parseGeneric(node->data.loopNode->endStatement);
         }
@@ -638,7 +622,7 @@ void parseFunctionCall_(Node* node){
                         }
                     }
                     
-                    printf("INDEX : %i (max: %i ; %s)\n", index_, strlen(valueOrig), valueOrig);
+                    //printf("INDEX : %i (max: %i ; %s)\n", index_, strlen(valueOrig), valueOrig);
 
                     if (index_ >= 0){
                         if (index_ >= strlen(valueOrig)){
@@ -685,15 +669,17 @@ void parseFunctionCall_(Node* node){
         if (_inx != -1){
             DYN_PUSH(g_vars.items[_inx], l_vars);
             g_vars.items[_inx] = tempVar;
+            g_vars.items[_inx].index = _inx;
+        } else {
+            tempVar.index = g_vars.count;
+            DYN_PUSH(tempVar, g_vars);
         }
 
         if (!checkCompatibleVarType(tempVar.typedVar, g_funcs.items[index].inputs.items[i]->data.variableNode->type, FCALL)){
             printf("%i : %i\n", tempVar.typedVar, g_funcs.items[index].inputs.items[i]->data.variableNode->type);
-            printf("TODO: RAISE ERROR, INCORRECT CALL FUNCTIO TYPE");
+            printf("TODO: RAISE ERROR, INCORRECT CALL FUNCTION TYPE");
             exit(1);
         }
-
-        DYN_PUSH(tempVar, g_vars);
     }
 
     if (isFunctionLowLevel(index) == 1){

@@ -2,4 +2,8 @@ string b = "Hello, World!"
 
 for (int i = 0; i < 12; i = i + 1)
     out(b[i])
+    >>out(i)
 end
+
+>>This prints our the string char by char
+>>NOTE: why no "!"?
