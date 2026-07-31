@@ -29,6 +29,7 @@ typedef enum {
     LOOPNODE,
     MAYBENODE,
     STRINGNODE,
+    NUMBERARRAYNODE,
     ARRAYACESSNODE,
 } nodeType;
 

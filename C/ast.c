@@ -190,15 +190,29 @@ Node* parseNewVariable(dynamicToken* toks){
         }
         else {
             createNodeBool = 1;
-            shiftToken(toks); // skips int | float ........
+            shiftToken(toks); // skips num
             name = checkCurrenToken(toks).value;
             shiftToken(toks); // skips name
             shiftToken(toks); // skips =
+            shiftToken(toks); // {
 
             tokT = NUMBERARRAY;
             initialise = 1;
 
             //TODO: parse array?
+
+            int len = 0;
+            
+            Node* ret = createNode();
+            ret->type == NUMBERARRAYNODE;
+            ret->data.numberArray = malloc(sizeof(numberArray));
+
+            int* value;
+
+            while(checkCurrenToken(toks).identifier == RSQUIGLYPAREN){
+
+                len++;
+            }
         }
         
     }
