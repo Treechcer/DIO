@@ -300,7 +300,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
         charPos_++;
     }
 
-    writeToksOut(toks);
+    //writeToksOut(toks);
     printf("\n");
     return toks;
 }

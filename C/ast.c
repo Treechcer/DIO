@@ -205,7 +205,7 @@ Node* parseNewVariable(dynamicToken* toks){
             
             Node* ret = createNode();
             ret->type == NUMBERARRAYNODE;
-            ret->data.numberArray = malloc(sizeof(numberArray));
+            ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
 
             int* value;
 
