@@ -48,6 +48,8 @@ def main():
     examples = os.listdir("examples")
 
     for ex in examples:
+        if os.path.splitext(ex)[1] != ".dio":
+            continue
         buildTestFromFile(os.path.join("examples", ex), executable, ex == examples[-1])
 
     with open("./tests/base.json", "a") as f:
