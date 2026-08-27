@@ -28,12 +28,12 @@ def getExecutable():
 
 def buildTestFromFile(fileName : str, exectuable : str, last : bool):
     print(fileName)
-    with open("./tests/results.json", "a") as f:
+    with open("./tests/base.json", "a") as f:
         try:
             stdout = str(subprocess.run([f"{exectuable}", "-file", f"{fileName}"], capture_output=True, text=True, timeout=1).stdout).replace('\\', '\\\\').replace('\"', '\\\"').replace("\n", "\\n")
         except subprocess.TimeoutExpired:
             stdout = "NOT FINISHED!"
-        f.write(f"    \"{fileName.replace('\\', '\\\\').replace('\"', '\\\"')}\" : \"{stdout}\"")
+        f.write(f"    \"{os.path.normpath(fileName).replace('\\', '\\\\')}\" : \"{stdout}\"")
         if not last:
             f.write(",")
         f.write("\n")
@@ -42,7 +42,7 @@ def main():
     checkDir()
     executable = getExecutable()
 
-    with open("./tests/results.json", "w+") as f:
+    with open("./tests/base.json", "w+") as f:
         f.write("{\n")
 
     examples = os.listdir("examples")
@@ -50,7 +50,7 @@ def main():
     for ex in examples:
         buildTestFromFile(os.path.join("examples", ex), executable, ex == examples[-1])
 
-    with open("./tests/results.json", "a") as f:
+    with open("./tests/base.json", "a") as f:
         f.write("}")
 
 if __name__ == "__main__":
