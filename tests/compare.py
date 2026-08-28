@@ -7,15 +7,26 @@ import buildTestsFromExamples as btfe
 
 failedTests = {
     "failed" : {},
-    "warning" : {}
+    "warning" : {},
+    "timeOuts" : []
 }
 fileMetadata = {}
 
 def runOne(fileName : str, exectuable : str, jsonContent : list[str], fileMetadata : list[str]):
     try:
-        stdout = str(subprocess.run([f"{exectuable}", "-file", f"{fileName}"], capture_output=True, text=True, timeout=1).stdout)
+        time=1
+        try:
+            time=fileMetadata[os.path.basename(fileName)]["time"]
+        except:
+            pass
+        stdout = str(subprocess.run([f"{exectuable}", "-file", f"{fileName}"], capture_output=True, text=True, timeout=time).stdout)
     except subprocess.TimeoutExpired:
         stdout = "NOT FINISHED!"
+
+    if stdout == "NOT FINISHED!":
+        print(f"[TIMED OUT]: {fileName}")
+        failedTests["timeOuts"].append(fileName)
+        return 3
 
     if stdout == jsonContent[fileName]:
         print(f"[PASSED]: {fileName}")
@@ -45,7 +56,7 @@ def main():
     with open(os.path.join("examples", ".metadata.json"), "r") as js:
         fileMetadata = json.load(js)
 
-    tests = [0, 0, 0] #passed, failed, warning
+    tests = [0, 0, 0, 0] #passed, failed, warning, timeout
     examples = os.listdir("examples")
 
     for ex in examples:
@@ -56,6 +67,7 @@ def main():
     print(f"total tests: {tests[1] + tests[0]}")
     print(f"failed tests: {tests[1]}")
     print(f"warnings: {tests[2]}")
+    print(f"timed out tests: {tests[3]}")
     print(f"passed tests: {tests[0]}")
 
     with open("tests/results.json", "w+") as res:
