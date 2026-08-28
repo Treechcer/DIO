@@ -78,6 +78,9 @@ def main():
 
     with open("tests/results.json", "w+") as res:
         res.write(json.dumps(failedTests, indent=4, sort_keys=True))
+    
+    if tests[1] > 0:
+        exit(1)
 
 if __name__ == "__main__":
     main()
