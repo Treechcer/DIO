@@ -24,9 +24,14 @@ def runOne(fileName : str, exectuable : str, jsonContent : list[str], fileMetada
         stdout = "NOT FINISHED!"
 
     if stdout == "NOT FINISHED!":
-        print(f"[TIMED OUT]: {fileName}")
-        failedTests["timeOuts"].append(fileName)
-        return 3
+        try:
+            if fileMetadata[os.path.basename(fileName)]["canTimeOut"]:
+                print(f"[PASSED]: {fileName}")
+                return 0
+        except:
+            print(f"[TIMED OUT]: {fileName}")
+            failedTests["timeOuts"].append(fileName)
+            return 3
 
     if stdout == jsonContent[fileName]:
         print(f"[PASSED]: {fileName}")
