@@ -476,7 +476,20 @@ int parseGotoNameNode(Node* node, dynamicGoto* dg, Node* ast){
         errorOut((Error){.errorMessage = "Goto not found", .errorType = PARSERNOTFOUNDGOTO});
     }
 
-    if (!evalBinOp(node->data.gotoNode->binOpNode)){
+    binOpResult* res = evalBinOp(node->data.gotoNode->binOpNode);
+    float cond;
+    if (res->varType == INTVAR){
+        cond = res->value.intVal;
+    }
+    else if (res->varType == FLOATVAR){
+        cond = res->value.floatVar;
+    }
+    else{
+        printf("ERROR! ADD LATER! INCORRECT VAR TYPE GOTO");
+        exit(1);
+    }
+
+    if (!cond){
         return -1;
     }
 

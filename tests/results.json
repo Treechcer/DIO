@@ -1,19 +1,12 @@
 {
-    "failed": {
-        "examples\\ex18.dio": {
-            "run": "\\n\\nHello \\nWorld\\nTODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES +",
-            "test": "\n\nHello \nWorld\nHello World\n"
-        }
-    },
+    "failed": {},
     "timeOuts": [
-        "examples\\ex4.dio",
-        "examples\\ex5.dio",
-        "examples\\ex6.dio"
+        "examples\\ex5.dio"
     ],
     "warning": {
         "examples\\ex15.dio": {
-            "run": "\\n\\n1.0\\n1.0\\n0.0\\n1.0\\n1.0\\n0.0\\n1.0\\n1.0\\n1.0\\n0.0\\n",
-            "test": "\n\n0.0\n0.0\n1.0\n1.0\n1.0\n0.0\n1.0\n1.0\n1.0\n1.0\n"
+            "run": "\\n\\n1.0\\n0.0\\n1.0\\n1.0\\n0.0\\n0.0\\n1.0\\n1.0\\n0.0\\n0.0\\n",
+            "test": "\n\n1.0\n0.0\n0.0\n1.0\n0.0\n0.0\n0.0\n1.0\n1.0\n1.0\n"
         }
     }
 }
