@@ -26,27 +26,28 @@ def runOne(fileName : str, exectuable : str, jsonContent : list[str], fileMetada
     if stdout == "NOT FINISHED!":
         try:
             if fileMetadata[os.path.basename(fileName)]["canTimeOut"]:
-                print(f"[PASSED]: {fileName}")
+                failedTests["warning"][os.path.basename(fileName)] = {"warn" : "timeOut"}
+                print(f"[WARNING (time outable file)]: {os.path.basename(fileName)}")
                 return 0
         except:
-            print(f"[TIMED OUT]: {fileName}")
-            failedTests["timeOuts"].append(fileName)
+            print(f"[TIMED OUT]: {os.path.basename(fileName)}")
+            failedTests["timeOuts"].append(os.path.basename(fileName))
             return 3
 
     if stdout == jsonContent[fileName]:
-        print(f"[PASSED]: {fileName}")
+        print(f"[PASSED]: {os.path.basename(fileName)}")
         return 0
     try:
         if fileMetadata[os.path.basename(fileName)]["randomness"]:
-            failedTests["warning"][fileName] = {"run" : stdout.replace('\\', '\\\\').replace('\"', '\\\"').replace("\n", "\\n"), "test": jsonContent[fileName]}
-            print(f"[WARNING (randomness)]: {fileName}")
+            failedTests["warning"][os.path.basename(fileName)] = {"warn" : "randomness", "run" : stdout.replace('\\', '\\\\').replace('\"', '\\\"').replace("\n", "\\n"), "test": jsonContent[fileName]}
+            print(f"[WARNING (randomness)]: {os.path.basename(fileName)}")
             return 2
     except:
         pass
 
-    failedTests["failed"][fileName] = {"run" : stdout.replace('\\', '\\\\').replace('\"', '\\\"').replace("\n", "\\n"), "test": jsonContent[fileName]}
+    failedTests["failed"][os.path.basename(fileName)] = {"run" : stdout.replace('\\', '\\\\').replace('\"', '\\\"').replace("\n", "\\n"), "test": jsonContent[fileName]}
 
-    print(f"[FAILED]: {fileName}")
+    print(f"[FAILED]: {os.path.basename(fileName)}")
     return 1
 
 def main():
