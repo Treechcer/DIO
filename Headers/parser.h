@@ -14,28 +14,18 @@ typedef enum{
     FCALL,
 } actionTypes;
 
-typedef struct stringArray{ 
-    char* value;
-    int length;
-} stringArray; 
-
-typedef struct numberArray{ 
-    float* value;
-    int length;
-} numberArray; 
-
-typedef struct arrayType {
-    STRINGARRAY;
-    NUMBERARRAY;
+typedef enum {
+    STRINGARRAYTYPE = 0,
+    NUMBERARRAYTYPE,
 } arrayType;
 
 typedef struct arrayVar{
-    variableTypes type;
+    arrayType type; //maybe not needed? I can just put it as variableType?
     int length;
     union value {
         char* stringValue;
         float* numberValue;
-    };
+    } value;
 } arrayVar;
 
 typedef struct {
@@ -47,8 +37,7 @@ typedef struct {
         int intVal;
         double floatVal;
         //char* stringVal;
-        stringArray stringArray;
-        numberArray numberArray;
+        arrayVar arrayVar;
     } data;
     variableTypes typedVar;
 } varStruct;

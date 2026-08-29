@@ -138,7 +138,7 @@ int getVariableIntValue(int index) {
 }
 
 char* getVariableStringValue(int index) {
-    return g_vars.items[index].data.stringArray.value;
+    return g_vars.items[index].data.arrayVar.value.stringValue;
 }
 
 binOpResult* evalBinOp(Node* node){
@@ -437,7 +437,7 @@ dynamicVar evalVariable(Node* node){
     }
     else if (strcmp(type, "string") == 0){
         //printf("||%s\n", node->data.variableNode->value->data.stringNode->value);
-        tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.stringArray.value = node->data.variableNode->value->data.stringNode->value, .data.stringArray.length = node->data.variableNode->value->data.stringNode->length, .intialised = 1, .typedVar = STRINGVAR };
+        tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.arrayVar.value.stringValue = node->data.variableNode->value->data.stringNode->value, .data.arrayVar.length = node->data.variableNode->value->data.stringNode->length, .intialised = 1, .typedVar = STRINGVAR };
     }
 
     if (existingIndex >= 0){
@@ -595,7 +595,7 @@ void parseFunctionCall_(Node* node){
             }
             else if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == STRINGVAR){
                 char* value = getVariableStringValue(getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->name));
-                tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringArray.value = value, .data.stringArray.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
+                tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.stringValue = value, .data.arrayVar.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
             }
             else if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == UNKNOWNVARTYPE){
                 int index = getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->name);
@@ -637,7 +637,7 @@ void parseFunctionCall_(Node* node){
                         value = buf;
                     }
 
-                    tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringArray.value = value, .data.stringArray.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
+                    tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.stringValue = value, .data.arrayVar.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
                 }
                 else{
                     printf("TOOD RAISE ERROR, BINOP NOT CORRECT RETURN?");
@@ -655,12 +655,12 @@ void parseFunctionCall_(Node* node){
                 tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = res->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
             else if (res->varType == STRINGVAR){
                 char* value = res->value.stringVal;
-                tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringArray.value = value, .data.stringArray.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
+                tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.stringValue = value, .data.arrayVar.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
             }
         }
         else if (node->data.functionCall->inputs.items[i]->type == STRINGNODE){
             char* value = node->data.functionCall->inputs.items[i]->data.stringNode->value;
-            tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.stringArray.value = value, .data.stringArray.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
+            tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.stringValue = value, .data.arrayVar.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
         }
         else{
             printf("TODO: RAISE ERROR WRONG FORMAT (or not implemented)");
