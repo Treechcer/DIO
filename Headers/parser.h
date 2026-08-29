@@ -24,6 +24,20 @@ typedef struct numberArray{
     int length;
 } numberArray; 
 
+typedef struct arrayType {
+    STRINGARRAY;
+    NUMBERARRAY;
+} arrayType;
+
+typedef struct arrayVar{
+    variableTypes type;
+    int length;
+    union value {
+        char* stringValue;
+        float* numberValue;
+    };
+} arrayVar;
+
 typedef struct {
     int index;
     int intialised; //TODO: check and use this
