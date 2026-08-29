@@ -198,21 +198,33 @@ Node* parseNewVariable(dynamicToken* toks){
 
             tokT = NUMBERARRAY;
             initialise = 1;
-
-            //TODO: parse array?
-
-            int len = 0;
             
             Node* ret = createNode();
             ret->type == NUMBERARRAYNODE;
             ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
 
-            int* value;
+            int arrSize = 0;
+            double* values = malloc(arrSize * sizeof(int));
 
-            while(checkCurrenToken(toks).identifier == RSQUIGLYPAREN){
-
-                len++;
+            while(checkCurrenToken(toks).identifier != RSQUIGLYPAREN){
+                //printf("%s\n", checkCurrenToken(toks).value);
+                //printf("%f\n", atof(checkCurrenToken(toks).value));
+                arrSize++;
+                values = realloc(values, arrSize * sizeof(int));
+                values[arrSize - 1] = atof(shiftToken(toks).value);
+                if (checkCurrenToken(toks).identifier == COMMA){
+                    shiftToken(toks);
+                }
             }
+            
+            if (checkCurrenToken(toks).identifier == RSQUIGLYPAREN){
+                shiftToken(toks);
+            }
+
+            ret->data.numberArrayNode->value = values;
+            ret->data.numberArrayNode->length = arrSize;
+
+            return ret;
         }
         
     }
@@ -690,7 +702,7 @@ Node* parseGenericNode(dynamicToken* toks){
     }
     if (node == NULL){
         printf("ERR: %i : %li\n", g_index, (toks->count)-1);
-        printf("ERR: %s \n", checkCurrenToken(toks).value);
+        printf("ERR: %s (ID: %i) \n", checkCurrenToken(toks).value, checkCurrenToken(toks).identifier);
 
         errorOut((Error){"", ASTERROR, toks->items[g_index].pos});
     }
