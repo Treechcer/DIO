@@ -141,6 +141,10 @@ char* getVariableStringValue(int index) {
     return g_vars.items[index].data.arrayVar.value.stringValue;
 }
 
+double* getVariableNumArrayValue(int index) {
+    return g_vars.items[index].data.arrayVar.value.numberValue;
+}
+
 binOpResult* evalBinOp(Node* node){
     binOpResult* res = malloc(sizeof(binOpResult));
 
@@ -170,6 +174,12 @@ binOpResult* evalBinOp(Node* node){
                 res->value.floatVar = getVariableFloatValue(varIndex);
                 return res;
             }
+            //else if (g_vars.items[varIndex].typedVar == NUMBERARRAY){
+                //todo: Index? Should something like even be here?
+                //res->varType = STRINGVAR;
+                //res->value.floatVar = getVariableNumArrayValue(varIndex);
+                //return res;
+            //}
         }
         
         printf("ERROR!!! NOT CORRECT VARTYPE FOR BINOP\n");
@@ -628,7 +638,7 @@ void parseFunctionCall_(Node* node){
 
                     if (index_ >= 0){
                         if (index_ >= strlen(valueOrig)){
-                            printf("TOOD: RAISE ERROR, NOT CORRECT INDEX : %i (max: %i ; %s)\n", index_, strlen(valueOrig), valueOrig);
+                            printf("TOOD: RAISE ERROR, NOT CORRECT INDEX : %i (max: %li ; %s)\n", index_, strlen(valueOrig), valueOrig);
                             exit(1);
                         }
                         char* buf = malloc(sizeof(char)*2);
@@ -727,6 +737,9 @@ void parseGeneric(Node* node){
         case LOOPNODE:
             parseLoopNode(node);
             break;
+        case NUMBERARRAYNODE:
+            printf("Number Array Node");
+            exit(1);
         default:
             printf("TODO: ADD THIS NODETYPE : %i", node->type);
             exit(1);
@@ -740,6 +753,7 @@ void parse(Node* ast){
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node = ast->data.programNode->nodes.items[i];
+        printf("nodeType: %li\n", node->type);
         if (node->type == GOTONODE){
             int temp = parseGotoNameNode(node, &g_gotos, ast);
             if (temp != -1){

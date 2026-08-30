@@ -113,7 +113,7 @@ typedef struct stringNode {
 } stringNode;
 
 typedef struct numberArrayNode {
-    double* value;
+    float* value;
     int length;
 } numberArrayNode;
 

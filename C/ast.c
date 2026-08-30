@@ -204,7 +204,7 @@ Node* parseNewVariable(dynamicToken* toks){
             ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
 
             int arrSize = 0;
-            double* values = malloc(arrSize * sizeof(int));
+            float* values = malloc(arrSize * sizeof(int));
 
             while(checkCurrenToken(toks).identifier != RSQUIGLYPAREN){
                 //printf("%s\n", checkCurrenToken(toks).value);

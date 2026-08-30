@@ -24,7 +24,7 @@ typedef struct arrayVar{
     int length;
     union value {
         char* stringValue;
-        float* numberValue;
+        double* numberValue;
     } value;
 } arrayVar;
 
