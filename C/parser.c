@@ -147,7 +147,6 @@ double* getVariableNumArrayValue(int index) {
 
 binOpResult* evalBinOp(Node* node){
     binOpResult* res = malloc(sizeof(binOpResult));
-
     if (node == NULL) {
         res->varType = FLOATVAR;
         res->value.floatVar = NAN;
@@ -715,31 +714,35 @@ Node* astToNode(Node* ast){
 void parseGeneric(Node* node){
     switch (node->type) {
         case BINOPNODE:
+            /*printf("BINOPNODE\n");*/
             //printf("%f\n", evalBinOp(node));
             evalBinOp(node);
             break;
         case VARIABLENODE:
+            /*printf("VARIABLENODE\n");*/
             g_vars = evalVariable(node);
             break;
         case GOTOIDENTIFIER:
+            /*printf("GOTOIDENTIFIER\n");*/
             g_gotos = parseGotoNode(node, g_gotos);
             break;
         case CONDITION:
+            /*printf("CONDITION\n");*/
             parseCondition_(node);
             break;
         case FUNCTION:
+            /*printf("FUNCTION\n");*/
             parseFunction(node);
             //printf("%i\n", i);
             break;
         case FUNCTIONCALL:
+            /*printf("FUNCTIONCALL\n");*/
             parseFunctionCall_(node);
             break;
         case LOOPNODE:
+            /*printf("LOOPNODE\n");*/
             parseLoopNode(node);
             break;
-        case NUMBERARRAYNODE:
-            printf("Number Array Node");
-            exit(1);
         default:
             printf("TODO: ADD THIS NODETYPE : %i", node->type);
             exit(1);
@@ -747,7 +750,16 @@ void parseGeneric(Node* node){
     }
 }
 
+void writeOutTypesDebug(Node* ast){
+    for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
+        printf("NodeType: %li\n", ast->data.programNode->nodes.items[i]->type);
+    }
+}
+
 void parse(Node* ast){
+    //debug!
+    //writeOutTypesDebug(ast);
+
     //printf("PARSER");
     //TODO: this might be problem? g_gotos will have duplicit values if codeblock?
     g_gotos = prescanForGotos(ast, g_gotos);

@@ -199,9 +199,9 @@ Node* parseNewVariable(dynamicToken* toks){
             tokT = NUMBERARRAY;
             initialise = 1;
             
-            Node* ret = createNode();
-            ret->type == NUMBERARRAYNODE;
-            ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
+            //Node* ret = createNode();
+            //ret->type == NUMBERARRAYNODE;
+            //ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
 
             int arrSize = 0;
             float* values = malloc(arrSize * sizeof(int));
@@ -221,10 +221,24 @@ Node* parseNewVariable(dynamicToken* toks){
                 shiftToken(toks);
             }
 
+            initialise = 1;
+
+            Node* ret = createNode();
+            ret->type = NUMBERARRAYNODE;
+            ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
             ret->data.numberArrayNode->value = values;
             ret->data.numberArrayNode->length = arrSize;
+            //printf("%s : %s\n", value, strNode->data.stringNode->value);
 
-            return ret;
+            Node* retNode = createNode();
+            retNode->type = VARIABLENODE;
+            retNode->data.variableNode = malloc(sizeof(variableNode));
+            retNode->data.variableNode->name = name;
+            retNode->data.variableNode->type = tokT;
+            retNode->data.variableNode->value = ret; 
+            retNode->data.variableNode->initialise = initialise;
+
+            return retNode;
         }
         
     }
