@@ -446,8 +446,7 @@ dynamicVar evalVariable(Node* node){
     varStruct tempVar;
 
     int existingIndex = getVarIndexByName(name);
-    //Shouldn't thsi be OR not AND?
-    if (varType == UNKNOWNVARTYPE || node->data.variableNode->initialise == 0){
+    if (varType == UNKNOWNVARTYPE && node->data.variableNode->initialise == 0){
         errorOut((Error){"", UNKNOWNVARIABLETYPE});
     }
 
@@ -685,8 +684,18 @@ void parseFunctionCall_(Node* node){
                         tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };
                     }
                     else{
-                        int indexInArrayFromVal = getVariableIntValue(indexArr);
-                        printf("%i : %i\n", indexInArrayFromVal, indexArr);
+                        int indexInArrayFromVal;
+                        if (g_vars.items[indexArr].typedVar == INTVAR){
+                            indexInArrayFromVal = getVariableIntValue(indexArr);
+                        }
+                        else if (g_vars.items[indexArr].typedVar == FLOATVAR){
+                            indexInArrayFromVal = getVariableFloatValue(indexArr);
+                        }
+                        else{
+                            printf("TODO: ADD ERROR, incorrect type of var array num (%li, ix: %i)", g_vars.items[indexArr].typedVar, indexArr);
+                            exit(1);
+                        }
+                        
                         tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = value[indexInArrayFromVal], .intialised = 1, .typedVar = FLOATVAR };
                     }
                 }
@@ -807,7 +816,7 @@ void parse(Node* ast){
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node = ast->data.programNode->nodes.items[i];
-        printf("nodeType: %li\n", node->type);
+        //printf("nodeType: %li\n", node->type);
         if (node->type == GOTONODE){
             int temp = parseGotoNameNode(node, &g_gotos, ast);
             if (temp != -1){
