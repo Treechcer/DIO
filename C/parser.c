@@ -672,6 +672,7 @@ void parseFunctionCall_(Node* node){
                     tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.stringValue = value, .data.arrayVar.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
                 }
                 else if (g_vars.items[index].typedVar == NUMBERARRAY){
+                    int indexArr = getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex);
                     int index_ = getVarIndexByName(g_funcs.items[index].inputs.items[i]->data.variableNode->name);
 
                     if (index_ == -1){
@@ -680,8 +681,15 @@ void parseFunctionCall_(Node* node){
                     }
 
                     double* value = getVariableNumArrayValue(index_);
-
-                    tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };                }
+                    if (indexArr == -1){
+                        tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };
+                    }
+                    else{
+                        int indexInArrayFromVal = getVariableIntValue(indexArr);
+                        printf("%i : %i\n", indexInArrayFromVal, indexArr);
+                        tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = value[indexInArrayFromVal], .intialised = 1, .typedVar = FLOATVAR };
+                    }
+                }
                 else{
                     printf("TOOD RAISE ERROR, BINOP NOT CORRECT RETURN?");
                     exit(1);
