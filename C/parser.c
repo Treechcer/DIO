@@ -66,7 +66,7 @@ void callLowLevelFunc(int index){
             double* nums = getVariableNumArrayValue(varIndex);
             
             for (int i = 0; i < g_vars.items[varIndex].data.arrayVar.length; i++){
-                printf("%i", nums[i]);
+                printf("%.1f", nums[i]);
                 if (i != g_vars.items[varIndex].data.arrayVar.length - 1){
                     printf(", ");
                 }
