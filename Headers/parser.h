@@ -28,6 +28,7 @@ typedef struct arrayVar{
     } value;
 } arrayVar;
 
+
 typedef struct {
     int index;
     int intialised; //TODO: check and use this

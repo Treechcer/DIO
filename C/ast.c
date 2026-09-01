@@ -195,16 +195,13 @@ Node* parseNewVariable(dynamicToken* toks){
             shiftToken(toks); // skips name
             shiftToken(toks); // skips =
             shiftToken(toks); // {
-
-            tokT = NUMBERARRAY;
-            initialise = 1;
             
             //Node* ret = createNode();
             //ret->type == NUMBERARRAYNODE;
             //ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
 
             int arrSize = 0;
-            float* values = malloc(arrSize * sizeof(int));
+            double* values = malloc(arrSize * sizeof(int));
 
             while(checkCurrenToken(toks).identifier != RSQUIGLYPAREN){
                 //printf("%s\n", checkCurrenToken(toks).value);
@@ -221,22 +218,19 @@ Node* parseNewVariable(dynamicToken* toks){
                 shiftToken(toks);
             }
 
-            initialise = 1;
-
             Node* ret = createNode();
             ret->type = NUMBERARRAYNODE;
             ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
             ret->data.numberArrayNode->value = values;
             ret->data.numberArrayNode->length = arrSize;
-            //printf("%s : %s\n", value, strNode->data.stringNode->value);
 
             Node* retNode = createNode();
             retNode->type = VARIABLENODE;
             retNode->data.variableNode = malloc(sizeof(variableNode));
             retNode->data.variableNode->name = name;
-            retNode->data.variableNode->type = tokT;
+            retNode->data.variableNode->type = NUMBERARRAY;
             retNode->data.variableNode->value = ret; 
-            retNode->data.variableNode->initialise = initialise;
+            retNode->data.variableNode->initialise = 1;
 
             return retNode;
         }

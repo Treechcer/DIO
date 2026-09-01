@@ -16,6 +16,7 @@ int getVariableIntValue(int index);
 double getVariableFloatValue(int index);
 char* getVariableStringValue(int index);
 void parseGeneric(Node* node);
+double* getVariableNumArrayValue(int index);
 
 dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
@@ -59,6 +60,19 @@ void callLowLevelFunc(int index){
         }
         else if (g_vars.items[varIndex].typedVar == INTVAR){
             printf("%i\n", getVariableIntValue(varIndex));
+        }
+        else if (g_vars.items[varIndex].typedVar == NUMBERARRAY){
+            printf("{");
+            double* nums = getVariableNumArrayValue(varIndex);
+            
+            for (int i = 0; i < g_vars.items[varIndex].data.arrayVar.length; i++){
+                printf("%i", nums[i]);
+                if (i != g_vars.items[varIndex].data.arrayVar.length - 1){
+                    printf(", ");
+                }
+            }
+
+            printf("}\n");
         }
         else{
             printf("TODO: RAISE ERROR PROPERLY, INCORRECT VAR TYPE");
@@ -143,6 +157,10 @@ char* getVariableStringValue(int index) {
 
 double* getVariableNumArrayValue(int index) {
     return g_vars.items[index].data.arrayVar.value.numberValue;
+}
+
+int getVariableNumArrayLength(int index) {
+    return g_vars.items[index].data.arrayVar.length;
 }
 
 binOpResult* evalBinOp(Node* node){
@@ -423,30 +441,35 @@ binOpResult* evalBinOp(Node* node){
 }
 
 dynamicVar evalVariable(Node* node){
-    int varType = node->data.variableNode->type;
+    variableTypes varType = node->data.variableNode->type;
     char* name = node->data.variableNode->name;
     varStruct tempVar;
 
     int existingIndex = getVarIndexByName(name);
-    if (varType == UNKNOWNVARTYPE && node->data.variableNode->initialise == 0){
+    //Shouldn't thsi be OR not AND?
+    if (varType == UNKNOWNVARTYPE || node->data.variableNode->initialise == 0){
         errorOut((Error){"", UNKNOWNVARIABLETYPE});
     }
 
-    char* tempArr[] = {"int", "float", "string", "bool"};
-    char* type = tempArr[varType];
+    //TODO: remake this, this kinda sucks
+    //char* tempArr[] = {"int", "float", "string", "bool", "numArr"};
+    //char* type = tempArr[varType];
 
-    if (strcmp(type, "int") == 0 || strcmp(type, "float") == 0){
+    if (varType == INTVAR || varType == FLOATVAR){
         binOpResult* value = evalBinOp(node->data.variableNode->value);
         if (value->varType == FLOATVAR){
-            tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.floatVal = value->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
+            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = name, .data.floatVal = value->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
         }
         else{
-            tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.intVal = value->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
+            tempVar = (varStruct){.index = g_vars.count, .type = "int", .name = name, .data.intVal = value->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
         }
     }
-    else if (strcmp(type, "string") == 0){
+    else if (varType == STRINGVAR){
         //printf("||%s\n", node->data.variableNode->value->data.stringNode->value);
-        tempVar = (varStruct){.index = g_vars.count, .type = type, .name = name, .data.arrayVar.value.stringValue = node->data.variableNode->value->data.stringNode->value, .data.arrayVar.length = node->data.variableNode->value->data.stringNode->length, .intialised = 1, .typedVar = STRINGVAR };
+        tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = name, .data.arrayVar.value.stringValue = node->data.variableNode->value->data.stringNode->value, .data.arrayVar.length = node->data.variableNode->value->data.stringNode->length, .intialised = 1, .typedVar = STRINGVAR };
+    }
+    else if (varType == NUMBERARRAY){
+        tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = node->data.variableNode->value->data.numberArrayNode->value, .data.arrayVar.length = node->data.variableNode->value->data.numberArrayNode->length, .intialised = 1, .typedVar = NUMBERARRAY };
     }
 
     if (existingIndex >= 0){
@@ -648,6 +671,17 @@ void parseFunctionCall_(Node* node){
 
                     tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.stringValue = value, .data.arrayVar.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
                 }
+                else if (g_vars.items[index].typedVar == NUMBERARRAY){
+                    int index_ = getVarIndexByName(g_funcs.items[index].inputs.items[i]->data.variableNode->name);
+
+                    if (index_ == -1){
+                        printf("TODO: add inline function array declaration?");
+                        exit(1);
+                    }
+
+                    double* value = getVariableNumArrayValue(index_);
+
+                    tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };                }
                 else{
                     printf("TOOD RAISE ERROR, BINOP NOT CORRECT RETURN?");
                     exit(1);
