@@ -31,7 +31,7 @@ int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes a
         //this is more of an generally converting to another type, that shall be handled elsewhere
         return 1;
     }
-    else if ((action == FCALL) && ((var1 == UNKNOWNVARTYPE || var2 == UNKNOWNVARTYPE) ||  (var1 == var2))){
+    else if ((action == FCALL) && ((var1 == UNKNOWNVARTYPE || var2 == UNKNOWNVARTYPE) ||  (var1 == var2) || ((var1 == INTVAR || var1 == FLOATVAR) && (var2 == INTVAR || var2 == FLOATVAR)))){
         return 1;
     }
     else if ((action == CONCATSUM) && (var1 == STRINGVAR) && (var2 == STRINGVAR)){

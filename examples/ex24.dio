@@ -1,0 +1,7 @@
+def a(int : a)
+    out(a)
+end
+
+a(10)
+
+>> it tooked only "inline" input if it was float, now I fixed it so it should always take 10 and print 10 out
