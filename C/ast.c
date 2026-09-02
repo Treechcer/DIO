@@ -530,7 +530,7 @@ Node* parseFunctionCall(dynamicToken* toks){
         pNode->type = FUNCTIONCALL;
         pNode->data.functionCall = malloc(sizeof(functionCall));
         pNode->data.functionCall->name = functionName;
-        printf("-|- %li\n", checkCurrenToken(toks).identifier);
+        //printf("-|- %li\n", checkCurrenToken(toks).identifier);
         pNode->data.functionCall->inputs = createFunctionParams(toks);
         
         return pNode;
@@ -665,7 +665,7 @@ Node* parseProgram(dynamicToken* toks) {
 
     while (g_index < (toks->count)-1) {
         //printf("%i : %li\n", g_index, (toks->count)-1);
-        printf("%s : %li\n", toks->items[g_index].value, toks->items[g_index].identifier);
+        //printf("%s : %li\n", toks->items[g_index].value, toks->items[g_index].identifier);
         if (checkCurrenToken(toks).identifier == END){
             shiftToken(toks);
             continue;
@@ -675,7 +675,6 @@ Node* parseProgram(dynamicToken* toks) {
 
         DYN_PUSH(node, pNode->data.programNode->nodes);
     }
-    printf("?!!");
     return pNode;
 }
 
