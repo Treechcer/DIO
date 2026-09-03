@@ -439,7 +439,7 @@ dynamicNode createFunctionParams(dynamicToken* toks){
             shiftToken(toks); // ]
         }
         else{
-            n->data.variableNode->lastIndex = 0;
+            n->data.variableNode->lastIndex = "-1";
         }
 
         DYN_PUSH(n, nodes);

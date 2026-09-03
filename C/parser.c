@@ -672,8 +672,8 @@ void parseFunctionCall_(Node* node){
                     tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.stringValue = value, .data.arrayVar.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
                 }
                 else if (g_vars.items[index].typedVar == NUMBERARRAY){
-                    printf("%s", node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex);
                     int indexArr = getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex);
+                    indexArr = (indexArr == -1) ? atoi(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex) : indexArr;
                     int index_ = getVarIndexByName(g_funcs.items[index].inputs.items[i]->data.variableNode->name);
 
                     if (index_ == -1){
@@ -682,7 +682,7 @@ void parseFunctionCall_(Node* node){
                     }
 
                     double* value = getVariableNumArrayValue(index_);
-                    if (index_ == -1){
+                    if (indexArr == -1){
                         tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };
                     }
                     else{
@@ -694,7 +694,7 @@ void parseFunctionCall_(Node* node){
                             indexInArrayFromVal = getVariableFloatValue(indexArr);
                         }
                         else{
-                            printf("TODO: ADD ERROR, incorrect type of var array num (%li, ix: %i)", g_vars.items[index].data, index);
+                            printf("TODO: ADD ERROR, incorrect type of var array num (%li, ix: %i)", indexArr, index);
                             exit(1);
                         }
                         
