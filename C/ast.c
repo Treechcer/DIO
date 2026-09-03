@@ -438,6 +438,9 @@ dynamicNode createFunctionParams(dynamicToken* toks){
             shiftToken(toks); // num
             shiftToken(toks); // ]
         }
+        else{
+            n->data.variableNode->lastIndex = 0;
+        }
 
         DYN_PUSH(n, nodes);
 

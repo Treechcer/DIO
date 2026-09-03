@@ -31,7 +31,7 @@ int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes a
         //this is more of an generally converting to another type, that shall be handled elsewhere
         return 1;
     }
-    else if ((action == FCALL) && ((var1 == UNKNOWNVARTYPE || var2 == UNKNOWNVARTYPE) ||  (var1 == var2) || ((var1 == INTVAR || var1 == FLOATVAR) && (var2 == INTVAR || var2 == FLOATVAR)))){
+    else if ((action == FCALL) && ((var1 == UNKNOWNVARTYPE || var2 == UNKNOWNVARTYPE) ||  (var1 == var2) || ((var1 == INTVAR || var1 == FLOATVAR || var1 == NUMBERARRAY) && (var2 == INTVAR || var2 == FLOATVAR || var2 == NUMBERARRAY)))){
         return 1;
     }
     else if ((action == CONCATSUM) && (var1 == STRINGVAR) && (var2 == STRINGVAR)){
@@ -191,12 +191,13 @@ binOpResult* evalBinOp(Node* node){
                 res->value.floatVar = getVariableFloatValue(varIndex);
                 return res;
             }
-            //else if (g_vars.items[varIndex].typedVar == NUMBERARRAY){
+            else if (g_vars.items[varIndex].typedVar == NUMBERARRAY){
                 //todo: Index? Should something like even be here?
-                //res->varType = STRINGVAR;
-                //res->value.floatVar = getVariableNumArrayValue(varIndex);
-                //return res;
-            //}
+                res->varType = FLOATVAR;
+                //res->value.floatVar = getVariableNumArrayValue(varIndex)[g_vars.items[varIndex].data.arrayVar.value.];
+                res->value.floatVar = 0;
+                return res;
+            }
         }
         
         printf("ERROR!!! NOT CORRECT VARTYPE FOR BINOP\n");
@@ -671,6 +672,7 @@ void parseFunctionCall_(Node* node){
                     tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.stringValue = value, .data.arrayVar.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
                 }
                 else if (g_vars.items[index].typedVar == NUMBERARRAY){
+                    printf("%s", node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex);
                     int indexArr = getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex);
                     int index_ = getVarIndexByName(g_funcs.items[index].inputs.items[i]->data.variableNode->name);
 
@@ -680,7 +682,7 @@ void parseFunctionCall_(Node* node){
                     }
 
                     double* value = getVariableNumArrayValue(index_);
-                    if (indexArr == -1){
+                    if (index_ == -1){
                         tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };
                     }
                     else{
@@ -692,7 +694,7 @@ void parseFunctionCall_(Node* node){
                             indexInArrayFromVal = getVariableFloatValue(indexArr);
                         }
                         else{
-                            printf("TODO: ADD ERROR, incorrect type of var array num (%li, ix: %i)", g_vars.items[indexArr].typedVar, indexArr);
+                            printf("TODO: ADD ERROR, incorrect type of var array num (%li, ix: %i)", g_vars.items[index].data, index);
                             exit(1);
                         }
                         
@@ -816,7 +818,7 @@ void parse(Node* ast){
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node = ast->data.programNode->nodes.items[i];
-        //printf("nodeType: %li\n", node->type);
+        printf("nodeType: %li\n", node->type);
         if (node->type == GOTONODE){
             int temp = parseGotoNameNode(node, &g_gotos, ast);
             if (temp != -1){

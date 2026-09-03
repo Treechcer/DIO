@@ -1,0 +1,6 @@
+def arTake(int : arr)
+    out(arr)
+end
+
+int ar = {1,2,3} 
+arTake(ar)

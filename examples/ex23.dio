@@ -2,6 +2,6 @@ int a = {1,2,3}
 out(a)
 
 for (int i = 0; i < 3; i = i + 1)
-    out(a[i])
+    >>out(a[i])
     >>out(i)
 end
