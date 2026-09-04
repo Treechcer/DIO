@@ -534,8 +534,10 @@ Node* parseFunctionCall(dynamicToken* toks){
         pNode->data.functionCall = malloc(sizeof(functionCall));
         pNode->data.functionCall->name = functionName;
         //printf("-|- %li\n", checkCurrenToken(toks).identifier);
+        //TODO: fix
+        //This crashes the programme? Why?
         pNode->data.functionCall->inputs = createFunctionParams(toks);
-        
+
         return pNode;
     }
 
@@ -658,6 +660,7 @@ Node* parseArrayAcessNode(dynamicToken* toks){
 }
 
 Node* parseProgram(dynamicToken* toks) {
+    printf("AST!\n");
     Node* pNode = createNode();
     pNode->type = PROGRAMNODE;
     pNode->data.programNode = malloc(sizeof(programNode));
