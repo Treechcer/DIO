@@ -660,7 +660,7 @@ Node* parseArrayAcessNode(dynamicToken* toks){
 }
 
 Node* parseProgram(dynamicToken* toks) {
-    printf("AST!\n");
+    //printf("AST!\n");
     Node* pNode = createNode();
     pNode->type = PROGRAMNODE;
     pNode->data.programNode = malloc(sizeof(programNode));

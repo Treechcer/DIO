@@ -110,6 +110,11 @@ int isFunctionLowLevel(int index){
 }
 
 int getVarIndexByName(char* name){
+    //TODO: test if this is correct?
+    if (name == NULL || g_vars.items == NULL || g_vars.count <= 0) {
+        return -1;
+    };
+
     for(int i = g_vars.count - 1; i >= 0; i--){
         if (strcmp(name, g_vars.items[i].name) == 0){
             //printf("%i\n", i);
@@ -680,26 +685,29 @@ void parseFunctionCall_(Node* node){
                         printf("TODO: add inline function array declaration?");
                         exit(1);
                     }
-
+                    //what if I want to just use specific index?
                     double* value = getVariableNumArrayValue(index_);
-                    if (indexArr == -1){
-                        tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };
-                    }
-                    else{
-                        int indexInArrayFromVal;
-                        if (g_vars.items[indexArr].typedVar == INTVAR){
-                            indexInArrayFromVal = getVariableIntValue(indexArr);
-                        }
-                        else if (g_vars.items[indexArr].typedVar == FLOATVAR){
-                            indexInArrayFromVal = getVariableFloatValue(indexArr);
-                        }
-                        else{
-                            printf("TODO: ADD ERROR, incorrect type of var array num (%li, ix: %i)", indexArr, index);
-                            exit(1);
-                        }
-                        
-                        tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = value[indexInArrayFromVal], .intialised = 1, .typedVar = FLOATVAR };
-                    }
+                    tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };
+                    
+                    //if (indexArr == -1){
+                    //    double* value = getVariableNumArrayValue(index_);
+                    //    tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };
+                    //}
+                    //else{
+                    //    int indexInArrayFromVal;
+                    //    if (g_vars.items[indexArr].typedVar == INTVAR){
+                    //        indexInArrayFromVal = getVariableIntValue(indexArr);
+                    //    }
+                    //    else if (g_vars.items[indexArr].typedVar == FLOATVAR){
+                    //        indexInArrayFromVal = getVariableFloatValue(indexArr);
+                    //    }
+                    //    else{
+                    //        printf("TODO: ADD ERROR, incorrect type of var array num (%li, ix: %i), type %li", indexArr, index, g_vars.items[indexArr].typedVar);
+                    //        exit(1);
+                    //    }
+                    //    
+                    //    tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = value[indexInArrayFromVal], .intialised = 1, .typedVar = FLOATVAR };
+                    //}
                 }
                 else{
                     printf("TOOD RAISE ERROR, BINOP NOT CORRECT RETURN?");
