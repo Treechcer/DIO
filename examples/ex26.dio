@@ -1,0 +1,9 @@
+>>This prints 0, but at least OUT works!
+def b(int : c)
+    out(c)
+end
+
+int a = {1,2,3}
+b(a[1])
+out(a[1])
+out(a)

@@ -14,6 +14,7 @@ int g_index = 0;
 
 Node* parseExpression(dynamicToken* toks);
 Node* parseGenericNode(dynamicToken* toks);
+int parseArrayAcessNode(dynamicToken* toks);
 
 //Node* parseExpression(dynamicToken toks);
 
@@ -204,8 +205,6 @@ Node* parseNewVariable(dynamicToken* toks){
             double* values = malloc(arrSize * sizeof(int));
 
             while(checkCurrenToken(toks).identifier != RSQUIGLYPAREN){
-                //printf("%s\n", checkCurrenToken(toks).value);
-                //printf("%f\n", atof(checkCurrenToken(toks).value));
                 arrSize++;
                 values = realloc(values, arrSize * sizeof(int));
                 values[arrSize - 1] = atof(shiftToken(toks).value);
@@ -223,6 +222,7 @@ Node* parseNewVariable(dynamicToken* toks){
             ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
             ret->data.numberArrayNode->value = values;
             ret->data.numberArrayNode->length = arrSize;
+            ret->data.numberArrayNode->acessIndex = parseArrayAcessNode(toks); 
 
             Node* retNode = createNode();
             retNode->type = VARIABLENODE;
@@ -534,7 +534,6 @@ Node* parseFunctionCall(dynamicToken* toks){
         pNode->data.functionCall = malloc(sizeof(functionCall));
         pNode->data.functionCall->name = functionName;
         //printf("-|- %li\n", checkCurrenToken(toks).identifier);
-        //TODO: fix
         //This crashes the programme? Why?
         pNode->data.functionCall->inputs = createFunctionParams(toks);
 
@@ -640,23 +639,22 @@ Node* parseStringGeneral(dynamicToken* toks){
     return NULL;
 }
 
-Node* parseArrayAcessNode(dynamicToken* toks){
-    //TODO: maybe not use this? Just add the value into variables?
+int parseArrayAcessNode(dynamicToken* toks){
     if (checkCurrenToken(toks).identifier == LSQUAREPAREN && checkTokenAt(toks, 2).identifier == RSQUAREPAREN){
         shiftToken(toks);
         int num = convertToInt(checkCurrenToken(toks).value);
         shiftToken(toks);
         shiftToken(toks);
 
-        Node* ret = createNode();
-        ret->type = ARRAYACESSNODE;
-        ret->data.arrayAcessNode = malloc(sizeof(arrayAcessNode));
-        ret->data.arrayAcessNode->index = num;
-
-        return ret;
+        //Node* ret = createNode();
+        //ret->type = ARRAYACESSNODE;
+        //ret->data.arrayAcessNode = malloc(sizeof(arrayAcessNode));
+        //ret->data.arrayAcessNode->index = num;
+    
+        return num;
     }
 
-    return NULL;
+    return -1;
 }
 
 Node* parseProgram(dynamicToken* toks) {

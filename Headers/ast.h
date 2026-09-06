@@ -31,6 +31,7 @@ typedef enum {
     STRINGNODE,
     NUMBERARRAYNODE,
     ARRAYACESSNODE,
+    UNKNOWNNODE,
 } nodeType;
 
 typedef struct programNode {
@@ -110,11 +111,13 @@ typedef struct maybeNode{
 typedef struct stringNode {
     char* value;
     int length;
+    int acessIndex;
 } stringNode;
 
 typedef struct numberArrayNode {
     double* value;
     int length;
+    int acessIndex;
 } numberArrayNode;
 
 typedef struct arrayAcessNode {

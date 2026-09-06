@@ -679,6 +679,9 @@ void parseFunctionCall_(Node* node){
                 else if (g_vars.items[index].typedVar == NUMBERARRAY){
                     int indexArr = getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex);
                     indexArr = (indexArr == -1) ? atoi(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex) : indexArr;
+                    if (node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex != NULL){
+                        indexArr = -1;
+                    }
                     int index_ = getVarIndexByName(g_funcs.items[index].inputs.items[i]->data.variableNode->name);
 
                     if (index_ == -1){
@@ -687,7 +690,13 @@ void parseFunctionCall_(Node* node){
                     }
                     //what if I want to just use specific index?
                     double* value = getVariableNumArrayValue(index_);
-                    tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };
+                    if (indexArr != -1){
+                        value = &value[indexArr];
+                        tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = *value, .intialised = 1, .typedVar = FLOATVAR };
+                    }
+                    else{
+                        tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };
+                    }
                     
                     //if (indexArr == -1){
                     //    double* value = getVariableNumArrayValue(index_);
@@ -826,7 +835,7 @@ void parse(Node* ast){
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         Node* node = ast->data.programNode->nodes.items[i];
-        printf("nodeType: %li\n", node->type);
+        //printf("nodeType: %li\n", node->type);
         if (node->type == GOTONODE){
             int temp = parseGotoNameNode(node, &g_gotos, ast);
             if (temp != -1){
