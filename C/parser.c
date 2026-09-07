@@ -197,11 +197,22 @@ binOpResult* evalBinOp(Node* node){
                 return res;
             }
             else if (g_vars.items[varIndex].typedVar == NUMBERARRAY){
-                //todo: Index? Should something like even be here?
-                res->varType = FLOATVAR;
-                //res->value.floatVar = getVariableNumArrayValue(varIndex)[g_vars.items[varIndex].data.arrayVar.value.];
-                res->value.floatVar = 0;
-                return res;
+                if (node->data.variableNode->lastIndex == NULL){
+                    res->varType = NUMBERARRAY;
+                    //res->value.floatVar = getVariableNumArrayValue(varIndex)[g_vars.items[varIndex].data.arrayVar.value.];
+                    res->value.numberArrayValue = g_vars.items[varIndex].data.arrayVar.value.numberValue;
+                    return res;
+                }
+                else{
+                    res->varType = FLOATVAR;
+                    int indexArr = getIndexFromInput(node->data.variableNode->lastIndex);
+                    if (indexArr == -1){
+                        printf("INCORRECT INPUT IN ARRAY ACESS");
+                        exit(1);
+                    }
+                    res->value.floatVar = g_vars.items[varIndex].data.arrayVar.value.numberValue[indexArr];
+                    return res;
+                }
             }
         }
         
@@ -662,7 +673,6 @@ void parseFunctionCall_(Node* node){
                     }
                     
                     //printf("INDEX : %i (max: %i ; %s)\n", index_, strlen(valueOrig), valueOrig);
-
                     if (index_ >= 0){
                         if (index_ >= strlen(valueOrig)){
                             printf("TOOD: RAISE ERROR, NOT CORRECT INDEX : %i (max: %li ; %s)\n", index_, strlen(valueOrig), valueOrig);
@@ -677,18 +687,13 @@ void parseFunctionCall_(Node* node){
                     tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.stringValue = value, .data.arrayVar.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
                 }
                 else if (g_vars.items[index].typedVar == NUMBERARRAY){
-                    int indexArr = getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex);
-                    indexArr = (indexArr == -1) ? atoi(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex) : indexArr;
-                    if (node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex != NULL){
-                        indexArr = -1;
-                    }
+                    int indexArr = getIndexFromInput(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex);
                     int index_ = getVarIndexByName(g_funcs.items[index].inputs.items[i]->data.variableNode->name);
 
                     if (index_ == -1){
                         printf("TODO: add inline function array declaration?");
                         exit(1);
                     }
-                    //what if I want to just use specific index?
                     double* value = getVariableNumArrayValue(index_);
                     if (indexArr != -1){
                         value = &value[indexArr];

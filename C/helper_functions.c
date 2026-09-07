@@ -6,6 +6,8 @@
 #include "../Headers/token.h"
 #include "../Headers/helper_functions.h"
 
+int getVarIndexByName(char* name);
+
 long int convertToLongInt(char* value){
     return atol(value);
 }
@@ -88,4 +90,14 @@ fileReadReturn readFile(char* fName){
 
     fileReadReturn ret = (fileReadReturn){.size = fsize, .content = mainFile, .exists = 1};
     return ret;
+}
+
+int getIndexFromInput(char* name){
+    int indexArr = getVarIndexByName(name);
+    indexArr = (indexArr == -1) ? atoi(name) : indexArr;
+    //if (name != NULL){
+    //    indexArr = -1;
+    //}
+
+    return indexArr;
 }

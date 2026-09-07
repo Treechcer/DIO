@@ -23,5 +23,6 @@ Position createPosition(int* start, int* end, int* line, char* file);
 size_t getStringSize(const char* string);
 bool isAlphaString(char* c);
 fileReadReturn readFile(char* fName);
+int getIndexFromInput(char* name);
 
 #endif

@@ -64,6 +64,7 @@ typedef struct {
         char* stringVal;
         int intVal;
         float floatVar;
+        double* numberArrayValue;
     } value;
 } binOpResult;
 
