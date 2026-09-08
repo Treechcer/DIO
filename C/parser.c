@@ -51,7 +51,6 @@ void callLowLevelFunc(int index){
     char* name = g_funcs.items[index].name;
     if (strcmp(name, "out") == 0){
         int varIndex = getVarIndexByName("a");
-        //printf("%i\n", g_vars.items[varIndex].typedVar);
         if (g_vars.items[varIndex].typedVar == STRINGVAR){
             printf("%s\n", getVariableStringValue(varIndex));
         }

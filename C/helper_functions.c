@@ -93,11 +93,11 @@ fileReadReturn readFile(char* fName){
 }
 
 int getIndexFromInput(char* name){
+    if (name == NULL){
+        return -1;
+    }
     int indexArr = getVarIndexByName(name);
     indexArr = (indexArr == -1) ? atoi(name) : indexArr;
-    //if (name != NULL){
-    //    indexArr = -1;
-    //}
 
     return indexArr;
 }

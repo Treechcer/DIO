@@ -4,6 +4,6 @@ def b(int : c)
 end
 
 int a = {1,2,3}
-b(a[1])
-out(a[1])
->>out(a)
+b(a[0])
+out(a[2])
+out(a)
