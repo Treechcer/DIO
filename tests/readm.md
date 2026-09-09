@@ -1,5 +1,3 @@
 # Tests
 
-Weird that `ex18.dio` sometimes returns error and doesn't pass?
-
-> NOTE: documentation for this coming later.
+Redo tests. These suck. Also folder structure changed so no more working.

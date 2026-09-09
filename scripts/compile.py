@@ -3,6 +3,17 @@ import os
 import platform
 import sys
 
+s = "/"
+if platform.system() == "Windows":
+    s = "\\"
+
+if os.path.abspath(os.curdir).split(s)[-1] != "DIO-code":
+    os.chdir(os.path.join(os.curdir,"DIO-code"))
+
+if os.path.abspath(os.curdir).split(s)[-1] != "DIO-code":
+    print("incorrect folder???")
+    exit()
+
 arguments = {
     "debug" : False
 }
@@ -12,7 +23,7 @@ for arg in sys.argv[1:]:
     arguments[arg[1]] = not arguments[arg[1]]
 
 def makeSTDlib():
-    std = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "scripts"), "STD.dio")
+    std = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "..", "scripts"), "STD.dio")
     stdC = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "C"), "STD.c")
     stdH = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "Headers"), "STD.h")
     strStd = """char* getSTD(){
@@ -65,8 +76,8 @@ try:
         filename = "lang.exe"
         slash = "\\"
     #subprocess.run("gcc -g -Wall -Wextra " + getFiles() + f" -o {filename}", shell=True, check=True)
-    subprocess.run("gcc -g " + getFiles() + f" -o {filename}", shell=True, check=True)
-
+    subprocess.run("gcc -g " + getFiles() + f" -o ..{slash}{filename}", shell=True, check=True)
+    os.chdir("..")
     with open(os.path.abspath(os.path.join("scripts", "CompileRunParams.txt")), "r") as f:
         if arguments["debug"]:
             subprocess.run(f'gdb -ex run -ex bt --args .{slash}{filename} {f.read()}', shell=True)
