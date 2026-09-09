@@ -16,6 +16,7 @@
 #include"../Headers/inputargs.h"
 #include"../Headers/STD.h"
 #include"../Headers/helper_functions.h"
+#include"../Headers/errorsNew.h"
 
 Node* createInput(char* name, variableTypes type){
     Node* input = createNode();
@@ -40,6 +41,11 @@ void initLowLevelFuncs(){
 }
 
 int main(int argc, char **argv){
+    /*
+    This is test of parsing, later I have to actually exit? add position? macro? underline under the issue?
+    raiseError(__FILE__);
+    */
+
     //BUILD INPUTS!!
 
     int fileArgIndex = registerArg(STRINGPUT, "file", 1, "");
