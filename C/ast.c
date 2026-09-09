@@ -5,7 +5,7 @@
 #include"../Headers/ast.h"
 #include"../Headers/helper_functions.h"
 #include"../Headers/macros.h"
-#include"../Headers/errors.h"
+#include"../legacy/errors.h"
 #include"../Headers/token.h"
 
 int g_index = 0;

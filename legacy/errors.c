@@ -2,7 +2,7 @@
 #include<stdio.h>
 
 #include"../Headers/token.h"
-#include"../Headers/errors.h"
+#include"../legacy/errors.h"
 #include"../Headers/macros.h"
 #include"../Headers/helper_functions.h"
 

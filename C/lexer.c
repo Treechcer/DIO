@@ -4,7 +4,7 @@
 
 #include"../Headers/token.h"
 #include"../Headers/dynamic_array.h"
-#include"../Headers/errors.h"
+#include"../legacy/errors.h"
 #include"../Headers/helper_functions.h"
 
 bool isAllowed(char c){ //special characters that are allowed and handled differently!

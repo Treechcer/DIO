@@ -49,9 +49,11 @@ char* getSTD();
 
 def getFiles():
     curPath = os.path.join(os.path.abspath(os.path.curdir), "C")
+    legacyPath = os.path.join(os.path.abspath(os.path.curdir), "legacy")
     files = os.listdir(curPath)
     string = ""
     for o in files: string += os.path.join(curPath, o) + " "
+    for o in os.listdir(legacyPath): string += os.path.join(legacyPath, o) + " "
     return string[:-1]
 
 makeSTDlib()

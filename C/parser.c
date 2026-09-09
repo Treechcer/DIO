@@ -5,7 +5,7 @@
 
 #include"../Headers/dynamic_array.h"
 #include"../Headers/ast.h"
-#include"../Headers/errors.h"
+#include"../legacy/errors.h"
 #include"../Headers/parser.h"
 #include"../Headers/helper_functions.h"
 
