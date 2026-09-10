@@ -41,17 +41,19 @@ void initLowLevelFuncs(){
 }
 
 int main(int argc, char **argv){
-    /*
-    This is test of parsing, later I have to actually exit? add position? macro? underline under the issue?
-    raiseError(__FILE__);
-    */
-
     //BUILD INPUTS!!
 
     int fileArgIndex = registerArg(STRINGPUT, "file", 1, "");
 
     //CHECK INPUTS!
     checkInuts(argc, argv);
+
+    /*
+    This is test of parsing, later I have to actually exit? add position? macro? underline under the issue?
+   
+    raiseError(__FILE__, (Position){.file = getvalueByIndex(fileArgIndex), .line = &(int){2}});
+    exit(0);
+    */
 
     srand(time(NULL)); //for pseudo random Num
 

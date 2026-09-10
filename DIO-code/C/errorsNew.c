@@ -2,6 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "../Headers/Token.h"
+#include "../Headers/helper_functions.h"
+
 char* scanForFileName(const char* filePath){
     #ifdef WIN32
         const char slash = '\\';
@@ -33,6 +36,37 @@ char* scanForFileName(const char* filePath){
     return unRev;
 }
 
-void raiseError(const char* file){
-    char* fileOriginName = scanForFileName(file);
+char* getLine(Position pos){
+    fileReadReturn fileData = readFile(pos.file);
+    int line = 1;
+    for (size_t i = 0; i < fileData.size; i++){
+        if (line == *pos.line){
+            char* str = malloc(1);
+            str[0] = '\0';
+            for (int j = i; j < fileData.size; j++){
+                //printf("%c\n", fileData.content[j]);
+                if (fileData.content[j] == '\n'){
+                    //printf("||%s\n", str);
+                    return str;
+                }
+                char ch = fileData.content[j];
+                int len = strlen(str);
+                char* strTemp = realloc(str, (len+2)*sizeof(char));
+                str = strTemp;
+                str[len] = ch;
+                str[len+1] = '\0';
+            }
+        }
+
+        if (fileData.content[i] == '\n'){
+            line++;
+        }
+    }
+}
+
+void raiseError(const char* file, Position pos){
+    char* processName = scanForFileName(file);
+    char* codeLine = getLine(pos);
+
+    printf("%s\n", codeLine);
 }
