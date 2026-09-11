@@ -50,8 +50,8 @@ int main(int argc, char **argv){
 
     /*
     This is test of parsing, later I have to actually exit? add position? macro? underline under the issue?
-   
-    raiseError(__FILE__, (Position){.file = getvalueByIndex(fileArgIndex), .line = &(int){2}});
+    
+    raiseError(__FILE__, (Position){.file = getvalueByIndex(fileArgIndex), .line = &(int){2}, .start = &(int){7}, .end = &(int){10}});
     exit(0);
     */
 

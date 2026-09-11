@@ -5,6 +5,14 @@
 #include "../Headers/Token.h"
 #include "../Headers/helper_functions.h"
 
+#ifdef _WIN32
+    #include <direct.h>
+#else 
+    #include <unistd.h>
+    #include <limits.h>
+#endif
+
+
 char* scanForFileName(const char* filePath){
     #ifdef WIN32
         const char slash = '\\';
@@ -64,9 +72,26 @@ char* getLine(Position pos){
     }
 }
 
+void printOutArrows(char* message, Position pos){
+    #ifdef _WIN32
+        printf("In file: %s/%s %i:%i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end);
+    #else
+        printf("In file: %s\\%s %i:%i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end);
+    #endif
+    printf("%s\n", message);
+
+    for (int i = 1; i < *pos.start; i++){
+        printf(" ");
+    }
+
+    for (int i = *pos.start; i < *pos.end; i++){
+        printf("~");
+    }
+}
+
 void raiseError(const char* file, Position pos){
     char* processName = scanForFileName(file);
     char* codeLine = getLine(pos);
 
-    printf("%s\n", codeLine);
+    printOutArrows(codeLine, pos);
 }
