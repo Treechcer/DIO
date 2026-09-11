@@ -217,8 +217,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     if (strcmp(action.items, "get") == 0) {
                         fileReadReturn fileNext = readFile(arg.items);
                         if (fileNext.exists == 0) {
-                            printf("TODO ADD ERROR FOR NO FILE!");
-                            exit(1);
+                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "File does not exist or could not be access by the OS.")
                         }
                         toks = lex(fileNext.content, arg.items, toks);
                     }
@@ -231,7 +230,8 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         while((isDigit(c) || c == '.')){
                             if (c == '.') {
                                 if (isFloat) {
-                                    errorOut((Error){"", twoDotsFloat, createPosition(&charPos_, &charPos_, &line, fileName)});
+                                    //errorOut((Error){"", twoDotsFloat, createPosition(&charPos_, &charPos_, &line, fileName)});
+                                    raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Float can't have two dots.")
                                 } else {
                                     isFloat = 1;
                                 }
@@ -282,9 +282,16 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         c = *code;
                     }
                     else{
-                        printf("%s\n", code);
-                        writeToksOut(toks);
-                        errorOut((Error){"", genericLexError, createPosition(&charPos_, &charPos_, &line, fileName)});
+                        //printf("%s\n", code);
+                        //writeToksOut(toks);
+                        //errorOut((Error){"", genericLexError, createPosition(&charPos_, &charPos_, &line, fileName)});
+
+                        //TODO: test
+                        
+                        char* msg = "Unknown token at char 'C'.";
+                        msg[strlen("Unknown token at char 'C'.")-3] = c;
+
+                        raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), msg)
                     }
                 break;
         }

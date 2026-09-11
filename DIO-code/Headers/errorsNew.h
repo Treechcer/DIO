@@ -1,6 +1,8 @@
 #ifndef ERRORSNEW__H
 #define ERRORSNEW__H
 
-void raiseError(const char* file, Position pos);
+#include "../Headers/Token.h"
+
+void raiseError(const char* file, Position pos, char* errorMessage);
 
 #endif

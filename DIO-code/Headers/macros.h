@@ -1,6 +1,8 @@
 #ifndef MACROS_H
 #define MACROS_H
 
+#include "../Headers/errorsNew.h"
+
 #define DYN_PUSH(value, arr)\
     if (arr.count >= arr.size){\
         if (arr.size == 0) arr.size = 256;\
@@ -29,6 +31,9 @@ typedef struct {\
     size_t count;\
     size_t size;\
 } name;\
+
+#define raiseErrorMacro(POSITION, ERRORMESSAGE)\
+    raiseError(__FILE__, POSITION, ERRORMESSAGE);
 
 //defined colors 
 

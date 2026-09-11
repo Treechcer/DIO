@@ -72,7 +72,7 @@ char* getLine(Position pos){
     }
 }
 
-void printOutArrows(char* message, Position pos){
+void printOutArrows(char* message, Position pos, char* errorMessage, char* process){
     #ifdef _WIN32
         printf("In file: %s/%s %i:%i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end);
     #else
@@ -87,11 +87,14 @@ void printOutArrows(char* message, Position pos){
     for (int i = *pos.start; i < *pos.end; i++){
         printf("~");
     }
+    printf("\n%s\nin process: %s", errorMessage, process);
 }
 
-void raiseError(const char* file, Position pos){
+void raiseError(const char* file, Position pos, char* errorMessage){
     char* processName = scanForFileName(file);
     char* codeLine = getLine(pos);
 
-    printOutArrows(codeLine, pos);
+    printOutArrows(codeLine, pos, errorMessage, processName);
+
+    exit(1);
 }
