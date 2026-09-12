@@ -83,7 +83,7 @@ Node* parseFactor(dynamicToken* toks){
         shiftToken(toks);
         Node* node = parseExpression(toks);
         if (checkCurrenToken(toks).identifier != RPAREN){
-            errorOut((Error){"", ASTERROR, createPosition(NULL, NULL, NULL, NULL)});
+            raiseErrorMacro(checkCurrenToken(toks).pos, "Right parentheses is missing.")
         }
         shiftToken(toks);
         return node;
@@ -389,8 +389,7 @@ Node* parseCondition(dynamicToken* toks){
     if (tok.identifier == KEYWORD && (if_ || elseif_ || else_)){
         shiftToken(toks);
         if (strcmp(checkCurrenToken(toks).value, "(") != 0 && strcmp(tok.value, "else") != 0){
-            printf("RAISE ERROR LATER");
-            exit(1);
+            raiseErrorMacro(checkCurrenToken(toks).pos, "Condition or else is missing.");
         }
 
         Node* pNode = createNode();
@@ -429,7 +428,7 @@ dynamicNode createFunctionParams(dynamicToken* toks){
     while (checkCurrenToken(toks).identifier != RPAREN){
         Node* n = parseGenericNode(toks);
         if (n == NULL){
-            errorOut((Error){"Unable to parse node", ASTERROR, createPosition(NULL, NULL, NULL, NULL)});
+            raiseErrorMacro(checkCurrenToken(toks).pos, "Could't create node for this specific token.");
         }
 
         if (n->type == VARIABLENODE && checkCurrenToken(toks).identifier == LSQUAREPAREN){
@@ -448,7 +447,7 @@ dynamicNode createFunctionParams(dynamicToken* toks){
             shiftToken(toks);
         }
         else if (checkCurrenToken(toks).identifier != RPAREN){
-            errorOut((Error){"Unexpected token while function arguments", ASTERROR, createPosition(NULL, NULL, NULL, NULL)});
+            raiseErrorMacro(checkCurrenToken(toks).pos, "The right parentheses is missing");
         }
     }
 
@@ -475,11 +474,11 @@ Node* parseFunctionCreate(dynamicToken* toks){
         shiftToken(toks); //(
 
         while (checkCurrenToken(toks).identifier != RPAREN){
-            char* type = shiftToken(toks).value; // int
+            Token tokType = shiftToken(toks); // tokenType
+            char* type = tokType.value; 
             if (shiftToken(toks).identifier != COLON){
-                printf("%s", checkCurrenToken(toks).value);
-                printf("TODO: RAISE ERROR LATER, NO ':'\n");
-                exit(1);
+                //printf("%s", checkCurrenToken(toks).value);
+                raiseErrorMacro(checkCurrenToken(toks).pos, "Missing ':'");
             }
             char* name = shiftToken(toks).value;
 
@@ -503,8 +502,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
                 dynNode->data.variableNode->type = UNKNOWNVARTYPE;
             }
             else{
-                printf("TODO: RAISE ERROR, NO VAR TYPE or whatever");
-                exit(1);
+                raiseErrorMacro(tokType.pos, "Incorrect name for variable");
             }
 
             //printf("%s. %s\n", name, type);
@@ -549,8 +547,7 @@ Node* parseLoop(dynamicToken* toks){
     if (t.identifier == KEYWORD && strcmp(t.value, "while") == 0){
         shiftToken(toks); //while
         if (checkCurrenToken(toks).identifier != LPAREN){
-            printf("TODO: RAISE CORRECTLY ERROR, AST LOOP");
-            exit(1);
+            raiseErrorMacro(checkCurrenToken(toks).pos, "Unclosed bracket in loop");
         }
         shiftToken(toks); //(
         Node* binOp = parseExpression(toks);
@@ -569,8 +566,7 @@ Node* parseLoop(dynamicToken* toks){
     else if (t.identifier == KEYWORD && strcmp(t.value, "for") == 0){
         shiftToken(toks); //for
         if (checkCurrenToken(toks).identifier != LPAREN){
-            printf("TODO: RAISE CORRECTLY ERROR, AST LOOP");
-            exit(1);
+            raiseErrorMacro(checkCurrenToken(toks).pos, "Unclosed bracket in loop");
         }
         shiftToken(toks); //(
         Node* init = parseGenericNode(toks);
@@ -713,7 +709,7 @@ Node* parseGenericNode(dynamicToken* toks){
         printf("ERR: %i : %li\n", g_index, (toks->count)-1);
         printf("ERR: %s (ID: %i) \n", checkCurrenToken(toks).value, checkCurrenToken(toks).identifier);
 
-        errorOut((Error){"", ASTERROR, toks->items[g_index].pos});
+        raiseErrorMacro(checkCurrenToken(toks).pos, "Generic error,");
     }
 
     return node;
