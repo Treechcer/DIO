@@ -50,19 +50,21 @@ Node* parseFactor(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
 
     if (strcmp("maybe", tok.value) == 0) {
-        shiftToken(toks);
+        Token tok = shiftToken(toks);
         Node* retNode = createNode();
         retNode->type = MAYBENODE;
         retNode->data.maybeNode = malloc(sizeof(maybeNode));
+        retNode->pos = &tok.pos;
         return retNode;
     }
 
     if (tok.identifier == INT || tok.identifier == FLOAT){
-        shiftToken(toks);
+        Token tok = shiftToken(toks);
         Node* node = createNode();
         node->type = NUMBERNODE;
         node->data.numberNode = malloc(sizeof(numberNode));
         node->data.numberNode->value = convertToDouble(tok.value);
+        node->pos = &tok.pos;
 
         return node;
     }
@@ -75,6 +77,7 @@ Node* parseFactor(dynamicToken* toks){
         node->data.variableNode->name = tok.value;
         node->data.variableNode->type = INTVAR;
         node->data.variableNode->value = NULL;
+        node->pos = &tok.pos;
 
         return node;
     }
@@ -106,6 +109,7 @@ Node* parseTerm(dynamicToken* toks){
         pNode->data.binOpNode->left = left;
         pNode->data.binOpNode->op = tokOp.identifier;
         pNode->data.binOpNode->right = right;
+        pNode->pos = &(Position){.start = left->pos->start, .end = right->pos->end, .line = right->pos->line, .end = right->pos->end};
 
         left = pNode;
     }
@@ -129,6 +133,7 @@ Node* parseExpression(dynamicToken* toks){
         pNode->data.variableNode->name = nameTok.value;
         pNode->data.variableNode->type = INTVAR;
         pNode->data.variableNode->value = value;
+        pNode->pos = &(Position){.start = nameTok.pos.start, .end = value->pos->end, .file = value->pos->file, .line = value->pos->line};
 
         return pNode;
     }
@@ -145,6 +150,7 @@ Node* parseExpression(dynamicToken* toks){
         pNode->data.binOpNode->left = left;
         pNode->data.binOpNode->op = tokOp.identifier;
         pNode->data.binOpNode->right = right;
+        pNode->pos = &(Position){.start = left->pos->start, .end = right->pos->end, .line = right->pos->line, .end = right->pos->end};
 
         left = pNode;
     }
@@ -165,7 +171,7 @@ Node* parseNewVariable(dynamicToken* toks){
     if (checkCurrenToken(toks).identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == EQUALS){
         createNodeBool = 1;
         name = checkCurrenToken(toks).value;
-        shiftToken(toks); // skips name
+        Position pos = shiftToken(toks).pos; // skips name
         shiftToken(toks); // skips =
 
         tokT = UNKNOWNVARTYPE;
@@ -173,7 +179,7 @@ Node* parseNewVariable(dynamicToken* toks){
     else if (checkCurrenToken(toks).identifier == KEYWORD && (strcmp(tv, "int") == 0 || strcmp(tv, "float") == 0 || strcmp(tv, "bool") == 0)){
         if (checkTokenAt(toks, 3).identifier == INT || checkTokenAt(toks, 3).identifier == FLOAT){
             createNodeBool = 1;
-            shiftToken(toks); // skips int | float ........
+            Position pos = shiftToken(toks).pos; // skips int | float ........
             name = checkCurrenToken(toks).value;
             shiftToken(toks); // skips name
             shiftToken(toks); // skips =
@@ -191,7 +197,7 @@ Node* parseNewVariable(dynamicToken* toks){
         }
         else {
             createNodeBool = 1;
-            shiftToken(toks); // skips num
+            Position pos = shiftToken(toks).pos; // skips num
             name = checkCurrenToken(toks).value;
             shiftToken(toks); // skips name
             shiftToken(toks); // skips =
@@ -212,12 +218,15 @@ Node* parseNewVariable(dynamicToken* toks){
                     shiftToken(toks);
                 }
             }
-            
+
+            pos.end = checkCurrenToken(toks).pos.end;
+
             if (checkCurrenToken(toks).identifier == RSQUIGLYPAREN){
                 shiftToken(toks);
             }
 
             Node* ret = createNode();
+            ret->pos = &pos;
             ret->type = NUMBERARRAYNODE;
             ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
             ret->data.numberArrayNode->value = values;
@@ -238,7 +247,7 @@ Node* parseNewVariable(dynamicToken* toks){
     }
     else if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(tv, "string") == 0){
         createNodeBool = 1;
-        shiftToken(toks); // string
+        Position pos = shiftToken(toks).pos; // string
         name = checkCurrenToken(toks).value;
         shiftToken(toks); // skips name
         shiftToken(toks); // skips =
@@ -248,10 +257,10 @@ Node* parseNewVariable(dynamicToken* toks){
 
         char* val;
         int len = 0;
-        int pos = g_index;
+        int pos_ = g_index;
 
-        while (toks->items[pos++].identifier != QUOTE){
-            len += strlen(toks->items[pos].value);
+        while (toks->items[pos_++].identifier != QUOTE){
+            len += strlen(toks->items[pos_].value);
         }
         char* value = "";
         if (len > 0){
@@ -270,7 +279,7 @@ Node* parseNewVariable(dynamicToken* toks){
         //printf("%s\n", value);
         
         //printf("%s", checkCurrenToken(toks).value);
-        shiftToken(toks); //'
+        pos.end = shiftToken(toks).pos.end; //'
 
         initialise = 1;
 
@@ -282,6 +291,7 @@ Node* parseNewVariable(dynamicToken* toks){
         //printf("%s : %s\n", value, strNode->data.stringNode->value);
 
         Node* retNode = createNode();
+        retNode->pos = &pos;
         retNode->type = VARIABLENODE;
         retNode->data.variableNode = malloc(sizeof(variableNode));
         retNode->data.variableNode->name = name;
@@ -295,13 +305,14 @@ Node* parseNewVariable(dynamicToken* toks){
     if (createNodeBool){
         value = parseExpression(toks);
         if (value == NULL && strcmp(checkCurrenToken(toks).value, "maybe") == 0){
-            printf("??SADA");
+            printf("Can this ever run?");
         }
         if (value == NULL) {
             return NULL; 
         }
 
         Node* retNode = createNode();
+        retNode->pos = value->pos;
         retNode->type = VARIABLENODE;
         retNode->data.variableNode = malloc(sizeof(variableNode));
         retNode->data.variableNode->name = name;
@@ -323,6 +334,7 @@ Node* parseNewVariable(dynamicToken* toks){
 Node* parseGoto(dynamicToken* toks){
     Node* pNode = createNode();
     if (toks->items[g_index].identifier == KEYWORD && strcmp(toks->items[g_index].value, "goto") == 0){
+        pNode->pos = &toks->items[g_index].pos;
         pNode->type = GOTONODE;
         pNode->data.gotoNode = malloc(sizeof(gotoNode));
         shiftToken(toks);
@@ -341,6 +353,7 @@ Node* parseGoto(dynamicToken* toks){
         return pNode;
     }
     else if (toks->items[g_index].identifier == GOTONAME) {
+        pNode->pos = &toks->items[g_index].pos;
         pNode->type = GOTOIDENTIFIER;
         pNode->data.gotoIdefier = malloc(sizeof(gotoIdefier));
         pNode->data.gotoIdefier->name = shiftToken(toks).value;
@@ -352,6 +365,7 @@ Node* parseGoto(dynamicToken* toks){
 }
 
 Node* parseCodeBlock(dynamicToken* toks, nodeType nt){
+    //Should this also have start / end? Line can't be same here!
     Node* pNode = createNode();
     pNode->type = CODEBLOCK;
     pNode->data.codeBlock = malloc(sizeof(codeBlock));
@@ -387,12 +401,16 @@ Node* parseCondition(dynamicToken* toks){
     int else_ = strcmp(tok.value, "else") == 0;
 
     if (tok.identifier == KEYWORD && (if_ || elseif_ || else_)){
-        shiftToken(toks);
+        Token t = shiftToken(toks);
         if (strcmp(checkCurrenToken(toks).value, "(") != 0 && strcmp(tok.value, "else") != 0){
             raiseErrorMacro(checkCurrenToken(toks).pos, "Condition or else is missing.");
         }
 
         Node* pNode = createNode();
+
+        pNode->pos = &t.pos;
+        pNode->pos->end = checkCurrenToken(toks).pos.end;
+
         pNode->type = CONDITION;
         pNode->data.condition = malloc(sizeof(condition));
 
@@ -419,6 +437,7 @@ Node* parseCondition(dynamicToken* toks){
 }
 
 dynamicNode createFunctionParams(dynamicToken* toks){
+    //does this need handled position? I think it doesn't no?
     dynamicNode nodes = {0,0,0};
 
     if (checkCurrenToken(toks).identifier == LPAREN){
@@ -427,6 +446,7 @@ dynamicNode createFunctionParams(dynamicToken* toks){
 
     while (checkCurrenToken(toks).identifier != RPAREN){
         Node* n = parseGenericNode(toks);
+
         if (n == NULL){
             raiseErrorMacro(checkCurrenToken(toks).pos, "Could't create node for this specific token.");
         }
@@ -466,7 +486,9 @@ Node* parseFunctionCreate(dynamicToken* toks){
         pNode->type = FUNCTION;
         pNode->data.function = malloc(sizeof(function));
         pNode->data.function->inputs = (dynamicNode){0,0,0};
-
+        
+        Token tempT = checkCurrenToken(toks);
+        pNode->pos = &tempT.pos;
 
         shiftToken(toks); //def
         char* name = checkCurrenToken(toks).value;
@@ -480,11 +502,16 @@ Node* parseFunctionCreate(dynamicToken* toks){
                 //printf("%s", checkCurrenToken(toks).value);
                 raiseErrorMacro(checkCurrenToken(toks).pos, "Missing ':'");
             }
-            char* name = shiftToken(toks).value;
+            Token t = shiftToken(toks);
+            char* name = t.value;
 
             //in created fuction we HAVE to define variable, in call we can call prettymuch whatever...
 
             Node* dynNode = createNode();
+            
+            dynNode->pos = &tokType.pos;
+            dynNode->pos->end = t.pos.end;
+            
             dynNode->type = VARIABLENODE;
             dynNode->data.variableNode = malloc(sizeof(variableNode));
             dynNode->data.variableNode->name = name;
@@ -531,6 +558,7 @@ Node* parseFunctionCall(dynamicToken* toks){
         pNode->type = FUNCTIONCALL;
         pNode->data.functionCall = malloc(sizeof(functionCall));
         pNode->data.functionCall->name = functionName;
+        pNode->pos = &tok.pos;
         //printf("-|- %li\n", checkCurrenToken(toks).identifier);
         //This crashes the programme? Why?
         pNode->data.functionCall->inputs = createFunctionParams(toks);
@@ -545,16 +573,19 @@ Node* parseLoop(dynamicToken* toks){
     Token t = checkCurrenToken(toks);
     //printf("%i ; %s\n", t.identifier, t.value);
     if (t.identifier == KEYWORD && strcmp(t.value, "while") == 0){
-        shiftToken(toks); //while
+        Token start = shiftToken(toks); //while
         if (checkCurrenToken(toks).identifier != LPAREN){
             raiseErrorMacro(checkCurrenToken(toks).pos, "Unclosed bracket in loop");
         }
         shiftToken(toks); //(
         Node* binOp = parseExpression(toks);
 
-        shiftToken(toks); //)
+        Token end = shiftToken(toks); //)
 
         Node* pNode = createNode();
+        pNode->pos = &start.pos;
+        pNode->pos->end = end.pos.end;
+
         pNode->type = LOOPNODE;
         pNode->data.loopNode = malloc(sizeof(loopNode));
         pNode->data.loopNode->codeBlock = parseCodeBlock(toks, LOOPNODE);
@@ -564,7 +595,7 @@ Node* parseLoop(dynamicToken* toks){
         return pNode;
     }
     else if (t.identifier == KEYWORD && strcmp(t.value, "for") == 0){
-        shiftToken(toks); //for
+        Token start = shiftToken(toks); //for
         if (checkCurrenToken(toks).identifier != LPAREN){
             raiseErrorMacro(checkCurrenToken(toks).pos, "Unclosed bracket in loop");
         }
@@ -579,10 +610,12 @@ Node* parseLoop(dynamicToken* toks){
         //printf("%i", init->type);
         //printf("%i", endStatement->type);
         
-        shiftToken(toks); //)
+        Token end = shiftToken(toks); //)
 
         Node* pNode = createNode();
-
+        pNode->pos = &start.pos;
+        pNode->pos->end = end.pos.end;
+        
         pNode->type = LOOPNODE;
         pNode->data.loopNode = malloc(sizeof(loopNode));
         pNode->data.loopNode->codeBlock = parseCodeBlock(toks, LOOPNODE);
@@ -599,7 +632,7 @@ Node* parseLoop(dynamicToken* toks){
 
 Node* parseStringGeneral(dynamicToken* toks){
     if (checkCurrenToken(toks).identifier == QUOTE){
-        shiftToken(toks);
+        Token start = shiftToken(toks);
         char* val;
         int len = 0;
         int pos = g_index;
@@ -621,9 +654,12 @@ Node* parseStringGeneral(dynamicToken* toks){
             value = buffer;
         }
 
-        shiftToken(toks); //'
+        Token end = shiftToken(toks); //'
 
         Node* stringNode = malloc(sizeof(stringNode));
+        stringNode->pos = &start.pos;
+        stringNode->pos->end = end.pos.end;
+
         stringNode->type = STRINGNODE;
         stringNode->data.stringNode = malloc(sizeof(stringNode));
         stringNode->data.stringNode->value = value;

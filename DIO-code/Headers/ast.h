@@ -143,8 +143,7 @@ typedef struct Node {
         struct arrayAcessNode* arrayAcessNode;
         struct numberArrayNode* numberArrayNode;
     } data;
-    //TODO: add position
-    //Position* pos;
+    Position* pos; //TODO: init pos!
 } Node;
 
 // function predef
