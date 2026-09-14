@@ -47,7 +47,7 @@ void createLowLevelFunc(char* name, dynamicNode inputs){
     DYN_PUSH(tempFunc, g_funcs);
 }
 
-void callLowLevelFunc(int index){
+void callLowLevelFunc(int index, Node* node){
     char* name = g_funcs.items[index].name;
     if (strcmp(name, "out") == 0){
         int varIndex = getVarIndexByName("a");
@@ -74,8 +74,7 @@ void callLowLevelFunc(int index){
             printf("}\n");
         }
         else{
-            printf("TODO: RAISE ERROR PROPERLY, INCORRECT VAR TYPE");
-            exit(1);
+            raiseErrorMacro(*node->pos, "Incorrect type in 'out' function call.");
         }
     }
     else if (strcmp(name, "exec") == 0){
@@ -206,8 +205,7 @@ binOpResult* evalBinOp(Node* node){
                     res->varType = FLOATVAR;
                     int indexArr = getIndexFromInput(node->data.variableNode->lastIndex);
                     if (indexArr == -1){
-                        printf("INCORRECT INPUT IN ARRAY ACESS");
-                        exit(1);
+                        raiseErrorMacro(*node->pos, "Incorrect input in array access.");
                     }
                     res->value.floatVar = g_vars.items[varIndex].data.arrayVar.value.numberValue[indexArr];
                     return res;
@@ -215,8 +213,7 @@ binOpResult* evalBinOp(Node* node){
             }
         }
         
-        printf("ERROR!!! NOT CORRECT VARTYPE FOR BINOP\n");
-        exit(1);
+        raiseErrorMacro(*node->pos, "Incorrect var type for binary operations.");
     }
     if (node->type == MAYBENODE){
         res->varType = FLOATVAR;
@@ -263,8 +260,7 @@ binOpResult* evalBinOp(Node* node){
                     return res;
                 }
 
-                printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES +");
-                exit(1);
+                raiseErrorMacro(*node->pos, "Incorrect operation PLUS and types.");
 
                 break;
             }
@@ -286,8 +282,8 @@ binOpResult* evalBinOp(Node* node){
                     return res;
                 }
 
-                printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES -");
-                exit(1);
+                raiseErrorMacro(*node->pos, "Incorrect operation MINUS and types.");
+
                 break;
             }
             case MUL:{
@@ -308,8 +304,8 @@ binOpResult* evalBinOp(Node* node){
                     return res;
                 }
 
-                printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES *");
-                exit(1);
+                raiseErrorMacro(*node->pos, "Incorrect operation MULTIPLY and types.");
+
                 break;
             }
             case DIV:{
@@ -332,8 +328,8 @@ binOpResult* evalBinOp(Node* node){
                     return res;
                 }
 
-                printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES /");
-                exit(1);
+                raiseErrorMacro(*node->pos, "Incorrect operation DIVIDE and types.");
+
                 break;
             }
             case POW:{
@@ -363,8 +359,7 @@ binOpResult* evalBinOp(Node* node){
                     return res;
                 }
 
-                printf("TODO: RAISE PROPERLY ERROPR??, INCOMAPTIBLE TYPES *");
-                exit(1);
+                raiseErrorMacro(*node->pos, "Incorrect operation MUL and types.");
             }
             case LESSTHAN:{
                 double vLeft = 0.0, vRight = 0.0;;
@@ -532,8 +527,7 @@ int parseGotoNameNode(Node* node, dynamicGoto* dg, Node* ast){
         cond = res->value.floatVar;
     }
     else{
-        printf("ERROR! ADD LATER! INCORRECT VAR TYPE GOTO");
-        exit(1);
+        raiseErrorMacro(*node->pos, "Incorrect var type in goto.");
     }
 
     if (!cond){
@@ -553,7 +547,7 @@ int parseGotoNameNode(Node* node, dynamicGoto* dg, Node* ast){
         }
     }
 
-    errorOut((Error){.errorMessage = "This shouldn't happen. Parser error", .errorType = UNKNOWNERROR});
+    raiseErrorMacro(*node->pos, "This should not happen. GOTO");
 }
 
 dynamicGoto prescanForGotos(Node* wholeAst, dynamicGoto dg){
@@ -585,9 +579,7 @@ void parseCondition_(Node* node){
 
 void parseFunction(Node* node){
     if (getFuncIndexByName(node->data.function->name) != -1){
-        //TODO: properly raise error
-        printf("ERROR, initialise function twice");
-        exit(1);
+        raiseErrorMacro(*node->pos, "Function intialisation twice.");
     }
 
     dynamicNode input = {0,0,0};
@@ -619,14 +611,11 @@ void parseLoopNode(Node *node){
 void parseFunctionCall_(Node* node){
     int index = getFuncIndexByName(node->data.functionCall->name);
     if (index == -1){
-        //TODO: properly raise error
-        printf("ERROR, can't call uninitialised function\n");
-        exit(1);
+        raiseErrorMacro(*node->pos, "Can't call uninitialised functions.");
     }
 
     if (node->data.functionCall->inputs.count != g_funcs.items[index].inputs.count){
-        printf("ERROR, Incorrect ammount of inputs\n");
-        exit(1);
+        raiseErrorMacro(*node->pos, "Incorrect ammount of inputs.");
     }
 
     dynamicVar l_vars = {0,0,0};
@@ -667,13 +656,16 @@ void parseFunctionCall_(Node* node){
                             index_ = getVariableIntValue(index_);
                         }
                         else{
-                            printf("TODO: ADD ERROR, INCORRECT VAR TYPE NO HASMAP OR WHATEVER IDC");
+                            raiseErrorMacro(*node->pos, "Incorrect var type.");
                         }
                     }
                     
                     //printf("INDEX : %i (max: %i ; %s)\n", index_, strlen(valueOrig), valueOrig);
                     if (index_ >= 0){
                         if (index_ >= strlen(valueOrig)){
+                            //not sure when this happen?
+                            //TODO: test
+
                             printf("TOOD: RAISE ERROR, NOT CORRECT INDEX : %i (max: %li ; %s)\n", index_, strlen(valueOrig), valueOrig);
                             exit(1);
                         }
@@ -690,8 +682,7 @@ void parseFunctionCall_(Node* node){
                     int index_ = getVarIndexByName(g_funcs.items[index].inputs.items[i]->data.variableNode->name);
 
                     if (index_ == -1){
-                        printf("TODO: add inline function array declaration?");
-                        exit(1);
+                        raiseErrorMacro(*node->pos, "Inline array declaration not implemented yet.");
                     }
                     double* value = getVariableNumArrayValue(index_);
                     if (indexArr != -1){
@@ -723,13 +714,11 @@ void parseFunctionCall_(Node* node){
                     //}
                 }
                 else{
-                    printf("TOOD RAISE ERROR, BINOP NOT CORRECT RETURN?");
-                    exit(1);
+                    raiseErrorMacro(*node->pos, "Incorrect binary operator return.");
                 } 
             }
             else{
-                printf("TODO: ADD ERROR NO THING SOMETHING VARIABLE NODE");
-                exit(1);
+                raiseErrorMacro(*node->pos, "Incorrect var type while parsing function call, need implementation.");
             }
         }
         else if (node->data.functionCall->inputs.items[i]->type == BINOPNODE){
@@ -746,8 +735,7 @@ void parseFunctionCall_(Node* node){
             tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.stringValue = value, .data.arrayVar.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
         }
         else{
-            printf("TODO: RAISE ERROR WRONG FORMAT (or not implemented)");
-            exit(1);
+            raiseErrorMacro(*node->pos, "Incorrect var type while parsing function call, implementation needed.");
         }
 
         int _inx = getVarIndexByName(tempVar.name);
@@ -761,14 +749,15 @@ void parseFunctionCall_(Node* node){
         }
 
         if (!checkCompatibleVarType(tempVar.typedVar, g_funcs.items[index].inputs.items[i]->data.variableNode->type, FCALL)){
-            printf("%i : %i\n", tempVar.typedVar, g_funcs.items[index].inputs.items[i]->data.variableNode->type);
-            printf("TODO: RAISE ERROR, INCORRECT CALL FUNCTION TYPE");
-            exit(1);
+            raiseErrorMacro(*node->pos, "Incorrect function call type.");
+            //printf("%i : %i\n", tempVar.typedVar, g_funcs.items[index].inputs.items[i]->data.variableNode->type);
+            //printf("TODO: RAISE ERROR, INCORRECT CALL FUNCTION TYPE");
+            //exit(1);
         }
     }
 
     if (isFunctionLowLevel(index) == 1){
-        callLowLevelFunc(index);
+        callLowLevelFunc(index, node);
     }
     else{
         callFunctionByName(node->data.functionCall->name);
@@ -818,6 +807,7 @@ void parseGeneric(Node* node){
             parseLoopNode(node);
             break;
         default:
+            raiseErrorMacro(*node->pos, "Node type was incorrect, maybe not implemented?");
             printf("TODO: ADD THIS NODETYPE : %i", node->type);
             exit(1);
             break;
