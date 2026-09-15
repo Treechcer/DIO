@@ -5,7 +5,6 @@
 
 #include"../Headers/dynamic_array.h"
 #include"../Headers/ast.h"
-#include"../legacy/errors.h"
 #include"../Headers/parser.h"
 #include"../Headers/helper_functions.h"
 
@@ -320,7 +319,7 @@ binOpResult* evalBinOp(Node* node){
                     else if (right->varType == FLOATVAR)
                         vRight = right->value.floatVar;
 
-                    if (vRight == 0) errorOut((Error){NULL, divisionByZero, NULL});
+                    if (vRight == 0) raiseErrorMacro(*node->pos, "You can't devide with zero.");
 
                     res->varType = FLOATVAR;
                     res->value.floatVar = vLeft / vRight;
@@ -458,7 +457,7 @@ dynamicVar evalVariable(Node* node){
 
     int existingIndex = getVarIndexByName(name);
     if (varType == UNKNOWNVARTYPE && node->data.variableNode->initialise == 0){
-        errorOut((Error){"", UNKNOWNVARIABLETYPE});
+        raiseErrorMacro(*node->pos, "Unknown variable type.");
     }
 
     //TODO: remake this, this kinda sucks
@@ -515,7 +514,7 @@ int isGotoIncialised(char* name, dynamicGoto* dg){
 
 int parseGotoNameNode(Node* node, dynamicGoto* dg, Node* ast){
     if (isGotoIncialised(node->data.gotoNode->name, dg) == -1){
-        errorOut((Error){.errorMessage = "Goto not found", .errorType = PARSERNOTFOUNDGOTO});
+        raiseErrorMacro(*node->pos, "Unknown goto name call.");
     }
 
     binOpResult* res = evalBinOp(node->data.gotoNode->binOpNode);

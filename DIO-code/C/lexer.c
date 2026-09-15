@@ -4,7 +4,6 @@
 
 #include"../Headers/token.h"
 #include"../Headers/dynamic_array.h"
-#include"../legacy/errors.h"
 #include"../Headers/helper_functions.h"
 
 bool isAllowed(char c){ //special characters that are allowed and handled differently!
@@ -135,11 +134,11 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                             tok = createToken(token.items, GOTONAME, createPosition(&charPos_, &charPos_, &line, fileName));
                         }
                         else{
-                            errorOut((Error){"", UNSUPORTEDCHARACTERSEQUENCE, createPosition(&charPos_, &charPos_, &line, fileName)});
+                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unsuported character sequnce was found.");
                         }
                     }
                     else{
-                        errorOut((Error){"", UNSUPORTEDCHARACTERSEQUENCE, createPosition(&charPos_, &charPos_, &line, fileName)});
+                        raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unsuported character sequnce was found.");
                     }
                 }
                 else{
@@ -230,7 +229,6 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         while((isDigit(c) || c == '.')){
                             if (c == '.') {
                                 if (isFloat) {
-                                    //errorOut((Error){"", twoDotsFloat, createPosition(&charPos_, &charPos_, &line, fileName)});
                                     raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Float can't have two dots.")
                                 } else {
                                     isFloat = 1;
@@ -284,7 +282,6 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     else{
                         //printf("%s\n", code);
                         //writeToksOut(toks);
-                        //errorOut((Error){"", genericLexError, createPosition(&charPos_, &charPos_, &line, fileName)});
 
                         //TODO: test
                         
