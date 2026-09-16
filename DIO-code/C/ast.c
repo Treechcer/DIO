@@ -182,7 +182,7 @@ Node* parseNewVariable(dynamicToken* toks){
             name = checkCurrenToken(toks).value;
             shiftToken(toks); // skips name
             shiftToken(toks); // skips =
-            
+
             if (strcmp(tv, "int") == 0){
                 tokT = INTVAR;
             }

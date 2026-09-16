@@ -807,8 +807,6 @@ void parseGeneric(Node* node){
             break;
         default:
             raiseErrorMacro(*node->pos, "Node type was incorrect, maybe not implemented?");
-            printf("TODO: ADD THIS NODETYPE : %i", node->type);
-            exit(1);
             break;
     }
 }

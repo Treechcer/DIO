@@ -1,0 +1,7 @@
+def outOne(int : input)
+    out(input)
+end
+
+int arr = {1,2,3}
+>>This get re-typed to float for some reason????
+outOne(arr)
