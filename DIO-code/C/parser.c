@@ -626,7 +626,21 @@ void parseFunctionCall_(Node* node){
         }
         else if (node->data.functionCall->inputs.items[i]->type == VARIABLENODE){
             if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == INTVAR || g_funcs.items[index].inputs.items[i]->data.variableNode->type == FLOATVAR || g_funcs.items[index].inputs.items[i]->data.variableNode->type == BOOLVAR){
-                tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = evalBinOp(node->data.functionCall->inputs.items[i])->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
+                binOpResult* res = evalBinOp(node->data.functionCall->inputs.items[i]);
+                if (res->varType == FLOATVAR){
+                    tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = res->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
+                }
+                else if (res->varType == INTVAR){
+                    tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = res->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
+                }
+                else if (res->varType == NUMBERARRAY){
+                    //why this so broken?
+                    tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = res->value.numberArrayValue, .intialised = 1, .typedVar = NUMBERARRAY };
+                }
+                else{
+                    printf("TEMP ERR");
+                    exit(1);
+                }
             }
             else if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == STRINGVAR){
                 char* value = getVariableStringValue(getVarIndexByName(node->data.functionCall->inputs.items[i]->data.variableNode->name));
