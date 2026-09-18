@@ -87,6 +87,7 @@ void printOutArrows(char* message, Position pos, char* errorMessage, char* proce
     for (int i = *pos.start; i < *pos.end; i++){
         printf("~");
     }
+    
     printf("\n%s\nin process: %s", errorMessage, process);
 }
 

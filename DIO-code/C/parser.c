@@ -634,7 +634,6 @@ void parseFunctionCall_(Node* node){
                     tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = res->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
                 }
                 else if (res->varType == NUMBERARRAY){
-                    //why this so broken?
                     tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = res->value.numberArrayValue, .intialised = 1, .typedVar = NUMBERARRAY };
                 }
                 else{
@@ -692,18 +691,17 @@ void parseFunctionCall_(Node* node){
                 }
                 else if (g_vars.items[index].typedVar == NUMBERARRAY){
                     int indexArr = getIndexFromInput(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex);
-                    int index_ = getVarIndexByName(g_funcs.items[index].inputs.items[i]->data.variableNode->name);
 
-                    if (index_ == -1){
+                    if (index == -1){
                         raiseErrorMacro(*node->pos, "Inline array declaration not implemented yet.");
                     }
-                    double* value = getVariableNumArrayValue(index_);
+                    double* value = getVariableNumArrayValue(index);
                     if (indexArr != -1){
                         value = &value[indexArr];
                         tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = *value, .intialised = 1, .typedVar = FLOATVAR };
                     }
                     else{
-                        tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index_), .intialised = 1, .typedVar = NUMBERARRAY };
+                        tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = value, .data.arrayVar.length = getVariableNumArrayLength(index), .intialised = 1, .typedVar = NUMBERARRAY };
                     }
                     
                     //if (indexArr == -1){
