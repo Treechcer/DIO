@@ -59,6 +59,9 @@ typedef struct variableNode {
     int initialise;
     char* lastIndex; // only used for special stuff (function calls eg.)
     int maxIndex;
+    union {
+        int isBool; //used for bools so they can't get numbers outside of 0 and 1
+    } dataFlags;
 } variableNode;
 
 typedef struct gotoNode {

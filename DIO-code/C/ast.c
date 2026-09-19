@@ -202,6 +202,7 @@ Node* parseNewVariable(dynamicToken* toks){
     TokenType tokT = UNKNOWNVARTYPE;
     int initialise = 0;
     int createNodeBool = 0;
+    int isBool = 0;
     char* name;
     Node* value;
 
@@ -227,8 +228,9 @@ Node* parseNewVariable(dynamicToken* toks){
             else if (strcmp(tv, "float") == 0) {
                 tokT = FLOATVAR;
             }
-            else{
-                tokT = BOOLVAR;
+            else if (strcmp(tv, "bool") == 0){
+                tokT = INTVAR;
+                isBool = 1;
             }
             initialise = 1;
         }
@@ -333,6 +335,16 @@ Node* parseNewVariable(dynamicToken* toks){
         //printf("%i\n", tokT);
         //printf("%s\n", value);
         //printf("%i\n", initialise);
+
+        if (isBool){
+            //printf("%f\n", retNode->data.variableNode->value->data.numberNode->value);
+            if (retNode->data.variableNode->value->data.numberNode->value > 1){
+                retNode->data.variableNode->value->data.numberNode->value = 1;
+            }
+            else if (retNode->data.variableNode->value->data.numberNode->value < 0) {
+                retNode->data.variableNode->value->data.numberNode->value = 0;
+            }
+        }
 
         return retNode;
     }

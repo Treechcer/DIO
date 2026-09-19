@@ -22,14 +22,14 @@ Dio is procedural, statically typed that's weakly typed programming language. Wo
 
 The name `Dio` comes from ancient Greek philosopher [Diogenes of Sinope](https://en.wikipedia.org/wiki/Diogenes) and his [bowl story](https://medium.com/@ricosutioso/diogenes-the-beggar-philosopher-fdd71946f641). Essentially, Diogenes saw kid drinking water from river with his hands, so he threw away his bowl (one of two things he owned). It's called `Dio` because it's trying to be minimalistic language (not in line count, but with how much it can do).
 
-### Types
-
-(implemented)
+### Variable types
 
 - [x] int - basic number type, it's internally used as float
 - [x] float - basic number type, can be used with +, -, *, /, <, >, <=, >=, ==
 - [x] string - basic text (can only be used as output and be concatenated with "+")
-- [ ] bool
+- [x] bool - basic booleans
+
+>> NOTE: booleans internally are used as integers/floats, meaning the constrains for valid bools are checked while creating the variable not while using it. You can make boolean equal non boolean values AFTER you initialize it.
 
 ### Comments
 

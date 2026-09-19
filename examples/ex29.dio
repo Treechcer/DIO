@@ -1,0 +1,14 @@
+>>NOTE: bools are "reskinned" integers, they only have constrain while creating them, not after! Meaning you **can** make bool equal non boolean values!
+
+bool a = 0
+out(a)
+a = true
+out(a)
+a = 7
+out(a)
+a = maybe
+out(a)
+
+>> add negative numbers!
+>>a = -7
+>>out(a)
