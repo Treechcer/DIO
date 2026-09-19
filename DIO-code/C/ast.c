@@ -157,6 +157,44 @@ Node* parseExpression(dynamicToken* toks){
     return left;
 }
 
+/*
+Position pos => starting pos, that may or may not have an end (it'll be overwritten)
+*/
+Node* createNumArray(dynamicToken* toks, Position pos){
+    if (checkCurrenToken(toks).identifier != LSQUIGLYPAREN){
+        return NULL;
+    }
+    shiftToken(toks); // {
+
+    int arrSize = 0;
+    double* values = malloc(arrSize * sizeof(double));
+
+    while(checkCurrenToken(toks).identifier != RSQUIGLYPAREN){
+        arrSize++;
+        values = realloc(values, arrSize * sizeof(double));
+        values[arrSize - 1] = atof(shiftToken(toks).value);
+        if (checkCurrenToken(toks).identifier == COMMA){
+            shiftToken(toks);
+        }
+    }
+
+    pos.end = checkCurrenToken(toks).pos.end;
+
+    if (checkCurrenToken(toks).identifier == RSQUIGLYPAREN){
+        shiftToken(toks);
+    }
+
+    Node* ret = createNode();
+    ret->pos = &pos;
+    ret->type = NUMBERARRAYNODE;
+    ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
+    ret->data.numberArrayNode->value = values;
+    ret->data.numberArrayNode->length = arrSize;
+    ret->data.numberArrayNode->acessIndex = parseArrayAcessNode(toks); 
+
+    return ret;
+}
+
 Node* parseNewVariable(dynamicToken* toks){
     Node* pNode = createNode();
 
@@ -196,49 +234,21 @@ Node* parseNewVariable(dynamicToken* toks){
         }
         else {
             createNodeBool = 1;
-            Position pos = shiftToken(toks).pos; // skips num
+            Position pos = shiftToken(toks).pos; // skips int (or float even?)
             name = checkCurrenToken(toks).value;
             shiftToken(toks); // skips name
             shiftToken(toks); // skips =
-            shiftToken(toks); // {
+            //shiftToken(toks); // {
             
-            //Node* ret = createNode();
-            //ret->type == NUMBERARRAYNODE;
-            //ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
-
-            int arrSize = 0;
-            double* values = malloc(arrSize * sizeof(double));
-
-            while(checkCurrenToken(toks).identifier != RSQUIGLYPAREN){
-                arrSize++;
-                values = realloc(values, arrSize * sizeof(double));
-                values[arrSize - 1] = atof(shiftToken(toks).value);
-                if (checkCurrenToken(toks).identifier == COMMA){
-                    shiftToken(toks);
-                }
-            }
-
-            pos.end = checkCurrenToken(toks).pos.end;
-
-            if (checkCurrenToken(toks).identifier == RSQUIGLYPAREN){
-                shiftToken(toks);
-            }
-
-            Node* ret = createNode();
-            ret->pos = &pos;
-            ret->type = NUMBERARRAYNODE;
-            ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
-            ret->data.numberArrayNode->value = values;
-            ret->data.numberArrayNode->length = arrSize;
-            ret->data.numberArrayNode->acessIndex = parseArrayAcessNode(toks); 
+            Node* ret = createNumArray(toks, pos);
 
             Node* retNode = createNode();
             retNode->type = VARIABLENODE;
             retNode->data.variableNode = malloc(sizeof(variableNode));
-            retNode->data.variableNode->name = name;
             retNode->data.variableNode->type = NUMBERARRAY;
             retNode->data.variableNode->value = ret; 
             retNode->data.variableNode->initialise = 1;
+            retNode->data.variableNode->name = name;
 
             return retNode;
         }
@@ -734,11 +744,12 @@ Node* parseGenericNode(dynamicToken* toks){
     if (node == NULL){
         node = parseCondition(toks);
     }
-    //if (node == NULL){
-    //    node = parseArrayAcessNode(toks);
-    //}
     if (node == NULL){
         node = parseFunctionCreate(toks);
+    }
+    if (node == NULL){
+        //this should probably stay last?
+        node = createNumArray(toks, checkCurrenToken(toks).pos);
     }
     if (node == NULL){
         printf("ERR: %i : %li\n", g_index, (toks->count)-1);

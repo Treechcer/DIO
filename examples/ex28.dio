@@ -1,0 +1,5 @@
+def a(int : b)
+    out(b)
+end
+
+a({1,2,3})
