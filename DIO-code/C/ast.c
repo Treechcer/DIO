@@ -207,11 +207,11 @@ Node* parseNewVariable(dynamicToken* toks){
             //ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
 
             int arrSize = 0;
-            double* values = malloc(arrSize * sizeof(int));
+            double* values = malloc(arrSize * sizeof(double));
 
             while(checkCurrenToken(toks).identifier != RSQUIGLYPAREN){
                 arrSize++;
-                values = realloc(values, arrSize * sizeof(int));
+                values = realloc(values, arrSize * sizeof(double));
                 values[arrSize - 1] = atof(shiftToken(toks).value);
                 if (checkCurrenToken(toks).identifier == COMMA){
                     shiftToken(toks);

@@ -4,5 +4,5 @@ end
 
 >>adding fourth element crashes? Why?
 
-int arr = {6,7,8.5}
+int arr = {6,7,8.5,7}
 outOne(arr)
