@@ -18,11 +18,12 @@ typedef struct arg {
     int found;
     char* name;
     char* value;
+    char shorthand;
 } arg;
 
 STRUCT_DYNAMIC_ARR_MACRO(arg, dynamicArg);
 
-int registerArg(int argType, char* name, int isNecesary, char* defaultValue);
+int registerArg(int argType, char* name, int isNecesary, char* defaultValue, char oneCharName);
 void checkInuts(int argc, char **argv);
 char* getvalueByIndex(int index);
 

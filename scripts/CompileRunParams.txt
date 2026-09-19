@@ -1,1 +1,1 @@
--file examples/ex30.dio
+-f examples/ex30.dio

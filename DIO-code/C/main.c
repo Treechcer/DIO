@@ -43,7 +43,7 @@ void initLowLevelFuncs(){
 int main(int argc, char **argv){
     //BUILD INPUTS!!
 
-    int fileArgIndex = registerArg(STRINGPUT, "file", 1, "");
+    int fileArgIndex = registerArg(STRINGPUT, "file", 1, "", ' ');
 
     //CHECK INPUTS!
     checkInuts(argc, argv);
