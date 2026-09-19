@@ -33,7 +33,15 @@ The name `Dio` comes from ancient Greek philosopher [Diogenes of Sinope](https:/
 
 ### Comments
 
-Dio only uses single line comments, `>>`, these can be used anywhere in the line, however everything after it will not be evaluated in any way.
+#### Single-line comments
+
+Dio uses `>>` as the symbol for single-line comments. Comments end when lexer either find ending of the line or the file ends.
+
+#### Multi-line comments
+
+Dio uses construction of `>*` (start) and `*<` (end) as multi-line comment. These comments end either when the file ends or when it finds the end symbol.
+
+>> Note: if you only ues `>*` everything afterwards will be taken af part of the comment.
 
 ### Variables
 

@@ -1,0 +1,6 @@
+>*
+multi line comment test
+*<
+
+int a = 5
+out(a)
