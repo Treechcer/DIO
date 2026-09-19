@@ -746,6 +746,9 @@ void parseFunctionCall_(Node* node){
             char* value = node->data.functionCall->inputs.items[i]->data.stringNode->value;
             tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.stringValue = value, .data.arrayVar.length = strlen(value), .intialised = 1, .typedVar = STRINGVAR };
         }
+        else if(node->data.functionCall->inputs.items[i]->type == NUMBERARRAYNODE){
+            tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = node->data.functionCall->inputs.items[i]->data.numberArrayNode->value, .data.arrayVar.length = node->data.functionCall->inputs.items[i]->data.numberArrayNode->length, .intialised = 1, .typedVar = NUMBERARRAY };
+        }
         else{
             raiseErrorMacro(*node->pos, "Incorrect var type while parsing function call, implementation needed.");
         }
