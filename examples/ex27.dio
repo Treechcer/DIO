@@ -2,6 +2,7 @@ def outOne(int : input)
     out(input)
 end
 
-int arr = {1,2,3}
->>This get re-typed to float for some reason????
+>>adding fourth element crashes? Why?
+
+int arr = {6,7,8.5}
 outOne(arr)

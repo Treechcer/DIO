@@ -66,6 +66,9 @@ typedef struct {
         float floatVar;
         double* numberArrayValue;
     } value;
+    union {
+        int lenght;
+    } arbitraryData;
 } binOpResult;
 
 void parse(Node* ast);

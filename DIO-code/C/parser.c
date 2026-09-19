@@ -198,6 +198,7 @@ binOpResult* evalBinOp(Node* node){
                     res->varType = NUMBERARRAY;
                     //res->value.floatVar = getVariableNumArrayValue(varIndex)[g_vars.items[varIndex].data.arrayVar.value.];
                     res->value.numberArrayValue = g_vars.items[varIndex].data.arrayVar.value.numberValue;
+                    res->arbitraryData.lenght = g_vars.items[varIndex].data.arrayVar.length;
                     return res;
                 }
                 else{
@@ -634,7 +635,7 @@ void parseFunctionCall_(Node* node){
                     tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = res->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
                 }
                 else if (res->varType == NUMBERARRAY){
-                    tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = res->value.numberArrayValue, .intialised = 1, .typedVar = NUMBERARRAY };
+                    tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = res->value.numberArrayValue, .data.arrayVar.length = res->arbitraryData.lenght, .intialised = 1, .typedVar = NUMBERARRAY };
                 }
                 else{
                     printf("TEMP ERR");
