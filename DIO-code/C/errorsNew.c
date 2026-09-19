@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "../Headers/Token.h"
+#include "../Headers/token.h"
 #include "../Headers/helper_functions.h"
 
 #ifdef _WIN32

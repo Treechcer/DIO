@@ -17,6 +17,7 @@
 #include"../Headers/STD.h"
 #include"../Headers/helper_functions.h"
 #include"../Headers/errorsNew.h"
+#include"../Headers/globals.h"
 
 Node* createInput(char* name, variableTypes type){
     Node* input = createNode();
@@ -44,15 +45,12 @@ int main(int argc, char **argv){
     //BUILD INPUTS!!
 
     int fileArgIndex = registerArg(STRINGPUT, "file", 1, "", ' ');
+    int debugModeIndex = registerArg(BOOLEAN, "debug", 0, "true", ' '); //this switches to true, even though it's named default value??
 
     //CHECK INPUTS!
     checkInuts(argc, argv);
 
-    /*
-    This is test of parsing, later I have to actually exit? add position? macro? underline under the issue?
-    raiseError(__FILE__, (Position){.file = getvalueByIndex(fileArgIndex), .line = &(int){2}, .start = &(int){7}, .end = &(int){10}}, "testError");
-    exit(0);
-    */
+    DEBUG_MODE = atoi(getvalueByIndex(debugModeIndex));
 
     srand(time(NULL)); //for pseudo random Num
 
@@ -60,11 +58,11 @@ int main(int argc, char **argv){
     char* filePath = getvalueByIndex(fileArgIndex);
 
     if (filePath != NULL && strlen(filePath) > 0){
-        char* fName = getvalueByIndex(fileArgIndex);
-        char *dir_copy = strdup(fName);
+        ENTRY_POINT_FILE = getvalueByIndex(fileArgIndex);
+        char *dir_copy = strdup(ENTRY_POINT_FILE);
         chdir(dirname(dir_copy));
 
-        char *base_copy = strdup(fName);
+        char *base_copy = strdup(ENTRY_POINT_FILE);
         char *realName = basename(base_copy);
 
         fileReadReturn mainFile = readFile(realName);
