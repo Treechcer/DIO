@@ -829,7 +829,7 @@ void parseGeneric(Node* node){
 
 void writeOutTypesDebug(Node* ast){
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
-        printf("NodeType: %li\n", ast->data.programNode->nodes.items[i]->type);
+        printf("NodeType: %i\n", ast->data.programNode->nodes.items[i]->type);
     }
 }
 

@@ -48,6 +48,19 @@ Token checkTokenAt(dynamicToken* toks, int offset){
 Node* parseFactor(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
 
+    if (tok.identifier == MINUS){
+        Token minus = shiftToken(toks);
+        Token num2 = shiftToken(toks);
+
+        Node* node = createNode();
+        node->type = NUMBERNODE;
+        node->data.numberNode = malloc(sizeof(numberNode));
+        node->data.numberNode->value = convertToDouble(num2.value) * (-1);
+        node->pos = &tok.pos;
+
+        return node;
+    }
+
     if (strcmp("maybe", tok.value) == 0) {
         Token tok = shiftToken(toks);
         Node* retNode = createNode();
@@ -150,7 +163,6 @@ Node* parseExpression(dynamicToken* toks){
         pNode->data.binOpNode->op = tokOp.identifier;
         pNode->data.binOpNode->right = right;
         pNode->pos = &(Position){.start = left->pos->start, .end = right->pos->end, .line = right->pos->line, .end = right->pos->end};
-
         left = pNode;
     }
 
@@ -215,7 +227,7 @@ Node* parseNewVariable(dynamicToken* toks){
         tokT = UNKNOWNVARTYPE;
     }
     else if (checkCurrenToken(toks).identifier == KEYWORD && (strcmp(tv, "int") == 0 || strcmp(tv, "float") == 0 || strcmp(tv, "bool") == 0)){
-        if (checkTokenAt(toks, 3).identifier == INT || checkTokenAt(toks, 3).identifier == FLOAT){
+        if (checkTokenAt(toks, 3).identifier == INT || checkTokenAt(toks, 3).identifier == FLOAT || (checkTokenAt(toks, 3).identifier == MINUS && (checkTokenAt(toks, 4).identifier == INT || checkTokenAt(toks, 4).identifier == FLOAT))){
             createNodeBool = 1;
             Position pos = shiftToken(toks).pos; // skips int | float ........
             name = checkCurrenToken(toks).value;
@@ -767,7 +779,7 @@ Node* parseGenericNode(dynamicToken* toks){
         printf("ERR: %i : %li\n", g_index, (toks->count)-1);
         printf("ERR: %s (ID: %i) \n", checkCurrenToken(toks).value, checkCurrenToken(toks).identifier);
 
-        raiseErrorMacro(checkCurrenToken(toks).pos, "Generic error,");
+        raiseErrorMacro(checkCurrenToken(toks).pos, "Generic error");
     }
 
     return node;

@@ -1,0 +1,13 @@
+>>this crashes, make fix
+
+int a = 10;
+
+for (int x= 1; x < 8; x = x + 1)
+    if (x == 3)
+        a = a - 2;
+    else
+        a = a + 1;
+    end
+end
+
+out(a);
