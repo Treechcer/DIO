@@ -566,14 +566,11 @@ dynamicGoto prescanForGotos(Node* wholeAst, dynamicGoto dg){
 }
 
 void parseCondition_(Node* node){
-
-    if (node->data.condition->conditionType == IFCONDITION){
-        g_skipelse = 0;
-    }
-
-    if (evalBinOp(node->data.condition->binOpNode) && g_skipelse == 0){
-        g_skipelse = 1;
+    if (evalBinOp(node->data.condition->binOpNode)->value.floatVar){
         parse(node->data.condition->codeBlock);
+    }
+    else if (node->data.condition->alternative != NULL){
+        parseCondition_(node->data.condition->alternative);
     }
 }
 

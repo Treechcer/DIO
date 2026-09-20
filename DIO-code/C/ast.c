@@ -410,7 +410,6 @@ Node* parseCodeBlock(dynamicToken* toks, nodeType nt){
     while (g_index < (toks->count)-1) {
         Token tok = checkCurrenToken(toks);
         if (tok.identifier == KEYWORD && (strcmp(tok.value, "end") == 0 || (nt == CONDITION && (strcmp(tok.value, "elseif") == 0 || strcmp(tok.value, "else") == 0)))){
-            shiftToken(toks);
             break;
         }
 
@@ -447,12 +446,20 @@ Node* parseCondition(dynamicToken* toks){
         pNode->type = CONDITION;
         pNode->data.condition = malloc(sizeof(condition));
 
-        pNode->data.condition->binOpNode = malloc(sizeof(binOpNode));
         pNode->data.condition->codeBlock = malloc(sizeof(codeBlock));
+        pNode->data.condition->alternative = NULL;
 
-        pNode->data.condition->binOpNode = parseExpression(toks);        
+        if (else_) {
+            pNode->data.condition->binOpNode = createNode();
+            pNode->data.condition->binOpNode->type = NUMBERNODE;
+            pNode->data.condition->binOpNode->data.numberNode = malloc(sizeof(numberNode));
+            pNode->data.condition->binOpNode->data.numberNode->value = 1;
+        }
+        else {
+            pNode->data.condition->binOpNode = parseExpression(toks);
+        }
         pNode->data.condition->codeBlock = parseCodeBlock(toks, CONDITION);
-        
+
         if (if_){
             pNode->data.condition->conditionType = IFCONDITION;
         }
@@ -461,6 +468,16 @@ Node* parseCondition(dynamicToken* toks){
         }
         else{
             pNode->data.condition->conditionType = ELSECONDITION;
+        }
+
+        while (checkCurrenToken(toks).identifier == KEYWORD && (strcmp(checkCurrenToken(toks).value, "elseif") == 0 || strcmp(checkCurrenToken(toks).value, "else") == 0)) {
+            Node* branch = parseCondition(toks);
+            pNode->data.condition->alternative = branch;
+            break;
+        }
+
+        if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(checkCurrenToken(toks).value, "end") == 0) {
+            shiftToken(toks);
         }
 
         return pNode;
@@ -576,6 +593,9 @@ Node* parseFunctionCreate(dynamicToken* toks){
         //pNode = createFunctionParams(toks, pNode);
         pNode->data.function->name = name;
         pNode->data.function->codeBlock = parseCodeBlock(toks, FUNCTION);
+        if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(checkCurrenToken(toks).value, "end") == 0) {
+            shiftToken(toks);
+        }
 
         return pNode;
     }
@@ -614,6 +634,9 @@ Node* parseLoop(dynamicToken* toks){
         Node* binOp = parseExpression(toks);
 
         Token end = shiftToken(toks); //)
+        if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(checkCurrenToken(toks).value, "end") == 0) {
+            shiftToken(toks);
+        }
 
         Node* pNode = createNode();
         pNode->pos = &start.pos;
@@ -638,12 +661,14 @@ Node* parseLoop(dynamicToken* toks){
         Node* binOp = parseExpression(toks);
         shiftToken(toks);
         Node* endStatement = parseGenericNode(toks);
-        shiftToken(toks);
         
         //printf("%i", init->type);
         //printf("%i", endStatement->type);
         
         Token end = shiftToken(toks); //)
+        if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(checkCurrenToken(toks).value, "end") == 0) {
+            shiftToken(toks);
+        }
 
         Node* pNode = createNode();
         pNode->pos = &start.pos;
@@ -781,6 +806,8 @@ Node* parseGenericNode(dynamicToken* toks){
 
         raiseErrorMacro(checkCurrenToken(toks).pos, "Generic error");
     }
+    
+    //printf("Node Type: %i\n", node->type);
 
     return node;
 }
