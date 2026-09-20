@@ -82,6 +82,7 @@ typedef enum{
 typedef struct condition{
     Node* binOpNode; //Nodes
     Node* codeBlock; //Nodes
+    Node* alternative;
     conditionType conditionType;
 } condition;
 
