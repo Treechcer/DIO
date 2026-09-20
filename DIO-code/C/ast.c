@@ -634,9 +634,6 @@ Node* parseLoop(dynamicToken* toks){
         Node* binOp = parseExpression(toks);
 
         Token end = shiftToken(toks); //)
-        if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(checkCurrenToken(toks).value, "end") == 0) {
-            shiftToken(toks);
-        }
 
         Node* pNode = createNode();
         pNode->pos = &start.pos;
@@ -670,9 +667,6 @@ Node* parseLoop(dynamicToken* toks){
         //printf("%i", endStatement->type);
         
         Token end = shiftToken(toks); //)
-        if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(checkCurrenToken(toks).value, "end") == 0) {
-            shiftToken(toks);
-        }
 
         Node* pNode = createNode();
         pNode->pos = &start.pos;
