@@ -8,6 +8,8 @@
 
 dynamicMacro g_macros = {0,0,0};
 
+dynamicToken lex(const char* code, char* fileName, dynamicToken toks);
+
 bool isAllowed(char c){ //special characters that are allowed and handled differently!
     return (c == '<' || c == '>');
 }
@@ -273,6 +275,34 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         //printf("%s", g_macros.items[index].text);
 
                         toks = lex(g_macros.items[index].text, fileName, toks);
+                    }
+                    else if (strcmp(action.items, "WIN") == 0 || strcmp(action.items, "LINUX") == 0 || strcmp(action.items, "MAC") == 0 || strcmp(action.items, "FREEBSD") == 0){
+                        int canRun = 0;
+                        #if defined(_WIN32)
+                            canRun = strcmp(action.items, "WIN") == 0;
+                        #elif defined(__linux__)
+                            canRun = strcmp(action.items, "LINUX") == 0;
+                        #elif defined(__APPLE__)
+                            canRun = strcmp(action.items, "MAC") == 0;
+                        #elif defined(__FreeBSD__)
+                            canRun = strcmp(action.items, "FREEBSD") == 0;
+                        #endif
+
+                        if (canRun) {
+                            dynamicChar text = {0,0,0};
+                            while (c != '\n' && c != '\0') {
+                                DYN_PUSH(c, text);
+                                code++;
+                                c = *code;
+                            }
+                            toks = lex(text.items, fileName, toks);
+                        }
+                        else{
+                            while (c != '\n' && c != '\0') {
+                                code++;
+                                c = *code;
+                            }
+                        }
                     }
                     else{
                         raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unknown middleware processor command.")
