@@ -1,0 +1,5 @@
+#def a: int a = 7;
+
+#use a
+
+out(a)

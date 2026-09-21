@@ -8,6 +8,8 @@ typedef struct {
     char* file;
 } Position;
 
+#include "../Headers/macros.h"
+
 typedef enum {
     PLUS = 1,
     MINUS,
@@ -46,9 +48,16 @@ typedef struct Token{
     Position pos;
 } Token;
 
+typedef struct Macro {
+    char* name;
+    char* text;
+} Macro;
+
 int getKeyWord(char* possibleKeyWord);
 int isBool(char* word);
 char* strToBoolStr(char* str);
 int isMaybe(char* word);
+
+STRUCT_DYNAMIC_ARR_MACRO(Macro, dynamicMacro);
 
 #endif

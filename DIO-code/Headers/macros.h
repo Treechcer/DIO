@@ -1,6 +1,13 @@
 #ifndef MACROS_H
 #define MACROS_H
 
+#define STRUCT_DYNAMIC_ARR_MACRO(type, name)\
+typedef struct {\
+    type *items;\
+    size_t count;\
+    size_t size;\
+} name;\
+
 #include "../Headers/errorsNew.h"
 
 #define DYN_PUSH(value, arr)\
@@ -24,13 +31,6 @@ if (index < arr.count) {\
     free(arr.items);\
     arr = RANDOMNAME;\
 }\
-
-#define STRUCT_DYNAMIC_ARR_MACRO(type, name)\
-typedef struct {\
-    type *items;\
-    size_t count;\
-    size_t size;\
-} name;\
 
 #define raiseErrorMacro(POSITION, ERRORMESSAGE)\
     raiseError(__FILE__, POSITION, ERRORMESSAGE);

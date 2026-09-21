@@ -6,6 +6,8 @@
 #include"../Headers/dynamic_array.h"
 #include"../Headers/helper_functions.h"
 
+dynamicMacro g_macros = {0,0,0};
+
 bool isAllowed(char c){ //special characters that are allowed and handled differently!
     return (c == '<' || c == '>');
 }
@@ -160,6 +162,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     break;
                 }
                 break;
+            case '\\':
             case '\n':
                 tok = createToken("", END, createPosition(&charPos_, &charPos_, &line, fileName));
                 line++;
@@ -228,9 +231,51 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     if (strcmp(action.items, "get") == 0) {
                         fileReadReturn fileNext = readFile(arg.items);
                         if (fileNext.exists == 0) {
-                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "File does not exist or could not be access by the OS.")
+                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "File does not exist or could not be access by the OS.");
                         }
                         toks = lex(fileNext.content, arg.items, toks);
+                    }
+                    else if (strcmp(action.items, "def") == 0){
+                        code++;
+                        c = *code;
+                        dynamicChar text = {0,0,0};
+
+                        while (c != '\n' && c != '\0') {
+                            //printf("%c\n", c);
+                            DYN_PUSH(c, text);
+                            code++;
+                            c = *code;
+                        }
+                        DYN_PUSH('\0', text);
+
+                        Macro newMacro = (Macro){.name = arg.items, .text = text.items};
+
+                        for (int i = 0; i < g_macros.count; i++){
+                            if (strcmp(g_macros.items[i].name, arg.items) == 0){
+                                raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Macro with this name already exists.")
+                            }
+                        }
+
+                        DYN_PUSH(newMacro, g_macros);
+                    }
+                    else if (strcmp(action.items, "use") == 0){
+                        int index = -1;
+                        for (int i = 0; i < g_macros.count; i++){
+                            if (strcmp(g_macros.items[i].name, arg.items) == 0){
+                                index = i;
+                            }
+                        }
+
+                        if (index == -1){
+                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Macro with this name does not exist.")
+                        }
+                        
+                        //printf("%s", g_macros.items[index].text);
+
+                        toks = lex(g_macros.items[index].text, fileName, toks);
+                    }
+                    else{
+                        raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unknown middleware processor command.")
                     }
                 }
                 break;

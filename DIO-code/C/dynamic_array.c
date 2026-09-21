@@ -9,7 +9,6 @@ source of code: https://www.youtube.com/watch?v=95M6V3mZgrI (Tsoding)
 #include <stdio.h>
 
 #include "../Headers/token.h"
-
 #include "../Headers/macros.h"
 
 STRUCT_DYNAMIC_ARR_MACRO(Token, dynamicToken)
