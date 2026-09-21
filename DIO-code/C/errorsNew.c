@@ -14,7 +14,7 @@
 
 
 char* scanForFileName(const char* filePath){
-    #ifdef WIN32
+    #ifdef _WIN32
         const char slash = '\\';
     #else
         const char slash = '/';
@@ -23,7 +23,7 @@ char* scanForFileName(const char* filePath){
     char* fileName = malloc(sizeof(char));
     int counter = 0;
 
-    for (int i = strlen(filePath)-3; i > 0; i--){ //-3 because '/0c.'
+    for (int i = strlen(filePath)-3; i >= 0; i--){ //-3 because '/0c.'
         if (filePath[i] == slash){
             break;
         }
@@ -74,9 +74,9 @@ char* getLine(Position pos){
 
 void printOutArrows(char* message, Position pos, char* errorMessage, char* process){
     #ifdef _WIN32
-        printf("In file: %s/%s %i:%i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end);
+        printf("In file: %s/%s %i:%i in line %i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end, *pos.line);
     #else
-        printf("In file: %s\\%s %i:%i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end);
+        printf("In file: %s\\%s %i:%i in line %i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end, *pos.line);
     #endif
     printf("%s\n", message);
 

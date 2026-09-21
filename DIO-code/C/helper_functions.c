@@ -53,7 +53,14 @@ Token createToken(char* value, TokenType identifier, Position pos){
 }
 
 Position createPosition(int* start, int* end, int* line, char* file){
-    return (Position) {.start = start, .end = end, .line = line, .file = file};
+    int* positionStart = malloc(sizeof(*positionStart));
+    int* positionEnd = malloc(sizeof(*positionEnd));
+    int* positionLine = malloc(sizeof(*positionLine));
+    *positionStart = *start;
+    *positionEnd = *end;
+    *positionLine = *line;
+
+    return (Position) {.start = positionStart, .end = positionEnd, .line = positionLine, .file = file};
 }
 
 size_t getStringSize(const char* string){
