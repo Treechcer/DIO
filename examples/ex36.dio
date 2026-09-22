@@ -1,0 +1,5 @@
+>>File rx37.dio imports this file, which should make it "loop", but because ex37.dio has "pragma once" it cannot be imported again.
+
+out("x")
+
+#get ex37.dio

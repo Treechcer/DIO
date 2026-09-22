@@ -82,10 +82,13 @@ try:
     subprocess.run("gcc -g " + getFiles() + f" -o ..{slash}{filename}", shell=True, check=True)
     os.chdir("..")
     with open(os.path.abspath(os.path.join("scripts", "CompileRunParams.txt")), "r") as f:
+        executablePath = os.path.abspath(filename)
+        fName = f.read().split("-f ")[1]
+        os.chdir(os.path.abspath(os.path.dirname(fName)))
         if arguments["debug"]:
-            subprocess.run(f'gdb -ex run -ex bt --args .{slash}{filename} {f.read()}', shell=True)
+            subprocess.run(f'gdb -ex run -ex bt --args {executablePath} -f {os.path.basename(fName)}', shell=True)
         else:
-            subprocess.run(f".{slash}{filename}" + " " + f.read(), shell=True)
+            subprocess.run(f"{executablePath} -f {os.path.basename(fName)}", shell=True)
 except Exception as e:
     print(e)
     print("failed :(")

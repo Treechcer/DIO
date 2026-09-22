@@ -7,6 +7,7 @@
 #include"../Headers/helper_functions.h"
 
 dynamicMacro g_macros = {0,0,0};
+dynamicFileImport g_fileImports = {0,0,0};
 
 dynamicToken lex(const char* code, char* fileName, dynamicToken toks);
 
@@ -31,6 +32,23 @@ void writeToksOut(dynamicToken tok){
 
 dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
     //Token* toks;
+    int indexFile = -1;
+
+    for (size_t i = 0; i < g_fileImports.count; i++){
+        if (strcmp(fileName, g_fileImports.items[i].name) == 0){
+            indexFile = i;
+            break;
+        }
+    }
+
+    if (indexFile == -1){
+        //we will redefine canLoadMoreThanOnce!
+        FileImport a = (FileImport){.name = fileName, .canLoadMoreThanOnce = 1, .loadedTimes = 1, .index = indexFile};
+        DYN_PUSH(a, g_fileImports);
+    }
+    else if (g_fileImports.items[indexFile].canLoadMoreThanOnce == 0){
+        return toks;
+    }
 
     int line = 1;
     int charPos_ = 1;
@@ -229,6 +247,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         c = *code;
                     }
                     DYN_PUSH('\0', arg);
+                    //printf("%s\n", arg.items);
 
                     if (strcmp(action.items, "get") == 0) {
                         fileReadReturn fileNext = readFile(arg.items);
@@ -302,6 +321,15 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                                 code++;
                                 c = *code;
                             }
+                        }
+                    }
+                    else if (strcmp(action.items, "pragma") == 0){
+                        if (strcmp(arg.items, "once") == 0){
+                            g_fileImports.items[indexFile].canLoadMoreThanOnce = 0;
+                            return toks;
+                        }
+                        else{
+                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unknown pragma argument.") 
                         }
                     }
                     else{

@@ -53,11 +53,19 @@ typedef struct Macro {
     char* text;
 } Macro;
 
+typedef struct FileImport {
+    char* name;
+    int loadedTimes;
+    int canLoadMoreThanOnce;
+    int index;
+} FileImport;
+
 int getKeyWord(char* possibleKeyWord);
 int isBool(char* word);
 char* strToBoolStr(char* str);
 int isMaybe(char* word);
 
 STRUCT_DYNAMIC_ARR_MACRO(Macro, dynamicMacro);
+STRUCT_DYNAMIC_ARR_MACRO(FileImport, dynamicFileImport);
 
 #endif
