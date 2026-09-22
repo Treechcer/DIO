@@ -35,6 +35,9 @@ if (index < arr.count) {\
 #define raiseErrorMacro(POSITION, ERRORMESSAGE)\
     raiseError(__FILE__, POSITION, ERRORMESSAGE);
 
+#define raiseWarningMacro(POSITION, ERRORMESSAGE)\
+    raiseWarning(__FILE__, POSITION, ERRORMESSAGE);
+
 //defined colors 
 
 // Source - https://stackoverflow.com/a/3219471

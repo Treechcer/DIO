@@ -72,7 +72,10 @@ char* getLine(Position pos){
     }
 }
 
-void printOutArrows(char* message, Position pos, char* errorMessage, char* process){
+void printOutArrows(char* message, Position pos, char* errorMessage, char* process, int isWarn){
+    if (isWarn == 1){
+        printf("%sWarning%s:\n", ANSI_COLOR_YELLOW, ANSI_COLOR_RESET);
+    }
     #ifdef _WIN32
         printf("In file: %s/%s %i:%i in line %i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end, *pos.line);
     #else
@@ -95,7 +98,14 @@ void raiseError(const char* file, Position pos, char* errorMessage){
     char* processName = scanForFileName(file);
     char* codeLine = getLine(pos);
 
-    printOutArrows(codeLine, pos, errorMessage, processName);
+    printOutArrows(codeLine, pos, errorMessage, processName, 0);
 
     exit(1);
+}
+
+void raiseWarning(const char* file, Position pos, char* errorMessage){
+    char* processName = scanForFileName(file);
+    char* codeLine = getLine(pos);
+
+    printOutArrows(codeLine, pos, errorMessage, processName, 1);
 }

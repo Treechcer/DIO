@@ -240,7 +240,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     }
 
                     dynamicChar arg = {0,0,0};
-                    while ((isAlpha(c) || c == '/' || c == '\\' || c == '.' || isDigit(c)) && c != '\0') {
+                    while ((isAlpha(c) || c == '/' || c == '\\' || c == '.' || isDigit(c)) && c != '\0' || c == ' ') {
                         DYN_PUSH(c, arg);
                         code++;
                         charPos_++;
@@ -323,13 +323,21 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                             }
                         }
                     }
+                    //This is useless, this will get executed alawys, add it into AST/parser?
+                    //else if (strcmp(action.items, "warn") == 0){
+                    //    raiseWarningMacro(createPosition(&charPos_, &charPos_, &line, fileName), arg.items)
+                    //}
+                    //else if (strcmp(action.items, "error") == 0){
+                    //    //TODO: This crashes, maybe look into it? IT might be because errorsNew have SOME issue still that weren't fixed yet
+                    //    raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), arg.items)
+                    //}
                     else if (strcmp(action.items, "pragma") == 0){
                         if (strcmp(arg.items, "once") == 0){
                             g_fileImports.items[indexFile].canLoadMoreThanOnce = 0;
                             return toks;
                         }
                         else{
-                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unknown pragma argument.") 
+                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unknown pragma argument.")
                         }
                     }
                     else{
