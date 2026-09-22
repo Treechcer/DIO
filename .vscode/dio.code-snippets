@@ -71,4 +71,60 @@
         ],
         "description": "Insert function construction"
     },
+    "macro def": {
+        "scope": "Plain Text",
+        "prefix": "def",
+        "body": [
+            "#def $0"
+        ],
+        "description": "Insert macro defining construction"
+    },
+    "get file": {
+        "scope": "Plain Text",
+        "prefix": "get",
+        "body": [
+            "#def $0"
+        ],
+        "description": "Insert file import construction"
+    },
+    "use macro": {
+        "scope": "Plain Text",
+        "prefix": "use",
+        "body": [
+            "#use $0"
+        ],
+        "description": "Insert macro use construction"
+    },
+	"WIN": {
+        "scope": "Plain Text",
+        "prefix": "WIN",
+        "body": [
+            "#WIN $0"
+        ],
+        "description": "Insert windows only execution construction"
+    },
+	"LINUX": {
+        "scope": "Plain Text",
+        "prefix": "LINUX",
+        "body": [
+            "#LINUX $0"
+        ],
+        "description": "Insert linux only execution construction"
+    },
+    "MAC": {
+        "scope": "Plain Text",
+        "prefix": "MAC",
+        "body": [
+            "#MAC $0"
+        ],
+        "description": "Insert windows only execution construction"
+    },
+    "FREEBSD": {
+        "scope": "Plain Text",
+        "prefix": "FREEBSD",
+        "body": [
+            "#FREEBSD $0"
+        ],
+        "description": "Insert FreeBSD only execution construction"
+    },
 }
