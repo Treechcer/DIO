@@ -56,7 +56,7 @@ Node* parseFactor(dynamicToken* toks){
         node->type = NUMBERNODE;
         node->data.numberNode = malloc(sizeof(numberNode));
         node->data.numberNode->value = convertToDouble(num2.value) * (-1);
-        node->pos = &tok.pos;
+        node->pos = copyPos(&tok.pos);
 
         return node;
     }
@@ -66,7 +66,7 @@ Node* parseFactor(dynamicToken* toks){
         Node* retNode = createNode();
         retNode->type = MAYBENODE;
         retNode->data.maybeNode = malloc(sizeof(maybeNode));
-        retNode->pos = &tok.pos;
+        retNode->pos = copyPos(&tok.pos);
         return retNode;
     }
 
@@ -76,7 +76,7 @@ Node* parseFactor(dynamicToken* toks){
         node->type = NUMBERNODE;
         node->data.numberNode = malloc(sizeof(numberNode));
         node->data.numberNode->value = convertToDouble(tok.value);
-        node->pos = &tok.pos;
+        node->pos = copyPos(&tok.pos);
 
         return node;
     }
@@ -89,7 +89,7 @@ Node* parseFactor(dynamicToken* toks){
         node->data.variableNode->name = tok.value;
         node->data.variableNode->type = INTVAR;
         node->data.variableNode->value = NULL;
-        node->pos = &tok.pos;
+        node->pos = copyPos(&tok.pos);
 
         return node;
     }
@@ -197,7 +197,7 @@ Node* createNumArray(dynamicToken* toks, Position pos){
     }
 
     Node* ret = createNode();
-    ret->pos = &pos;
+    ret->pos = copyPos(&pos);
     ret->type = NUMBERARRAYNODE;
     ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
     ret->data.numberArrayNode->value = values;
@@ -257,6 +257,7 @@ Node* parseNewVariable(dynamicToken* toks){
             Node* ret = createNumArray(toks, pos);
 
             Node* retNode = createNode();
+            retNode->pos = copyPos(&pos);
             retNode->type = VARIABLENODE;
             retNode->data.variableNode = malloc(sizeof(variableNode));
             retNode->data.variableNode->type = NUMBERARRAY;
@@ -314,7 +315,7 @@ Node* parseNewVariable(dynamicToken* toks){
         //printf("%s : %s\n", value, strNode->data.stringNode->value);
 
         Node* retNode = createNode();
-        retNode->pos = &pos;
+        retNode->pos = copyPos(&pos);;
         retNode->type = VARIABLENODE;
         retNode->data.variableNode = malloc(sizeof(variableNode));
         retNode->data.variableNode->name = name;
@@ -335,7 +336,7 @@ Node* parseNewVariable(dynamicToken* toks){
         }
 
         Node* retNode = createNode();
-        retNode->pos = value->pos;
+        retNode->pos = copyPos(value->pos);
         retNode->type = VARIABLENODE;
         retNode->data.variableNode = malloc(sizeof(variableNode));
         retNode->data.variableNode->name = name;
@@ -367,7 +368,7 @@ Node* parseNewVariable(dynamicToken* toks){
 Node* parseGoto(dynamicToken* toks){
     Node* pNode = createNode();
     if (toks->items[g_index].identifier == KEYWORD && strcmp(toks->items[g_index].value, "goto") == 0){
-        pNode->pos = &toks->items[g_index].pos;
+        pNode->pos = copyPos(&toks->items[g_index].pos);
         pNode->type = GOTONODE;
         pNode->data.gotoNode = malloc(sizeof(gotoNode));
         shiftToken(toks);
@@ -386,7 +387,7 @@ Node* parseGoto(dynamicToken* toks){
         return pNode;
     }
     else if (toks->items[g_index].identifier == GOTONAME) {
-        pNode->pos = &toks->items[g_index].pos;
+        pNode->pos = copyPos(&toks->items[g_index].pos);
         pNode->type = GOTOIDENTIFIER;
         pNode->data.gotoIdefier = malloc(sizeof(gotoIdefier));
         pNode->data.gotoIdefier->name = shiftToken(toks).value;
@@ -440,7 +441,7 @@ Node* parseCondition(dynamicToken* toks){
 
         Node* pNode = createNode();
 
-        pNode->pos = &t.pos;
+        pNode->pos = copyPos(&t.pos);
         pNode->pos->end = checkCurrenToken(toks).pos.end;
 
         pNode->type = CONDITION;
@@ -538,7 +539,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
         pNode->data.function->inputs = (dynamicNode){0,0,0};
         
         Token tempT = checkCurrenToken(toks);
-        pNode->pos = &tempT.pos;
+        pNode->pos = copyPos(&tempT.pos);
 
         shiftToken(toks); //def
         char* name = checkCurrenToken(toks).value;
@@ -559,7 +560,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
 
             Node* dynNode = createNode();
             
-            dynNode->pos = &tokType.pos;
+            dynNode->pos = copyPos(&tokType.pos);
             dynNode->pos->end = t.pos.end;
             
             dynNode->type = VARIABLENODE;
@@ -611,7 +612,7 @@ Node* parseFunctionCall(dynamicToken* toks){
         pNode->type = FUNCTIONCALL;
         pNode->data.functionCall = malloc(sizeof(functionCall));
         pNode->data.functionCall->name = functionName;
-        pNode->pos = &tok.pos;
+        pNode->pos = copyPos(&tok.pos);
         //printf("-|- %li\n", checkCurrenToken(toks).identifier);
         //This crashes the programme? Why?
         pNode->data.functionCall->inputs = createFunctionParams(toks);
@@ -636,7 +637,7 @@ Node* parseLoop(dynamicToken* toks){
         Token end = shiftToken(toks); //)
 
         Node* pNode = createNode();
-        pNode->pos = &start.pos;
+        pNode->pos = copyPos(&start.pos);
         pNode->pos->end = end.pos.end;
 
         pNode->type = LOOPNODE;
@@ -669,7 +670,7 @@ Node* parseLoop(dynamicToken* toks){
         Token end = shiftToken(toks); //)
 
         Node* pNode = createNode();
-        pNode->pos = &start.pos;
+        pNode->pos = copyPos(&start.pos);
         pNode->pos->end = end.pos.end;
         
         pNode->type = LOOPNODE;
@@ -717,7 +718,7 @@ Node* parseStringGeneral(dynamicToken* toks){
         Token end = shiftToken(toks); //'
 
         Node* stringNode = malloc(sizeof(stringNode));
-        stringNode->pos = &start.pos;
+        stringNode->pos = copyPos(&start.pos);
         stringNode->pos->end = end.pos.end;
 
         stringNode->type = STRINGNODE;

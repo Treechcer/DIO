@@ -46,6 +46,12 @@ char* scanForFileName(const char* filePath){
 
 char* getLine(Position pos){
     fileReadReturn fileData = readFile(pos.file);
+    if (!fileData.exists || pos.line == NULL){
+        char* emptyLine = malloc(1);
+        emptyLine[0] = '\0';
+        return emptyLine;
+    }
+
     int line = 1;
     for (size_t i = 0; i < fileData.size; i++){
         if (line == *pos.line){
@@ -64,12 +70,18 @@ char* getLine(Position pos){
                 str[len] = ch;
                 str[len+1] = '\0';
             }
+
+            return str;
         }
 
         if (fileData.content[i] == '\n'){
             line++;
         }
     }
+
+    char* emptyLine = malloc(1);
+    emptyLine[0] = '\0';
+    return emptyLine;
 }
 
 void printOutArrows(char* message, Position pos, char* errorMessage, char* process, int isWarn){
@@ -77,24 +89,50 @@ void printOutArrows(char* message, Position pos, char* errorMessage, char* proce
         printf("%sWarning%s:\n", ANSI_COLOR_YELLOW, ANSI_COLOR_RESET);
     }
     #ifdef _WIN32
-        printf("In file: %s/%s %i:%i in line %i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end, *pos.line);
-    #else
         printf("In file: %s\\%s %i:%i in line %i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end, *pos.line);
+    #else
+        printf("In file: %s/%s %i:%i in line %i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end, *pos.line);
     #endif
-    printf("%s\n", message);
-
-    for (int i = 1; i < *pos.start; i++){
-        printf(" ");
+    if (message == NULL || strlen(message) == 0){
+        //what should it print here?
     }
+    else{
+        printf("%s\n", message);
 
-    for (int i = *pos.start; i < *pos.end; i++){
-        printf("~");
+        for (int i = 1; i < *pos.start; i++){
+            printf(" ");
+        }
+
+        for (int i = *pos.start; i < *pos.end; i++){
+            printf("~");
+        }
+
+        printf("\n");
     }
     
-    printf("\n%s\nin process: %s", errorMessage, process);
+    printf("%s\nin process: %s\n", errorMessage, process);
+}
+
+Position checkIfValidPos(Position pos){
+    int MINUSONE = -1;
+    if (pos.end == NULL){
+        pos.end = &MINUSONE;
+    }
+    if (pos.start == NULL){
+        pos.start = &MINUSONE;
+    }
+    if (pos.file == NULL){
+        pos.file = "";
+    }
+    if (pos.line == NULL){
+        pos.line = &MINUSONE;
+    }
+
+    return pos;
 }
 
 void raiseError(const char* file, Position pos, char* errorMessage){
+    pos = checkIfValidPos(pos);
     char* processName = scanForFileName(file);
     char* codeLine = getLine(pos);
 
@@ -104,6 +142,7 @@ void raiseError(const char* file, Position pos, char* errorMessage){
 }
 
 void raiseWarning(const char* file, Position pos, char* errorMessage){
+    pos = checkIfValidPos(pos);
     char* processName = scanForFileName(file);
     char* codeLine = getLine(pos);
 

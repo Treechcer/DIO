@@ -39,6 +39,14 @@ void initLowLevelFuncs(){
     inputs = (dynamicNode){0,0,0};
     DYN_PUSH(createInput("a", STRINGVAR), inputs);
     createLowLevelFunc("exec", inputs);
+
+    inputs = (dynamicNode){0,0,0};
+    DYN_PUSH(createInput("a", STRINGVAR), inputs);
+    createLowLevelFunc("warning", inputs);
+
+    inputs = (dynamicNode){0,0,0};
+    DYN_PUSH(createInput("a", STRINGVAR), inputs);
+    createLowLevelFunc("error", inputs);
 }
 
 int main(int argc, char **argv){
@@ -73,7 +81,7 @@ int main(int argc, char **argv){
 
         initLowLevelFuncs();
         dynamicToken toks = {0,0,0};
-        parse(buildAst(lex(code, filePath, lex(getSTD(), "STDlib.dio", toks))));
+        parse(buildAst(lex(code, realName, lex(getSTD(), "STDlib.dio", toks))));
     }
     
     return 0;

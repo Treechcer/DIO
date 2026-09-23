@@ -108,3 +108,12 @@ int getIndexFromInput(char* name){
 
     return indexArr;
 }
+
+Position* copyPos(Position* input){
+    Position* ret = malloc(sizeof(Position));
+    ret->end = input->end;
+    ret->start = input->start;
+    ret->line = input->line;
+    ret->file = input->file;
+    return ret;
+}

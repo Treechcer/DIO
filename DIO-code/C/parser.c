@@ -79,7 +79,15 @@ void callLowLevelFunc(int index, Node* node){
     else if (strcmp(name, "exec") == 0){
         system(getVariableStringValue(getVarIndexByName("a")));
     }
-
+    else if (strcmp(name, "warning") == 0){
+        int varIndex = getVarIndexByName("a");
+        char* msgVal = g_vars.items[varIndex].data.arrayVar.value.stringValue;
+        raiseWarningMacro(*node->pos, msgVal);
+    }
+    else if (strcmp(name, "error") == 0){
+        int varIndex = getVarIndexByName("a");
+        raiseErrorMacro(*node->pos, g_vars.items[varIndex].data.arrayVar.value.stringValue);
+    }
 }
 
 int getFuncIndexByName(char* name){
