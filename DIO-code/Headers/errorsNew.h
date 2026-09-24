@@ -3,7 +3,7 @@
 
 #include "../Headers/token.h"
 
-void raiseError(const char* file, Position pos, char* errorMessage);
-void raiseWarning(const char* file, Position pos, char* errorMessage);
+void raiseError(char* file, Position pos, char* errorMessage);
+void raiseWarning(char* file, Position pos, char* errorMessage);
 
 #endif

@@ -33,10 +33,10 @@ if (index < arr.count) {\
 }\
 
 #define raiseErrorMacro(POSITION, ERRORMESSAGE)\
-    raiseError(__FILE__, POSITION, ERRORMESSAGE);
+    raiseError(__FILE_NAME__, POSITION, ERRORMESSAGE);
 
 #define raiseWarningMacro(POSITION, ERRORMESSAGE)\
-    raiseWarning(__FILE__, POSITION, ERRORMESSAGE);
+    raiseWarning(__FILE_NAME__, POSITION, ERRORMESSAGE);
 
 //defined colors 
 

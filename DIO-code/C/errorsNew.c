@@ -131,20 +131,20 @@ Position checkIfValidPos(Position pos){
     return pos;
 }
 
-void raiseError(const char* file, Position pos, char* errorMessage){
+void raiseError(char* file, Position pos, char* errorMessage){
     pos = checkIfValidPos(pos);
-    char* processName = scanForFileName(file);
+    //char* processName = scanForFileName(file);
     char* codeLine = getLine(pos);
 
-    printOutArrows(codeLine, pos, errorMessage, processName, 0);
+    printOutArrows(codeLine, pos, errorMessage, file, 0);
 
     exit(1);
 }
 
-void raiseWarning(const char* file, Position pos, char* errorMessage){
+void raiseWarning(char* file, Position pos, char* errorMessage){
     pos = checkIfValidPos(pos);
-    char* processName = scanForFileName(file);
+    //char* processName = scanForFileName(file);
     char* codeLine = getLine(pos);
 
-    printOutArrows(codeLine, pos, errorMessage, processName, 1);
+    printOutArrows(codeLine, pos, errorMessage, file, 1);
 }
