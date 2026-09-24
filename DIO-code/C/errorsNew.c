@@ -98,12 +98,12 @@ void printOutArrows(char* message, Position pos, char* errorMessage, char* proce
     }
     else{
         printf("%s\n", message);
-
+        int end = *pos.end; 
         for (int i = 1; i < *pos.start; i++){
             printf(" ");
         }
 
-        for (int i = *pos.start; i < *pos.end; i++){
+        for (int i = *pos.start; i < end + 1; i++){
             printf("~");
         }
 
