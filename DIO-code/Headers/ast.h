@@ -90,6 +90,7 @@ typedef struct function{
     char* name;
     Node* codeBlock;
     dynamicNode inputs;
+    variableTypes returnType;
 } function;
 
 typedef struct functionCall {

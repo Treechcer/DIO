@@ -174,7 +174,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     else{
                         code++;
                         c = *code;
-                        tok = createToken(":", FUNCTIONRETURNTYPE, createPosition(&charPos_, &charPos_, &line, fileName));
+                        tok = createToken(token.items, FUNCTIONRETURNTYPE, createPosition(&charPos_, &charPos_, &line, fileName));
                         break;
                         //raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unsuported character sequnce was found.");
                     }

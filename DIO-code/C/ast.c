@@ -31,7 +31,7 @@ Token checkCurrenToken(dynamicToken* toks){
 Token shiftToken(dynamicToken* toks){
     if (g_index+1 < toks->count){
         g_index++;
-        //printf("%s\n", toks->items[g_index-1].value);
+        //printf("%i : %s\n", toks->items[g_index-1].identifier, toks->items[g_index-1].value);
         return toks->items[g_index-1];
     }
     return (Token){0};
@@ -537,6 +537,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
         pNode->type = FUNCTION;
         pNode->data.function = malloc(sizeof(function));
         pNode->data.function->inputs = (dynamicNode){0,0,0};
+        pNode->data.function->returnType = UNKNOWNVARTYPE; //no return, if this will be set to something else there is return!
         
         Token tempT = checkCurrenToken(toks);
         pNode->pos = copyPos(&tempT.pos);
@@ -590,6 +591,16 @@ Node* parseFunctionCreate(dynamicToken* toks){
             }
         }
         shiftToken(toks);
+
+        if (checkCurrenToken(toks).identifier == FUNCTIONRETURNTYPE){
+            Token t = checkCurrenToken(toks);
+            pNode->data.function->returnType = (strcmp("int", t.value) == 0) ? INTVAR : (strcmp("float", t.value) == 0) ? FLOATVAR : (strcmp("bool", t.value) == 0) ? BOOLVAR : UNKNOWNVARTYPE;
+            
+            if (pNode->data.function->returnType == UNKNOWNVARTYPE){
+                raiseErrorMacro(t.pos, "Function has non compatible type as return type");
+            }
+            shiftToken(toks);
+        }
 
         //pNode = createFunctionParams(toks, pNode);
         pNode->data.function->name = name;
