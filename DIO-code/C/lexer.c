@@ -262,7 +262,6 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         dynamicChar text = {0,0,0};
 
                         while (c != '\n' && c != '\0') {
-                            //printf("%c\n", c);
                             DYN_PUSH(c, text);
                             code++;
                             c = *code;

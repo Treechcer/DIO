@@ -22,6 +22,14 @@ Dio is procedural, statically typed that's weakly typed programming language. Wo
 
 The name `Dio` comes from ancient Greek philosopher [Diogenes of Sinope](https://en.wikipedia.org/wiki/Diogenes) and his [bowl story](https://medium.com/@ricosutioso/diogenes-the-beggar-philosopher-fdd71946f641). Essentially, Diogenes saw kid drinking water from river with his hands, so he threw away his bowl (one of two things he owned). It's called `Dio` because it's trying to be minimalistic language (not in line count, but with how much it can do).
 
+### File extensions
+
+DIO supports three file extensions:
+
+- .dio (original)
+- .diogenes
+- .diogenesdesinope
+
 ### Variable types
 
 - [x] int - basic number type, it's internally used as float

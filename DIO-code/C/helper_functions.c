@@ -117,3 +117,40 @@ Position* copyPos(Position* input){
     ret->file = input->file;
     return ret;
 }
+
+int checkIfValidFileEnd(char* fileName){
+    char* fName = malloc(sizeof(char));
+    int startIndex = 0;
+    int size = 0;
+
+    for (int i = strlen(fileName)-1; i >= 0; i--){
+        if (fileName[i] == '.'){
+            startIndex = i;
+            break;
+        }
+        size += 1;
+        fName = realloc(fName, size);
+        fName[size-1] = fileName[i];
+    }
+    
+    fName[size] = '\0';
+    fName = strrev(fName);
+
+    char* names[] = arrayOfFileExtensions();
+    int count = sizeof(names) / sizeof(names[0]);
+    
+    int canContinue = 0;
+
+    for (int i = 0; i < count; i++){
+        if (strcmp(names[i], fName) == 0){
+            canContinue = 1;
+            break;
+        }
+    }
+
+    return canContinue;
+
+    //for (int i = startIndex; i <= strlen(fileName)-1; i++){
+    //    printf("%c", fileName[i]);
+    //}
+}

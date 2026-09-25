@@ -38,6 +38,9 @@ if (index < arr.count) {\
 #define raiseWarningMacro(POSITION, ERRORMESSAGE)\
     raiseWarning(__FILE_NAME__, POSITION, ERRORMESSAGE);
 
+#define arrayOfFileExtensions() \
+    {"dio", "diogenes", "diogenesdesinope"}
+
 //defined colors 
 
 // Source - https://stackoverflow.com/a/3219471
