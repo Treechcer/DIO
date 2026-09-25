@@ -78,12 +78,14 @@ try:
     if platform.system() == "Windows":
         filename = "lang.exe"
         slash = "\\"
+    
     #subprocess.run("gcc -g -Wall -Wextra " + getFiles() + f" -o {filename}", shell=True, check=True)
     subprocess.run("gcc -g " + getFiles() + f" -o ..{slash}{filename}", shell=True, check=True)
     os.chdir("..")
     with open(os.path.abspath(os.path.join("scripts", "CompileRunParams.txt")), "r") as f:
         executablePath = os.path.abspath(filename)
-        fName = f.read().split("-f ")[1]
+        #normalises slashes to whatever the OS uses, or should at least lol
+        fName = f.read().split("-f ")[1].replace("/", slash).replace("\\", slash)
         os.chdir(os.path.abspath(os.path.dirname(fName)))
         if arguments["debug"]:
             subprocess.run(f'gdb -ex run -ex bt --args {executablePath} -f {os.path.basename(fName)}', shell=True)

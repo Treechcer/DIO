@@ -131,7 +131,7 @@ typedef struct arrayAcessNode {
 } arrayAcessNode;
 
 typedef struct returnNode {
-    binOpNode* returnValue;
+    Node* nodeRetun;
 } returnNode;
 
 typedef struct Node {
@@ -152,7 +152,7 @@ typedef struct Node {
         struct stringNode* stringNode;
         struct arrayAcessNode* arrayAcessNode;
         struct numberArrayNode* numberArrayNode;
-        struct returnNode* returnNode;
+        struct returnNode* nodeRetun;
     } data;
     Position* pos;
 } Node;

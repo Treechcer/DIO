@@ -137,7 +137,15 @@ int checkIfValidFileEnd(char* fileName){
     }
     
     fName[size] = '\0';
-    fName = strrev(fName);
+
+    char* rev = malloc(sizeof(char) * size);
+    int c = 0;
+
+    for (int i = size-1; i >= 0; i--){
+        rev[c++] = fName[i];
+    }
+    rev[size] = '\0';
+    fName = rev;
 
     char* names[] = arrayOfFileExtensions();
     int count = sizeof(names) / sizeof(names[0]);

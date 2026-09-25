@@ -1,12 +1,15 @@
 >>TODO: implement this
 
 def a()::int
+    out(7)
     return 1
 end
 
 def b(int : d)::int
     return d + 1
 end
+
+a()
 
 >> Add this last! Make return work actually
 >>int c = a():b():out()

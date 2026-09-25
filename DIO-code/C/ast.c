@@ -748,8 +748,8 @@ Node* parseReturn(dynamicToken* toks){
         shiftToken(toks);
         Node* pNode = createNode();
         pNode->type = RETRUNNODE;
-        pNode->data.binOpNode = malloc(sizeof(binOpNode));
-        pNode->data.binOpNode = parseExpression(toks)->data.binOpNode;
+        pNode->data.nodeRetun = malloc(sizeof(Node*));
+        pNode->data.nodeRetun->nodeRetun = parseGenericNode(toks);
 
         return pNode;
     }

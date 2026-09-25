@@ -71,6 +71,11 @@ typedef struct {
     } arbitraryData;
 } binOpResult;
 
+typedef struct programState{
+    int isInFunc;
+    binOpResult* funcReturn; //parse is void, I don't know if I can change it's type to something?
+} programState;
+
 void parse(Node* ast);
 void createLowLevelFunc(char* name, dynamicNode inputs);
 

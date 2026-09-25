@@ -21,6 +21,7 @@ dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
 dynamicFunc g_funcs = {0,0,0};
 int g_skipelse = 0;
+programState program = {0};
 
 int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes action){
     if ((action == INTSUM || action == SUB || action == MULT || action == DIVI) &&  (var1 == INTVAR || var1 == FLOATVAR) && (var2 == INTVAR || var2 == FLOATVAR)){
@@ -101,13 +102,14 @@ int getFuncIndexByName(char* name){
 }
 
 void callFunctionByName(char* name){
+    program.isInFunc = 1;
     for(int i = 0; i < g_funcs.count; i++){
         if (strcmp(name, g_funcs.items[i].name) == 0){
             parse(g_funcs.items[i].codeBlock);
             break;
         }
     }
-
+    program.isInFunc = 1;
 }
 
 int isFunctionLowLevel(int index){
@@ -229,7 +231,7 @@ binOpResult* evalBinOp(Node* node){
         return res;
     }
 
-    if (node->type == BINOPNODE){
+    if (node->type == BINOPNODE || node->type == RETRUNNODE){
         binOpResult* left = evalBinOp(node->data.binOpNode->left);
         binOpResult* right = evalBinOp(node->data.binOpNode->right);
 
@@ -853,6 +855,11 @@ void parse(Node* ast){
             if (temp != -1){
                 i = temp-1;
             }
+        }
+        else if (node->type == RETRUNNODE){
+            //TODO: how can I do this? ParseGeneric returns nothing? add return type?
+            //program.funcReturn = parseGeneric(node->data.nodeRetun->nodeRetun);
+            //return;
         }
         else{
             parseGeneric(node);
