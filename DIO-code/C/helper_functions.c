@@ -5,6 +5,7 @@
 
 #include "../Headers/token.h"
 #include "../Headers/helper_functions.h"
+#include "../Headers/errorsNew.h"
 
 int getVarIndexByName(char* name);
 
@@ -82,8 +83,10 @@ fileReadReturn readFile(char* fName){
     // Posted by user529758, modified by community. See post 'Timeline' for change history
     // Retrieved 2026-07-04, License - CC BY-SA 4.0
     FILE* filePointer = fopen(fName, "rb");
-    if (filePointer == NULL)
-        return (fileReadReturn){.size = 0, .content = "", .exists = 0};
+    if (filePointer == NULL){
+        printf("File '%s' not found.", fName);
+        exit(1);
+    }
 
     fseek(filePointer, 0, SEEK_END);
     long fsize = ftell(filePointer);
