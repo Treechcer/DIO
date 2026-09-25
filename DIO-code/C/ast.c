@@ -743,6 +743,20 @@ Node* parseStringGeneral(dynamicToken* toks){
     return NULL;
 }
 
+Node* parseReturn(dynamicToken* toks){
+    if (strcmp(checkCurrenToken(toks).value, "return") == 0 && checkCurrenToken(toks).identifier == KEYWORD){
+        shiftToken(toks);
+        Node* pNode = createNode();
+        pNode->type = RETRUNNODE;
+        pNode->data.binOpNode = malloc(sizeof(binOpNode));
+        pNode->data.binOpNode = parseExpression(toks)->data.binOpNode;
+
+        return pNode;
+    }
+
+    return NULL;
+}
+
 int parseArrayAcessNode(dynamicToken* toks){
     if (checkCurrenToken(toks).identifier == LSQUAREPAREN && checkTokenAt(toks, 2).identifier == RSQUAREPAREN){
         shiftToken(toks);
@@ -809,6 +823,9 @@ Node* parseGenericNode(dynamicToken* toks){
     }
     if (node == NULL){
         node = parseFunctionCreate(toks);
+    }
+    if (node == NULL){
+        node = parseReturn(toks);
     }
     if (node == NULL){
         //this should probably stay last?

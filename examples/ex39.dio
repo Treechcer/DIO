@@ -1,11 +1,11 @@
 >>TODO: implement this
 
 def a()::int
-    >>return 1
+    return 1
 end
 
 def b(int : d)::int
-    >>return d + 1
+    return d + 1
 end
 
 >> Add this last! Make return work actually

@@ -31,6 +31,7 @@ typedef enum {
     STRINGNODE,
     NUMBERARRAYNODE,
     ARRAYACESSNODE,
+    RETRUNNODE,
     UNKNOWNNODE,
 } nodeType;
 
@@ -129,6 +130,10 @@ typedef struct arrayAcessNode {
     int index;
 } arrayAcessNode;
 
+typedef struct returnNode {
+    binOpNode* returnValue;
+} returnNode;
+
 typedef struct Node {
     nodeType type;
     union {
@@ -147,8 +152,9 @@ typedef struct Node {
         struct stringNode* stringNode;
         struct arrayAcessNode* arrayAcessNode;
         struct numberArrayNode* numberArrayNode;
+        struct returnNode* returnNode;
     } data;
-    Position* pos; //TODO: init pos!
+    Position* pos;
 } Node;
 
 // function predef
