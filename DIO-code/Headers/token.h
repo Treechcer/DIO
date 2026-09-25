@@ -40,6 +40,7 @@ typedef enum {
     STRINGLITERAL,
     LSQUIGLYPAREN,
     RSQUIGLYPAREN,
+    FUNCTIONRETURNTYPE,
 } TokenType;
 
 typedef struct Token{
