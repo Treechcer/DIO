@@ -80,7 +80,7 @@ try:
         slash = "\\"
     
     #subprocess.run("gcc -g -Wall -Wextra " + getFiles() + f" -o {filename}", shell=True, check=True)
-    subprocess.run("gcc -g " + getFiles() + f" -o ..{slash}{filename}", shell=True, check=True)
+    subprocess.run("gcc -std=c25 -g " + getFiles() + f" -o ..{slash}{filename}", shell=True, check=True)
     os.chdir("..")
     with open(os.path.abspath(os.path.join("scripts", "CompileRunParams.txt")), "r") as f:
         executablePath = os.path.abspath(filename)

@@ -99,12 +99,13 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                 break;
             case '.':
             case '!':
-            case '?':
+            case '?':{ //had to do {} for it to compile and run on MAC btw.
                 char* buf = malloc(2 * sizeof(char));
                 buf[0] = c;
                 buf[1] = '\0';
                 tok = createToken(buf, STRINGLITERAL, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
+            }
             case '<':
                 code++;
                 c = *code;
