@@ -131,7 +131,7 @@ typedef struct arrayAcessNode {
 } arrayAcessNode;
 
 typedef struct returnNode {
-    Node* nodeRetun;
+    Node* binOpNode;
 } returnNode;
 
 typedef struct Node {

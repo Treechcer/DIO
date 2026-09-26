@@ -109,7 +109,7 @@ void callFunctionByName(char* name){
             break;
         }
     }
-    program.isInFunc = 1;
+    program.isInFunc = 0;
 }
 
 int isFunctionLowLevel(int index){
@@ -231,7 +231,11 @@ binOpResult* evalBinOp(Node* node){
         return res;
     }
 
-    if (node->type == BINOPNODE || node->type == RETRUNNODE){
+    if (node->type == RETRUNNODE){
+        return evalBinOp(node->data.nodeRetun->binOpNode);
+    }
+
+    if (node->type == BINOPNODE){
         binOpResult* left = evalBinOp(node->data.binOpNode->left);
         binOpResult* right = evalBinOp(node->data.binOpNode->right);
 
@@ -857,9 +861,8 @@ void parse(Node* ast){
             }
         }
         else if (node->type == RETRUNNODE){
-            //TODO: how can I do this? ParseGeneric returns nothing? add return type?
-            //program.funcReturn = parseGeneric(node->data.nodeRetun->nodeRetun);
-            //return;
+            program.funcReturn = evalBinOp(node->data.nodeRetun->binOpNode);
+            return;
         }
         else{
             parseGeneric(node);
