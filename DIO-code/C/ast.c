@@ -665,6 +665,12 @@ Node* parseFunctionCall(dynamicToken* toks){
         //printf("-|- %li\n", checkCurrenToken(toks).identifier);
         //This crashes the programme? Why?
         pNode->data.functionCall->inputs = createFunctionParams(toks);
+        pNode->data.functionCall->nextCall = NULL;
+
+        if (strcmp(checkCurrenToken(toks).value, ":") == 0){
+            shiftToken(toks);
+            pNode->data.functionCall->nextCall = parseFunctionCall(toks)->data.functionCall;
+        }
 
         return pNode;
     }
