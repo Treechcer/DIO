@@ -634,7 +634,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
             Token t = checkCurrenToken(toks);
             pNode->data.function->returnType = (strcmp("int", t.value) == 0) ? INTVAR : (strcmp("float", t.value) == 0) ? FLOATVAR : (strcmp("bool", t.value) == 0) ? BOOLVAR : UNKNOWNVARTYPE;
             
-            if (pNode->data.function->returnType == UNKNOWNVARTYPE){
+            if (pNode->data.function->returnType == UNKNOWNVARTYPE && (strcmp("void", t.value) != 0)){
                 raiseErrorMacro(t.pos, "Function has non compatible type as return type");
             }
             shiftToken(toks);
