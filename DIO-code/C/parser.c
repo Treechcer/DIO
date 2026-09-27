@@ -503,8 +503,7 @@ dynamicVar evalVariable(Node* node){
             raiseErrorMacro(*node->pos, "Function call type not yet implemented.")
         }
     }
-
-    if (varType == INTVAR || varType == FLOATVAR){
+    else if (varType == INTVAR || varType == FLOATVAR){
         binOpResult* value = evalBinOp(node->data.variableNode->value);
         if (value->varType == FLOATVAR){
             tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = name, .data.floatVal = value->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
@@ -650,8 +649,11 @@ void parseFunctionCall_(Node* node){
         raiseErrorMacro(*node->pos, "Can't call uninitialised functions.");
     }
 
-    if (node->data.functionCall->inputs.count != g_funcs.items[index].inputs.count){
-        raiseErrorMacro(*node->pos, "Incorrect ammount of inputs.");
+    if (node->data.functionCall->inputs.count > g_funcs.items[index].inputs.count){
+        raiseErrorMacro(*node->pos, "Too much inputs were inputed into the function.");
+    }
+    else if (node->data.functionCall->inputs.count < g_funcs.items[index].inputs.count){
+        raiseErrorMacro(*node->pos, "Too little inputs were inputed into the function.");
     }
 
     dynamicVar l_vars = {0,0,0};
@@ -818,6 +820,36 @@ void parseFunctionCall_(Node* node){
         //This does soemthign like local vars (not really) and "flushes" the value
         int _inx = getVarIndexByName(l_vars.items[i].name);
         g_vars.items[_inx] = l_vars.items[i];
+    }
+
+    //HOLY THIS SUCKS!
+
+    if (node->data.functionCall->nextCall != NULL){
+        int inx__ = getFuncIndexByName(node->data.functionCall->nextCall->data.functionCall->name);
+        if (g_funcs.items[inx__].inputs.count > 0){
+            if (program.funcReturn->varType == FLOATVAR){
+                if (node->data.functionCall->nextCall->data.functionCall->inputs.count == 0){
+                    node->data.functionCall->nextCall->data.functionCall->inputs = (dynamicNode){0,0,0};
+                    DYN_PUSH(createNode(), node->data.functionCall->nextCall->data.functionCall->inputs)
+                    node->data.functionCall->nextCall->data.functionCall->inputs.items[0]->type = NUMBERNODE;
+                    node->data.functionCall->nextCall->data.functionCall->inputs.items[0]->pos = copyPos(node->data.functionCall->nextCall->pos);
+                    node->data.functionCall->nextCall->data.functionCall->inputs.items[0]->data.numberNode = malloc(sizeof(NUMBERNODE));
+                    node->data.functionCall->nextCall->data.functionCall->inputs.items[0]->data.numberNode->value = program.funcReturn->value.floatVar;
+                }
+                else{
+                    //TODO: check if there are other inputs, move them if there are other!
+                    node->data.functionCall->nextCall->data.functionCall->inputs.items[0]->data.numberNode->value = program.funcReturn->value.floatVar;
+                }
+            }
+            else if (program.funcReturn->varType == INTVAR){
+                node->data.functionCall->nextCall->data.functionCall->inputs.items[0]->data.numberNode->value = program.funcReturn->value.intVal;
+            }
+            else{
+                raiseErrorMacro(*node->data.functionCall->nextCall->pos, "Temp func call error");
+            }
+        }
+
+        parseFunctionCall_(node->data.functionCall->nextCall);
     }
 }
 

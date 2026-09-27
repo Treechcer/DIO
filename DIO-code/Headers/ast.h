@@ -95,12 +95,10 @@ typedef struct function{
     variableTypes returnType;
 } function;
 
-typedef struct functionCall functionCall;
-
 typedef struct functionCall {
     char* name;
     dynamicNode inputs;
-    functionCall* nextCall;
+    Node* nextCall;
 } functionCall;
 
 typedef struct loopNode {

@@ -669,7 +669,7 @@ Node* parseFunctionCall(dynamicToken* toks){
 
         if (strcmp(checkCurrenToken(toks).value, ":") == 0){
             shiftToken(toks);
-            pNode->data.functionCall->nextCall = parseFunctionCall(toks)->data.functionCall;
+            pNode->data.functionCall->nextCall = parseFunctionCall(toks);
         }
 
         return pNode;

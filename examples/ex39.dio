@@ -1,5 +1,3 @@
->>TODO: implement this
-
 def a()::int
     return 1 + 5
 end
@@ -8,8 +6,7 @@ def b(int : d)::int
     return d + 1
 end
 
-int test = a():b()
-out(test)
+>>Should this work? Out == void, so at one hand no, but at the other b() reurns something.... I'll think about it
 
->> Add this last! Make return work actually
->>int c = a():b():out()
+int test = a():b():out()
+out(test)
