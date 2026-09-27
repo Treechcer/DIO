@@ -8,7 +8,7 @@ def b(int : d)::int
     return d + 1
 end
 
-int test = a()
+int test = b(3  )
 out(test)
 
 >> Add this last! Make return work actually

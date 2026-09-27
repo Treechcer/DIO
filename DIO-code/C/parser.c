@@ -16,6 +16,7 @@ double getVariableFloatValue(int index);
 char* getVariableStringValue(int index);
 void parseGeneric(Node* node);
 double* getVariableNumArrayValue(int index);
+void parseFunctionCall_(Node* node);
 
 dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
@@ -480,7 +481,9 @@ dynamicVar evalVariable(Node* node){
     //char* type = tempArr[varType];
 
     if (node->data.variableNode->dataFlags.isFuncCall){
-        callFunctionByName(node->data.variableNode->value->data.functionCall->name);
+        //callFunctionByName(node->data.variableNode->value->data.functionCall->name);
+        parseFunctionCall_(node->data.variableNode->value);
+        
         //printf("%i : %i\n", node->data.variableNode->type, program.funcReturn->varType);
 
         if (checkCompatibleVarType(node->data.variableNode->type, program.funcReturn->varType, CONVERT) == 0){
@@ -490,8 +493,14 @@ dynamicVar evalVariable(Node* node){
         if (program.funcReturn->varType == FLOATVAR){
             tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = name, .data.floatVal = program.funcReturn->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
         }
+        else if (program.funcReturn->varType == INTVAR){
+            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = name, .data.floatVal = program.funcReturn->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
+        }
+        else if (program.funcReturn->varType == STRINGVAR || program.funcReturn->varType == NUMBERARRAY){
+            raiseErrorMacro(*node->pos, "String and Numberarray were not implemented yet.")
+        }
         else{
-            printf("IMPLEMENT THIS TYPE %i", program.funcReturn->varType);
+            raiseErrorMacro(*node->pos, "Function call type not yet implemented.")
         }
     }
 
