@@ -479,6 +479,22 @@ dynamicVar evalVariable(Node* node){
     //char* tempArr[] = {"int", "float", "string", "bool", "numArr"};
     //char* type = tempArr[varType];
 
+    if (node->data.variableNode->dataFlags.isFuncCall){
+        callFunctionByName(node->data.variableNode->value->data.functionCall->name);
+        //printf("%i : %i\n", node->data.variableNode->type, program.funcReturn->varType);
+
+        if (checkCompatibleVarType(node->data.variableNode->type, program.funcReturn->varType, CONVERT) == 0){
+            raiseErrorMacro(*node->pos, "Function returned incompatible types");
+        }
+
+        if (program.funcReturn->varType == FLOATVAR){
+            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = name, .data.floatVal = program.funcReturn->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
+        }
+        else{
+            printf("IMPLEMENT THIS TYPE %i", program.funcReturn->varType);
+        }
+    }
+
     if (varType == INTVAR || varType == FLOATVAR){
         binOpResult* value = evalBinOp(node->data.variableNode->value);
         if (value->varType == FLOATVAR){

@@ -208,6 +208,24 @@ Node* createNumArray(dynamicToken* toks, Position pos){
     return ret;
 }
 
+variableTypes charToGeneralType(char* text){
+    if (strcmp(text, "int") == 0){
+        return INTVAR;
+    }
+    else if (strcmp(text, "float") == 0){
+        return FLOATVAR;
+    }
+    else if (strcmp(text, "bool") == 0){
+        return BOOLVAR;
+    }
+    else if (strcmp(text, "string") == 0){
+        return STRINGVAR;
+    }
+
+    return UNKNOWNVARTYPE;
+
+}
+
 Node* parseNewVariable(dynamicToken* toks){
     Node* pNode = createNode();
 
@@ -239,9 +257,9 @@ Node* parseNewVariable(dynamicToken* toks){
         retNode->type = VARIABLENODE;
         retNode->data.variableNode = malloc(sizeof(variableNode));
         retNode->data.variableNode->name = name;
-        retNode->data.variableNode->type = tokT;
-        retNode->data.variableNode->value = parseFunctionCall(toks);;
-        retNode->data.variableNode->initialise = initialise;
+        retNode->data.variableNode->type = charToGeneralType(expectedType.value);
+        retNode->data.variableNode->value = parseFunctionCall(toks);
+        retNode->data.variableNode->initialise = 1;
         retNode->data.variableNode->dataFlags.isFuncCall = 1;
 
         return retNode;
