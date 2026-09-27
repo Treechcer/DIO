@@ -14,6 +14,7 @@ int g_index = 0;
 Node* parseExpression(dynamicToken* toks);
 Node* parseGenericNode(dynamicToken* toks);
 int parseArrayAcessNode(dynamicToken* toks);
+Node* parseFunctionCall(dynamicToken* toks);
 
 //Node* parseExpression(dynamicToken toks);
 
@@ -228,6 +229,22 @@ Node* parseNewVariable(dynamicToken* toks){
     }
     else if (checkTokenAt(toks, 3).identifier == IDENTIFIER && checkTokenAt(toks, 4).identifier == LPAREN) {
         //function is found
+        createNodeBool = 1;
+        Token expectedType = shiftToken(toks);
+        name = shiftToken(toks).value;
+        shiftToken(toks); // skips =
+
+        Node* retNode = createNode();
+        retNode->pos = copyPos(&expectedType.pos);
+        retNode->type = VARIABLENODE;
+        retNode->data.variableNode = malloc(sizeof(variableNode));
+        retNode->data.variableNode->name = name;
+        retNode->data.variableNode->type = tokT;
+        retNode->data.variableNode->value = parseFunctionCall(toks);;
+        retNode->data.variableNode->initialise = initialise;
+        retNode->data.variableNode->dataFlags.isFuncCall = 1;
+
+        return retNode;
     }
     else if (checkCurrenToken(toks).identifier == KEYWORD && (strcmp(tv, "int") == 0 || strcmp(tv, "float") == 0 || strcmp(tv, "bool") == 0)){
         if (checkTokenAt(toks, 3).identifier == INT || checkTokenAt(toks, 3).identifier == FLOAT || (checkTokenAt(toks, 3).identifier == MINUS && (checkTokenAt(toks, 4).identifier == INT || checkTokenAt(toks, 4).identifier == FLOAT))){
@@ -318,7 +335,7 @@ Node* parseNewVariable(dynamicToken* toks){
         //printf("%s : %s\n", value, strNode->data.stringNode->value);
 
         Node* retNode = createNode();
-        retNode->pos = copyPos(&pos);;
+        retNode->pos = copyPos(&pos);
         retNode->type = VARIABLENODE;
         retNode->data.variableNode = malloc(sizeof(variableNode));
         retNode->data.variableNode->name = name;
