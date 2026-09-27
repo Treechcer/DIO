@@ -226,6 +226,9 @@ Node* parseNewVariable(dynamicToken* toks){
 
         tokT = UNKNOWNVARTYPE;
     }
+    else if (checkTokenAt(toks, 3).identifier == IDENTIFIER && checkTokenAt(toks, 4).identifier == LPAREN) {
+        //function is found
+    }
     else if (checkCurrenToken(toks).identifier == KEYWORD && (strcmp(tv, "int") == 0 || strcmp(tv, "float") == 0 || strcmp(tv, "bool") == 0)){
         if (checkTokenAt(toks, 3).identifier == INT || checkTokenAt(toks, 3).identifier == FLOAT || (checkTokenAt(toks, 3).identifier == MINUS && (checkTokenAt(toks, 4).identifier == INT || checkTokenAt(toks, 4).identifier == FLOAT))){
             createNodeBool = 1;

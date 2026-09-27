@@ -9,7 +9,7 @@ def b(int : d)::int
     return d + 1
 end
 
-a()
+int test = a()
 
 >> Add this last! Make return work actually
 >>int c = a():b():out()
