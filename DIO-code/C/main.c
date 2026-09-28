@@ -52,7 +52,7 @@ void initLowLevelFuncs(){
 int main(int argc, char **argv){
     //BUILD INPUTS!!
 
-    int fileArgIndex = registerArg(STRINGPUT, "file", 1, "", ' ');
+    int fileArgIndex = registerArg(STRINGPUT, "file", 0, "", ' ');
     int debugModeIndex = registerArg(BOOLEAN, "debug", 0, "true", ' '); //this switches to true, even though it's named default value??
 
     //CHECK INPUTS!
@@ -64,10 +64,37 @@ int main(int argc, char **argv){
 
     //get file
     char* filePath = getvalueByIndex(fileArgIndex);
+
+    if (strcmp(filePath, "") == 0){
+
+        //TODO: fix???
+        //This BAREALY works, can ruin one command, like "for (int a = 0; a < 10; a = a + 1); out(a); end", doesn't throw out errors 
+
+        initLowLevelFuncs();
+        dynamicToken toks = {0,0,0};
+        toks = lex(getSTD(), "STDlib.dio", toks);
+        while (1){
+            char *buffer = NULL;
+            size_t buff = 0;
+            ssize_t charactersRead;
+
+            printf("DIO REPL>> ");
+            charactersRead = getline(&buffer, &buff, stdin);
+
+            if (charactersRead != -1) {
+                parse(buildAst(lex(buffer, "REPL.dio", toks)));
+            }
+            else {
+                raiseErrorMacro(createPosition(&(int){0}, &(int){0}, &(int){1}, filePath), "Input could not be read for some reason.");
+            }
+        }
+
+        return 0;
+    }
+
     if (checkIfValidFileEnd(filePath) == 0){
         raiseErrorMacro(createPosition(&(int){0}, &(int){0}, &(int){1}, filePath), "File does not end with one of valid file extensions");
     }
-    
 
     if (filePath != NULL && strlen(filePath) > 0){
         ENTRY_POINT_FILE = getvalueByIndex(fileArgIndex);

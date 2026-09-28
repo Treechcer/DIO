@@ -85,12 +85,16 @@ try:
     with open(os.path.abspath(os.path.join("scripts", "CompileRunParams.txt")), "r") as f:
         executablePath = os.path.abspath(filename)
         #normalises slashes to whatever the OS uses, or should at least lol
-        fName = f.read().split("-f ")[1].replace("/", slash).replace("\\", slash)
+        try:
+            fName = f.read().split("-f ")[1].replace("/", slash).replace("\\", slash)
+            fName = f"-f {os.path.basename(fName)}"
+        except:
+            fName = ""
         os.chdir(os.path.abspath(os.path.dirname(fName)))
         if arguments["debug"]:
-            subprocess.run(f'gdb -ex run -ex bt --args {executablePath} -f {os.path.basename(fName)}', shell=True)
+            subprocess.run(f'gdb -ex run -ex bt --args {executablePath} {os.path.basename(fName)}', shell=True)
         else:
-            subprocess.run(f"{executablePath} -f {os.path.basename(fName)}", shell=True)
+            subprocess.run(f"{executablePath} {fName}", shell=True)
 except Exception as e:
     print(e)
     print("failed :(")
