@@ -74,18 +74,15 @@ int main(int argc, char **argv){
         dynamicToken toks = {0,0,0};
         toks = lex(getSTD(), "STDlib.dio", toks);
         while (1){
-            char *buffer = NULL;
-            size_t buff = 0;
-            ssize_t charactersRead;
+            char buffer[4096];
 
             printf("DIO REPL>> ");
-            charactersRead = getline(&buffer, &buff, stdin);
 
-            if (charactersRead != -1) {
+            if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
                 parse(buildAst(lex(buffer, "REPL.dio", toks)));
             }
             else {
-                raiseErrorMacro(createPosition(&(int){0}, &(int){0}, &(int){1}, filePath), "Input could not be read for some reason.");
+                raiseErrorMacro(createPosition(&(int){0}, &(int){0}, &(int){1}, filePath), "Input could not be read for some reason. Maybe too long?");
             }
         }
 
