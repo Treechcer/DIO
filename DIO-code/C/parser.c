@@ -22,7 +22,7 @@ dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
 dynamicFunc g_funcs = {0,0,0};
 int g_skipelse = 0;
-programState program = {0};
+programState program = {0,0,0};
 
 int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes action){
     if ((action == INTSUM || action == SUB || action == MULT || action == DIVI) &&  (var1 == INTVAR || var1 == FLOATVAR) && (var2 == INTVAR || var2 == FLOATVAR)){
@@ -909,6 +909,7 @@ void parse(Node* ast){
     //TODO: this might be problem? g_gotos will have duplicit values if codeblock?
     g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
+        program.nodePos = i;
         Node* node = ast->data.programNode->nodes.items[i];
         //printf("nodeType: %li\n", node->type);
         if (node->type == GOTONODE){

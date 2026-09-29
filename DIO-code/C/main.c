@@ -18,6 +18,7 @@
 #include"../Headers/helper_functions.h"
 #include"../Headers/errorsNew.h"
 #include"../Headers/globals.h"
+#include"../Headers/repl.h"
 
 Node* createInput(char* name, variableTypes type){
     Node* input = createNode();
@@ -66,26 +67,7 @@ int main(int argc, char **argv){
     char* filePath = getvalueByIndex(fileArgIndex);
 
     if (strcmp(filePath, "") == 0){
-
-        //TODO: fix???
-        //This BAREALY works, can ruin one command, like "for (int a = 0; a < 10; a = a + 1); out(a); end", doesn't throw out errors 
-
-        initLowLevelFuncs();
-        dynamicToken toks = {0,0,0};
-        toks = lex(getSTD(), "STDlib.dio", toks);
-        while (1){
-            char buffer[4096];
-
-            printf("DIO REPL>> ");
-
-            if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
-                parse(buildAst(lex(buffer, "REPL.dio", toks)));
-            }
-            else {
-                raiseErrorMacro(createPosition(&(int){0}, &(int){0}, &(int){1}, filePath), "Input could not be read for some reason. Maybe too long?");
-            }
-        }
-
+        repl(filePath);
         return 0;
     }
 

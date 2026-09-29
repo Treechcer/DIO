@@ -74,10 +74,12 @@ typedef struct {
 typedef struct programState{
     int isInFunc;
     binOpResult* funcReturn; //parse is void, I don't know if I can change it's type to something?
+    int nodePos;
 } programState;
 
 void parse(Node* ast);
 void createLowLevelFunc(char* name, dynamicNode inputs);
+void initLowLevelFuncs(void);
 
 STRUCT_DYNAMIC_ARR_MACRO(varStruct, dynamicVar)
 STRUCT_DYNAMIC_ARR_MACRO(funcStruct, dynamicFunc)

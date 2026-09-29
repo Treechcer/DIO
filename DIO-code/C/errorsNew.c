@@ -45,6 +45,10 @@ char* scanForFileName(const char* filePath){
 }
 
 char* getLine(Position pos){
+    if (strcmp(pos.file, "REPL.dio") == 0){
+        return "";
+    }
+
     fileReadReturn fileData = readFile(pos.file);
     if (!fileData.exists || pos.line == NULL){
         char* emptyLine = malloc(1);

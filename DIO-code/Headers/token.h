@@ -9,6 +9,7 @@ typedef struct {
 } Position;
 
 #include "../Headers/macros.h"
+#include <stddef.h>
 
 typedef enum {
     PLUS = 1,
