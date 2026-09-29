@@ -50,6 +50,7 @@ typedef struct {
     char* name;
     Node* codeBlock;
     dynamicNode inputs;
+    variableTypes returnType;
 } funcStruct;
 
 typedef struct {

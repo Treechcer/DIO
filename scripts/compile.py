@@ -87,12 +87,12 @@ try:
         #normalises slashes to whatever the OS uses, or should at least lol
         try:
             fName = f.read().split("-f ")[1].replace("/", slash).replace("\\", slash)
-            fName = f"-f {os.path.basename(fName)}"
+            fName = f"-f {fName}"
         except:
             fName = ""
-        os.chdir(os.path.abspath(os.path.dirname(fName)))
+        #os.chdir(os.path.abspath(os.path.dirname(fName)))
         if arguments["debug"]:
-            subprocess.run(f'gdb -ex run -ex bt --args {executablePath} {os.path.basename(fName)}', shell=True)
+            subprocess.run(f'gdb -ex run -ex bt --args {executablePath} {fName}', shell=True)
         else:
             subprocess.run(f"{executablePath} {fName}", shell=True)
 except Exception as e:

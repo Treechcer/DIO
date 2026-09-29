@@ -106,7 +106,20 @@ void callFunctionByName(char* name){
     program.isInFunc = 1;
     for(int i = 0; i < g_funcs.count; i++){
         if (strcmp(name, g_funcs.items[i].name) == 0){
+            program.funcReturn = NULL;
             parse(g_funcs.items[i].codeBlock);
+
+            //TODO: add proper error, where should I get the pos? add pos maybe for codeblock?
+
+            if (program.funcReturn == NULL && g_funcs.items[i].returnType != UNKNOWNVARTYPE){
+                printf("Function '%s' should've returned something but didn't\n", name);
+                exit(1);
+            }
+            else if (program.funcReturn != NULL && g_funcs.items[i].returnType == UNKNOWNVARTYPE){
+                printf("Function '%s' returned something but shouldn't have\n", name);
+                exit(1);
+            }
+
             break;
         }
     }
@@ -623,7 +636,7 @@ void parseFunction(Node* node){
         DYN_PUSH(node->data.function->inputs.items[i], input);
     }
 
-    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = 1, .codeBlock = node->data.function->codeBlock, .isLowLevel = 0, .inputs = input};
+    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = 1, .codeBlock = node->data.function->codeBlock, .isLowLevel = 0, .inputs = input, .returnType = node->data.function->returnType};
     DYN_PUSH(tempFunc, g_funcs);
 }
 
@@ -817,7 +830,7 @@ void parseFunctionCall_(Node* node){
     }
 
     for (size_t i = 0; i < l_vars.count; i++){
-        //This does soemthign like local vars (not really) and "flushes" the value
+        //This does something like local vars (not really) and "flushes" the value
         int _inx = getVarIndexByName(l_vars.items[i].name);
         g_vars.items[_inx] = l_vars.items[i];
     }
@@ -826,6 +839,13 @@ void parseFunctionCall_(Node* node){
 
     if (node->data.functionCall->nextCall != NULL){
         int inx__ = getFuncIndexByName(node->data.functionCall->nextCall->data.functionCall->name);
+
+        variableTypes funcRetType = g_funcs.items[inx__].returnType;
+
+        if (funcRetType == UNKNOWNVARTYPE){
+            raiseErrorMacro(*node->pos, "Void can't return anything, variable can't be equal to nothing.");
+        }
+
         if (g_funcs.items[inx__].inputs.count > 0){
             if (program.funcReturn->varType == FLOATVAR){
                 if (node->data.functionCall->nextCall->data.functionCall->inputs.count == 0){

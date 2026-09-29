@@ -6,7 +6,9 @@ def b(int : d)::int
     return d + 1
 end
 
+
 >>Should this work? Out == void, so at one hand no, but at the other b() reurns something.... I'll think about it
 
+>>UPDATE: 29.9.2026: this doesn't work because of how different low level funcs are to language-level funcs, I have to somehow change that... not sure on how rn though
+
 int test = a():b():out()
-out(test)
