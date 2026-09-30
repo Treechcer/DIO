@@ -79,7 +79,7 @@ typedef struct programState{
 } programState;
 
 void parse(Node* ast);
-void createLowLevelFunc(char* name, dynamicNode inputs);
+void createLowLevelFunc(char* name, dynamicNode inputs, variableTypes returnType);
 void initLowLevelFuncs(void);
 
 STRUCT_DYNAMIC_ARR_MACRO(varStruct, dynamicVar)

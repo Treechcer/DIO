@@ -42,8 +42,8 @@ int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes a
     return 0;
 }
 
-void createLowLevelFunc(char* name, dynamicNode inputs){
-    funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .isLowLevel = 1};
+void createLowLevelFunc(char* name, dynamicNode inputs, variableTypes returnType){
+    funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .isLowLevel = 1, .returnType = returnType};
     tempFunc.inputs = inputs;
     DYN_PUSH(tempFunc, g_funcs);
 }
@@ -89,6 +89,15 @@ void callLowLevelFunc(int index, Node* node){
     else if (strcmp(name, "error") == 0){
         int varIndex = getVarIndexByName("a");
         raiseErrorMacro(*node->pos, g_vars.items[varIndex].data.arrayVar.value.stringValue);
+    }
+
+    if (program.funcReturn == NULL && g_funcs.items[index].returnType != UNKNOWNVARTYPE){
+        printf("Function '%s' should've returned something but didn't\n", name);
+        exit(1);
+    }
+    else if (program.funcReturn != NULL && g_funcs.items[index].returnType == UNKNOWNVARTYPE){
+        printf("Function '%s' returned something but shouldn't have\n", name);
+        exit(1);
     }
 }
 
