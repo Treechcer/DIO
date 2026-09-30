@@ -203,7 +203,7 @@ Node* createNumArray(dynamicToken* toks, Position pos){
     ret->data.numberArrayNode = malloc(sizeof(numberArrayNode));
     ret->data.numberArrayNode->value = values;
     ret->data.numberArrayNode->length = arrSize;
-    ret->data.numberArrayNode->acessIndex = parseArrayAcessNode(toks); 
+    //ret->data.numberArrayNode->acessIndex = parseArrayAcessNode(toks); 
 
     return ret;
 }

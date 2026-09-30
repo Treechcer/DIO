@@ -119,13 +119,13 @@ typedef struct maybeNode{
 typedef struct stringNode {
     char* value;
     int length;
-    int acessIndex;
+    //int acessIndex;
 } stringNode;
 
 typedef struct numberArrayNode {
     double* value;
     int length;
-    int acessIndex;
+    //int acessIndex;
 } numberArrayNode;
 
 typedef struct arrayAcessNode {
