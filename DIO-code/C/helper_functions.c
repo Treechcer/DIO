@@ -14,7 +14,7 @@ long int convertToLongInt(char* value){
 }
 
 int convertToInt(char* value){
-    return atol(value);
+    return atoi(value);
 }
 
 float convertToFloat(char* value){
