@@ -1,0 +1,8 @@
+{
+    "version" : "0.1.0",
+    "projetName" : "Dio",
+    "releaser" : "Treechcer",
+    "releaserEmail" : "treechcer@gmail.com",
+    "description" : "Small programming language made in C with no dependencies outside of base OS libraries.",
+    "releasePlatfrom" : "x86-64"
+}
