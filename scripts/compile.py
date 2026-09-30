@@ -6,20 +6,20 @@ import json
 import shutil
 
 def buildDebianPackage(releaseData):
-    folderPath = f"releases/{releaseData.get('projetName')}_{releaseData.get('version')}"
+    folderPath = f"releases/{releaseData.get('projectName')}_{releaseData.get('version')}"
     os.makedirs(os.path.join(folderPath, "usr", "local", "bin"), exist_ok=True)
     os.makedirs(os.path.join(folderPath, "DEBIAN"), exist_ok=True)
     os.chmod(os.path.join(folderPath, "DEBIAN"), 0o755)
 
-    if platform.system() == "Windows":
-        shutil.copyfile("dio.exe", os.path.join(folderPath, "usr", "local", "bin", "dio.exe"))
-        os.chmod(os.path.join(folderPath, "usr", "local", "bin", "dio.exe"), 0o755)
-    else:
-        shutil.copyfile("dio", os.path.join(folderPath, "usr", "local", "bin", "dio"))
-        os.chmod(os.path.join(folderPath, "usr", "local", "bin", "dio"), 0o755)
+    #if platform.system() == "Windows":
+    #    shutil.copyfile("dio.exe", os.path.join(folderPath, "usr", "local", "bin", "dio.exe"))
+    #    os.chmod(os.path.join(folderPath, "usr", "local", "bin", "dio.exe"), 0o755)
+    #else:
+    shutil.copyfile("dio", os.path.join(folderPath, "usr", "local", "bin", "dio"))
+    os.chmod(os.path.join(folderPath, "usr", "local", "bin", "dio"), 0o755)
 
     with open(os.path.join(folderPath, "DEBIAN", "control"), "w") as f:
-        f.write(f"""Package: {releaseData.get('projetName')}
+        f.write(f"""Package: {releaseData.get('projectName')}
 Version: {releaseData.get('version')}
 Section: base
 Priority: optional
@@ -34,6 +34,14 @@ Description: {releaseData.get('description')}
 
     shutil.rmtree(folderPath)
 
+def windowsBuild(releaseData):
+    name = str(releaseData.get('defaultName')).replace("$platform", platform.system()).replace("$projectName", releaseData.get('projectName')).replace("$releasePlatfrom", releaseData.get('releasePlatfrom')) + ".exe"
+    linkBuilder = str(releaseData.get('windowsDownloadLink')).replace("$version", releaseData.get('version')).replace("$projectName", releaseData.get('projectName'))
+    #print(linkBuilder)
+    shutil.copyfile("dio", os.path.join("releases", name))
+
+    #generate / update YAML logic incomming here...
+    
 def makeRelease():
     releaseData = {}
 
@@ -43,8 +51,20 @@ def makeRelease():
     folderPath = "releases"
     if not os.path.exists(folderPath):
         os.makedirs(folderPath)
-
-    buildDebianPackage(releaseData)
+    if platform.system() == "Windows":
+        windowsBuild(releaseData)
+    elif platform.system() == "Linux":
+        buildDebianPackage(releaseData)
+    elif platform.system() == "Android":
+        pass
+    elif platform.system() == "FreeBSD":
+        pass
+    elif platform.system() == "Darwin":
+        pass
+    elif platform.system() == "iOS":
+        pass
+    else:
+        print(f"Platform '{platform.system()}' is not planned to be supported, write your supported build or contact developers.")
 
 
 def makeSTDlib():

@@ -1,8 +1,10 @@
 {
     "version" : "0.1.0",
-    "projetName" : "Dio",
+    "projectName" : "Dio",
     "releaser" : "Treechcer",
     "releaserEmail" : "treechcer@gmail.com",
     "description" : "Small programming language made in C with no dependencies outside of base OS libraries.",
-    "releasePlatfrom" : "x86-64"
+    "releasePlatfrom" : "x86-64",
+    "windowsDownloadLink" : "https://github.com/Treechcer/DIO/releases/download/$version/Windows_$projectName_x86-64.exe",
+    "defaultName" : "$platform_$projectName_$releasePlatfrom"
 }
