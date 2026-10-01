@@ -1,0 +1,14 @@
+def a()::int
+    return 7
+end
+
+def b(int : a)::void
+    out(a)
+end
+
+def c(int : a)::int
+    return a + 1
+end
+
+int retVal = a():c()
+b(retVal)

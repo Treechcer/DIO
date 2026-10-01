@@ -4,7 +4,29 @@ This is test of making a programming language in C with the least amount of help
 
 >NOTE: this is my first C code. I only used C++ (as the most SIMILAR language to C).
 
+## OS compatibility
+
+|OS|Status (tested)|Runs as should|
+|-|-|-|
+|Windows|✅|Yes|
+|Linux|✅|Yes|
+|Android|✅|Yes|
+|FreeBSD|❌|-|
+|iOS|❌|-|
+|Mac (Intel)|✅|Yes|
+|Mac (Apple silicone)|❌|-|
+
+> OS that were not tested will either be tested, for version 1.0.0 I want to test as many OS and hardware as possible.
+
 ## Compiling and Running
+
+### Stable version
+
+Any code that's not in release is not meant as stable version, the main branch is more so development. Please for any project use any version from release.
+
+> Note: currently there are no releases
+
+### Compiling
 
 To compile it run in the root of this repository command:
 
@@ -30,14 +52,17 @@ DIO supports three file extensions:
 - .diogenes
 - .diogenesdesinope
 
+Everything else should raise error.
+
 ### Variable types
 
 - [x] int - basic number type, it's internally used as float
 - [x] float - basic number type, can be used with +, -, *, /, <, >, <=, >=, ==
 - [x] string - basic text (can only be used as output and be concatenated with "+")
 - [x] bool - basic booleans
+- [x] number arrays - part of int 
 
->> NOTE: booleans internally are used as integers/floats, meaning the constrains for valid bools are checked while creating the variable not while using it. You can make boolean equal non boolean values AFTER you initialize it.
+> NOTE: booleans internally are used as integers/floats, meaning the constrains for valid bools are checked while creating the variable not while using it. You can make boolean equal non boolean values AFTER you initialize it.
 
 ### Comments
 
@@ -49,7 +74,7 @@ Dio uses `>>` as the symbol for single-line comments. Comments end when lexer ei
 
 Dio uses construction of `>*` (start) and `*<` (end) as multi-line comment. These comments end either when the file ends or when it finds the end symbol.
 
->> Note: if you only ues `>*` everything afterwards will be taken af part of the comment.
+> Note: if you only ues `>*` everything afterwards will be taken af part of the comment.
 
 ### Variables
 
@@ -59,22 +84,23 @@ int a = 10;
 
 >>use
 int b = a + 1;
+
+>>arrays
+int arr = {1,2,3.5,7}
 ```
 
 #### Booleans
 
-All normal booleans (true, false) are here, represented by either the word "true" or "false" (this is changed in lexer to 1 and 0 respectively). Dio also has special boolean, maybe, which is either 1 or 0.
-
-> NOTE: in loops for some reason it never generates a new number making the loop behave same???
+All normal booleans (true, false) are here, represented by either the word "true" or "false" (this is changed in lexer to 1 and 0 respectively). Dio also has special boolean, maybe, which is either 1 or 0 (determined in the parser).
 
 ### Functions
 
 ```py
-def name()
+def name()::void
     >>code
 end
 
-def withParams(type : name, type2 : name2 ...)
+def withParams(type : name, type2 : name2 ...)::void
     >>they can have any amount of inputs
 end
 
@@ -84,6 +110,31 @@ withParams(a, 10) >> example, use variable and 10
 
 >>NOTE: var types are now not fully used, so function can be parsed any argument 
 ```
+
+> Functions can be declared without the "::void" but they can't return anything
+
+```py
+>>Showing params and how chain functions
+
+def a()::int
+    return 7
+end
+
+def b(int : a)::void
+    out(a)
+end
+
+def c(int : a)::int
+    return a + 1
+end
+
+int retVal = a():c()
+b(retVal)
+
+>>Writes out 7, because chain functions pair together so "a" returns 7 which then "c" adds 1 making it 8
+```
+
+>Note: functions used in chain can't have more than one input for now, this will feature will be added
 
 ### Control Flow
 
@@ -122,7 +173,6 @@ elseif (condition)
 else
 >>code
 end
-
 ```
 
 #### Goto
@@ -170,11 +220,21 @@ Middle processor is kind of middle ware used to add code or change how lexing wo
 - Takes argument of file.
 - Adds the file into the program you're making, this is used to import to other file for multi-file support.
 
-## ISSUES (right now)
+#### def and use
 
-- TODO: TEST so I can update this
+- `#def *name*: *valid dio code*` this makes macro which can be used with command `#use *name`
 
-## NEXT
+#### specific OS code
 
-- loading files (essentially same as I use STD by dynamically in lexer, add like file identifiers, something like "#FILE:NAME" to correctly add file in or start a new lex and add everything to it, whatever is easier)
-- Make variable types work differently and check them + make like "any" as parameter for functions or add overloading (either wold work)
+- Using `#WIN *valid dio code*` will make this piece of code run only and only on windows
+- Using `#LINUX *valid dio code*` will make this piece of code run only and only on linux
+- Using `#MAC *valid dio code*` will make this piece of code run only and only on mac OS
+- Using `#FREEBSD *valid dio code*` will make this piece of code run only and only on freeBSD
+
+> Note: although OS like Android are supported, it's not yet possible to make code specific for android
+
+#### Pragma
+
+##### Once
+
+- declaring "#pragma once" at the start of the programme it'll make it so it can be loaded only once
