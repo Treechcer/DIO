@@ -299,7 +299,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
 
                         toks = lex(g_macros.items[index].text, fileName, toks);
                     }
-                    else if (strcmp(action.items, "WIN") == 0 || strcmp(action.items, "LINUX") == 0 || strcmp(action.items, "MAC") == 0 || strcmp(action.items, "FREEBSD") == 0){
+                    else if (strcmp(action.items, "WIN") == 0 || strcmp(action.items, "LINUX") == 0 || strcmp(action.items, "MAC") == 0 || strcmp(action.items, "FREEBSD") == 0 || strcmp(action.items, "ANDROID") == 0){
                         int canRun = 0;
                         #if defined(_WIN32)
                             canRun = strcmp(action.items, "WIN") == 0;
@@ -309,6 +309,8 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                             canRun = strcmp(action.items, "MAC") == 0;
                         #elif defined(__FreeBSD__)
                             canRun = strcmp(action.items, "FREEBSD") == 0;
+                        #elif defined(__ANDROID__)
+                            canRun = strcmp(action.items, "ANDROID") == 0;
                         #endif
 
                         if (canRun) {

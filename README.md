@@ -6,15 +6,15 @@ This is test of making a programming language in C with the least amount of help
 
 ## OS compatibility
 
-|OS|Status (tested)|Runs as should|
-|-|-|-|
-|Windows|✅|Yes|
-|Linux|✅|Yes|
-|Android|✅|Yes|
-|FreeBSD|❌|-|
-|iOS|❌|-|
-|Mac (Intel)|✅|Yes|
-|Mac (Apple silicone)|❌|-|
+|OS|Status (tested)|Runs as should|notes|
+|-|-|-|-|
+|Windows|✅|Yes||
+|Linux|✅|Yes||
+|Android|✅|Yes|Termux needs to be used|
+|FreeBSD|❌|-||
+|iOS|❌|-|iSH terminal or similar terminal needs to be used|
+|Mac (Intel)|✅|Yes||
+|Mac (Apple silicone)|❌|-||
 
 > OS that were not tested will either be tested, for version 1.0.0 I want to test as many OS and hardware as possible.
 
@@ -60,7 +60,7 @@ Everything else should raise error.
 - [x] float - basic number type, can be used with +, -, *, /, <, >, <=, >=, ==
 - [x] string - basic text (can only be used as output and be concatenated with "+")
 - [x] bool - basic booleans
-- [x] number arrays - part of int 
+- [x] number arrays - part of int
 
 > NOTE: booleans internally are used as integers/floats, meaning the constrains for valid bools are checked while creating the variable not while using it. You can make boolean equal non boolean values AFTER you initialize it.
 
@@ -230,6 +230,7 @@ Middle processor is kind of middle ware used to add code or change how lexing wo
 - Using `#LINUX *valid dio code*` will make this piece of code run only and only on linux
 - Using `#MAC *valid dio code*` will make this piece of code run only and only on mac OS
 - Using `#FREEBSD *valid dio code*` will make this piece of code run only and only on freeBSD
+- Using `#ANDROID *valid dio code*` will make this piece of code run only and only on Android
 
 > Note: although OS like Android are supported, it's not yet possible to make code specific for android
 
