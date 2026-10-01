@@ -38,10 +38,17 @@ def windowsBuild(releaseData):
     name = str(releaseData.get('defaultName')).replace("$platform", platform.system()).replace("$projectName", releaseData.get('projectName')).replace("$releasePlatfrom", releaseData.get('releasePlatfrom')) + ".exe"
     linkBuilder = str(releaseData.get('windowsDownloadLink')).replace("$version", releaseData.get('version')).replace("$projectName", releaseData.get('projectName'))
     #print(linkBuilder)
-    shutil.copyfile("dio", os.path.join("releases", name))
+    shutil.copyfile("dio.exe", os.path.join("releases", name))
 
     #generate / update YAML logic incomming here...
-    
+
+def generateExecutableForRelease(releaseData):
+    #Builds general executable file for specific OS that's it's executed on!
+    defaultFile = "dio.exe" if platform.system() == "Windows" else "dio"
+    name = name = str(releaseData.get('defaultName')).replace("$platform", platform.system()).replace("$projectName", releaseData.get('projectName')).replace("$releasePlatfrom", releaseData.get('releasePlatfrom'))
+    name = name + ".exe" if platform.system() == "Windows" else name
+    shutil.copyfile(defaultFile, os.path.join("releases", name))
+
 def makeRelease():
     releaseData = {}
 
@@ -49,8 +56,10 @@ def makeRelease():
         releaseData = json.loads(f.read())
 
     folderPath = "releases"
-    if not os.path.exists(folderPath):
-        os.makedirs(folderPath)
+    os.makedirs(folderPath, exist_ok=True)
+
+    generateExecutableForRelease(releaseData)
+
     if platform.system() == "Windows":
         windowsBuild(releaseData)
     elif platform.system() == "Linux":
