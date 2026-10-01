@@ -19,6 +19,7 @@
 #include"../Headers/errorsNew.h"
 #include"../Headers/globals.h"
 #include"../Headers/repl.h"
+#include"../Headers/appInfo.h"
 
 Node* createInput(char* name, variableTypes type){
     Node* input = createNode();
@@ -51,10 +52,11 @@ void initLowLevelFuncs(){
 }
 
 int main(int argc, char **argv){
+    initAppInfo();
     //BUILD INPUTS!!
 
     int fileArgIndex = registerArg(STRINGPUT, "file", 0, "", ' ');
-    int debugModeIndex = registerArg(BOOLEAN, "debug", 0, "true", ' '); //this switches to true, even though it's named default value??
+    int debugModeIndex = registerArg(BOOLEAN, "debug", 0, "false", ' '); //this switches to true, even though it's named default value??
 
     //CHECK INPUTS!
     checkInuts(argc, argv);
@@ -69,6 +71,10 @@ int main(int argc, char **argv){
     if (strcmp(filePath, "") == 0){
         repl(filePath);
         return 0;
+    }
+
+    if (strcmp(getvalueByIndex(debugModeIndex), "true") == 0){
+        getAppInfoOut();
     }
 
     if (checkIfValidFileEnd(filePath) == 0){

@@ -66,6 +66,7 @@ int getKeyWord(char* possibleKeyWord);
 int isBool(char* word);
 char* strToBoolStr(char* str);
 int isMaybe(char* word);
+char* switcherooBool(char* str);
 
 STRUCT_DYNAMIC_ARR_MACRO(Macro, dynamicMacro);
 STRUCT_DYNAMIC_ARR_MACRO(FileImport, dynamicFileImport);

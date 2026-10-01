@@ -53,7 +53,7 @@ void checkInuts(int argc, char **argv){
                 g_args.items[i].found = 1;
 
                 if (g_args.items[i].type == BOOLEAN){
-                    g_args.items[i].value = strToBoolStr(g_args.items[i].value);
+                    g_args.items[i].value = switcherooBool(g_args.items[i].value);
                 }
                 else if (g_args.items[i].type == STRINGPUT) {
                     g_args.items[i].value = argv[j+1];

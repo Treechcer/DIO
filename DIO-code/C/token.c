@@ -45,3 +45,10 @@ char* strToBoolStr(char* str){//this returns 1 if input string is true
     }
     return "0";
 }
+
+char* switcherooBool(char* str){
+    if (strcmp(str, "true") == 0) {
+        return "false";
+    }
+    return "true";
+}

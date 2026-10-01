@@ -64,7 +64,7 @@ This parametre tells dio which file to use.
 
 #### -d / --debug
 
-This isn't used right now, will be used later to show tokens written out and another stuff.
+This is now only used for writing out some values for this software (like version etc.).
 
 ### Variable types
 
