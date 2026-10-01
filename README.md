@@ -54,6 +54,18 @@ DIO supports three file extensions:
 
 Everything else should raise error.
 
+### launch Params
+
+#### -f / --file
+
+This parametre tells dio which file to use.
+
+> If this parametre isn't technically needed, it'll open "REPL" mode, which isn't finished, so it doesn't fully works, please don't use it, it's not finished.
+
+#### -d / --debug
+
+This isn't used right now, will be used later to show tokens written out and another stuff.
+
 ### Variable types
 
 - [x] int - basic number type, it's internally used as float
