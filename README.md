@@ -11,7 +11,7 @@ This is test of making a programming language in C with the least amount of help
 |Windows|✅|Yes||
 |Linux|✅|Yes||
 |Android|✅|Yes|Termux needs to be used|
-|FreeBSD|❌|-||
+|FreeBSD|✅|-|Compiled, other than that, not tested yet|
 |iOS|❌|-|iSH terminal or similar terminal needs to be used|
 |Mac (Intel)|✅|Yes||
 |Mac (Apple silicone)|❌|-||
