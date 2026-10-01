@@ -1,8 +1,9 @@
 #include <stdio.h>
 
 #include "../Headers/appInfo.h"
+#include "../Headers/macros.h"
 
-appInfo app = {.appName = "dio", .version = "0.1.0", .platform = "UNKNOWN"};
+appInfo app = {.appName = "dio", .version = VERSION, .platform = "UNKNOWN", .buildType = BUILDTYPE};
 
 void initAppInfo(){
     #if defined(_WIN32)
@@ -15,11 +16,11 @@ void initAppInfo(){
         app.platform = "FREEBSD";
     #elif defined(__ANDROID__)
         app.platform = "ANDROID";
-    #endif 
+    #endif
 }
 
 void getAppInfoOut(){
     printf("---------------------------\n");
-    printf("Software: '%s' ver.: %s\nplatform: %s\n", app.appName, app.version, app.platform);
+    printf("Software: '%s' ver.: %s\nplatform: %s\nbuild type: %s\n", app.appName, app.version, app.platform, app.buildType);
     printf("---------------------------\n");
 }

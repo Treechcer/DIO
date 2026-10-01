@@ -5,6 +5,7 @@ typedef struct appInfo{
     char* version;
     char* platform;
     char* appName;
+    char* buildType;
 }appInfo;
 
 void initAppInfo();

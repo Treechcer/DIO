@@ -154,7 +154,13 @@ try:
         slash = "\\"
     
     #subprocess.run("gcc -g -Wall -Wextra " + getFiles() + f" -o {filename}", shell=True, check=True)
-    subprocess.run("gcc -g " + getFiles() + f" -o ..{slash}{filename}", shell=True, check=True)
+
+    macros = ""
+
+    if arguments["release"]:
+        macros += ' -DBUILDTYPE=\\"release\\"'
+
+    subprocess.run("gcc -g " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
     os.chdir("..")
     with open(os.path.abspath(os.path.join("scripts", "data", "CompileRunParams.txt")), "r") as f:
         executablePath = os.path.abspath(filename)

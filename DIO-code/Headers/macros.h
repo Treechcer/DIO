@@ -55,4 +55,11 @@ if (index < arr.count) {\
 #define ANSI_COLOR_CYAN "\x1b[36m"
 #define ANSI_COLOR_RESET "\x1b[0m"
 
+#ifndef VERSION
+    #define VERSION "0.1.0"
+#endif
+#ifndef BUILDTYPE
+    #define BUILDTYPE "built from source"
+#endif
+
 #endif
