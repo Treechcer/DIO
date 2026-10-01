@@ -1,0 +1,9 @@
+def a()::int
+    return 1
+end
+
+def b()::void
+    out("....")
+end
+
+int u = b():a()
