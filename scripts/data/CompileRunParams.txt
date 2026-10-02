@@ -1,1 +1,1 @@
--f examples\ex42.dio -d
+-f examples\ex22.dio

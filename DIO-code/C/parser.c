@@ -49,6 +49,7 @@ void createLowLevelFunc(char* name, dynamicNode inputs, variableTypes returnType
 }
 
 void callLowLevelFunc(int index, Node* node){
+    program.funcReturn = NULL;
     char* name = g_funcs.items[index].name;
     if (strcmp(name, "out") == 0){
         int varIndex = getVarIndexByName("a");
@@ -89,6 +90,18 @@ void callLowLevelFunc(int index, Node* node){
     else if (strcmp(name, "error") == 0){
         int varIndex = getVarIndexByName("a");
         raiseErrorMacro(*node->pos, g_vars.items[varIndex].data.arrayVar.value.stringValue);
+    }
+    else if (strcmp(name, "length") == 0){
+        int varIndex = getVarIndexByName("a");
+        if (g_vars.items[varIndex].typedVar == NUMBERARRAY || g_vars.items[varIndex].typedVar == STRINGVAR){
+            program.funcReturn = malloc(sizeof(binOpResult*));
+            program.funcReturn->value.intVal = g_vars.items[varIndex].data.arrayVar.length;
+            program.funcReturn->varType = INTVAR;
+        }
+        else {
+            raiseErrorMacro(*node->pos, "Incompatible type for 'length' as an argument");
+        }
+        
     }
 
     if (program.funcReturn == NULL && g_funcs.items[index].returnType != UNKNOWNVARTYPE){

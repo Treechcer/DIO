@@ -1,0 +1,5 @@
+int a = {1,0,2,0}
+
+int len = length(a)
+
+out(len)

@@ -49,6 +49,10 @@ void initLowLevelFuncs(){
     inputs = (dynamicNode){0,0,0};
     DYN_PUSH(createInput("a", STRINGVAR), inputs);
     createLowLevelFunc("error", inputs, UNKNOWNVARTYPE);
+
+    inputs = (dynamicNode){0,0,0};
+    DYN_PUSH(createInput("a", UNKNOWNVARTYPE), inputs);
+    createLowLevelFunc("length", inputs, INTVAR);
 }
 
 int main(int argc, char **argv){
