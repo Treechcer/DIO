@@ -45,7 +45,7 @@ char* scanForFileName(const char* filePath){
 }
 
 char* getLine(Position pos){
-    if (strcmp(pos.file, "REPL.dio") == 0){
+    if (strcmp(pos.file, "REPL.dio") == 0 || strcmp(pos.file, "STDlib.dio") == 0){
         return "";
     }
 

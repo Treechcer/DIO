@@ -1,0 +1,9 @@
+def a(int : p)::void
+    out(p)
+end
+
+def b()::int
+    return 1
+end
+
+a(b())

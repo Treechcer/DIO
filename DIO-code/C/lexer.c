@@ -30,6 +30,27 @@ void writeToksOut(dynamicToken tok){
     printf("\n");
 }
 
+char moveByChar(const char** code, int* line, int* charPos, int d){
+    char c;
+    if (d == 1){
+        (*code)++;
+        (*charPos)++;
+    }
+    else if(d == -1){
+        (*code)--;
+        (*charPos)--;
+    }
+
+    c = **code;
+
+    if (c == '\n'){
+        (*line)++;
+        (*charPos) = 1;
+    }
+
+    return c;
+}
+
 dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
     //Token* toks;
     int indexFile = -1;
@@ -107,36 +128,31 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                 break;
             }
             case '<':
-                code++;
-                c = *code;
+                c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '='){
                     tok = createToken("<=", LESSOREQAUL, createPosition(&charPos_, &charPos_, &line, fileName));
                 }
                 else{
                     tok = createToken("<", LESSTHAN, createPosition(&charPos_, &charPos_, &line, fileName));
-                    code--;
+                    moveByChar(&code, &line, &charPos_, -1);
                 }
                 break;
             case '>':
-                code++;
-                c = *code;
+                c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '='){
                     tok = createToken(">=", MOREOREQUAL, createPosition(&charPos_, &charPos_, &line, fileName));
                 }
                 else if (c == '>') {
                     while (c != '\n' && c != '\r' && c != '\0' && strlen(code) > 0){
-                        code++;
-                        c = *code;
+                        c = moveByChar(&code, &line, &charPos_, 1);
                     }
                 }
                 else if (c == '*'){
                     while (c != '\0' && strlen(code) > 0){
                         char preC = c;
-                        code++;
-                        c = *code;
+                        c = moveByChar(&code, &line, &charPos_, 1);
                         if (c == '<' && preC == '*'){
-                            code++;
-                            c = *code;
+                            c = moveByChar(&code, &line, &charPos_, 1);
                             break;
                         }
                     }
@@ -147,24 +163,19 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                 }
                 break;
             case ':':
-                code++;
-                c = *code;
+                c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == ':'){
-                    code++;
-                    c = *code;
+                    c = moveByChar(&code, &line, &charPos_, 1);
                     char* str = "";
                     dynamicChar token = {0,0,0};
                     while(isAlpha(c)){
                         DYN_PUSH(c, token);
 
-                        code++;
-                        charPos_++;
-                        c = *code;
+                        c = moveByChar(&code, &line, &charPos_, 1);
                     }
                     DYN_PUSH('\0', token);
                     if (c == ':'){
-                        code++;
-                        c = *code;
+                        c = moveByChar(&code, &line, &charPos_, 1);
                         if (c == ':'){
                             tok = createToken(token.items, GOTONAME, createPosition(&charPos_, &charPos_, &line, fileName));
                         }
@@ -173,16 +184,13 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         }
                     }
                     else{
-                        code++;
-                        c = *code;
+                        c = moveByChar(&code, &line, &charPos_, 1);
                         tok = createToken(token.items, FUNCTIONRETURNTYPE, createPosition(&charPos_, &charPos_, &line, fileName));
                         break;
                         //raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unsuported character sequnce was found.");
                     }
                 }
                 else{
-                    code--;
-                    c = *code;
                     tok = createToken(":", COLON, createPosition(&charPos_, &charPos_, &line, fileName));
                     break;
                 }
@@ -190,8 +198,6 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
             case '\\':
             case '\n':
                 tok = createToken("", END, createPosition(&charPos_, &charPos_, &line, fileName));
-                line++;
-                charPos_ = 1;
                 break;
             case ';':
                 tok = createToken(";", END, createPosition(&charPos_, &charPos_, &line, fileName));
@@ -200,14 +206,13 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                 tok = createToken(";", END, createPosition(&charPos_, &charPos_, &line, fileName));
                 break;
             case '=':
-                code++;
-                c = *code;
+                c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '='){
                     tok = createToken("==", LEFTRIGHTEQUAL, createPosition(&charPos_, &charPos_, &line, fileName));
                 }
                 else{
                     tok = createToken("=", EQUALS, createPosition(&charPos_, &charPos_, &line, fileName));
-                    code--;
+                    moveByChar(&code, &line, &charPos_, -1);
                 }
                 break;
             case '\r':
@@ -224,32 +229,24 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                 skipSapces = !skipSapces;
                 break;
             case '#':
-                code++; //#
-                charPos_++;
-                c = *code;
+                c = moveByChar(&code, &line, &charPos_, 1); //#
                 
                 if (isAlpha(c)) {
                     dynamicChar action = {0,0,0};
                     while (isAlpha(c) && c != '\0') {
                         DYN_PUSH(c, action);
-                        code++;
-                        charPos_++;
-                        c = *code;
+                        c = moveByChar(&code, &line, &charPos_, 1);
                     }
                     DYN_PUSH('\0', action);
 
                     while ((c == ' ' || c == '\t') && c != '\0') {
-                        code++;
-                        charPos_++;
-                        c = *code;
+                        c = moveByChar(&code, &line, &charPos_, 1);
                     }
 
                     dynamicChar arg = {0,0,0};
                     while ((isAlpha(c) || c == '/' || c == '\\' || c == '.' || isDigit(c)) && c != '\0' || c == ' ') {
                         DYN_PUSH(c, arg);
-                        code++;
-                        charPos_++;
-                        c = *code;
+                        c = moveByChar(&code, &line, &charPos_, 1);
                     }
                     DYN_PUSH('\0', arg);
                     //printf("%s\n", arg.items);
@@ -262,14 +259,12 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         toks = lex(fileNext.content, arg.items, toks);
                     }
                     else if (strcmp(action.items, "def") == 0){
-                        code++;
-                        c = *code;
+                        c = moveByChar(&code, &line, &charPos_, 1);
                         dynamicChar text = {0,0,0};
 
                         while (c != '\n' && c != '\0') {
                             DYN_PUSH(c, text);
-                            code++;
-                            c = *code;
+                            c = moveByChar(&code, &line, &charPos_, 1);
                         }
                         DYN_PUSH('\0', text);
 
@@ -317,15 +312,13 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                             dynamicChar text = {0,0,0};
                             while (c != '\n' && c != '\0') {
                                 DYN_PUSH(c, text);
-                                code++;
-                                c = *code;
+                                c = moveByChar(&code, &line, &charPos_, 1);
                             }
                             toks = lex(text.items, fileName, toks);
                         }
                         else{
                             while (c != '\n' && c != '\0') {
-                                code++;
-                                c = *code;
+                                c = moveByChar(&code, &line, &charPos_, 1);
                             }
                         }
                     }
@@ -365,26 +358,21 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                             }
                             DYN_PUSH(c, token);
 
-                            code++;
-                            charPos_++;
-                            c = *code;
+                            c = moveByChar(&code, &line, &charPos_, 1);
                         }
 
                         DYN_PUSH('\0', token);
                         tok = createToken(token.items, isFloat ? FLOAT : INT, createPosition(&charPos_, &charPos_, &line, fileName));
 
-                        code--;
-                        charPos_--;
-                        c = *code;
+                        c = moveByChar(&code, &line, &charPos_, -1);
                     }
                     else if (isAlpha(c)){
                         dynamicChar token = {0,0,0};
                         while(isAlpha(c)){
                             DYN_PUSH(c, token);
 
-                            code++;
-                            charPos_++;
-                            c = *code;
+                            c = moveByChar(&code, &line, &charPos_, 1);
+                            //printf("%c\n", c);
                         }
                         
                         DYN_PUSH('\0', token);
@@ -404,9 +392,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
 
                         //if I had another token right after keyword it didn't really work, so I added this and it works lol
 
-                        code--;
-                        charPos_--;
-                        c = *code;
+                        c = moveByChar(&code, &line, &charPos_, -1);
                     }
                     else{
                         //printf("%s\n", code);
@@ -429,8 +415,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
             break;
         }
 
-        code++;
-        charPos_++;
+        c = moveByChar(&code, &line, &charPos_, 1);
     }
 
     //writeToksOut(toks);
