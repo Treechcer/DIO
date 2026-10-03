@@ -6,5 +6,5 @@
     "description" : "Small programming language made in C with no dependencies outside of base OS libraries.",
     "releasePlatfrom" : "x86-64",
     "windowsDownloadLink" : "https://github.com/Treechcer/DIO/releases/download/$version/Windows_$projectName_x86-64.exe",
-    "defaultName" : "$platform_$projectName_$releasePlatfrom"
+    "defaultName" : "$platform_$projectName_$version_$releasePlatfrom"
 }

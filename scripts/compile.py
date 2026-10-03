@@ -35,7 +35,7 @@ Description: {releaseData.get('description')}
     shutil.rmtree(folderPath)
 
 def windowsBuild(releaseData):
-    name = str(releaseData.get('defaultName')).replace("$platform", platform.system()).replace("$projectName", releaseData.get('projectName')).replace("$releasePlatfrom", releaseData.get('releasePlatfrom')) + ".exe"
+    name = str(releaseData.get('defaultName')).replace("$platform", f"{platform.system()}-{platform.release()}").replace("$version", releaseData["version"]).replace("$projectName", releaseData.get('projectName')).replace("$releasePlatfrom", releaseData.get('releasePlatfrom')) + ".exe"
     linkBuilder = str(releaseData.get('windowsDownloadLink')).replace("$version", releaseData.get('version')).replace("$projectName", releaseData.get('projectName'))
     #print(linkBuilder)
     shutil.copyfile("dio.exe", os.path.join("releases", name))
@@ -45,7 +45,7 @@ def windowsBuild(releaseData):
 def generateExecutableForRelease(releaseData):
     #Builds general executable file for specific OS that's it's executed on!
     defaultFile = "dio.exe" if platform.system() == "Windows" else "dio"
-    name = name = str(releaseData.get('defaultName')).replace("$platform", platform.system()).replace("$projectName", releaseData.get('projectName')).replace("$releasePlatfrom", releaseData.get('releasePlatfrom'))
+    name = str(releaseData.get('defaultName')).replace("$platform", f"{platform.system()}-{platform.release()}").replace("$version", releaseData["version"]).replace("$projectName", releaseData.get('projectName')).replace("$releasePlatfrom", releaseData.get('releasePlatfrom'))
     name = name + ".exe" if platform.system() == "Windows" else name
     shutil.copyfile(defaultFile, os.path.join("releases", name))
 
@@ -54,6 +54,9 @@ def makeRelease():
 
     with open(os.path.join(os.path.abspath(os.path.curdir), "scripts", "data", "release.json")) as f:
         releaseData = json.loads(f.read())
+
+    if arguments["version"] != "UNKNOWN":
+        releaseData["version"] = arguments["version"]
 
     folderPath = "releases"
     os.makedirs(folderPath, exist_ok=True)
@@ -136,13 +139,33 @@ if os.path.abspath(os.curdir).split(s)[-1] != "DIO-code":
     exit()
 
 arguments = {
-    "debug" : False,
-    "release" : False
+    "debug" : {
+        "data" : False,
+        "collect" : "switch"
+    },
+    "release" : {
+        "data" : False,
+        "collect" : "switch"
+    },
+    "version" : {
+        "data" : "UNKNOWN",
+        "collect" : "inputData"
+    }
 }
 
 for arg in sys.argv[1:]:
     arg = arg.split("--") if arg[1] == "-" else arg.split("-")
-    arguments[arg[1]] = not arguments[arg[1]]
+    argArr = arg[1].split("=")
+    arg = argArr[0]
+
+    if arguments[arg]["collect"] == "switch":
+        arguments[arg] = not arguments[arg]["data"]
+    elif arguments[arg]["collect"] == "inputData":
+        arguments[arg] = argArr[1]
+
+for arg in arguments:
+    if isinstance(arguments[arg], dict):
+        arguments[arg] = arguments[arg]["data"]
 
 makeSTDlib()
 
