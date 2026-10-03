@@ -4,6 +4,7 @@
 
 #include "../Headers/token.h"
 #include "../Headers/helper_functions.h"
+#include "../Headers/errorsNew.h"
 
 #ifdef _WIN32
     #include <direct.h>
@@ -11,7 +12,6 @@
     #include <unistd.h>
     #include <limits.h>
 #endif
-
 
 char* scanForFileName(const char* filePath){
     #ifdef _WIN32
@@ -135,14 +135,36 @@ Position checkIfValidPos(Position pos){
     return pos;
 }
 
-void raiseError(char* file, Position pos, char* errorMessage){
+ErrorType getErrorType(char* process){
+    if (strcmp(process, "lex") == 0){
+        return LEXERERROR;
+    }
+    else if (strcmp(process, "ast") == 0){
+        return ASTERROR;
+    }
+    else if (strcmp(process, "parser") == 0){
+        return PARSERERROR;
+    }
+    //TODO: What do I add here?
+    //else if (strcmp(process, "") == 0){
+    //    return HELPLIBRARIESERROR;
+    //}
+
+    return UNKNOWNERROR;
+}
+
+void raiseError(char* file, Position pos, char* errorMessage, int errorCode){
     pos = checkIfValidPos(pos);
     //char* processName = scanForFileName(file);
     char* codeLine = getLine(pos);
 
     printOutArrows(codeLine, pos, errorMessage, file, 0);
 
-    exit(1);
+    if (errorCode == -1){
+        errorCode = getErrorType(file);
+    }
+
+    exit(errorCode);
 }
 
 void raiseWarning(char* file, Position pos, char* errorMessage){

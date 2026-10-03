@@ -16,7 +16,7 @@ This is test of making a programming language in C with the least amount of help
 |Mac (Intel)|✅|Yes||
 |Mac (Apple silicone)|❌|-||
 
-> OS that were not tested will either be tested, for version 1.0.0 I want to test as many OS and hardware as possible.
+> for version 1.0.0 I want to test as many OS and hardware as possible (eg. OpenBSD, NetBSD, Haiku OS, ReactOS, maybe some others? These are those that I aim for that aren't in the table above).
 
 ## Compiling and Running
 

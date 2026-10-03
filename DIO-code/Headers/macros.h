@@ -33,7 +33,7 @@ if (index < arr.count) {\
 }\
 
 #define raiseErrorMacro(POSITION, ERRORMESSAGE)\
-    raiseError(__FILE_NAME__, POSITION, ERRORMESSAGE);
+    raiseError(__FILE_NAME__, POSITION, ERRORMESSAGE, -1);
 
 #define raiseWarningMacro(POSITION, ERRORMESSAGE)\
     raiseWarning(__FILE_NAME__, POSITION, ERRORMESSAGE);
