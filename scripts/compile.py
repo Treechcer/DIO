@@ -5,6 +5,16 @@ import sys
 import json
 import shutil
 
+testsPath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "tests"))
+
+if testsPath not in sys.path:
+    sys.path.insert(0, testsPath)
+
+import tests
+
+def runTests():
+    tests.runTests()
+
 def buildDebianPackage(releaseData):
     folderPath = f"releases/{releaseData.get('projectName')}_{releaseData.get('version')}"
     os.makedirs(os.path.join(folderPath, "usr", "local", "bin"), exist_ok=True)
@@ -150,6 +160,10 @@ arguments = {
     "version" : {
         "data" : "UNKNOWN",
         "collect" : "inputData"
+    },
+    "tests" : {
+        "data" : True,
+        "collect" : "switch"
     }
 }
 
@@ -204,3 +218,6 @@ except Exception as e:
 
 if arguments["release"]:
     makeRelease()
+
+if arguments["tests"]:
+    runTests()

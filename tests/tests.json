@@ -1,0 +1,98 @@
+[
+    {
+        "testIdentifier" : "testing out",
+        "code" : "out(\"a\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "a"
+    },
+    {
+        "testIdentifier" : "testing out int",
+        "code" : "out(15)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "15.0"
+    },
+    {
+        "testIdentifier" : "testing out true",
+        "code" : "out(true)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "1.0"
+    },
+    {
+        "testIdentifier" : "testing out false",
+        "code" : "out(false)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "0.0"
+    },
+    {
+        "testIdentifier" : "testing out variable",
+        "code" : "int a = 7; out(a)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "7.0"
+    },
+    {
+        "testIdentifier" : "testing out binary operator",
+        "code" : "out(7 + 5)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "12.0"
+    },
+    {
+        "testIdentifier" : "for loop teting",
+        "code" : "for (int i = 0; i < 3; i = i + 1); out(i); end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "0.0\n1.0\n2.0"
+    },
+    {
+        "testIdentifier" : "while loop teting",
+        "code" : "int i = 0; while (i < 3); out(i); i = i + 1; end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "0.0\n1.0\n2.0"
+    },
+    {
+        "testIdentifier" : "goto loop testing",
+        "code" : "int i = 0; ::loopstart::; out(i); i = i + 1; goto (i < 3) ::loopstart::;",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "0.0\n1.0\n2.0"
+    },
+    {
+        "testIdentifier" : "branching test (IF)",
+        "code" : "int i = 0; if (i == 0); out(\"if\"); elseif (i == 1); out(\"elseif\"); else out(\"else\") end;",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "if"
+    },
+    {
+        "testIdentifier" : "branching test (ELSEIF)",
+        "code" : "int i = 1; if (i == 0); out(\"if\"); elseif (i == 1); out(\"elseif\"); else out(\"else\") end;",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "elseif"
+    },
+    {
+        "testIdentifier" : "branching test (ELSE)",
+        "code" : "int i = 3; if (i == 0); out(\"if\"); elseif (i == 7); out(\"elseif\"); else out(\"else\") end;",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "else"
+    },
+    {
+        "testIdentifier" : "function call (non-std)",
+        "code" : "def a(); out(7); end; a();",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "7.0"
+    },
+    {
+        "testIdentifier" : "function call param (non-std)",
+        "code" : "def a(int : b); out(b); end; a(12);",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "12.0"
+    },
+    {
+        "testIdentifier" : "function call multi param (non-std)",
+        "code" : "def a(int : b, int : c); out(b + c); end; a(12, 3);",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "15.0"
+    },
+    {
+        "testIdentifier" : "chain function call",
+        "code" : "def a()::int;return 7;end;def b(int : a)::void;out(a);end;def c(int : a)::int;return a + 1;end;int retVal = a():c();b(retVal)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : "7.0\n7.0"
+    }
+]
