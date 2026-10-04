@@ -8,7 +8,7 @@ import shutil
 testsPath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "tests"))
 
 if testsPath not in sys.path:
-    sys.path.insert(0, testsPath)
+    sys.path.append(testsPath)
 
 import tests
 

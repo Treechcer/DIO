@@ -876,6 +876,16 @@ Node* parseGenericNode(dynamicToken* toks){
         node = createNumArray(toks, checkCurrenToken(toks).pos);
     }
     if (node == NULL){
+
+        if (checkCurrenToken(toks).identifier == END){
+            shiftToken(toks);
+        }
+
+        node = parseGenericNode(toks);
+        if (node != NULL){
+            return node;
+        }
+
         printf("ERR: %i : %li\n", g_index, (toks->count)-1);
         printf("ERR: %s (ID: %i) \n", checkCurrenToken(toks).value, checkCurrenToken(toks).identifier);
 

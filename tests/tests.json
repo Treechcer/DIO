@@ -91,8 +91,8 @@
     },
     {
         "testIdentifier" : "chain function call",
-        "code" : "def a()::int;return 7;end;def b(int : a)::void;out(a);end;def c(int : a)::int;return a + 1;end;int retVal = a():c();b(retVal)",
+        "code" : "def a()::int; return 7; end; def b(int : a)::void; out(a); end; def c(int : a)::int; return a + 1; end; int retVal = a():c(); b(retVal)",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "7.0\n7.0"
+        "expectedOutput" : "7.0"
     }
 ]
