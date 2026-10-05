@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include"../Headers/token.h"
 #include"../Headers/dynamic_array.h"
 #include"../Headers/helper_functions.h"
@@ -19,8 +21,21 @@ void repl(char* filePath){
         printf("DIO REPL>> ");
 
         if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
-            toks = lex(buffer, "REPL.dio", toks);
-            parse(buildAst(toks));
+            int canSkip = 0;
+            for (int i = 0; i < strlen(buffer); i++){
+                if (buffer[i] == ' ' || buffer[i] == ';' || buffer[i] == '\0' || buffer[i] == '\n'){
+                    canSkip = 1;
+                }
+                else{
+                    canSkip = 0;
+                    break;
+                }
+            }
+
+            if (canSkip == 0){
+                toks = lex(buffer, "REPL.dio", toks);
+                parse(buildAst(toks));
+            }
         }
         else {
             break;

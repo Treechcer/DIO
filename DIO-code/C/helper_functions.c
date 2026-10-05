@@ -63,8 +63,8 @@ Position createPosition(int* start, int* end, int* line, char* file) {
         free(positionEnd);
         free(positionLine);
 
-        raiseWarningMacro((Position) { 0 }, "Could not initialise position, possible memory leak.");
-        return (Position) { 0 };
+        raiseWarningMacro((Position) {0}, "Could not initialise position, possible memory leak.");
+        return (Position) {0};
     }
 
     *positionStart = *start;
