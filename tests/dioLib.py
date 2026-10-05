@@ -17,7 +17,7 @@ class dioTalker:
         with open(self.fileName, "w") as f:
             f.write(code)
 
-        returner = subprocess.run(f"{self.exePos} -f {self.fileName}", capture_output=True, text=True)
+        returner = subprocess.run(f"{self.exePos} -f {self.fileName}", capture_output=True, text=True, shell=True)
         time.sleep(0.01)
         return objectTransfer(returner.returncode, returner.stdout)
 
