@@ -54,36 +54,24 @@ Token createToken(char* value, TokenType identifier, Position pos){
 }
 
 Position createPosition(int* start, int* end, int* line, char* file) {
-    // allocate memory for each integer stored by the position
     int* positionStart = malloc(sizeof(*positionStart));
     int* positionEnd = malloc(sizeof(*positionEnd));
     int* positionLine = malloc(sizeof(*positionLine));
 
-    // malloc returns null if it fails so we must check bfore dereferencing any of these pointers
     if (positionStart == NULL || positionEnd == NULL || positionLine == NULL) {
-        /*
-         * Some allocations may have succeeded before another failed
-         * so free all of them to avoid a memory leak
-         * free(NULL) is safe, so we don't need separate checks.
-         */
         free(positionStart);
         free(positionEnd);
         free(positionLine);
+
+        raiseNewWarningMacro((Position) { 0 }, "Could not initialise position, possible memory leak.");
         return (Position) { 0 };
     }
 
-    // all allocations succeeded so these pointers are safe to dereference.
     *positionStart = *start;
     *positionEnd = *end;
     *positionLine = *line;
 
-    //give the allocated values to the new posituon and return it.
-    return (Position) {
-        .start = positionStart,
-            .end = positionEnd,
-            .line = positionLine,
-            .file = file
-    };
+    return (Position) { .start = positionStart, .end = positionEnd, .line = positionLine, .file = file };
 }
 
 size_t getStringSize(const char* string){
