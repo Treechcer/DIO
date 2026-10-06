@@ -960,7 +960,7 @@ void parse(Node* ast){
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         program.nodePos = i;
         Node* node = ast->data.programNode->nodes.items[i];
-        printf("nodeType: %li\n", node->type);
+        //printf("nodeType: %li\n", node->type);
         if (node->type == GOTONODE){
             int temp = parseGotoNameNode(node, &g_gotos, ast);
             if (temp != -1){

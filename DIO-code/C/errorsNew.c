@@ -136,13 +136,13 @@ Position checkIfValidPos(Position pos){
 }
 
 ErrorType getErrorType(char* process){
-    if (strcmp(process, "lex") == 0){
+    if (strcmp(process, "lex.c") == 0){
         return LEXERERROR;
     }
-    else if (strcmp(process, "ast") == 0){
+    else if (strcmp(process, "ast.c") == 0){
         return ASTERROR;
     }
-    else if (strcmp(process, "parser") == 0){
+    else if (strcmp(process, "parser.c") == 0){
         return PARSERERROR;
     }
     //TODO: What do I add here?
@@ -163,9 +163,7 @@ void raiseError(char* file, Position pos, char* errorMessage, int errorCode){
     if (errorCode == -1){
         errorCode = getErrorType(file);
     }
-
-    //incorrect error code!
-
+    
     exit(errorCode);
 }
 
