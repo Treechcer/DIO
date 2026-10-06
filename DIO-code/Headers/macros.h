@@ -32,6 +32,12 @@ if (index < arr.count) {\
     arr = RANDOMNAME;\
 }\
 
+#define DYN_ARR_FREE(arr)\
+    free(arr.items); \
+    (arr).items = NULL; \
+    (arr).count = 0; \
+    (arr).size = 0; \
+
 #define raiseErrorMacro(POSITION, ERRORMESSAGE)\
     raiseError(__FILE_NAME__, POSITION, ERRORMESSAGE, -1);
 

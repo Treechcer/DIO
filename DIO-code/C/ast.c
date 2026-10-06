@@ -901,6 +901,8 @@ Node* parseGenericNode(dynamicToken* toks){
 }
 
 Node* buildAst(dynamicToken toks){
-    return parseProgram(&toks);
-    freeToks(toks);
+    Node* nodes = parseProgram(&toks);
+    DYN_ARR_FREE(toks);
+    g_index = 0;
+    return nodes;
 }

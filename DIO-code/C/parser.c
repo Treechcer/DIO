@@ -541,6 +541,10 @@ dynamicVar evalVariable(Node* node){
     else if (varType == INTVAR || varType == FLOATVAR){
         binOpResult* value = evalBinOp(node->data.variableNode->value);
         if (value->varType == FLOATVAR){
+            //https://stackoverflow.com/questions/570669/checking-if-a-double-or-float-is-nan-in-c
+            if (value->value.floatVar != value->value.floatVar){
+                raiseErrorMacro(*node->pos, "Unknown variable type.");
+            }
             tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = name, .data.floatVal = value->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
         }
         else{
@@ -553,6 +557,9 @@ dynamicVar evalVariable(Node* node){
     }
     else if (varType == NUMBERARRAY){
         tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = node->data.variableNode->value->data.numberArrayNode->value, .data.arrayVar.length = node->data.variableNode->value->data.numberArrayNode->length, .intialised = 1, .typedVar = NUMBERARRAY };
+    }
+    else{
+        raiseErrorMacro(*node->pos, "Variable could not be parsed.");
     }
 
     if (existingIndex >= 0){
@@ -953,7 +960,7 @@ void parse(Node* ast){
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         program.nodePos = i;
         Node* node = ast->data.programNode->nodes.items[i];
-        //printf("nodeType: %li\n", node->type);
+        printf("nodeType: %li\n", node->type);
         if (node->type == GOTONODE){
             int temp = parseGotoNameNode(node, &g_gotos, ast);
             if (temp != -1){

@@ -164,6 +164,8 @@ void raiseError(char* file, Position pos, char* errorMessage, int errorCode){
         errorCode = getErrorType(file);
     }
 
+    //incorrect error code!
+
     exit(errorCode);
 }
 

@@ -4,6 +4,6 @@
 #include "../Headers/dynamic_array.h"
 
 dynamicToken lex(const char* code, char* fileName, dynamicToken toks);
-void freeToks(dynamicToken toks);
+//void freeToks(dynamicToken toks);
 
 #endif

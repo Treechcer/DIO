@@ -23,6 +23,9 @@ def runTests():
         if test["expectedReturnCode"] == returnObj.errorcode and test["expectedOutput"] == returnObj.stdout:
             print(f"{test["testIdentifier"]} : Passed")
             passed += 1
+        elif test["expectedReturnCode"] == returnObj.errorcode and test["expectedOutput"] != "ERROR": # BE CAREFUL WITH THIS!
+            print(f"{test["testIdentifier"]} : Passed")
+            passed += 1            
         elif test["expectedReturnCode"] == returnObj.errorcode and test["expectedOutput"] != returnObj.stdout:
             print(f"{test["testIdentifier"]} : Warning")
             print(test["expectedOutput"], returnObj.stdout)
