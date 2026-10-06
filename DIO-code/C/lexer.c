@@ -15,6 +15,12 @@ bool isAllowed(char c){ //special characters that are allowed and handled differ
     return (c == '<' || c == '>');
 }
 
+void freeToks(dynamicToken toks){
+    free(toks.items);
+    toks.count = 0;
+    toks.size = 0;
+}
+
 void writeToksOut(dynamicToken tok){
     for(int i = 0; i < tok.count; i++){
         if (tok.items[i].value){

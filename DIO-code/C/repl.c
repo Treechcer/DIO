@@ -34,7 +34,7 @@ void repl(char* filePath){
 
             if (canSkip == 0){
                 toks = lex(buffer, "REPL.dio", toks);
-                parse(buildAst(toks));
+                freeToks(toks);
             }
         }
         else {
