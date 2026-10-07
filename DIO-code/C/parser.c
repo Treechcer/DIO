@@ -106,6 +106,25 @@ void callLowLevelFunc(int index, Node* node){
             raiseErrorMacro(*node->pos, "Incompatible type for 'length' as an argument");
         }
     }
+    else if (type = INPUT){
+        int varIndex = getVarIndexByName("a");
+        char buffer[4096];
+        printf("%s", g_vars.items[varIndex].data.arrayVar.value.stringValue);
+
+        char* input = fgets(buffer, sizeof(buffer), stdin);
+
+        if (input != NULL){
+            program.funcReturn = malloc(sizeof(binOpResult*));
+            int len = strlen(input);
+            input[len-1] = '\0'; // removes the enter '\n'
+            program.funcReturn->value.stringVal = input;
+            program.funcReturn->varType = STRINGVAR;   
+        }
+        else{
+            program.funcReturn->value.stringVal = "";
+            program.funcReturn->varType = STRINGVAR;
+        }
+    }
     else{
         raiseErrorMacro(*node->pos, "Type not implemented");
     }
@@ -537,8 +556,11 @@ dynamicVar evalVariable(Node* node){
         else if (program.funcReturn->varType == INTVAR){
             tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = name, .data.floatVal = program.funcReturn->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
         }
-        else if (program.funcReturn->varType == STRINGVAR || program.funcReturn->varType == NUMBERARRAY){
-            raiseErrorMacro(*node->pos, "String and Numberarray were not implemented yet.")
+        else if (program.funcReturn->varType == STRINGVAR){
+            tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = name, .data.arrayVar.value.stringValue = program.funcReturn->value.stringVal, .intialised = 1, .typedVar = STRINGVAR };
+        }
+        else if (program.funcReturn->varType == NUMBERARRAY){
+            raiseErrorMacro(*node->pos, "Numberarray were not implemented yet.")
         }
         else{
             raiseErrorMacro(*node->pos, "Function call type not yet implemented.")

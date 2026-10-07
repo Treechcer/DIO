@@ -21,6 +21,7 @@ typedef enum {
     WARNING,
     ERROR,
     LENGTH,
+    INPUT,
 } funcType;
 
 typedef enum {
