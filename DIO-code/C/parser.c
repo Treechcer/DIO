@@ -560,7 +560,7 @@ dynamicVar evalVariable(Node* node){
             tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = name, .data.arrayVar.value.stringValue = program.funcReturn->value.stringVal, .intialised = 1, .typedVar = STRINGVAR };
         }
         else if (program.funcReturn->varType == NUMBERARRAY){
-            raiseErrorMacro(*node->pos, "Numberarray were not implemented yet.")
+            tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = program.funcReturn->value.numberArrayValue, .intialised = 1, .typedVar = NUMBERARRAY };
         }
         else{
             raiseErrorMacro(*node->pos, "Function call type not yet implemented.")

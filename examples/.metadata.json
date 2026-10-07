@@ -1,8 +1,0 @@
-{
-    "ex15.dio" : {
-        "randomness" : true
-    },
-    "ex5.dio" : {
-        "canTimeOut" : true
-    }
-}

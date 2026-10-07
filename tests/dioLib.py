@@ -10,7 +10,8 @@ class objectTransfer:
 class dioTalker:
     fileName = "temp.dio"
 
-    def __init__(self, exePos):
+    def __init__(self, exePos, fileName = "temp.dio"):
+        self.fileName = fileName
         self.exePos = exePos
 
     def executeCode(self, code):

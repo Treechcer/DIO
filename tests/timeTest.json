@@ -1,0 +1,10 @@
+{
+    "ex5.dio" : {
+        "skip" : true,
+        "comment" : "Infinit loop"
+    },
+    "ex45.dio" : {
+        "skip" : true,
+        "comment" : "wants input"
+    }
+}

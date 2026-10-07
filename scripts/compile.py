@@ -12,8 +12,13 @@ if testsPath not in sys.path:
 
 import tests
 
+def runTimeTest():
+    tests.timeTest()
+    print("----")
+
 def runTests():
     tests.runTests()
+    print("----")
 
 def buildDebianPackage(releaseData):
     folderPath = f"releases/{releaseData.get('projectName')}_{releaseData.get('version')}"
@@ -164,6 +169,10 @@ arguments = {
     "tests" : {
         "data" : True,
         "collect" : "switch"
+    },
+    "timeTest" : {
+        "data" : True,
+        "collect" : "switch"
     }
 }
 
@@ -197,6 +206,8 @@ try:
     if arguments["release"]:
         macros += ' -DBUILDTYPE=\\"release\\"'
 
+    #maybe this p could be used?
+    #subprocess.run("gcc -pg " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
     subprocess.run("gcc -g " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
     os.chdir("..")
     with open(os.path.abspath(os.path.join("scripts", "data", "CompileRunParams.txt")), "r") as f:
@@ -221,3 +232,6 @@ if arguments["release"]:
 
 if arguments["tests"]:
     runTests()
+
+if arguments["timeTest"]:
+    runTimeTest()
