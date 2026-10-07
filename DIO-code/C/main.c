@@ -36,23 +36,23 @@ Node* createInput(char* name, variableTypes type){
 void initLowLevelFuncs(){
     dynamicNode inputs = {0,0,0};
     DYN_PUSH(createInput("a", UNKNOWNVARTYPE), inputs);
-    createLowLevelFunc("out", inputs, UNKNOWNVARTYPE);
+    createLowLevelFunc("out", inputs, UNKNOWNVARTYPE, OUT);
     
     inputs = (dynamicNode){0,0,0};
     DYN_PUSH(createInput("a", STRINGVAR), inputs);
-    createLowLevelFunc("exec", inputs, UNKNOWNVARTYPE);
+    createLowLevelFunc("exec", inputs, UNKNOWNVARTYPE, EXEC);
 
     inputs = (dynamicNode){0,0,0};
     DYN_PUSH(createInput("a", STRINGVAR), inputs);
-    createLowLevelFunc("warning", inputs, UNKNOWNVARTYPE);
+    createLowLevelFunc("warning", inputs, UNKNOWNVARTYPE, WARNING);
 
     inputs = (dynamicNode){0,0,0};
     DYN_PUSH(createInput("a", STRINGVAR), inputs);
-    createLowLevelFunc("error", inputs, UNKNOWNVARTYPE);
+    createLowLevelFunc("error", inputs, UNKNOWNVARTYPE, ERROR);
 
     inputs = (dynamicNode){0,0,0};
     DYN_PUSH(createInput("a", UNKNOWNVARTYPE), inputs);
-    createLowLevelFunc("length", inputs, INTVAR);
+    createLowLevelFunc("length", inputs, INTVAR, LENGTH);
 }
 
 int main(int argc, char **argv){

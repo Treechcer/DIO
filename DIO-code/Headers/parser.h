@@ -15,6 +15,15 @@ typedef enum{
 } actionTypes;
 
 typedef enum {
+    NOTLOWLEVER = 0,
+    OUT,
+    EXEC,
+    WARNING,
+    ERROR,
+    LENGTH,
+} funcType;
+
+typedef enum {
     STRINGARRAYTYPE = 0,
     NUMBERARRAYTYPE,
 } arrayType;
@@ -46,7 +55,7 @@ typedef struct {
 typedef struct {
     int index;
     int initialised;
-    int isLowLevel;
+    funcType funcType;
     char* name;
     Node* codeBlock;
     dynamicNode inputs;
@@ -79,7 +88,7 @@ typedef struct programState{
 } programState;
 
 void parse(Node* ast);
-void createLowLevelFunc(char* name, dynamicNode inputs, variableTypes returnType);
+void createLowLevelFunc(char* name, dynamicNode inputs, variableTypes returnType, funcType funcType);
 void initLowLevelFuncs(void);
 
 STRUCT_DYNAMIC_ARR_MACRO(varStruct, dynamicVar)

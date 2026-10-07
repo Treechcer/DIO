@@ -42,16 +42,16 @@ int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes a
     return 0;
 }
 
-void createLowLevelFunc(char* name, dynamicNode inputs, variableTypes returnType){
-    funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .isLowLevel = 1, .returnType = returnType};
+void createLowLevelFunc(char* name, dynamicNode inputs, variableTypes returnType, funcType funcType){
+    funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .funcType = funcType, .returnType = returnType};
     tempFunc.inputs = inputs;
     DYN_PUSH(tempFunc, g_funcs);
 }
 
 void callLowLevelFunc(int index, Node* node){
     program.funcReturn = NULL;
-    char* name = g_funcs.items[index].name;
-    if (strcmp(name, "out") == 0){
+    funcType type = g_funcs.items[index].funcType;
+    if (type == OUT){
         int varIndex = getVarIndexByName("a");
         if (g_vars.items[varIndex].typedVar == STRINGVAR){
             printf("%s\n", getVariableStringValue(varIndex));
@@ -79,19 +79,19 @@ void callLowLevelFunc(int index, Node* node){
             raiseErrorMacro(*node->pos, "Incorrect type in 'out' function call.");
         }
     }
-    else if (strcmp(name, "exec") == 0){
+    else if (type == EXEC){
         system(getVariableStringValue(getVarIndexByName("a")));
     }
-    else if (strcmp(name, "warning") == 0){
+    else if (type == WARNING){
         int varIndex = getVarIndexByName("a");
         char* msgVal = g_vars.items[varIndex].data.arrayVar.value.stringValue;
         raiseWarningMacro(*node->pos, msgVal);
     }
-    else if (strcmp(name, "error") == 0){
+    else if (type == ERROR){
         int varIndex = getVarIndexByName("a");
         raiseErrorMacro(*node->pos, g_vars.items[varIndex].data.arrayVar.value.stringValue);
     }
-    else if (strcmp(name, "length") == 0){
+    else if (type == LENGTH){
         int varIndex = getVarIndexByName("a");
         if (g_vars.items[varIndex].typedVar == NUMBERARRAY || g_vars.items[varIndex].typedVar == STRINGVAR){
             program.funcReturn = malloc(sizeof(binOpResult*));
@@ -101,15 +101,17 @@ void callLowLevelFunc(int index, Node* node){
         else {
             raiseErrorMacro(*node->pos, "Incompatible type for 'length' as an argument");
         }
-        
+    }
+    else{
+        raiseErrorMacro(*node->pos, "Type not implemented");
     }
 
     if (program.funcReturn == NULL && g_funcs.items[index].returnType != UNKNOWNVARTYPE){
-        printf("Function '%s' should've returned something but didn't\n", name);
+        printf("Function '%s' should've returned something but didn't\n", g_funcs.items[index].name);
         exit(1);
     }
     else if (program.funcReturn != NULL && g_funcs.items[index].returnType == UNKNOWNVARTYPE){
-        printf("Function '%s' returned something but shouldn't have\n", name);
+        printf("Function '%s' returned something but shouldn't have\n", g_funcs.items[index].name);
         exit(1);
     }
 }
@@ -149,7 +151,7 @@ void callFunctionByName(char* name){
 }
 
 int isFunctionLowLevel(int index){
-    return g_funcs.items[index].isLowLevel;
+    return g_funcs.items[index].funcType;
 }
 
 int getVarIndexByName(char* name){
@@ -665,7 +667,7 @@ void parseFunction(Node* node){
         DYN_PUSH(node->data.function->inputs.items[i], input);
     }
 
-    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = 1, .codeBlock = node->data.function->codeBlock, .isLowLevel = 0, .inputs = input, .returnType = node->data.function->returnType};
+    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = NOTLOWLEVER, .codeBlock = node->data.function->codeBlock, .funcType = 0, .inputs = input, .returnType = node->data.function->returnType};
     DYN_PUSH(tempFunc, g_funcs);
 }
 
@@ -851,7 +853,7 @@ void parseFunctionCall_(Node* node){
         }
     }
 
-    if (isFunctionLowLevel(index) == 1){
+    if (g_funcs.items[index].funcType != NOTLOWLEVER){
         callLowLevelFunc(index, node);
     }
     else{
