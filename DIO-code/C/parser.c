@@ -52,7 +52,11 @@ void callLowLevelFunc(int index, Node* node){
     program.funcReturn = NULL;
     funcType type = g_funcs.items[index].funcType;
     if (type == OUT){
-        int varIndex = getVarIndexByName("a");
+        //int varIndex = getVarIndexByName("a");
+
+        //TODO: test if this is correct, seems like it though
+
+        int varIndex = g_vars.count - 1;
         if (g_vars.items[varIndex].typedVar == STRINGVAR){
             printf("%s\n", getVariableStringValue(varIndex));
         }
