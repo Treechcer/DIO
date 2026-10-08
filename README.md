@@ -12,12 +12,11 @@ This is test of making a programming language in C with the least amount of help
 |Linux|✅|Yes||
 |Android|✅|Yes|Termux needs to be used|
 |FreeBSD|✅|Compiled, more testing needed||
-|iOS|✅|Compiled, more testing needed|a-term needs to be used (with clang), ish terminal (with gcc) seems to not work with it|
+|iOS|✅|Compiled, more testing needed|a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works|
 |Mac (Intel)|✅|Yes||
 |Mac (Apple silicone)|✅|Compiled, more testing needed||
 
 > for version 1.0.0 I want to test as many OS and hardware as possible (eg. OpenBSD, NetBSD, Haiku OS, ReactOS, maybe some others? These are those that I aim for that aren't in the table above).
-> Sadly it seems that iOS needs to use clang instead of gcc
 
 ## Compiling and Running
 
