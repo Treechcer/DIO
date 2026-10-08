@@ -206,13 +206,17 @@ try:
     if arguments["release"]:
         macros += ' -DBUILDTYPE=\\"release\\"'
 
-    command = f"gcc -g {getFiles()} -o ..{slash}{filename} {macros}" if platform.system() != "iOS" else f" cd .. && clang ./DIO-code/C/*.c -o .{slash}{filename} {macros} && cd ./DIO-code" 
+    command = f"gcc -g {getFiles()} -o ..{slash}{filename} {macros}" if platform.system() != "iOS" else f"clang ./C/*.c -o .{slash}{filename} {macros}" 
 
     #maybe this p could be used?
     #subprocess.run("gcc -pg " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
     print(command)
     subprocess.run(command, shell=True, check=True)
     os.chdir("..")
+
+    if os.path.exists(os.path.join("DIO-code", filename)):
+        subprocess.run(f"mv {os.path.abspath(os.path.join("DIO-code", filename))} .{slash}{filename}")
+
     with open(os.path.abspath(os.path.join("scripts", "data", "CompileRunParams.txt")), "r") as f:
         executablePath = os.path.abspath(filename)
         #normalises slashes to whatever the OS uses, or should at least lol
