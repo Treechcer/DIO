@@ -206,9 +206,11 @@ try:
     if arguments["release"]:
         macros += ' -DBUILDTYPE=\\"release\\"'
 
+    compiler = "gcc" if platform.system() != "iOS" else "clang" 
+
     #maybe this p could be used?
     #subprocess.run("gcc -pg " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
-    subprocess.run("gcc -g " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
+    subprocess.run(f"{compiler} -g " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
     os.chdir("..")
     with open(os.path.abspath(os.path.join("scripts", "data", "CompileRunParams.txt")), "r") as f:
         executablePath = os.path.abspath(filename)

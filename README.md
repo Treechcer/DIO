@@ -14,7 +14,7 @@ This is test of making a programming language in C with the least amount of help
 |FreeBSD|✅|-|Compiled, other than that, not tested yet|
 |iOS|❌|-|iSH terminal or similar terminal needs to be used|
 |Mac (Intel)|✅|Yes||
-|Mac (Apple silicone)|❌|-||
+|Mac (Apple silicone)|✅|-|This was tested if it compiles and runs some code, requires more testing until it can be marked as 'run as should'|
 
 > for version 1.0.0 I want to test as many OS and hardware as possible (eg. OpenBSD, NetBSD, Haiku OS, ReactOS, maybe some others? These are those that I aim for that aren't in the table above).
 
