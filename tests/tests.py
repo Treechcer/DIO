@@ -78,6 +78,8 @@ def timeTest():
     for i in range(len(longest)):
         print(f"{longest[i]["file"]} : {longest[i]["len"]}s")
 
+    dio.disconnect()
+
 def getLongestTime(times):
     maxTimeCopy = times[0]
     index = -1
