@@ -91,7 +91,7 @@ def makeRelease():
     elif platform.system() == "iOS":
         pass
     else:
-        print(f"Platform '{platform.system()}' is not planned to be supported, write your supported build or contact developers.")
+        print(f"Platform '{platform.system()}' is not planned to be supported, write your supported build or contact developers (via issue other means).")
 
 
 def makeSTDlib():
@@ -206,7 +206,8 @@ try:
     if arguments["release"]:
         macros += ' -DBUILDTYPE=\\"release\\"'
 
-    command = f"gcc -g {getFiles()} -o ..{slash}{filename} {macros}" if platform.system() != "iOS" else f"clang ./DIO-code/C/*.c -o .{slash}{filename} {macros}" 
+    print(os.path.abspath(os.curdir)) #test
+    command = f"gcc -g {getFiles()} -o ..{slash}{filename} {macros}" if platform.system() != "iOS" else f"clang ./C/*.c -o ..{slash}{filename} {macros}" 
 
     #maybe this p could be used?
     #subprocess.run("gcc -pg " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
