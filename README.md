@@ -214,7 +214,7 @@ goto (condition) ::gotoName::
 
 ### Standard Library
 
-#### out
+#### out(something : anyType)::void
 
 ```py
 int a = 5
@@ -222,6 +222,34 @@ out(a)
 ```
 
 Out is print function that prints out the variables or what you put into it.
+
+#### length(something : arrayType)::int
+
+```py
+int a = {1,2,3}
+
+int len = length(a)
+
+out(len)
+```
+
+Length returns the integer length of array type variables (string or number array).
+
+#### error(text : string)::void
+
+Raises error, similarly as the language does errors. This makes the program instantly exit with some error code.
+
+#### warning(text : string)::void
+
+Raises warning, this only writes out text but does not stop executing other code.
+
+#### exec(text : string)::void
+
+Executes shell commands.
+
+#### input(text : string)::string
+
+Writes out the text input and takes input, which is then returned as what the user writes.
 
 ### middle-processor
 
@@ -243,8 +271,6 @@ Middle processor is kind of middle ware used to add code or change how lexing wo
 - Using `#MAC *valid dio code*` will make this piece of code run only and only on mac OS
 - Using `#FREEBSD *valid dio code*` will make this piece of code run only and only on freeBSD
 - Using `#ANDROID *valid dio code*` will make this piece of code run only and only on Android
-
-> Note: although OS like Android are supported, it's not yet possible to make code specific for android
 
 #### Pragma
 
