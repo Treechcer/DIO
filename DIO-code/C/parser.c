@@ -615,12 +615,35 @@ dynamicVar evalVariable(Node* node){
         tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = name, .data.arrayVar.value.stringValue = node->data.variableNode->value->data.stringNode->value, .data.arrayVar.length = node->data.variableNode->value->data.stringNode->length, .intialised = 1, .typedVar = STRINGVAR };
     }
     else if (varType == STRINGVAR && getDataFromArrayAcessIndex(node->data.variableNode->arrayAcessIndex) != -1){
-        //TODO: What if the string is longer than one character?
         int index = getVarIndexByName(name);
         char* stringVal = getVariableStringValue(index);
-        stringVal[getDataFromArrayAcessIndex(node->data.variableNode->arrayAcessIndex)] = node->data.variableNode->value->data.stringNode->value[0];
+        int len = strlen(stringVal);
+        char* insVal = node->data.variableNode->value->data.stringNode->value;
+        int insLen = strlen(insVal);
+        int insertPos = getDataFromArrayAcessIndex(node->data.variableNode->arrayAcessIndex);
+        int wholeLen = len + insLen;
+        char str[wholeLen + 1 - 1]; // +1 because '\0' - 1 because deleting the index!
+        int destIndex = 0;
 
-        tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = name, .data.arrayVar.value.stringValue = stringVal, .data.arrayVar.length = node->data.variableNode->value->data.stringNode->length, .intialised = 1, .typedVar = STRINGVAR };
+        if (insertPos > len) {
+            insertPos = len;
+        }
+
+        for (int i = 0; i < insertPos-1; i++) {
+            str[destIndex++] = stringVal[i];
+        }
+
+        for (int i = 0; i < insLen; i++) {
+            str[destIndex++] = insVal[i];
+        }
+
+        for (int i = insertPos; i < len; i++) {
+            str[destIndex++] = stringVal[i];
+        }
+
+        str[wholeLen-1] = '\0';
+
+        tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = name, .data.arrayVar.value.stringValue = str, .data.arrayVar.length = wholeLen, .intialised = 1, .typedVar = STRINGVAR };
     }
     else if (varType == NUMBERARRAY){
         tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = node->data.variableNode->value->data.numberArrayNode->value, .data.arrayVar.length = node->data.variableNode->value->data.numberArrayNode->length, .intialised = 1, .typedVar = NUMBERARRAY };
