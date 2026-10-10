@@ -1,4 +1,4 @@
-import dioLib as dioLib
+import tests.dioLib as dioLib
 import platform
 import json
 import os
@@ -8,7 +8,7 @@ import time
 def runTests():
     dio = dioLib.dioTalker("./dio.exe" if platform.system() == "Windows" else "./dio")
 
-    with open(os.path.join("tests", "tests.json"), "r") as f:
+    with open(os.path.join("scripts", "tests", "tests.json"), "r") as f:
         tests = json.loads(f.read())
 
     passed = 0
@@ -47,7 +47,7 @@ def timeTest():
 
     times = []
 
-    with open(os.path.join("tests", "timeTest.json"), "r") as f:
+    with open(os.path.join("scripts", "tests", "timeTest.json"), "r") as f:
         timeTest = json.loads(f.read())
 
     for fileName_ in os.listdir("./examples"):

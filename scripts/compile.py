@@ -4,13 +4,12 @@ import platform
 import sys
 import json
 import shutil
+import tests.dio_tests as tests
 
-testsPath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "tests"))
-
-if testsPath not in sys.path:
-    sys.path.append(testsPath)
-
-import tests
+#testsPath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "tests"))
+#
+#if testsPath not in sys.path:
+#    sys.path.append(testsPath)
 
 def runTimeTest():
     tests.timeTest()
