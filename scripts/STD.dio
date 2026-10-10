@@ -1,3 +1,0 @@
-def SUMOUT(int : a, int : b)
-    out(a + b)
-end

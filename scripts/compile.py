@@ -209,7 +209,7 @@ try:
 
     #maybe this p could be used?
     #subprocess.run("gcc -pg " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
-    print(command)
+    #print(command)
     subprocess.run(command, shell=True, check=True)
     os.chdir("..")
 
