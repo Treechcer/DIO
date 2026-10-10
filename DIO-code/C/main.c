@@ -98,6 +98,10 @@ int main(int argc, char **argv){
         char *realName = basename(base_copy);
 
         fileReadReturn mainFile = readFile(realName);
+        if (mainFile.exists == 0){
+            Position pos = (Position){.line = 0, .start = 0, .end = 0, .file = ""};
+            raiseErrorMacro(pos, "File not found.");
+        }
 
         char code[mainFile.size + 3];
         strcpy(code, mainFile.content);

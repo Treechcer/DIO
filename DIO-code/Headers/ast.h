@@ -59,6 +59,7 @@ typedef struct variableNode {
     Node* value;
     int initialise;
     char* lastIndex; // only used for special stuff (function calls eg.)
+    Node* arrayAcessIndex;
     int maxIndex;
     struct dataFlags { // struct should do it better? Otherwise there could only be one flag
         int isBool; //used for bools so they can't get numbers outside of 0 and 1

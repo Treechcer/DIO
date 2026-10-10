@@ -526,6 +526,37 @@ binOpResult* evalBinOp(Node* node){
     return res;
 }
 
+int getDataFromArrayAcessIndex(Node* inputNode){
+    int ret = -1;
+
+    if (inputNode == NULL){
+        return ret;
+    }
+    else if (inputNode->type == VARIABLENODE){
+        if (inputNode->data.variableNode->type == INTVAR){
+            ret = getVariableIntValue(getVarIndexByName(inputNode->data.variableNode->name));
+        }
+        else if (inputNode->data.variableNode->type == FLOATVAR){
+            ret = getVariableFloatValue(getVarIndexByName(inputNode->data.variableNode->name));
+        }
+        else{
+            raiseErrorMacro(*inputNode->pos, "Unsupported variable type.");
+        }
+    }
+    else if (inputNode->type == NUMBERNODE){
+        ret = inputNode->data.numberNode->value;
+    }
+    else{
+        raiseErrorMacro(*inputNode->pos, "No return type, maybe not yet added");
+    }
+
+    if (ret != -1){
+        return ret;
+    }
+    
+    return -1;
+}
+
 dynamicVar evalVariable(Node* node){
     variableTypes varType = node->data.variableNode->type;
     char* name = node->data.variableNode->name;
@@ -579,9 +610,17 @@ dynamicVar evalVariable(Node* node){
             tempVar = (varStruct){.index = g_vars.count, .type = "int", .name = name, .data.intVal = value->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
         }
     }
-    else if (varType == STRINGVAR){
+    else if (varType == STRINGVAR && getDataFromArrayAcessIndex(node->data.variableNode->arrayAcessIndex) == -1){
         //printf("||%s\n", node->data.variableNode->value->data.stringNode->value);
         tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = name, .data.arrayVar.value.stringValue = node->data.variableNode->value->data.stringNode->value, .data.arrayVar.length = node->data.variableNode->value->data.stringNode->length, .intialised = 1, .typedVar = STRINGVAR };
+    }
+    else if (varType == STRINGVAR && getDataFromArrayAcessIndex(node->data.variableNode->arrayAcessIndex) != -1){
+        //TODO: What if the string is longer than one character?
+        int index = getVarIndexByName(name);
+        char* stringVal = getVariableStringValue(index);
+        stringVal[getDataFromArrayAcessIndex(node->data.variableNode->arrayAcessIndex)] = node->data.variableNode->value->data.stringNode->value[0];
+
+        tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = name, .data.arrayVar.value.stringValue = stringVal, .data.arrayVar.length = node->data.variableNode->value->data.stringNode->length, .intialised = 1, .typedVar = STRINGVAR };
     }
     else if (varType == NUMBERARRAY){
         tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = node->data.variableNode->value->data.numberArrayNode->value, .data.arrayVar.length = node->data.variableNode->value->data.numberArrayNode->length, .intialised = 1, .typedVar = NUMBERARRAY };
@@ -967,6 +1006,9 @@ void parseGeneric(Node* node){
             parseLoopNode(node);
             break;
         default:
+            //if (DEBUG_MODE){
+                printf("%i\n", node->type);
+            //}
             raiseErrorMacro(*node->pos, "Node type was incorrect, maybe not implemented?");
             break;
     }

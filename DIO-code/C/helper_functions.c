@@ -94,8 +94,8 @@ fileReadReturn readFile(char* fName){
     // Retrieved 2026-07-04, License - CC BY-SA 4.0
     FILE* filePointer = fopen(fName, "rb");
     if (filePointer == NULL){
-        printf("File '%s' not found.", fName);
-        exit(1);
+        fileReadReturn ret = (fileReadReturn){.size = -1, .content = "", .exists = 0};
+        return ret;
     }
 
     fseek(filePointer, 0, SEEK_END);

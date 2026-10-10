@@ -14,8 +14,9 @@ int g_index = 0;
 
 Node* parseExpression(dynamicToken* toks);
 Node* parseGenericNode(dynamicToken* toks);
-int parseArrayAcessNode(dynamicToken* toks);
+Node* parseArrayAcessNode(dynamicToken* toks);
 Node* parseFunctionCall(dynamicToken* toks);
+Node* parseStringGeneral(dynamicToken* toks);
 
 //Node* parseExpression(dynamicToken toks);
 
@@ -92,6 +93,11 @@ Node* parseFactor(dynamicToken* toks){
         node->data.variableNode->type = INTVAR;
         node->data.variableNode->value = NULL;
         node->pos = copyPos(&tok.pos);
+        node->data.variableNode->arrayAcessIndex = NULL;
+        if (checkCurrenToken(toks).identifier == LSQUAREPAREN){
+            //Null = no acess
+            node->data.variableNode->arrayAcessIndex = parseArrayAcessNode(toks);
+        }
 
         return node;
     }
@@ -147,7 +153,44 @@ Node* parseExpression(dynamicToken* toks){
         pNode->data.variableNode->name = nameTok.value;
         pNode->data.variableNode->type = INTVAR;
         pNode->data.variableNode->value = value;
-        pNode->pos = &(Position){.start = nameTok.pos.start, .end = value->pos->end, .file = value->pos->file, .line = value->pos->line};
+        pNode->data.variableNode->arrayAcessIndex = NULL;
+        pNode->pos = copyPos(value->pos);
+        pNode->pos->start = nameTok.pos.start;
+
+        return pNode;
+    }
+    else if (checkCurrenToken(toks).identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == LSQUAREPAREN){
+        Token nameTok = shiftToken(toks);
+        Node* index = parseArrayAcessNode(toks);
+        if (index == NULL) {
+            raiseErrorMacro(checkCurrenToken(toks).pos, "NULL array acees");
+        }
+        if (checkCurrenToken(toks).identifier != EQUALS) {
+            raiseErrorMacro(checkCurrenToken(toks).pos, "No '=' after array acess");
+        }
+        shiftToken(toks);
+
+        //Node* value = parseExpression(toks);
+        //if (value == NULL) {
+        Node* value = parseStringGeneral(toks);
+        variableTypes varType = STRINGVAR;
+        //}
+        //else{
+        if (value == NULL) {
+            printf("DEBUG: This might be not finished, you should maybe add this type of array?");
+            return NULL;
+        }
+
+        Node* pNode = createNode();
+        pNode->type = VARIABLENODE;
+        pNode->data.variableNode = malloc(sizeof(variableNode));
+        pNode->data.variableNode->name = nameTok.value;
+        pNode->data.variableNode->type = varType;
+        pNode->data.variableNode->value = value;
+        pNode->data.variableNode->arrayAcessIndex = index;
+        pNode->data.variableNode->initialise = 1;
+        pNode->pos = copyPos(value->pos);
+        pNode->pos->start = nameTok.pos.start;
 
         return pNode;
     }
@@ -262,6 +305,7 @@ Node* parseNewVariable(dynamicToken* toks){
         retNode->data.variableNode->value = parseFunctionCall(toks);
         retNode->data.variableNode->initialise = 1;
         retNode->data.variableNode->dataFlags.isFuncCall = 1;
+        retNode->data.variableNode->arrayAcessIndex = NULL;
 
         return retNode;
     }
@@ -303,6 +347,7 @@ Node* parseNewVariable(dynamicToken* toks){
             retNode->data.variableNode->value = ret; 
             retNode->data.variableNode->initialise = 1;
             retNode->data.variableNode->name = name;
+            retNode->data.variableNode->arrayAcessIndex = NULL;
 
             return retNode;
         }
@@ -361,6 +406,7 @@ Node* parseNewVariable(dynamicToken* toks){
         retNode->data.variableNode->type = tokT;
         retNode->data.variableNode->value = strNode; 
         retNode->data.variableNode->initialise = initialise;
+        retNode->data.variableNode->arrayAcessIndex = NULL;
 
         return retNode;
     }
@@ -382,6 +428,7 @@ Node* parseNewVariable(dynamicToken* toks){
         retNode->data.variableNode->type = tokT;
         retNode->data.variableNode->value = value;
         retNode->data.variableNode->initialise = initialise;
+        retNode->data.variableNode->arrayAcessIndex = NULL;
 
         //printf("%s\n", name);
         //printf("%i\n", tokT);
@@ -802,22 +849,22 @@ Node* parseReturn(dynamicToken* toks){
     return NULL;
 }
 
-int parseArrayAcessNode(dynamicToken* toks){
-    if (checkCurrenToken(toks).identifier == LSQUAREPAREN && checkTokenAt(toks, 2).identifier == RSQUAREPAREN){
-        shiftToken(toks);
-        int num = convertToInt(checkCurrenToken(toks).value);
-        shiftToken(toks);
-        shiftToken(toks);
-
-        //Node* ret = createNode();
-        //ret->type = ARRAYACESSNODE;
-        //ret->data.arrayAcessNode = malloc(sizeof(arrayAcessNode));
-        //ret->data.arrayAcessNode->index = num;
-    
-        return num;
+Node* parseArrayAcessNode(dynamicToken* toks){
+    if (checkCurrenToken(toks).identifier != LSQUAREPAREN){
+        return NULL;
     }
 
-    return -1;
+    shiftToken(toks);
+    Node* indexNode = parseExpression(toks);
+    if (indexNode == NULL) {
+        raiseErrorMacro(checkCurrenToken(toks).pos, "Array access index is missing.");
+    }
+    if (checkCurrenToken(toks).identifier != RSQUAREPAREN) {
+        raiseErrorMacro(checkCurrenToken(toks).pos, "Expected ']' after array access index.");
+    }
+    shiftToken(toks);
+
+    return indexNode;
 }
 
 Node* parseProgram(dynamicToken* toks) {
@@ -893,8 +940,6 @@ Node* parseGenericNode(dynamicToken* toks){
         raiseErrorMacro(checkCurrenToken(toks).pos, "Generic error");
     }
     
-    //printf("Node Type: %i\n", node->type);
-
     //printf("Node Type: %i\n", node->type);
 
     return node;

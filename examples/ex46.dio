@@ -1,0 +1,5 @@
+string a = "Hello"
+
+a[2] = "L"
+
+out(a)
