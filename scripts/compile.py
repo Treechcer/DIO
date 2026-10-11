@@ -11,6 +11,9 @@ import tests.dio_tests as tests
 #if testsPath not in sys.path:
 #    sys.path.append(testsPath)
 
+def runValgrindTests(command):
+    subprocess.run(f"valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all -s {command}", shell=True)
+
 def runTimeTest():
     tests.timeTest()
     print("----")
@@ -172,6 +175,10 @@ arguments = {
     "timeTest" : {
         "data" : True,
         "collect" : "switch"
+    },
+    "valgrind" : {
+        "data" : False,
+        "collect" : "switch"
     }
 }
 
@@ -229,6 +236,7 @@ try:
             subprocess.run(f'gdb -ex run -ex bt --args {executablePath} {fName}', shell=True)
         else:
             subprocess.run(f"{executablePath} {fName}", shell=True)
+
 except Exception as e:
     print(e)
     print("failed :(")
@@ -241,3 +249,6 @@ if arguments["tests"]:
 
 if arguments["timeTest"]:
     runTimeTest()
+
+if arguments["valgrind"]:
+    runValgrindTests(f"{executablePath} {fName}")
