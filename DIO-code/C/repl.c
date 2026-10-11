@@ -16,7 +16,7 @@ void repl(char* filePath){
     while (1){
         char buffer[4096];
         dynamicToken STD = (dynamicToken){0,0,0};
-        lex(getSTD(), "STDlib.dio", STD);
+        lex(getSTD(), "STDlib.dio", STD, 0);
         printf("DIO REPL>> ");
 
         if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
@@ -32,7 +32,7 @@ void repl(char* filePath){
             }
 
             if (canSkip == 0){
-                parse(buildAst(lex(buffer, "REPL.dio", STD)));
+                parse(buildAst(lex(buffer, "REPL.dio", STD, 0)));
             }
         }
         else {

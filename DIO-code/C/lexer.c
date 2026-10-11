@@ -9,7 +9,7 @@
 dynamicMacro g_macros = {0,0,0};
 dynamicFileImport g_fileImports = {0,0,0};
 
-dynamicToken lex(const char* code, char* fileName, dynamicToken toks);
+dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast);
 
 bool isAllowed(char c){ //special characters that are allowed and handled differently!
     return (c == '<' || c == '>');
@@ -57,7 +57,7 @@ char moveByChar(const char** code, int* line, int* charPos, int d){
     return c;
 }
 
-dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
+dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast) {
     //Token* toks;
     int indexFile = -1;
 
@@ -262,7 +262,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         if (fileNext.exists == 0) {
                             raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), "File does not exist or could not be access by the OS.");
                         }
-                        toks = lex(fileNext.content, arg.items, toks);
+                        toks = lex(fileNext.content, arg.items, toks, 0);
                     }
                     else if (strcmp(action.items, "def") == 0){
                         c = moveByChar(&code, &line, &charPos_, 1);
@@ -298,7 +298,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         
                         //printf("%s", g_macros.items[index].text);
 
-                        toks = lex(g_macros.items[index].text, fileName, toks);
+                        toks = lex(g_macros.items[index].text, fileName, toks, 0);
                     }
                     else if (strcmp(action.items, "WIN") == 0 || strcmp(action.items, "LINUX") == 0 || strcmp(action.items, "MAC") == 0 || strcmp(action.items, "FREEBSD") == 0 || strcmp(action.items, "ANDROID") == 0){
                         int canRun = 0;
@@ -320,7 +320,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                                 DYN_PUSH(c, text);
                                 c = moveByChar(&code, &line, &charPos_, 1);
                             }
-                            toks = lex(text.items, fileName, toks);
+                            toks = lex(text.items, fileName, toks, 0);
                         }
                         else{
                             while (c != '\n' && c != '\0') {
@@ -426,5 +426,12 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
 
     //writeToksOut(toks);
     //printf("\n");
+
+    if (isLast == 1){
+        free(g_macros.items);
+        g_macros.count = 0;
+        g_macros.size = 0;
+    }
+
     return toks;
 }

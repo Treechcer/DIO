@@ -109,7 +109,7 @@ int main(int argc, char **argv){
 
         initLowLevelFuncs();
         dynamicToken toks = {0,0,0};
-        parse(buildAst(lex(code, realName, lex(getSTD(), "STDlib.dio", toks))));
+        parse(buildAst(lex(code, realName, lex(getSTD(), "STDlib.dio", toks, 0), 1)));
     }
     
     return 0;
