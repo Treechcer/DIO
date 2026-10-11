@@ -53,25 +53,8 @@ Token createToken(char* value, TokenType identifier, Position pos){
     return (Token) {.value = value, .identifier = identifier, .pos = pos};
 }
 
-Position createPosition(int* start, int* end, int* line, char* file) {
-    int* positionStart = malloc(sizeof(*positionStart));
-    int* positionEnd = malloc(sizeof(*positionEnd));
-    int* positionLine = malloc(sizeof(*positionLine));
-
-    if (positionStart == NULL || positionEnd == NULL || positionLine == NULL) {
-        free(positionStart);
-        free(positionEnd);
-        free(positionLine);
-
-        raiseWarningMacro((Position) {0}, "Could not initialise position, possible memory leak.");
-        return (Position) {0};
-    }
-
-    *positionStart = *start;
-    *positionEnd = *end;
-    *positionLine = *line;
-
-    return (Position) { .start = positionStart, .end = positionEnd, .line = positionLine, .file = file };
+Position createPosition(int start, int end, int line, char* file) {
+    return (Position) { .start = start, .end = end, .line = line, .file = file };
 }
 
 size_t getStringSize(const char* string){

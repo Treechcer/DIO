@@ -89,40 +89,40 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
 
         switch (c) {
             case '+':
-                tok = createToken("+", PLUS, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("+", PLUS, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case '-':
-                tok = createToken("-", MINUS, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case '*':
-                tok = createToken("*", MUL, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("*", MUL, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case '/':
-                tok = createToken("/", DIV, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("/", DIV, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case '^':
-                tok = createToken("^", POW, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("^", POW, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case '(':
-                tok = createToken("(", LPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("(", LPAREN, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case ')':
-                tok = createToken(")", RPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken(")", RPAREN, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case '[':
-                tok = createToken("[", LSQUAREPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("[", LSQUAREPAREN, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case ']':
-                tok = createToken("]", RSQUAREPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("]", RSQUAREPAREN, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case '{':
-                tok = createToken("{", LSQUIGLYPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("{", LSQUIGLYPAREN, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case '}':
-                tok = createToken("}", RSQUIGLYPAREN, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("}", RSQUIGLYPAREN, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case ',':
-                tok = createToken(",", COMMA, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken(",", COMMA, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case '.':
             case '!':
@@ -130,23 +130,23 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                 char* buf = malloc(2 * sizeof(char));
                 buf[0] = c;
                 buf[1] = '\0';
-                tok = createToken(buf, STRINGLITERAL, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken(buf, STRINGLITERAL, createPosition(charPos_, charPos_, line, fileName));
                 break;
             }
             case '<':
                 c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '='){
-                    tok = createToken("<=", LESSOREQAUL, createPosition(&charPos_, &charPos_, &line, fileName));
+                    tok = createToken("<=", LESSOREQAUL, createPosition(charPos_, charPos_, line, fileName));
                 }
                 else{
-                    tok = createToken("<", LESSTHAN, createPosition(&charPos_, &charPos_, &line, fileName));
+                    tok = createToken("<", LESSTHAN, createPosition(charPos_, charPos_, line, fileName));
                     moveByChar(&code, &line, &charPos_, -1);
                 }
                 break;
             case '>':
                 c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '='){
-                    tok = createToken(">=", MOREOREQUAL, createPosition(&charPos_, &charPos_, &line, fileName));
+                    tok = createToken(">=", MOREOREQUAL, createPosition(charPos_, charPos_, line, fileName));
                 }
                 else if (c == '>') {
                     while (c != '\n' && c != '\r' && c != '\0' && strlen(code) > 0){
@@ -164,7 +164,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     }
                 }
                 else{
-                    tok = createToken(">", MORETHAN, createPosition(&charPos_, &charPos_, &line, fileName));
+                    tok = createToken(">", MORETHAN, createPosition(charPos_, charPos_, line, fileName));
                     code--;
                 }
                 break;
@@ -183,41 +183,41 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     if (c == ':'){
                         c = moveByChar(&code, &line, &charPos_, 1);
                         if (c == ':'){
-                            tok = createToken(token.items, GOTONAME, createPosition(&charPos_, &charPos_, &line, fileName));
+                            tok = createToken(token.items, GOTONAME, createPosition(charPos_, charPos_, line, fileName));
                         }
                         else{
-                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unsuported character sequnce was found.");
+                            raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), "Unsuported character sequnce was found.");
                         }
                     }
                     else{
                         c = moveByChar(&code, &line, &charPos_, 1);
-                        tok = createToken(token.items, FUNCTIONRETURNTYPE, createPosition(&charPos_, &charPos_, &line, fileName));
+                        tok = createToken(token.items, FUNCTIONRETURNTYPE, createPosition(charPos_, charPos_, line, fileName));
                         break;
-                        //raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unsuported character sequnce was found.");
+                        //raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), "Unsuported character sequnce was found.");
                     }
                 }
                 else{
-                    tok = createToken(":", COLON, createPosition(&charPos_, &charPos_, &line, fileName));
+                    tok = createToken(":", COLON, createPosition(charPos_, charPos_, line, fileName));
                     break;
                 }
                 break;
             case '\\':
             case '\n':
-                tok = createToken("", END, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("", END, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case ';':
-                tok = createToken(";", END, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken(";", END, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case '\0':
-                tok = createToken(";", END, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken(";", END, createPosition(charPos_, charPos_, line, fileName));
                 break;
             case '=':
                 c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '='){
-                    tok = createToken("==", LEFTRIGHTEQUAL, createPosition(&charPos_, &charPos_, &line, fileName));
+                    tok = createToken("==", LEFTRIGHTEQUAL, createPosition(charPos_, charPos_, line, fileName));
                 }
                 else{
-                    tok = createToken("=", EQUALS, createPosition(&charPos_, &charPos_, &line, fileName));
+                    tok = createToken("=", EQUALS, createPosition(charPos_, charPos_, line, fileName));
                     moveByChar(&code, &line, &charPos_, -1);
                 }
                 break;
@@ -226,12 +226,12 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                 break;
             case ' ':
                 if (!skipSapces){
-                    tok = createToken(" ", SPACE, createPosition(&charPos_, &charPos_, &line, fileName));
+                    tok = createToken(" ", SPACE, createPosition(charPos_, charPos_, line, fileName));
                 }
                 break;
             case '\'':
             case '"':
-                tok = createToken("'", QUOTE, createPosition(&charPos_, &charPos_, &line, fileName));
+                tok = createToken("'", QUOTE, createPosition(charPos_, charPos_, line, fileName));
                 skipSapces = !skipSapces;
                 break;
             case '#':
@@ -260,7 +260,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     if (strcmp(action.items, "get") == 0) {
                         fileReadReturn fileNext = readFile(arg.items);
                         if (fileNext.exists == 0) {
-                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "File does not exist or could not be access by the OS.");
+                            raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), "File does not exist or could not be access by the OS.");
                         }
                         toks = lex(fileNext.content, arg.items, toks);
                     }
@@ -278,7 +278,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
 
                         for (int i = 0; i < g_macros.count; i++){
                             if (strcmp(g_macros.items[i].name, arg.items) == 0){
-                                raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Macro with this name already exists.")
+                                raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), "Macro with this name already exists.")
                             }
                         }
 
@@ -293,7 +293,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         }
 
                         if (index == -1){
-                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Macro with this name does not exist.")
+                            raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), "Macro with this name does not exist.")
                         }
                         
                         //printf("%s", g_macros.items[index].text);
@@ -330,11 +330,11 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                     }
                     //This is useless, this will get executed alawys, add it into AST/parser?
                     //else if (strcmp(action.items, "warn") == 0){
-                    //    raiseWarningMacro(createPosition(&charPos_, &charPos_, &line, fileName), arg.items)
+                    //    raiseWarningMacro(createPosition(charPos_, charPos_, line, fileName), arg.items)
                     //}
                     //else if (strcmp(action.items, "error") == 0){
                     //    //TODO: This crashes, maybe look into it? IT might be because errorsNew have SOME issue still that weren't fixed yet
-                    //    raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), arg.items)
+                    //    raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), arg.items)
                     //}
                     else if (strcmp(action.items, "pragma") == 0){
                         if (strcmp(arg.items, "once") == 0){
@@ -342,11 +342,11 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                             return toks;
                         }
                         else{
-                            raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unknown pragma argument.")
+                            raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), "Unknown pragma argument.")
                         }
                     }
                     else{
-                        raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Unknown middleware processor command.")
+                        raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), "Unknown middleware processor command.")
                     }
                 }
                 break;
@@ -357,7 +357,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         while((isDigit(c) || c == '.')){
                             if (c == '.') {
                                 if (isFloat) {
-                                    raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), "Float can't have two dots.")
+                                    raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), "Float can't have two dots.")
                                 } else {
                                     isFloat = 1;
                                 }
@@ -368,7 +368,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         }
 
                         DYN_PUSH('\0', token);
-                        tok = createToken(token.items, isFloat ? FLOAT : INT, createPosition(&charPos_, &charPos_, &line, fileName));
+                        tok = createToken(token.items, isFloat ? FLOAT : INT, createPosition(charPos_, charPos_, line, fileName));
 
                         c = moveByChar(&code, &line, &charPos_, -1);
                     }
@@ -383,17 +383,17 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         
                         DYN_PUSH('\0', token);
                         if (getKeyWord(token.items)){
-                            tok = createToken(token.items, KEYWORD, createPosition(&charPos_, &charPos_, &line, fileName));
+                            tok = createToken(token.items, KEYWORD, createPosition(charPos_, charPos_, line, fileName));
                         }
                         else if (isBool(token.items)) {
-                            tok = createToken(strToBoolStr(token.items), INT, createPosition(&charPos_, &charPos_, &line, fileName));
+                            tok = createToken(strToBoolStr(token.items), INT, createPosition(charPos_, charPos_, line, fileName));
                         }
                         //Use maybe as identifier?
                         //else if (isMaybe(token.items)){
-                        //    tok = createToken("maybe", MAYBE, createPosition(&charPos_, &charPos_, &line, fileName));
+                        //    tok = createToken("maybe", MAYBE, createPosition(charPos_, charPos_, line, fileName));
                         //}
                         else {
-                            tok = createToken(token.items, IDENTIFIER, createPosition(&charPos_, &charPos_, &line, fileName));
+                            tok = createToken(token.items, IDENTIFIER, createPosition(charPos_, charPos_, line, fileName));
                         }
 
                         //if I had another token right after keyword it didn't really work, so I added this and it works lol
@@ -409,7 +409,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks) {
                         char* msg = "Unknown token at char 'C'.";
                         msg[strlen("Unknown token at char 'C'.")-3] = c;
 
-                        raiseErrorMacro(createPosition(&charPos_, &charPos_, &line, fileName), msg)
+                        raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), msg)
                     }
                 break;
         }

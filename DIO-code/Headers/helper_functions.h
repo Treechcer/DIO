@@ -19,7 +19,7 @@ double convertToDouble(char* value);
 bool isDigit(char ch);
 bool isAlpha(char c);
 Token createToken(char* value, TokenType identifier, Position pos);
-Position createPosition(int* start, int* end, int* line, char* file);
+Position createPosition(int start, int end, int line, char* file);
 size_t getStringSize(const char* string);
 bool isAlphaString(char* c);
 fileReadReturn readFile(char* fName);

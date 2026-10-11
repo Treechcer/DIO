@@ -49,7 +49,7 @@ char* getLine(Position pos){
     if (fileData.exists == 0){
         return "";
     }
-    if (!fileData.exists || pos.line == NULL){
+    if (!fileData.exists /*|| pos.line == NULL*/){
         char* emptyLine = malloc(1);
         emptyLine[0] = '\0';
         return emptyLine;
@@ -57,7 +57,7 @@ char* getLine(Position pos){
 
     int line = 1;
     for (size_t i = 0; i < fileData.size; i++){
-        if (line == *pos.line){
+        if (line == pos.line){
             char* str = malloc(1);
             str[0] = '\0';
             for (int j = i; j < fileData.size; j++){
@@ -92,21 +92,21 @@ void printOutArrows(char* message, Position pos, char* errorMessage, char* proce
         printf("%sWarning%s:\n", ANSI_COLOR_YELLOW, ANSI_COLOR_RESET);
     }
     #ifdef _WIN32
-        printf("In file: %s\\%s %i:%i in line %i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end, *pos.line);
+        printf("In file: %s\\%s %i:%i in line %i\n", getcwd(NULL, 0), pos.file, pos.start, pos.end, pos.line);
     #else
-        printf("In file: %s/%s %i:%i in line %i\n", getcwd(NULL, 0), pos.file, *pos.start, *pos.end, *pos.line);
+        printf("In file: %s/%s %i:%i in line %i\n", getcwd(NULL, 0), pos.file, pos.start, pos.end, pos.line);
     #endif
     if (message == NULL || strlen(message) == 0){
         //what should it print here?
     }
     else{
         printf("%s\n", message);
-        int end = *pos.end; 
-        for (int i = 1; i < *pos.start; i++){
+        int end = pos.end; 
+        for (int i = 1; i < pos.start; i++){
             printf(" ");
         }
 
-        for (int i = *pos.start; i < end + 1; i++){
+        for (int i = pos.start; i < end + 1; i++){
             printf("~");
         }
 
@@ -118,18 +118,18 @@ void printOutArrows(char* message, Position pos, char* errorMessage, char* proce
 
 Position checkIfValidPos(Position pos){
     int MINUSONE = -1;
-    if (pos.end == NULL){
-        pos.end = &MINUSONE;
-    }
-    if (pos.start == NULL){
-        pos.start = &MINUSONE;
-    }
+    //if (pos.end == NULL){
+    //    pos.end = &MINUSONE;
+    //}
+    //if (pos.start == NULL){
+    //    pos.start = &MINUSONE;
+    //}
     if (pos.file == NULL){
         pos.file = "";
     }
-    if (pos.line == NULL){
-        pos.line = &MINUSONE;
-    }
+    //if (pos.line == NULL){
+    //    pos.line = &MINUSONE;
+    //}
 
     return pos;
 }

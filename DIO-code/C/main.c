@@ -86,7 +86,7 @@ int main(int argc, char **argv){
     }
 
     if (checkIfValidFileEnd(filePath) == 0){
-        raiseErrorMacro(createPosition(&(int){0}, &(int){0}, &(int){1}, filePath), "File does not end with one of valid file extensions");
+        raiseErrorMacro(createPosition(0, 0, 1, filePath), "File does not end with one of valid file extensions");
     }
 
     if (filePath != NULL && strlen(filePath) > 0){

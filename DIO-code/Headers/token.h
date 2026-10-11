@@ -2,9 +2,9 @@
 #define TOKEN_H
 
 typedef struct {
-    int* start;
-    int* end;
-    int* line;
+    int start;
+    int end;
+    int line;
     char* file;
 } Position;
 
