@@ -17,6 +17,7 @@ Node* parseGenericNode(dynamicToken* toks);
 Node* parseArrayAcessNode(dynamicToken* toks);
 Node* parseFunctionCall(dynamicToken* toks);
 Node* parseStringGeneral(dynamicToken* toks);
+Node* createNumArray(dynamicToken* toks, Position pos);
 
 //Node* parseExpression(dynamicToken toks);
 
@@ -177,7 +178,10 @@ Node* parseExpression(dynamicToken* toks){
         //}
         //else{
         if (value == NULL) {
-            printf("DEBUG: This might be not finished, you should maybe add this type of array?");
+            value = createNumArray(toks, checkCurrenToken(toks).pos);
+            varType = NUMBERARRAY;
+        }
+        if (value == NULL){
             return NULL;
         }
 

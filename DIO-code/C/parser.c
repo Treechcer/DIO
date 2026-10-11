@@ -571,6 +571,8 @@ dynamicVar evalVariable(Node* node){
     //char* tempArr[] = {"int", "float", "string", "bool", "numArr"};
     //char* type = tempArr[varType];
 
+    int arrayAcess = getDataFromArrayAcessIndex(node->data.variableNode->arrayAcessIndex);
+
     if (node->data.variableNode->dataFlags.isFuncCall){
         //callFunctionByName(node->data.variableNode->value->data.functionCall->name);
         parseFunctionCall_(node->data.variableNode->value);
@@ -610,17 +612,17 @@ dynamicVar evalVariable(Node* node){
             tempVar = (varStruct){.index = g_vars.count, .type = "int", .name = name, .data.intVal = value->value.intVal, .intialised = 1, .typedVar = FLOATVAR };
         }
     }
-    else if (varType == STRINGVAR && getDataFromArrayAcessIndex(node->data.variableNode->arrayAcessIndex) == -1){
+    else if (varType == STRINGVAR && arrayAcess == -1){
         //printf("||%s\n", node->data.variableNode->value->data.stringNode->value);
         tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = name, .data.arrayVar.value.stringValue = node->data.variableNode->value->data.stringNode->value, .data.arrayVar.length = node->data.variableNode->value->data.stringNode->length, .intialised = 1, .typedVar = STRINGVAR };
     }
-    else if (varType == STRINGVAR && getDataFromArrayAcessIndex(node->data.variableNode->arrayAcessIndex) != -1){
+    else if (varType == STRINGVAR && arrayAcess != -1){
         int index = getVarIndexByName(name);
         char* stringVal = getVariableStringValue(index);
         int len = strlen(stringVal);
         char* insVal = node->data.variableNode->value->data.stringNode->value;
         int insLen = strlen(insVal);
-        int insertPos = getDataFromArrayAcessIndex(node->data.variableNode->arrayAcessIndex);
+        int insertPos = arrayAcess;
         int wholeLen = len + insLen;
         char str[wholeLen + 1 - 1]; // +1 because '\0' - 1 because deleting the index!
         int destIndex = 0;
@@ -645,8 +647,38 @@ dynamicVar evalVariable(Node* node){
 
         tempVar = (varStruct){.index = g_vars.count, .type = "string", .name = name, .data.arrayVar.value.stringValue = str, .data.arrayVar.length = wholeLen, .intialised = 1, .typedVar = STRINGVAR };
     }
-    else if (varType == NUMBERARRAY){
+    else if (varType == NUMBERARRAY && arrayAcess == -1){
         tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = node->data.variableNode->value->data.numberArrayNode->value, .data.arrayVar.length = node->data.variableNode->value->data.numberArrayNode->length, .intialised = 1, .typedVar = NUMBERARRAY };
+    }
+    else if(varType == NUMBERARRAY && arrayAcess != -1){
+        int index = getVarIndexByName(name);
+        double* arrayNum = getVariableNumArrayValue(index);
+        int len = getVariableNumArrayLength(index);
+        double* insVal = node->data.variableNode->value->data.numberArrayNode->value;
+        int insLen = node->data.variableNode->value->data.numberArrayNode->length;
+        int insertPos = arrayAcess;
+        int wholeLen = len + insLen - 1;  // -1 because deleting the index!
+        //Because of memory leak (it seems*) this will fail if the size is higher than like 5 or so
+        double* newNumArr = malloc(wholeLen * sizeof(double));
+        int destIndex = 0;
+
+        if (insertPos > len) {
+            insertPos = len;
+        }
+
+        for (int i = 0; i < insertPos-1; i++) {
+            newNumArr[destIndex++] = arrayNum[i];
+        }
+
+        for (int i = 0; i < insLen; i++) {
+            newNumArr[destIndex++] = insVal[i];
+        }
+
+        for (int i = insertPos; i < len; i++) {
+            newNumArr[destIndex++] = arrayNum[i];
+        }
+
+        tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = newNumArr, .data.arrayVar.length = wholeLen, .intialised = 1, .typedVar = NUMBERARRAY };
     }
     else{
         raiseErrorMacro(*node->pos, "Variable could not be parsed.");
