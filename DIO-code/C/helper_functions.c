@@ -142,13 +142,13 @@ int checkIfValidFileEnd(char* fileName){
             break;
         }
         size += 1;
-        fName = realloc(fName, size);
+        fName = realloc(fName, size + 1);
         fName[size-1] = fileName[i];
     }
-    
+
     fName[size] = '\0';
 
-    char* rev = malloc(sizeof(char) * size);
+    char* rev = malloc(sizeof(char) * (size + 1));
     int c = 0;
 
     for (int i = size-1; i >= 0; i--){

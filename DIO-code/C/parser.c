@@ -657,7 +657,7 @@ dynamicVar evalVariable(Node* node){
         double* insVal = node->data.variableNode->value->data.numberArrayNode->value;
         int insLen = node->data.variableNode->value->data.numberArrayNode->length;
         int insertPos = arrayAcess;
-        int wholeLen = len + insLen - 1;  // -1 because deleting the index!
+        int wholeLen = len + insLen;  // -1 because deleting the index!
         //Because of memory leak (it seems*) this will fail if the size is higher than like 5 or so
         double* newNumArr = malloc(wholeLen * sizeof(double));
         int destIndex = 0;
