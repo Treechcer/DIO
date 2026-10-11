@@ -15,8 +15,25 @@ This is test of making a programming language in C with the least amount of help
 |iOS|✅|Compiled, more testing needed|a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works|
 |Mac (Intel)|✅|Yes||
 |Mac (Apple silicone)|✅|Compiled, more testing needed||
+|OpenBSD|❌|Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled||
+|NetBSD|❌|Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled||
+|HaikuOS|❌|Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled||
+|ReactOS|❌|Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled||
 
-> for version 1.0.0 I want to test as many OS and hardware as possible (eg. OpenBSD, NetBSD, Haiku OS, ReactOS, maybe some others? These are those that I aim for that aren't in the table above).
+## Release Cycle
+
+Release cycle ins't set in any way. Time between any versions can be as long (or as short) as needed for that version. Any code in main branch (Development branch) is not meant as stable code, only stable code is in the release. Version are if format: Major.Minor.Patch (as most software).
+
+Current platforms in releases (current and future):
+
+- Windows
+- Linux
+- MacOS (Intel CPU)
+- Android
+- iOS (version 0.1.1+)
+- FreeBSD
+
+> NOTE: although Apple Silicone should work, I can't reliably compile for it because I don't own any machine like this
 
 ## Compiling and Running
 
