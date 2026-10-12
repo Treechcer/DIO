@@ -54,9 +54,7 @@ void callLowLevelFunc(int index, Node* node){
     if (type == OUT){
         int varIndex = getVarIndexByName("a");
 
-        //TODO: test if this is correct, seems like it though
-
-        //int varIndex = g_vars.count - 1;
+        //int varIndex = g_vars.count - 1; //this can't work sadly, also I want to add scopes later!
         if (g_vars.items[varIndex].typedVar == STRINGVAR){
             printf("%s\n", getVariableStringValue(varIndex));
         }
@@ -124,6 +122,9 @@ void callLowLevelFunc(int index, Node* node){
             program.funcReturn->value.stringVal = "";
             program.funcReturn->varType = STRINGVAR;
         }
+    }
+    else if (type = NOTLOWLEVER){
+       raiseErrorMacro(*node->pos, "Low level func was called, but wasn't low level func?"); 
     }
     else{
         raiseErrorMacro(*node->pos, "Type not implemented");
