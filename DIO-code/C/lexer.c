@@ -5,11 +5,48 @@
 #include"../Headers/token.h"
 #include"../Headers/dynamic_array.h"
 #include"../Headers/helper_functions.h"
+#include"../Headers/appInfo.h"
+
+typedef struct SpecialVars{
+    char* name;
+    dynamicToken toks;
+} SpecialVars;
+
+STRUCT_DYNAMIC_ARR_MACRO(SpecialVars, dynamicSpecialVars);
 
 dynamicMacro g_macros = {0,0,0};
 dynamicFileImport g_fileImports = {0,0,0};
+dynamicSpecialVars g_specialVars = {0,0,0};
 
 dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast);
+
+SpecialVars makeSpecialVar(char* name, dynamicToken toks){
+    return (SpecialVars){.name = name, .toks = toks};    
+}
+
+dynamicSpecialVars initSpecialVars(){
+    Token quoteToken = (Token){.identifier = QUOTE, .pos = (Position){.end = 0, .file = "", .line = 0, .start = 0}, .value = "\""};
+
+    dynamicToken dynToks = {0,0,0};
+
+    DYN_PUSH(quoteToken, dynToks)
+    Token t = (Token){.identifier = IDENTIFIER, .pos = (Position){.end = 0, .file = "", .line = 0, .start = 0}, .value = getAppInfo().platform};
+    DYN_PUSH(t, dynToks)
+    DYN_PUSH(quoteToken, dynToks)
+
+    SpecialVars SpecialVar = makeSpecialVar("PLATFORM", dynToks);
+    DYN_PUSH(SpecialVar, g_specialVars);
+
+    dynToks = (dynamicToken){0,0,0};
+
+    DYN_PUSH(quoteToken, dynToks)
+    t = (Token){.identifier = IDENTIFIER, .pos = (Position){.end = 0, .file = "", .line = 0, .start = 0}, .value = getAppInfo().version};
+    DYN_PUSH(t, dynToks)
+    DYN_PUSH(quoteToken, dynToks)
+
+    SpecialVar = makeSpecialVar("VERSION", dynToks);
+    DYN_PUSH(SpecialVar, g_specialVars);
+}
 
 bool isAllowed(char c){ //special characters that are allowed and handled differently!
     return (c == '<' || c == '>');
@@ -58,6 +95,9 @@ char moveByChar(const char** code, int* line, int* charPos, int d){
 }
 
 dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast) {
+    if (isLast == 1){
+        initSpecialVars();
+    }
     //Token* toks;
     int indexFile = -1;
 
@@ -411,6 +451,32 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                         //if I had another token right after keyword it didn't really work, so I added this and it works lol
 
                         c = moveByChar(&code, &line, &charPos_, -1);
+                    }
+                    else if (c == '$'){
+                        dynamicChar name = {0,0,0};
+                        while (c != ' ' && c != '\n'){
+                            c = moveByChar(&code, &line, &charPos_, 1);
+                            DYN_PUSH(c, name);
+                        }
+                        name.items[name.count-1] = '\0';
+
+                        //printf("%s\n", name.items);
+
+                        int found = 0;
+                        for (size_t i = 0; i < g_specialVars.count; i++){
+                            //printf("%s\n", g_specialVars.items[i].name);
+                            if (strcmp(name.items, g_specialVars.items[i].name) == 0){
+                                for (size_t j = 0; j < g_specialVars.items[i].toks.count; j++){
+                                    DYN_PUSH(g_specialVars.items[i].toks.items[j], toks);
+                                    found = 1;
+                                }
+                            }
+                        }
+
+                        if (found == 0){
+                            raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), "Special var not found.");
+                        }
+
                     }
                     else{
                         //printf("%s\n", code);

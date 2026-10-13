@@ -19,6 +19,10 @@ void initAppInfo(){
     #endif
 }
 
+appInfo getAppInfo(){
+    return app;
+}
+
 void getAppInfoOut(){
     printf("---------------------------\n");
     printf("Software: '%s' ver.: %s\nplatform: %s\nbuild type: %s\n", app.appName, app.version, app.platform, app.buildType);

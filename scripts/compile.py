@@ -239,7 +239,7 @@ try:
 
 except Exception as e:
     print(e)
-    print("failed im compilation process")
+    print("failed in compilation process")
     exit(1)
 
 if arguments["release"]:

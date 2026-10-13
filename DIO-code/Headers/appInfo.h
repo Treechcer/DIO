@@ -10,5 +10,6 @@ typedef struct appInfo{
 
 void initAppInfo();
 void getAppInfoOut();
+appInfo getAppInfo();
 
 #endif

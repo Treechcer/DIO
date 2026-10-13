@@ -1,0 +1,7 @@
+string pla = $PLATFORM
+
+out(pla)
+
+string ver = $VERSION
+
+out(ver)
