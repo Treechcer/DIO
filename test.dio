@@ -1,0 +1,10 @@
+def sum(int: a, int: b)
+    out(a);
+    out(b);
+    out(a+b);
+end
+
+int a = 30;
+int b = 37;
+
+sum(b, a);

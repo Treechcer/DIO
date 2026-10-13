@@ -104,7 +104,7 @@ void callLowLevelFunc(int index, Node* node){
             raiseErrorMacro(*node->pos, "Incompatible type for 'length' as an argument");
         }
     }
-    else if (type = INPUT){
+    else if (type == INPUT){
         int varIndex = getVarIndexByName("a");
         char buffer[4096];
         printf("%s", g_vars.items[varIndex].data.arrayVar.value.stringValue);
@@ -123,7 +123,7 @@ void callLowLevelFunc(int index, Node* node){
             program.funcReturn->varType = STRINGVAR;
         }
     }
-    else if (type = NOTLOWLEVER){
+    else if (type == NOTLOWLEVER){
        raiseErrorMacro(*node->pos, "Low level func was called, but wasn't low level func?"); 
     }
     else{
