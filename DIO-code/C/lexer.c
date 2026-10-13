@@ -79,8 +79,20 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
 
     int line = 1;
     int charPos_ = 1;
-    char c = ' ';
+    char c = *code;
     int skipSapces = 1;
+
+    if (c == '#'){
+        if (moveByChar(&code, &line, &charPos_, 1) == '!'){
+            while (moveByChar(&code, &line, &charPos_, 1) != '\n'){
+                
+            }
+        }
+        else{
+            moveByChar(&code, &line, &charPos_, -1);
+        }
+    }
+
     while (strlen(code) > 0 && c != '\0'){
         c = *code;
         //printf("(%i, %c)\n", c, c);
