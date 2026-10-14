@@ -169,7 +169,7 @@ Node* parseExpression(dynamicToken* toks){
         if (checkCurrenToken(toks).identifier != EQUALS) {
             raiseErrorMacro(checkCurrenToken(toks).pos, "No '=' after array acess");
         }
-        shiftToken(toks);
+        Token t = shiftToken(toks);
 
         //Node* value = parseExpression(toks);
         //if (value == NULL) {
@@ -182,7 +182,13 @@ Node* parseExpression(dynamicToken* toks){
             varType = NUMBERARRAY;
         }
         if (value == NULL){
-            return NULL;
+            //TODO: implement something like this
+
+            //value = parseNumberNode(toks)
+            //varType = NUMBERNODE;
+        }
+        if (value == NULL){
+            raiseErrorMacro(t.pos, "Not added support for this operation yet.")
         }
 
         Node* pNode = createNode();

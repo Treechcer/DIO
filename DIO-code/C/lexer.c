@@ -30,11 +30,13 @@ char* stringifyText(char* text){
     if (retText == NULL) {
         return NULL;
     }
+    
     retText[0] = '"';
 
     for (size_t i = 0; i < len; i++){
         retText[1 + i] = text[i];
     }
+
     retText[len + 1] = '"';
     retText[len + 2] = '\0';
 
