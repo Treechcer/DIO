@@ -44,7 +44,7 @@ char* stringifyText(char* text){
 dynamicSpecialVars initSpecialVars(){
     dynamicToken dynToks = {0,0,0};
 
-    char* lexThis = stringifyText("1.0");
+    char* lexThis = stringifyText(VERSION);
     dynToks = lex(lexThis, "", dynToks, 0);
 
     SpecialVars SpecialVar = makeSpecialVar("VERSION", dynToks);
@@ -297,7 +297,27 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
             case '\'':
             case '"':
                 tok = createToken("'", QUOTE, createPosition(charPos_, charPos_, line, fileName));
-                skipSapces = !skipSapces;
+                DYN_PUSH(tok, toks);
+
+                dynamicChar name = {0,0,0};
+                c = moveByChar(&code, &line, &charPos_, 1);
+                DYN_PUSH(c, name)
+
+                while (c != '\'' && c != '"'){
+                    c = moveByChar(&code, &line, &charPos_, 1);
+                    if (c == '\'' || c == '"'){
+                        break;
+                    }
+                    DYN_PUSH(c, name)
+                }
+                DYN_PUSH('\0', name)
+
+                tok = createToken(name.items, IDENTIFIER, createPosition(tok.pos.start, charPos_ - 1, line, fileName));
+                DYN_PUSH(tok, toks);
+
+                tok = createToken("'", QUOTE, createPosition(charPos_, charPos_, line, fileName));
+
+                //skipSapces = !skipSapces;
                 break;
             case '#':
                 c = moveByChar(&code, &line, &charPos_, 1); //#
