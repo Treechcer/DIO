@@ -24,28 +24,41 @@ SpecialVars makeSpecialVar(char* name, dynamicToken toks){
     return (SpecialVars){.name = name, .toks = toks};    
 }
 
-dynamicSpecialVars initSpecialVars(){
-    Token quoteToken = (Token){.identifier = QUOTE, .pos = (Position){.end = 0, .file = "", .line = 0, .start = 0}, .value = "\""};
+char* stringifyText(char* text){
+    size_t len = strlen(text);
+    char* retText = malloc(len + 3); 
+    if (retText == NULL) {
+        return NULL;
+    }
+    retText[0] = '"';
 
+    for (size_t i = 0; i < len; i++){
+        retText[1 + i] = text[i];
+    }
+    retText[len + 1] = '"';
+    retText[len + 2] = '\0';
+
+    return retText;
+}
+
+dynamicSpecialVars initSpecialVars(){
     dynamicToken dynToks = {0,0,0};
 
-    DYN_PUSH(quoteToken, dynToks)
-    Token t = (Token){.identifier = IDENTIFIER, .pos = (Position){.end = 0, .file = "", .line = 0, .start = 0}, .value = getAppInfo().platform};
-    DYN_PUSH(t, dynToks)
-    DYN_PUSH(quoteToken, dynToks)
+    char* lexThis = stringifyText("1.0");
+    dynToks = lex(lexThis, "", dynToks, 0);
 
-    SpecialVars SpecialVar = makeSpecialVar("PLATFORM", dynToks);
+    SpecialVars SpecialVar = makeSpecialVar("VERSION", dynToks);
     DYN_PUSH(SpecialVar, g_specialVars);
 
     dynToks = (dynamicToken){0,0,0};
 
-    DYN_PUSH(quoteToken, dynToks)
-    t = (Token){.identifier = IDENTIFIER, .pos = (Position){.end = 0, .file = "", .line = 0, .start = 0}, .value = getAppInfo().version};
-    DYN_PUSH(t, dynToks)
-    DYN_PUSH(quoteToken, dynToks)
+    lexThis = stringifyText(getAppInfo().platform);
+    dynToks = lex(lexThis, "", dynToks, 0);
 
-    SpecialVar = makeSpecialVar("VERSION", dynToks);
+    SpecialVar = makeSpecialVar("PLATFORM", dynToks);
     DYN_PUSH(SpecialVar, g_specialVars);
+
+    free(lexThis);
 }
 
 bool isAllowed(char c){ //special characters that are allowed and handled differently!
@@ -484,8 +497,8 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
 
                         //TODO: test
                         
-                        char* msg = "Unknown token at char 'C'.";
-                        msg[strlen("Unknown token at char 'C'.")-3] = c;
+                        char msg[] = "Unknown token at char 'C'.";
+                        msg[strlen(msg) - 3] = c;
 
                         raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), msg)
                     }

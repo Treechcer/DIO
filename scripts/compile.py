@@ -212,7 +212,7 @@ try:
     if arguments["release"]:
         macros += ' -DBUILDTYPE=\\"release\\"'
 
-    command = f"gcc -Wall -Wextra -g {getFiles()} -o ..{slash}{filename} {macros}" if platform.system() != "iOS" else f"clang ./C/*.c -o .{slash}{filename} {macros}" 
+    command = f"gcc -g {getFiles()} -o ..{slash}{filename} {macros}" if platform.system() != "iOS" else f"clang ./C/*.c -o .{slash}{filename} {macros}" 
 
     #maybe this p could be used?
     #subprocess.run("gcc -pg " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
