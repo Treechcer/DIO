@@ -141,13 +141,17 @@ Node* parseTerm(dynamicToken* toks){
 Node* parseNumberNode(dynamicToken* toks){
     char* val = checkCurrenToken(toks).value;
     char* endptr;
-    int num = strtol(val, &endptr, strlen(val));
+    long int num = strtol(val, &endptr, 10);
     
-    if (!(val != endptr && *endptr == '\0')){
+    if (!(val == endptr && *endptr != '\0')){
         Node* pNode = createNode();
         pNode->type = NUMBERNODE;
         pNode->data.numberNode = malloc(sizeof(numberNode));
         pNode->data.numberNode->value = num;
+        Position pos = checkCurrenToken(toks).pos;
+        pNode->pos = &pos;
+
+        shiftToken(toks);
 
         return pNode;
     }
@@ -199,8 +203,6 @@ Node* parseExpression(dynamicToken* toks){
             varType = NUMBERARRAY;
         }
         if (value == NULL){
-            //TODO: implement something like this
-
             value = parseNumberNode(toks);
             varType = NUMBERNODE;
         }
