@@ -138,6 +138,23 @@ Node* parseTerm(dynamicToken* toks){
     return left;
 }
 
+Node* parseNumberNode(dynamicToken* toks){
+    char* val = checkCurrenToken(toks).value;
+    char* endptr;
+    int num = strtol(val, &endptr, strlen(val));
+    
+    if (!(val != endptr && *endptr == '\0')){
+        Node* pNode = createNode();
+        pNode->type = NUMBERNODE;
+        pNode->data.numberNode = malloc(sizeof(numberNode));
+        pNode->data.numberNode->value = num;
+
+        return pNode;
+    }
+
+    return NULL;
+}
+
 Node* parseExpression(dynamicToken* toks){
     if (checkCurrenToken(toks).identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == EQUALS){
         Token nameTok = shiftToken(toks);
@@ -184,8 +201,8 @@ Node* parseExpression(dynamicToken* toks){
         if (value == NULL){
             //TODO: implement something like this
 
-            //value = parseNumberNode(toks)
-            //varType = NUMBERNODE;
+            value = parseNumberNode(toks);
+            varType = NUMBERNODE;
         }
         if (value == NULL){
             raiseErrorMacro(t.pos, "Not added support for this operation yet.")
