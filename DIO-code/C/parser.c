@@ -658,27 +658,35 @@ dynamicVar evalVariable(Node* node){
         double* insVal = node->data.variableNode->value->data.numberArrayNode->value;
         int insLen = node->data.variableNode->value->data.numberArrayNode->length;
         int insertPos = arrayAcess;
-        int wholeLen = len + insLen;  // -1 because deleting the index!
-        double* newNumArr = malloc(wholeLen * sizeof(double));
-        int destIndex = 0;
 
-        if (insertPos > len) {
-            insertPos = len;
+        if (insLen == 1){
+            arrayNum[insertPos] = *insVal;
+
+            tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = arrayNum, .data.arrayVar.length = len, .intialised = 1, .typedVar = NUMBERARRAY };
         }
+        else{
+            int wholeLen = len + insLen;  // -1 because deleting the index!
+            double* newNumArr = malloc(wholeLen * sizeof(double));
+            int destIndex = 0;
 
-        for (int i = 0; i < insertPos-1; i++) {
-            newNumArr[destIndex++] = arrayNum[i];
+            if (insertPos > len) {
+                insertPos = len;
+            }
+
+            for (int i = 0; i < insertPos-1; i++) {
+                newNumArr[destIndex++] = arrayNum[i];
+            }
+
+            for (int i = 0; i < insLen; i++) {
+                newNumArr[destIndex++] = insVal[i];
+            }
+
+            for (int i = insertPos; i < len; i++) {
+                newNumArr[destIndex++] = arrayNum[i];
+            }
+
+            tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = newNumArr, .data.arrayVar.length = wholeLen, .intialised = 1, .typedVar = NUMBERARRAY };
         }
-
-        for (int i = 0; i < insLen; i++) {
-            newNumArr[destIndex++] = insVal[i];
-        }
-
-        for (int i = insertPos; i < len; i++) {
-            newNumArr[destIndex++] = arrayNum[i];
-        }
-
-        tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = newNumArr, .data.arrayVar.length = wholeLen, .intialised = 1, .typedVar = NUMBERARRAY };
     }
     else{
         raiseErrorMacro(*node->pos, "Variable could not be parsed.");

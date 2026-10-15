@@ -138,18 +138,21 @@ Node* parseTerm(dynamicToken* toks){
     return left;
 }
 
-Node* parseNumberNode(dynamicToken* toks){
-    char* val = checkCurrenToken(toks).value;
+Node* parseNumberNodeAsArray(dynamicToken* toks){
+    Token tok = checkCurrenToken(toks);
+    char* val = tok.value;
     char* endptr;
-    long int num = strtol(val, &endptr, 10);
+    int num = strtol(val, &endptr, 10);
     
     if (!(val == endptr && *endptr != '\0')){
         Node* pNode = createNode();
-        pNode->type = NUMBERNODE;
-        pNode->data.numberNode = malloc(sizeof(numberNode));
-        pNode->data.numberNode->value = num;
-        Position pos = checkCurrenToken(toks).pos;
-        pNode->pos = &pos;
+        pNode->type = NUMBERARRAY;
+        pNode->data.numberArrayNode = malloc(sizeof(numberArrayNode));
+        pNode->data.numberArrayNode->value = malloc(sizeof(double));
+        
+        pNode->data.numberArrayNode->value[0] = num;
+        pNode->data.numberArrayNode->length = 1;
+        pNode->pos = &tok.pos;
 
         shiftToken(toks);
 
@@ -192,19 +195,16 @@ Node* parseExpression(dynamicToken* toks){
         }
         Token t = shiftToken(toks);
 
-        //Node* value = parseExpression(toks);
-        //if (value == NULL) {
         Node* value = parseStringGeneral(toks);
         variableTypes varType = STRINGVAR;
-        //}
-        //else{
+
         if (value == NULL) {
             value = createNumArray(toks, checkCurrenToken(toks).pos);
             varType = NUMBERARRAY;
         }
         if (value == NULL){
-            value = parseNumberNode(toks);
-            varType = NUMBERNODE;
+            value = parseNumberNodeAsArray(toks);
+            varType = NUMBERARRAY;
         }
         if (value == NULL){
             raiseErrorMacro(t.pos, "Not added support for this operation yet.")
