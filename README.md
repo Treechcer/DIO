@@ -285,7 +285,7 @@ Middle processor is kind of middle ware used to add code or change how lexing wo
 
 - Using `#WIN *valid dio code*` will make this piece of code run only and only on windows
 - Using `#LINUX *valid dio code*` will make this piece of code run only and only on linux
-- Using `#MAC *valid dio code*` will make this piece of code run only and only on mac OS
+- Using `#APPLE *valid dio code*` will make this piece of code run onky on apple devices (Mac, iOS..)
 - Using `#FREEBSD *valid dio code*` will make this piece of code run only and only on freeBSD
 - Using `#ANDROID *valid dio code*` will make this piece of code run only and only on Android
 
