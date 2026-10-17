@@ -279,7 +279,7 @@ Middle processor is kind of middle ware used to add code or change how lexing wo
 
 #### def and use
 
-- `#def *name*: *valid dio code*` this makes macro which can be used with command `#use *name`
+- `#def *name*: *valid dio code*` this makes macro which can be used with command `#use *name*`
 
 #### specific OS code
 
