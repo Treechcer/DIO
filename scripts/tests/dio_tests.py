@@ -24,11 +24,11 @@ def runTests():
         if test["expectedReturnCode"] == returnObj.errorcode and test["expectedOutput"] == returnObj.stdout:
             print(f"{test["testIdentifier"]} : Passed")
             passed += 1
-        elif test["expectedReturnCode"] == returnObj.errorcode and test["expectedOutput"] != "ERROR": # BE CAREFUL WITH THIS!
-            print(f"{test["testIdentifier"]} : Passed")
-            passed += 1            
+        elif test["expectedReturnCode"] == returnObj.errorcode and test["expectedOutput"] == "ERROR\n": # BE CAREFUL WITH THIS!
+            print(f"{test["testIdentifier"]} : Passed [err type]")
+            passed += 1
         elif test["expectedReturnCode"] == returnObj.errorcode and test["expectedOutput"] != returnObj.stdout:
-            print(f"{test["testIdentifier"]} : Warning")
+            print(f"{test["testIdentifier"]} : Warning (RC: {returnObj.errorcode})")
             print(test["expectedOutput"], returnObj.stdout)
             warning += 1
         else:
@@ -63,7 +63,7 @@ def timeTest():
                         continue
 
             start = time.time()
-            dio.executeCode(content)
+            dio.executeCode(content, False)
             end = time.time()
 
             #print(end - start)
