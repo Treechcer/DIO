@@ -1,1 +1,1 @@
--f examples/ex50.dio
+-f examples/ex51.dio

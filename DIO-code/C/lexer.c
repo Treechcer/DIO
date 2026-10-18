@@ -461,7 +461,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                     }
                     else if (isAlpha(c)){
                         dynamicChar token = {0,0,0};
-                        while(isAlpha(c)){
+                        while(isAlpha(c) || isDigit(c)){
                             DYN_PUSH(c, token);
 
                             c = moveByChar(&code, &line, &charPos_, 1);
