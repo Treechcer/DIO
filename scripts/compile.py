@@ -22,6 +22,42 @@ def runTests():
     tests.runTests()
     print("----")
 
+def getPlatfromName():
+    if platform.system() == "Windows":
+        return platform.system()+ "-" + platform.release()
+    else:
+        return platform.system()
+
+def buildName(releaseData):
+    name = str(releaseData.get('releaseName')).replace("$platform", f"{getPlatfromName()}").replace("$version", releaseData["version"]).replace("$projectName", releaseData.get('projectName')).replace("$releasePlatfrom", releaseData.get('releasePlatfrom')) + ".exe"
+
+    return name
+
+def getPlatform(releaseData):
+    #if releaseData.get("releasePlatfrom") != "":
+    #    return releaseData.get("releasePlatfrom")
+
+    #is this even correct?
+
+    platformMap = {
+        "amd64" : ["x86_64", "amd64", "AMD64"],
+        "arm64" : ["aarch64", "arm64", "ARM64"],
+        "i386": ["i386", "i686", "x86"]
+    }
+
+    curPlat = platform.machine()
+    normalisedPlat = curPlat
+
+    for k in platformMap:
+        if curPlat in platformMap[k]:
+            normalisedPlat = k
+            break
+
+    releaseData["releasePlatfrom"] = normalisedPlat
+    
+    with open(os.path.join(os.path.abspath(os.path.curdir), "scripts", "data", "release.json"), "w") as f:
+        json.dump(releaseData, f, indent=4)
+
 def buildDebianPackage(releaseData):
     folderPath = f"releases/{releaseData.get('projectName')}_{releaseData.get('version')}"
     os.makedirs(os.path.join(folderPath, "usr", "local", "bin"), exist_ok=True)
@@ -47,23 +83,20 @@ Description: {releaseData.get('description')}
     
     os.chmod(os.path.join(folderPath, "DEBIAN", "control"), 0o644)
 
-    subprocess.run(f"dpkg-deb --build {folderPath}", shell=True)
+    subprocess.run(f"dpkg-deb --root-owner-group --build {folderPath}", shell=True)
 
     shutil.rmtree(folderPath)
 
 def windowsBuild(releaseData):
-    name = str(releaseData.get('defaultName')).replace("$platform", f"{platform.system()}-{platform.release()}").replace("$version", releaseData["version"]).replace("$projectName", releaseData.get('projectName')).replace("$releasePlatfrom", releaseData.get('releasePlatfrom')) + ".exe"
-    linkBuilder = str(releaseData.get('windowsDownloadLink')).replace("$version", releaseData.get('version')).replace("$projectName", releaseData.get('projectName'))
-    #print(linkBuilder)
+    name = buildName(releaseData)
     shutil.copyfile("dio.exe", os.path.join("releases", name))
 
-    #generate / update YAML logic incomming here...
+    #generate / update YAML logic incomming here (for https://github.com/microsoft/winget-pkgs if I ever try to be there actually)...
 
 def generateExecutableForRelease(releaseData):
     #Builds general executable file for specific OS that's it's executed on!
     defaultFile = "dio.exe" if platform.system() == "Windows" else "dio"
-    name = str(releaseData.get('defaultName')).replace("$platform", f"{platform.system()}-{platform.release()}").replace("$version", releaseData["version"]).replace("$projectName", releaseData.get('projectName')).replace("$releasePlatfrom", releaseData.get('releasePlatfrom'))
-    name = name + ".exe" if platform.system() == "Windows" else name
+    name = buildName(releaseData)
     shutil.copyfile(defaultFile, os.path.join("releases", name))
 
 def makeRelease():
@@ -74,6 +107,8 @@ def makeRelease():
 
     if arguments["version"] != "UNKNOWN":
         releaseData["version"] = arguments["version"]
+
+    getPlatform(releaseData)
 
     folderPath = "releases"
     os.makedirs(folderPath, exist_ok=True)
@@ -94,7 +129,6 @@ def makeRelease():
         pass
     else:
         print(f"Platform '{platform.system()}' is not planned to be supported, write your supported build or contact developers (via issue other means).")
-
 
 def makeSTDlib():
     std = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "..", "scripts", "data"), "STD.dio")
