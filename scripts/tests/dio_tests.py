@@ -18,23 +18,24 @@ def runTests():
     for test in tests:
         returnObj = dio.executeCode(test["code"])
 
-        if test["expectedOutput"][-1] != "\n":
-            test["expectedOutput"] += "\n"
+        for output in test["expectedOutput"]:
+            if output[-1] != "\n":
+                output += "\n"
 
-        if test["expectedReturnCode"] == returnObj.errorcode and test["expectedOutput"] == returnObj.stdout:
-            print(f"{test["testIdentifier"]} : Passed")
-            passed += 1
-        elif test["expectedReturnCode"] == returnObj.errorcode and test["expectedOutput"] == "ERROR\n": # BE CAREFUL WITH THIS!
-            print(f"{test["testIdentifier"]} : Passed [err type]")
-            passed += 1
-        elif test["expectedReturnCode"] == returnObj.errorcode and test["expectedOutput"] != returnObj.stdout:
-            print(f"{test["testIdentifier"]} : Warning (RC: {returnObj.errorcode})")
-            print(test["expectedOutput"], returnObj.stdout)
-            warning += 1
-        else:
-            print(f"{test["testIdentifier"]} : Failed")
-            print(returnObj.stdout)
-            failed += 1
+            if test["expectedReturnCode"] == returnObj.errorcode and output == returnObj.stdout:
+                print(f"{test["testIdentifier"]} : Passed")
+                passed += 1
+            elif test["expectedReturnCode"] == returnObj.errorcode and output == "ERROR\n": # BE CAREFUL WITH THIS!
+                print(f"{test["testIdentifier"]} : Passed [err type]")
+                passed += 1
+            elif test["expectedReturnCode"] == returnObj.errorcode and output != returnObj.stdout:
+                print(f"{test["testIdentifier"]} : Warning (RC: {returnObj.errorcode})")
+                print(output, returnObj.stdout)
+                warning += 1
+            else:
+                print(f"{test["testIdentifier"]} : Failed")
+                print(returnObj.stdout)
+                failed += 1
 
     print(f"Passed {passed} out of {len(tests)}")
     print(f"Failed {failed} out of {len(tests)}")

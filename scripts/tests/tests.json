@@ -3,144 +3,225 @@
         "testIdentifier" : "testing out",
         "code" : "out(\"a\")",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "a"
+        "expectedOutput" : [
+            "a"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "testing out int",
         "code" : "out(15)",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "15.0"
+        "expectedOutput" : [
+            "15.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "testing out true",
         "code" : "out(true)",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "1.0"
+        "expectedOutput" : [
+            "1.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "testing out false",
         "code" : "out(false)",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "0.0"
+        "expectedOutput" : [
+            "0.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "testing out maybe",
+        "code" : "int a = maybe * 1; out(a)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "1.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "testing out variable",
         "code" : "int a = 7; out(a)",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "7.0"
+        "expectedOutput" : [
+            "7.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "testing out binary operator (+)",
         "code" : "out(7 + 5)",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "12.0"
+        "expectedOutput" : [
+            "12.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "testing out binary operator (-)",
         "code" : "out(7 - 5)",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "2.0"
+        "expectedOutput" : [
+            "2.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "testing out binary operator (*)",
         "code" : "out(7 * 5)",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "35.0"
+        "expectedOutput" : [
+            "35.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "testing out binary operator (/)",
         "code" : "out(10 / 5)",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "2.0"
+        "expectedOutput" : [
+            "2.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "for loop teting",
         "code" : "for (int i = 0; i < 3; i = i + 1); out(i); end",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "0.0\n1.0\n2.0"
+        "expectedOutput" : [
+            "0.0\n1.0\n2.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "for loop teting (reverse)",
         "code" : "for (int i = 3; i > 0; i = i - 1); out(i); end",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "3.0\n2.0\n1.0\n"
+        "expectedOutput" : [
+            "3.0\n2.0\n1.0\n"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "while loop teting",
         "code" : "int i = 0; while (i < 3); out(i); i = i + 1; end",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "0.0\n1.0\n2.0"
+        "expectedOutput" : [
+            "0.0\n1.0\n2.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "while loop teting (rev)",
         "code" : "int i = 3; while (i > 0); out(i); i = i - 1; end",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "3.0\n2.0\n1.0\n"
+        "expectedOutput" : [
+            "3.0\n2.0\n1.0\n"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "while loop teting (float)",
         "code" : "int i = 0; while (i < 0.6); out(i); i = i + 0.2; end",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "0.0\n0.2\n0.4\n"
+        "expectedOutput" : [
+            "0.0\n0.2\n0.4\n"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "goto loop testing",
         "code" : "int i = 0; ::loopstart::; out(i); i = i + 1; goto (i < 3) ::loopstart::;",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "0.0\n1.0\n2.0"
+        "expectedOutput" : [
+            "0.0\n1.0\n2.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "branching test (IF)",
         "code" : "int i = 0; if (i == 0); out(\"if\"); elseif (i == 1); out(\"elseif\"); else out(\"else\") end;",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "if"
+        "expectedOutput" : [
+            "if"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "branching test (ELSEIF)",
         "code" : "int i = 1; if (i == 0); out(\"if\"); elseif (i == 1); out(\"elseif\"); else out(\"else\") end;",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "elseif"
+        "expectedOutput" : [
+            "elseif"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "branching test (ELSE)",
         "code" : "int i = 3; if (i == 0); out(\"if\"); elseif (i == 7); out(\"elseif\"); else out(\"else\") end;",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "else"
+        "expectedOutput" : [
+            "else"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "function call (non-std)",
         "code" : "def a(); out(7); end; a();",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "7.0"
+        "expectedOutput" : [
+            "7.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "function call param (non-std)",
         "code" : "def a(int : b); out(b); end; a(12);",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "12.0"
+        "expectedOutput" : [
+            "12.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "function call multi param (non-std)",
         "code" : "def a(int : b, int : c); out(b + c); end; a(12, 3);",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "15.0"
+        "expectedOutput" : [
+            "15.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "chain function call",
         "code" : "def a()::int; return 7; end; def b(int : a)::void; out(a); end; def c(int : a)::int; return a + 1; end; int retVal = a():c(); b(retVal)",
         "expectedReturnCode" : 0,
-        "expectedOutput" : "7.0"
+        "expectedOutput" : [
+            "7.0"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "uninitialised variable test",
         "code" : "a",
         "expectedReturnCode" : 3,
-        "expectedOutput" : "ERROR"
+        "expectedOutput" : [
+            "ERROR"
+        ],
+        "maxRuns" : 1
     },
     {
         "testIdentifier" : "uninitialised function test",
         "code" : "a()",
         "expectedReturnCode" : 3,
-        "expectedOutput" : "ERROR"
+        "expectedOutput" : [
+            "ERROR"
+        ],
+        "maxRuns" : 1
     }
 ]

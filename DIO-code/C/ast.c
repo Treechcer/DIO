@@ -477,6 +477,7 @@ Node* parseNewVariable(dynamicToken* toks){
         return retNode;
     }
 
+    free(pNode);
     return NULL;
 }
 
@@ -957,7 +958,7 @@ Node* parseGenericNode(dynamicToken* toks){
         if (checkCurrenToken(toks).identifier == END){
             shiftToken(toks);
         }
-
+        
         node = parseGenericNode(toks);
         if (node != NULL){
             return node;
