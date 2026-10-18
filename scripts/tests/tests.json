@@ -40,9 +40,9 @@
         "code" : "int a = maybe * 1; out(a)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
-            "1.0"
+            "1.0", "0.0"
         ],
-        "maxRuns" : 1
+        "maxRuns" : 10
     },
     {
         "testIdentifier" : "testing out variable",

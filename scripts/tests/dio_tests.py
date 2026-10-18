@@ -16,26 +16,36 @@ def runTests():
     warning = 0
 
     for test in tests:
-        returnObj = dio.executeCode(test["code"])
+        returnObj = []
+        for i in range(test["maxRuns"]):
+            returnObj.append(dio.executeCode(test["code"]))
 
         for output in test["expectedOutput"]:
             if output[-1] != "\n":
                 output += "\n"
 
-            if test["expectedReturnCode"] == returnObj.errorcode and output == returnObj.stdout:
-                print(f"{test["testIdentifier"]} : Passed")
-                passed += 1
-            elif test["expectedReturnCode"] == returnObj.errorcode and output == "ERROR\n": # BE CAREFUL WITH THIS!
-                print(f"{test["testIdentifier"]} : Passed [err type]")
-                passed += 1
-            elif test["expectedReturnCode"] == returnObj.errorcode and output != returnObj.stdout:
-                print(f"{test["testIdentifier"]} : Warning (RC: {returnObj.errorcode})")
-                print(output, returnObj.stdout)
-                warning += 1
-            else:
+            passedCur = 0
+
+            for curRetCheck in returnObj:
+                if test["expectedReturnCode"] == curRetCheck.errorcode and output == curRetCheck.stdout:
+                    passedCur = 1
+                    break
+                elif test["expectedReturnCode"] == curRetCheck.errorcode and output == "ERROR\n":
+                    passedCur = 2
+                    break
+            
+            if passedCur == 0:
                 print(f"{test["testIdentifier"]} : Failed")
-                print(returnObj.stdout)
+                #print(returnObj.stdout)
                 failed += 1
+                break
+
+        if passedCur == 1:
+            print(f"{test["testIdentifier"]} : Passed")
+            passed += 1
+        if passedCur == 2:
+            print(f"{test["testIdentifier"]} : Passed [err type]")
+            passed += 1
 
     print(f"Passed {passed} out of {len(tests)}")
     print(f"Failed {failed} out of {len(tests)}")
