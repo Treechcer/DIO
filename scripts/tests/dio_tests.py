@@ -41,7 +41,7 @@ def runTests():
             
             if passedCur == 0 or len(test["expectedOutput"]) != len(outputs):
                 print(f"{test["testIdentifier"]} : Failed")
-                #print(returnObj.stdout)
+                print(f"({curRetCheck.errorcode})", test["expectedOutput"], "|", outputs)
                 failed += 1
                 break
 

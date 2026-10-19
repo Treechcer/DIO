@@ -223,5 +223,23 @@
             "ERROR"
         ],
         "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "array adding",
+        "code" : "int arr = {1,2,3,4}; arr[1] = 67; out(arr);",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "{1.0, 67.0, 3.0, 4.0}"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "array adding array",
+        "code" : "int arr = {1,2,3,4}; arr[1] = {1, 2, 3}; out(arr);",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "{1.0, 1.0, 2.0, 3.0, 3.0, 4.0}"
+        ],
+        "maxRuns" : 1
     }
 ]
