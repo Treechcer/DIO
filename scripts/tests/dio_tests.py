@@ -17,6 +17,7 @@ def runTests():
 
     for test in tests:
         returnObj = []
+        outputs = []
         for i in range(test["maxRuns"]):
             returnObj.append(dio.executeCode(test["code"]))
 
@@ -29,12 +30,16 @@ def runTests():
             for curRetCheck in returnObj:
                 if test["expectedReturnCode"] == curRetCheck.errorcode and output == curRetCheck.stdout:
                     passedCur = 1
+                    if not curRetCheck.stdout in outputs:
+                        outputs.append(curRetCheck.stdout)
                     break
                 elif test["expectedReturnCode"] == curRetCheck.errorcode and output == "ERROR\n":
                     passedCur = 2
+                    if not curRetCheck.stdout in outputs:
+                        outputs.append(curRetCheck.stdout)
                     break
             
-            if passedCur == 0:
+            if passedCur == 0 or len(test["expectedOutput"]) != len(outputs):
                 print(f"{test["testIdentifier"]} : Failed")
                 #print(returnObj.stdout)
                 failed += 1

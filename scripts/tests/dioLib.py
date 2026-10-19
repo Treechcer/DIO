@@ -2,7 +2,7 @@ import subprocess
 import os
 import time
 
-# No idea if this works btw.
+# seems to work
 
 try:
     import psutil
