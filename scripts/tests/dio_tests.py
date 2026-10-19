@@ -102,7 +102,27 @@ def getLongestTime(times):
     maxTimeCopy = times.pop(index)
     return times, maxTimeCopy
 
+def testCrashes():
+    dio = dioLib.dioTalker("./dio.exe" if platform.system() == "Windows" else "./dio")
+
+    ex = os.listdir("./examples")
+
+    for example in ex:
+        if example[-3::] == "dio":
+            with open(os.path.join(".", "examples", example), "r") as f:
+                content = f.read()
+
+            returnObj = dio.executeCode(content, False, 0.75)
+            time.sleep(0.1)
+
+            if returnObj.errorcode != 0:
+                print(f"{example} (RC: {returnObj.errorcode})")
+
+    dio.disconnect()
+
 if __name__ == "__main__":
     runTests()
     print("----")
     timeTest()
+    print("----")
+    testCrashes()

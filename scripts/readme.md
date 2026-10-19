@@ -30,3 +30,7 @@ This disables the running of tests
 #### --timeTest
 
 This disables the running of timeTest.
+
+### tests/dio_tests.py
+
+This is code for doing all tests. To run it you have to have 'psutil', if it is not it should not let you run it.

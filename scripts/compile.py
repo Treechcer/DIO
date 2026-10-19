@@ -18,6 +18,10 @@ def runTimeTest():
     tests.timeTest()
     print("----")
 
+def testCrashed():
+    tests.testCrashes()
+    print("----")
+
 def runTests():
     tests.runTests()
     print("----")
@@ -213,6 +217,10 @@ arguments = {
     "valgrind" : {
         "data" : False,
         "collect" : "switch"
+    },
+    "crashTests" : {
+        "data" : True,
+        "collect" : "switch"
     }
 }
 
@@ -287,3 +295,6 @@ if arguments["timeTest"]:
 
 if arguments["valgrind"]:
     runValgrindTests(f"{executablePath} {fName}")
+
+if arguments["crashTests"]:
+    testCrashed()
