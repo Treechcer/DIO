@@ -253,9 +253,16 @@ try:
 
     if arguments["release"]:
         macros += ' -DBUILDTYPE=\\"release\\"'
+    
+    command = ""
 
-    command = f"gcc -g {getFiles()} -o ..{slash}{filename} {macros}" if platform.system() != "iOS" else f"clang ./C/*.c -o .{slash}{filename} {macros}" 
-
+    if platform.system() == "iOS":
+        command = f"clang ./C/*.c -o .{slash}{filename} {macros}"
+    elif platform.system() == "OpenBSD":
+        command = f"egcc -g {getFiles()} -o ..{slash}{filename} {macros}"
+    else:
+        command = f"gcc -g {getFiles()} -o ..{slash}{filename} {macros}"
+    
     #maybe this p could be used?
     #subprocess.run("gcc -pg " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
     #print(command)
