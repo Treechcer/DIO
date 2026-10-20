@@ -632,7 +632,7 @@ dynamicVar evalVariable(Node* node){
             insertPos = len;
         }
 
-        for (int i = 0; i < insertPos-1; i++) {
+        for (int i = 0; i < insertPos; i++) {
             str[destIndex++] = stringVal[i];
         }
 
@@ -640,7 +640,7 @@ dynamicVar evalVariable(Node* node){
             str[destIndex++] = insVal[i];
         }
 
-        for (int i = insertPos; i < len; i++) {
+        for (int i = insertPos+1; i < len; i++) {
             str[destIndex++] = stringVal[i];
         }
 
@@ -665,7 +665,7 @@ dynamicVar evalVariable(Node* node){
             tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = arrayNum, .data.arrayVar.length = len, .intialised = 1, .typedVar = NUMBERARRAY };
         }
         else{
-            int wholeLen = len + insLen;  // -1 because deleting the index!
+            int wholeLen = len + insLen - 1;  // -1 because deleting the index!
             double* newNumArr = malloc(wholeLen * sizeof(double));
             int destIndex = 0;
 
@@ -673,7 +673,7 @@ dynamicVar evalVariable(Node* node){
                 insertPos = len;
             }
 
-            for (int i = 0; i < insertPos-1; i++) {
+            for (int i = 0; i < insertPos; i++) {
                 newNumArr[destIndex++] = arrayNum[i];
             }
 
@@ -681,7 +681,7 @@ dynamicVar evalVariable(Node* node){
                 newNumArr[destIndex++] = insVal[i];
             }
 
-            for (int i = insertPos; i < len; i++) {
+            for (int i = insertPos+1; i < len; i++) {
                 newNumArr[destIndex++] = arrayNum[i];
             }
 
