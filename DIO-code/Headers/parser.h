@@ -82,10 +82,22 @@ typedef struct {
     } arbitraryData;
 } binOpResult;
 
+/*
+typedef struct funcStack {
+    char* name;
+} funcStack;
+
+typedef struct stackTrace {
+    funcStack trace[48]; //is this enough?
+    int currentMaxIndex; //index of newest function trace
+} stackTrace;
+*/
+
 typedef struct programState{
     int isInFunc;
     binOpResult* funcReturn; //parse is void, I don't know if I can change it's type to something?
     int nodePos;
+    //stackTrace stack;
 } programState;
 
 void parse(Node* ast);
