@@ -339,7 +339,7 @@ Node* parseNewVariable(dynamicToken* toks){
         return retNode;
     }
     else if (checkCurrenToken(toks).identifier == KEYWORD && (strcmp(tv, "int") == 0 || strcmp(tv, "float") == 0 || strcmp(tv, "bool") == 0)){
-        if (checkTokenAt(toks, 3).identifier == INT || checkTokenAt(toks, 3).identifier == FLOAT || (checkTokenAt(toks, 3).identifier == MINUS && (checkTokenAt(toks, 4).identifier == INT || checkTokenAt(toks, 4).identifier == FLOAT))){
+        if (checkTokenAt(toks, 3).identifier != LSQUIGLYPAREN){
             createNodeBool = 1;
             Position pos = shiftToken(toks).pos; // skips int | float ........
             name = checkCurrenToken(toks).value;
