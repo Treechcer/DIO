@@ -190,8 +190,21 @@ Node* parseExpression(dynamicToken* toks){
         if (index == NULL) {
             raiseErrorMacro(checkCurrenToken(toks).pos, "NULL array acees");
         }
+
         if (checkCurrenToken(toks).identifier != EQUALS) {
             raiseErrorMacro(checkCurrenToken(toks).pos, "No '=' after array acess");
+            //Node* retNode = createNode();
+            //retNode->type = VARIABLENODE;
+            //retNode->data.variableNode = malloc(sizeof(variableNode));
+            //retNode->data.variableNode->name = nameTok.value;
+            //retNode->data.variableNode->type = INTVAR;
+            //retNode->data.variableNode->value = NULL;
+            //retNode->data.variableNode->initialise = 0;
+            //retNode->data.variableNode->lastIndex = NULL;
+            //retNode->data.variableNode->arrayAcessIndex = index;
+            //retNode->pos = copyPos(&nameTok.pos);
+            //retNode->pos->end = index->pos->end;
+            //return retNode;
         }
         Token t = shiftToken(toks);
 
@@ -629,7 +642,7 @@ dynamicNode createFunctionParams(dynamicToken* toks){
         }
 
         DYN_PUSH(n, nodes);
-
+        
         if (checkCurrenToken(toks).identifier == COMMA){
             shiftToken(toks);
         }
@@ -954,14 +967,18 @@ Node* parseGenericNode(dynamicToken* toks){
         node = createNumArray(toks, checkCurrenToken(toks).pos);
     }
     if (node == NULL){
+        int skipped = 0;
 
-        if (checkCurrenToken(toks).identifier == END){
+        while (checkCurrenToken(toks).identifier == END){
             shiftToken(toks);
+            skipped = 1;
         }
-        
-        node = parseGenericNode(toks);
-        if (node != NULL){
-            return node;
+
+        if (skipped == 1){
+            node = parseGenericNode(toks);
+            if (node != NULL){
+                return node;
+            }
         }
 
         printf("ERR: %i : %li\n", g_index, (toks->count)-1);
