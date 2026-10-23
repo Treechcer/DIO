@@ -930,7 +930,12 @@ Node* parseProgram(dynamicToken* toks) {
 
         Node* node = parseGenericNode(toks);
 
-        DYN_PUSH(node, pNode->data.programNode->nodes);
+        if (node->type != NULLNODE){
+            DYN_PUSH(node, pNode->data.programNode->nodes);
+        }
+        else{
+            free(node);
+        }
     }
     return pNode;
 }
@@ -969,7 +974,7 @@ Node* parseGenericNode(dynamicToken* toks){
     if (node == NULL){
         int skipped = 0;
 
-        while (checkCurrenToken(toks).identifier == END){
+        while ((checkCurrenToken(toks).identifier == END) && (g_index+1 < toks->count)){
             shiftToken(toks);
             skipped = 1;
         }
@@ -979,6 +984,13 @@ Node* parseGenericNode(dynamicToken* toks){
             if (node != NULL){
                 return node;
             }
+        }
+
+        if (!(g_index+1 < toks->count) && node == NULL){
+            Node* n = createNode();
+            n->type = NULLNODE;
+
+            return n;
         }
 
         printf("ERR: %i : %li\n", g_index, (toks->count)-1);

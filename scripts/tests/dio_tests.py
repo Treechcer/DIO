@@ -112,6 +112,7 @@ def getLongestTime(times):
     return times, maxTimeCopy
 
 def testCrashes():
+    counter = 0
     dio = dioLib.dioTalker("./dio.exe" if platform.system() == "Windows" else "./dio")
 
     ex = os.listdir("./examples")
@@ -122,10 +123,12 @@ def testCrashes():
                 content = f.read()
 
             returnObj = dio.executeCode(content, False, 0.75)
-            time.sleep(0.1)
 
             if returnObj.errorcode != 0:
                 print(f"{example} (RC: {returnObj.errorcode})")
+                counter += 1
+
+    print(f"Crashed count: {counter}")
 
     dio.disconnect()
 

@@ -33,6 +33,7 @@ typedef enum {
     ARRAYACESSNODE,
     RETRUNNODE,
     UNKNOWNNODE,
+    NULLNODE,
 } nodeType;
 
 typedef struct programNode {
@@ -137,6 +138,10 @@ typedef struct returnNode {
     Node* binOpNode;
 } returnNode;
 
+typedef struct nullNode {
+    
+} nullNode;
+
 typedef struct Node {
     nodeType type;
     union {
@@ -156,6 +161,7 @@ typedef struct Node {
         struct arrayAcessNode* arrayAcessNode;
         struct numberArrayNode* numberArrayNode;
         struct returnNode* nodeRetun;
+        struct nullNode* nullNode;
     } data;
     Position* pos;
 } Node;
