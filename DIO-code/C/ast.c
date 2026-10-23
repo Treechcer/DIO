@@ -192,20 +192,20 @@ Node* parseExpression(dynamicToken* toks){
         }
 
         if (checkCurrenToken(toks).identifier != EQUALS) {
-            raiseErrorMacro(checkCurrenToken(toks).pos, "No '=' after array acess");
-            //Node* retNode = createNode();
-            //retNode->type = VARIABLENODE;
-            //retNode->data.variableNode = malloc(sizeof(variableNode));
-            //retNode->data.variableNode->name = nameTok.value;
-            //retNode->data.variableNode->type = INTVAR;
-            //retNode->data.variableNode->value = NULL;
-            //retNode->data.variableNode->initialise = 0;
-            //retNode->data.variableNode->lastIndex = NULL;
-            //retNode->data.variableNode->arrayAcessIndex = index;
-            //retNode->pos = copyPos(&nameTok.pos);
-            //retNode->pos->end = index->pos->end;
-            //return retNode;
+            Node* retNode = createNode();
+            retNode->type = VARIABLENODE;
+            retNode->data.variableNode = malloc(sizeof(variableNode));
+            retNode->data.variableNode->name = nameTok.value;
+            retNode->data.variableNode->type = INTVAR;
+            retNode->data.variableNode->value = NULL;
+            retNode->data.variableNode->initialise = 0;
+            retNode->data.variableNode->lastIndex = checkTokenAt(toks, -2).value;
+            retNode->data.variableNode->arrayAcessIndex = index;
+            retNode->pos = copyPos(&nameTok.pos);
+            retNode->pos->end = index->pos->end;
+            return retNode;
         }
+        
         Token t = shiftToken(toks);
 
         Node* value = parseStringGeneral(toks);
