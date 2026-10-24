@@ -576,6 +576,13 @@ dynamicVar evalVariable(Node* node){
 
     if (node->data.variableNode->dataFlags.isFuncCall){
         //callFunctionByName(node->data.variableNode->value->data.functionCall->name);
+
+        int funcIndex = getFuncIndexByName(node->data.variableNode->value->data.functionCall->name);
+        if (g_funcs.items[funcIndex].returnType == UNKNOWNVARTYPE){
+            //TODO: make this work that it reutrns null-like / ghost value and doesn't change inputs in any way 
+            raiseErrorMacro(*node->data.variableNode->value->pos, "Function is void, can't be used because it returns nothing.");
+        }
+
         parseFunctionCall_(node->data.variableNode->value);
         
         //printf("%i : %i\n", node->data.variableNode->type, program.funcReturn->varType);
