@@ -71,8 +71,7 @@ int main(int argc, char **argv){
     //CHECK INPUTS!
     checkInuts(argc, argv);
 
-    DEBUG_MODE = atoi(getvalueByIndex(debugModeIndex));
-    printf("%i", DEBUG_MODE);
+    DEBUG_MODE = strcmp(getvalueByIndex(debugModeIndex), "true") == 0;
 
     srand(time(NULL)); //for pseudo random Num
 
@@ -84,7 +83,7 @@ int main(int argc, char **argv){
         return 0;
     }
 
-    if (strcmp(getvalueByIndex(debugModeIndex), "true") == 0){
+    if (DEBUG_MODE){
         getAppInfoOut();
     }
 

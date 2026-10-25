@@ -198,6 +198,10 @@ arguments = {
         "data" : False,
         "collect" : "switch"
     },
+    "debugArg" : {
+        "data" : False,
+        "collect" : "switch"
+    },
     "release" : {
         "data" : False,
         "collect" : "switch"
@@ -282,9 +286,9 @@ try:
             fName = ""
         #os.chdir(os.path.abspath(os.path.dirname(fName)))
         if arguments["debug"]:
-            subprocess.run(f'gdb -ex run -ex bt --args {executablePath} {fName}', shell=True)
+            subprocess.run(f'gdb -ex run -ex bt --args {executablePath} {fName} {" -d " if arguments["debugArg"] == True else ""}', shell=True)
         else:
-            subprocess.run(f"{executablePath} {fName}", shell=True)
+            subprocess.run(f"{executablePath} {fName} {" -d " if arguments["debugArg"] == True else ""}", shell=True)
 
 except Exception as e:
     print(e)

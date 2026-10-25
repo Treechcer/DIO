@@ -7,6 +7,7 @@
 #include"../Headers/ast.h"
 #include"../Headers/parser.h"
 #include"../Headers/helper_functions.h"
+#include"../Headers/globals.h"
 
 //predef
 
@@ -1085,9 +1086,9 @@ void parseGeneric(Node* node){
             parseLoopNode(node);
             break;
         default:
-            //if (DEBUG_MODE){
+            if (DEBUG_MODE){
                 printf("%i\n", node->type);
-            //}
+            }
             raiseErrorMacro(*node->pos, "Node type was incorrect, maybe not implemented?");
             break;
     }
@@ -1100,8 +1101,9 @@ void writeOutTypesDebug(Node* ast){
 }
 
 void parse(Node* ast){
-    //debug!
-    //writeOutTypesDebug(ast);
+    if (DEBUG_MODE){
+        writeOutTypesDebug(ast);
+    }
 
     //printf("PARSER");
     //TODO: this might be problem? g_gotos will have duplicit values if codeblock?
