@@ -157,10 +157,28 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
 
         switch (c) {
             case '+':
-                tok = createToken("+", PLUS, createPosition(charPos_, charPos_, line, fileName));
+                c = moveByChar(&code, &line, &charPos_, 1);
+                if (c == '+'){
+                    Token varName = toks.items[toks.count - 1];
+                    DYN_PUSH(createToken("+", PLUS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    DYN_PUSH(createToken("1", INT, createPosition(charPos_, charPos_, line, fileName)), toks);
+                } 
+                else{
+                    c = moveByChar(&code, &line, &charPos_, -1);
+                    tok = createToken("+", PLUS, createPosition(charPos_, charPos_, line, fileName));
+                }
                 break;
             case '-':
-                tok = createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName));
+                c = moveByChar(&code, &line, &charPos_, 1);
+                if (c == '-'){
+                    Token varName = toks.items[toks.count - 1];
+                    DYN_PUSH(createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    DYN_PUSH(createToken("1", INT, createPosition(charPos_, charPos_, line, fileName)), toks);
+                } 
+                else{
+                    c = moveByChar(&code, &line, &charPos_, -1);
+                    tok = createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName));
+                }
                 break;
             case '*':
                 tok = createToken("*", MUL, createPosition(charPos_, charPos_, line, fileName));
