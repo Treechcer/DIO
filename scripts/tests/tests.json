@@ -259,5 +259,59 @@
             "HeLALlo"
         ],
         "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "Increment test",
+        "code" : "int a = 7; out(a++)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "8.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "decrement test",
+        "code" : "int a = 7; out(a--)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "6.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "walrus test (+)",
+        "code" : "int a = 7; a += 2; out(a)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "9.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "walrus test (-)",
+        "code" : "int a = 7; a -= 2; out(a)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "5.0"
+        ],
+        "maxRuns" : 1
+    },
+        {
+        "testIdentifier" : "walrus test (*)",
+        "code" : "int a = 7; a *= 2; out(a)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "14.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "walrus test (/)",
+        "code" : "int a = 7; a /= 2; out(a)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "3.5"
+        ],
+        "maxRuns" : 1
     }
 ]

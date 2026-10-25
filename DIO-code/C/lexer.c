@@ -215,7 +215,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                     Token varName = toks.items[toks.count - 1];
                     DYN_PUSH(createToken("=", EQUALS, createPosition(charPos_, charPos_, line, fileName)), toks);
                     DYN_PUSH(varName, toks);
-                    DYN_PUSH(createToken("/", div, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    DYN_PUSH(createToken("/", DIV, createPosition(charPos_, charPos_, line, fileName)), toks);
                 }
                 else{
                     c = moveByChar(&code, &line, &charPos_, -1);
