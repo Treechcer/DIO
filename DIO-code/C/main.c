@@ -60,7 +60,9 @@ void initLowLevelFuncs(){
 }
 
 int main(int argc, char **argv){
+    //Init values
     initAppInfo();
+
     //BUILD INPUTS!!
 
     int fileArgIndex = registerArg(STRINGPUT, "file", 0, "", ' ');
@@ -70,6 +72,7 @@ int main(int argc, char **argv){
     checkInuts(argc, argv);
 
     DEBUG_MODE = atoi(getvalueByIndex(debugModeIndex));
+    printf("%i", DEBUG_MODE);
 
     srand(time(NULL)); //for pseudo random Num
 

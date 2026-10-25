@@ -6,6 +6,7 @@
 #include"../Headers/dynamic_array.h"
 #include"../Headers/helper_functions.h"
 #include"../Headers/appInfo.h"
+#include"../Headers/globals.h"
 
 typedef struct SpecialVars{
     char* name;
@@ -408,7 +409,9 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                                 DYN_PUSH(c, text);
                                 c = moveByChar(&code, &line, &charPos_, 1);
                             }
-                            toks = lex(text.items, fileName, toks, 0);
+
+                            printf("%s\n", text.items);
+                            toks = lex(text.items, fileName, lex(arg.items, fileName, toks, 0), 0);
                         }
                         else{
                             while (c != '\n' && c != '\0') {
@@ -537,14 +540,16 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
 
         c = moveByChar(&code, &line, &charPos_, 1);
     }
-
-    //writeToksOut(toks);
-    //printf("\n");
-
+    
     if (isLast == 1){
         free(g_macros.items);
         g_macros.count = 0;
         g_macros.size = 0;
+    
+        if (DEBUG_MODE == 1){
+            writeToksOut(toks);
+            printf("\n");
+        }
     }
 
     return toks;

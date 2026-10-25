@@ -1,3 +1,2 @@
 #WIN int a = 5; out(a);
-
 #LINUX int a = 7; out(a);

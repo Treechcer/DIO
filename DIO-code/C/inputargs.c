@@ -47,10 +47,13 @@ void checkInuts(int argc, char **argv){
         sh[2] = '\0';
 
         strcpy(&cmd[bonus-1], g_args.items[i].name);
+        //int found = 0;
+
         for (int j = 0; j < argc; j++){
             char* comm = argv[j];
             if (strcmp(cmd, comm) == 0 || strcmp(sh, comm) == 0){
                 g_args.items[i].found = 1;
+                //found = 1;
 
                 if (g_args.items[i].type == BOOLEAN){
                     g_args.items[i].value = switcherooBool(g_args.items[i].value);
@@ -66,6 +69,12 @@ void checkInuts(int argc, char **argv){
                 
             }
         }
+
+        //if (found == 0){
+        //    printf("%s\n", g_args.items[i].name);
+        //    Position p = (Position){.end = 0, .start = 0, .line = 0, .file = "none"};
+        //    raiseErrorMacro(p, "Input not found.");
+        //}
     }
 
     for (int i = 0; i < g_args.count; i++){
