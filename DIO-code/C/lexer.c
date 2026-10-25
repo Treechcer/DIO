@@ -159,9 +159,16 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
             case '+':
                 c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '+'){
-                    Token varName = toks.items[toks.count - 1];
+                    //increment
                     DYN_PUSH(createToken("+", PLUS, createPosition(charPos_, charPos_, line, fileName)), toks);
                     DYN_PUSH(createToken("1", INT, createPosition(charPos_, charPos_, line, fileName)), toks);
+                } 
+                else if (c == '='){
+                    //walrus operator
+                    Token varName = toks.items[toks.count - 1];
+                    DYN_PUSH(createToken("=", EQUALS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    DYN_PUSH(varName, toks);
+                    DYN_PUSH(createToken("+", PLUS, createPosition(charPos_, charPos_, line, fileName)), toks);
                 } 
                 else{
                     c = moveByChar(&code, &line, &charPos_, -1);
@@ -171,20 +178,49 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
             case '-':
                 c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '-'){
-                    Token varName = toks.items[toks.count - 1];
+                    //decrement
                     DYN_PUSH(createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName)), toks);
                     DYN_PUSH(createToken("1", INT, createPosition(charPos_, charPos_, line, fileName)), toks);
-                } 
+                }
+                else if (c == '='){
+                    //walrus operator
+                    Token varName = toks.items[toks.count - 1];
+                    DYN_PUSH(createToken("=", EQUALS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    DYN_PUSH(varName, toks);
+                    DYN_PUSH(createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                }
                 else{
                     c = moveByChar(&code, &line, &charPos_, -1);
                     tok = createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName));
                 }
                 break;
             case '*':
-                tok = createToken("*", MUL, createPosition(charPos_, charPos_, line, fileName));
+                c = moveByChar(&code, &line, &charPos_, 1);
+                if (c == '='){
+                    //walrus operator
+                    Token varName = toks.items[toks.count - 1];
+                    DYN_PUSH(createToken("=", EQUALS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    DYN_PUSH(varName, toks);
+                    DYN_PUSH(createToken("*", MUL, createPosition(charPos_, charPos_, line, fileName)), toks);
+                }
+                else{
+                    c = moveByChar(&code, &line, &charPos_, -1);
+                    tok = createToken("*", MINUS, createPosition(charPos_, charPos_, line, fileName));
+                }
                 break;
             case '/':
-                tok = createToken("/", DIV, createPosition(charPos_, charPos_, line, fileName));
+                c = moveByChar(&code, &line, &charPos_, 1);
+                if (c == '='){
+                    //walrus operator
+                    Token varName = toks.items[toks.count - 1];
+                    DYN_PUSH(createToken("=", EQUALS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    DYN_PUSH(varName, toks);
+                    DYN_PUSH(createToken("/", div, createPosition(charPos_, charPos_, line, fileName)), toks);
+                }
+                else{
+                    c = moveByChar(&code, &line, &charPos_, -1);
+                    tok = createToken("/", DIV, createPosition(charPos_, charPos_, line, fileName));
+                }
                 break;
             case '^':
                 tok = createToken("^", POW, createPosition(charPos_, charPos_, line, fileName));
