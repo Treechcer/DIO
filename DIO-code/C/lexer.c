@@ -265,6 +265,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                 }
                 else{
                     tok = createToken(":", COLON, createPosition(charPos_, charPos_, line, fileName));
+                    moveByChar(&code, &line, &charPos_, -1);
                     break;
                 }
                 break;

@@ -167,6 +167,11 @@ void callFunctionByName(char* name){
                 printf("Function '%s' returned something but shouldn't have\n", name);
                 exit(1);
             }
+            else if (program.funcReturn == NULL && g_funcs.items[i].returnType == UNKNOWNVARTYPE){
+                program.funcReturn = malloc(sizeof(NULLVAR));
+                program.funcReturn->varType = NULLVAR;
+                program.funcReturn->value.nullVal = NULL; //is this best value?
+            }
 
             break;
         }
@@ -577,11 +582,11 @@ dynamicVar evalVariable(Node* node){
     if (node->data.variableNode->dataFlags.isFuncCall){
         //callFunctionByName(node->data.variableNode->value->data.functionCall->name);
 
-        int funcIndex = getFuncIndexByName(node->data.variableNode->value->data.functionCall->name);
-        if (g_funcs.items[funcIndex].returnType == UNKNOWNVARTYPE){
-            //TODO: make this work that it reutrns null-like / ghost value and doesn't change inputs in any way 
-            raiseErrorMacro(*node->data.variableNode->value->pos, "Function is void, can't be used because it returns nothing.");
-        }
+        //int funcIndex = getFuncIndexByName(node->data.variableNode->value->data.functionCall->name);
+        //if (g_funcs.items[funcIndex].returnType == UNKNOWNVARTYPE){
+        //    //TODO: make this work that it reutrns null-like / ghost value and doesn't change inputs in any way 
+        //    raiseErrorMacro(*node->data.variableNode->value->pos, "Function is void, can't be used because it returns nothing.");
+        //}
 
         parseFunctionCall_(node->data.variableNode->value);
         
@@ -1004,6 +1009,7 @@ void parseFunctionCall_(Node* node){
     //HOLY THIS SUCKS!
 
     if (node->data.functionCall->nextCall != NULL){
+        //printf("NEXT CALL\n");
         int inx__ = getFuncIndexByName(node->data.functionCall->nextCall->data.functionCall->name);
 
         variableTypes funcRetType = g_funcs.items[inx__].returnType;
@@ -1029,6 +1035,9 @@ void parseFunctionCall_(Node* node){
             }
             else if (program.funcReturn->varType == INTVAR){
                 node->data.functionCall->nextCall->data.functionCall->inputs.items[0]->data.numberNode->value = program.funcReturn->value.intVal;
+            }
+            else if (program.funcReturn->varType == NULLVAR){
+                //pass
             }
             else{
                 raiseErrorMacro(*node->data.functionCall->nextCall->pos, "Temp func call error");

@@ -7,3 +7,4 @@ def b()::void
 end
 
 int u = b():a()
+out(u)

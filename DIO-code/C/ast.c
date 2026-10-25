@@ -753,14 +753,16 @@ Node* parseFunctionCall(dynamicToken* toks){
         pNode->data.functionCall = malloc(sizeof(functionCall));
         pNode->data.functionCall->name = functionName;
         pNode->pos = copyPos(&tok.pos);
-        //printf("-|- %li\n", checkCurrenToken(toks).identifier);
-        //This crashes the programme? Why?
         pNode->data.functionCall->inputs = createFunctionParams(toks);
         pNode->data.functionCall->nextCall = NULL;
 
         if (strcmp(checkCurrenToken(toks).value, ":") == 0){
             shiftToken(toks);
             pNode->data.functionCall->nextCall = parseFunctionCall(toks);
+
+            if (pNode->data.functionCall->nextCall == NULL){
+                raiseErrorMacro(*pNode->pos, "Something went wrong when parsing...");
+            }
         }
 
         return pNode;

@@ -76,6 +76,7 @@ typedef struct {
         int intVal;
         float floatVar;
         double* numberArrayValue;
+        int* nullVal; //add like null or something to this when needed?
     } value;
     union {
         int lenght;

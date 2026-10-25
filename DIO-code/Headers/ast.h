@@ -12,6 +12,7 @@ typedef enum variableTypes {
     STRINGVAR,
     BOOLVAR,
     NUMBERARRAY,
+    NULLVAR,
     UNKNOWNVARTYPE,
 } variableTypes;
 
