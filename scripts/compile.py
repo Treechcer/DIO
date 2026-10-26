@@ -11,6 +11,18 @@ import tests.dio_tests as tests
 #if testsPath not in sys.path:
 #    sys.path.append(testsPath)
 
+def getFiles():
+    curPath = os.path.join(os.path.abspath(os.path.curdir), "C")
+    legacyPath = ""
+    if os.path.exists(os.path.join(os.path.abspath(os.path.curdir), "legacy")):
+        legacyPath = os.path.join(os.path.abspath(os.path.curdir), "legacy")
+    files = os.listdir(curPath)
+    string = ""
+    for o in files: string += os.path.join(curPath, o) + " "
+    if legacyPath != "":
+        for o in os.listdir(legacyPath): string += os.path.join(legacyPath, o) + " "
+    return string[:-1]
+
 def runValgrindTests(command):
     subprocess.run(f"valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all -s {command}", shell=True)
 
@@ -134,6 +146,14 @@ def makeRelease():
     else:
         print(f"Platform '{platform.system()}' is not planned to be supported, write your supported build or contact developers (via issue other means).")
 
+    #Generate WASM files (all platfroms every release!)
+
+    os.mkdir("releases/webapp")
+
+    os.chdir("DIO-code")
+    subprocess.run(f"emcc {getFiles()} -o {os.path.join("..", "releases", "webapp", "dio.html")}", shell=True)
+    os.chdir("..")
+
 def makeSTDlib():
     std = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "..", "scripts", "data"), "STD.dio")
     stdC = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "C"), "STD.c")
@@ -169,18 +189,6 @@ def makeSTDlib():
 char* getSTD();
 
 #endif""")
-
-def getFiles():
-    curPath = os.path.join(os.path.abspath(os.path.curdir), "C")
-    legacyPath = ""
-    if os.path.exists(os.path.join(os.path.abspath(os.path.curdir), "legacy")):
-        legacyPath = os.path.join(os.path.abspath(os.path.curdir), "legacy")
-    files = os.listdir(curPath)
-    string = ""
-    for o in files: string += os.path.join(curPath, o) + " "
-    if legacyPath != "":
-        for o in os.listdir(legacyPath): string += os.path.join(legacyPath, o) + " "
-    return string[:-1]
 
 s = "/"
 if platform.system() == "Windows":
