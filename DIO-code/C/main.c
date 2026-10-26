@@ -66,6 +66,7 @@ int main(int argc, char **argv){
     //BUILD INPUTS!!
 
     int fileArgIndex = registerArg(STRINGPUT, "file", 0, "", ' ');
+    int arbitraryCodeExecuteArgIndex = registerArg(STRINGPUT, "execute", 0, "", ' ');
     int debugModeIndex = registerArg(BOOLEAN, "debug", 0, "false", ' '); //this switches to true, even though it's named default value??
 
     //CHECK INPUTS!
@@ -77,8 +78,9 @@ int main(int argc, char **argv){
 
     //get file
     char* filePath = getvalueByIndex(fileArgIndex);
+    char* arbitraryCodeExecute = getvalueByIndex(arbitraryCodeExecuteArgIndex);
 
-    if (strcmp(filePath, "") == 0){
+    if (strcmp(filePath, "") == 0 && strcmp(arbitraryCodeExecute, "") == 0){
         repl(filePath);
         return 0;
     }
@@ -87,11 +89,11 @@ int main(int argc, char **argv){
         getAppInfoOut();
     }
 
-    if (checkIfValidFileEnd(filePath) == 0){
+    if (checkIfValidFileEnd(filePath) == 0 && strcmp(arbitraryCodeExecute, "") == 0){
         raiseErrorMacro(createPosition(0, 0, 1, filePath), "File does not end with one of valid file extensions");
     }
 
-    if (filePath != NULL && strlen(filePath) > 0){
+    if (filePath != NULL && strlen(filePath) > 0 && strcmp(arbitraryCodeExecute, "") == 0){
         ENTRY_POINT_FILE = getvalueByIndex(fileArgIndex);
         char *dir_copy = strdup(ENTRY_POINT_FILE);
         chdir(dirname(dir_copy));
@@ -112,6 +114,11 @@ int main(int argc, char **argv){
         initLowLevelFuncs();
         dynamicToken toks = {0,0,0};
         parse(buildAst(lex(code, realName, lex(getSTD(), "STDlib.dio", toks, 0), 1)));
+    }
+    else if (strcmp(arbitraryCodeExecute, "") != 0){
+        initLowLevelFuncs();
+        dynamicToken toks = {0,0,0};
+        parse(buildAst(lex(arbitraryCodeExecute, "CLI.dio", lex(getSTD(), "STDlib.dio", toks, 0), 1)));
     }
     
     return 0;
