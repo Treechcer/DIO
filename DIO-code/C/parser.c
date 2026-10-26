@@ -243,6 +243,10 @@ int getVariableNumArrayLength(int index) {
     return g_vars.items[index].data.arrayVar.length;
 }
 
+int generateRandomMaybeNode(){
+    return (int) rand() & 1;
+}
+
 binOpResult* evalBinOp(Node* node){
     binOpResult* res = malloc(sizeof(binOpResult));
     if (node == NULL) {
@@ -295,7 +299,7 @@ binOpResult* evalBinOp(Node* node){
     }
     if (node->type == MAYBENODE){
         res->varType = FLOATVAR;
-        res->value.floatVar = (int) rand() & 1;
+        res->value.floatVar = generateRandomMaybeNode();
         return res;
     }
 
@@ -971,6 +975,9 @@ void parseFunctionCall_(Node* node){
         }
         else if(node->data.functionCall->inputs.items[i]->type == NUMBERARRAYNODE){
             tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.arrayVar.value.numberValue = node->data.functionCall->inputs.items[i]->data.numberArrayNode->value, .data.arrayVar.length = node->data.functionCall->inputs.items[i]->data.numberArrayNode->length, .intialised = 1, .typedVar = NUMBERARRAY };
+        }
+        else if (node->data.functionCall->inputs.items[i]->type == MAYBENODE){
+            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = generateRandomMaybeNode(), .intialised = 1, .typedVar = FLOATVAR };
         }
         else{
             raiseErrorMacro(*node->pos, "Incorrect var type while parsing function call, implementation needed.");
