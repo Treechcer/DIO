@@ -279,6 +279,24 @@
         "maxRuns" : 1
     },
     {
+        "testIdentifier" : "Looper increment test",
+        "code" : "for (int i = 0; i < 3; i+++); out(i); end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "0.0\n1.0\n2.0\n"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "Looper decremenet test",
+        "code" : "for (int i = 3; i > 0; i---); out(i); end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "3.0\n2.0\n1.0\n"
+        ],
+        "maxRuns" : 1
+    },
+    {
         "testIdentifier" : "walrus test (+)",
         "code" : "int a = 7; a += 2; out(a)",
         "expectedReturnCode" : 0,

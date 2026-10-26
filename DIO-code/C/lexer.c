@@ -159,10 +159,22 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
             case '+':
                 c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '+'){
+                    c = moveByChar(&code, &line, &charPos_, 1);
                     //increment
-                    DYN_PUSH(createToken("+", PLUS, createPosition(charPos_, charPos_, line, fileName)), toks);
-                    DYN_PUSH(createToken("1", INT, createPosition(charPos_, charPos_, line, fileName)), toks);
-                } 
+                    if (c != '+'){
+                        c = moveByChar(&code, &line, &charPos_, -1);
+                        DYN_PUSH(createToken("+", PLUS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                        DYN_PUSH(createToken("1", INT, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    }
+                    //looper increment
+                    else{
+                        Token tok = toks.items[toks.count-1];
+                        DYN_PUSH(createToken("=", EQUALS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                        DYN_PUSH(tok, toks);
+                        DYN_PUSH(createToken("+", PLUS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                        DYN_PUSH(createToken("1", INT, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    }
+                }
                 else if (c == '='){
                     //walrus operator
                     Token varName = toks.items[toks.count - 1];
@@ -178,9 +190,21 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
             case '-':
                 c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '-'){
-                    //decrement
-                    DYN_PUSH(createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName)), toks);
-                    DYN_PUSH(createToken("1", INT, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    c = moveByChar(&code, &line, &charPos_, 1);
+                    //increment
+                    if (c != '-'){
+                        c = moveByChar(&code, &line, &charPos_, -1);
+                        DYN_PUSH(createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                        DYN_PUSH(createToken("1", INT, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    }
+                    //looper increment
+                    else{
+                        Token tok = toks.items[toks.count-1];
+                        DYN_PUSH(createToken("=", EQUALS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                        DYN_PUSH(tok, toks);
+                        DYN_PUSH(createToken("+", MINUS, createPosition(charPos_, charPos_, line, fileName)), toks);
+                        DYN_PUSH(createToken("1", INT, createPosition(charPos_, charPos_, line, fileName)), toks);
+                    }
                 }
                 else if (c == '='){
                     //walrus operator
