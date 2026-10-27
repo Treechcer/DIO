@@ -5,7 +5,7 @@
 
 ![Version](https://img.shields.io/badge/version-0.1.0-blue.svg?style=flat-square)
 ![License](https://img.shields.io/badge/license-BSD_3-green?logo=open-source-initiative)
-<img src="./scripts/data/logo.png" width=32px style="inline-block" alt="Logo of Dio">
+<img src="./scripts/data/logo.png" width=48px style="inline-block" alt="Logo of Dio">
 
 <!-- markdownlint-enable MD033 -->
 
