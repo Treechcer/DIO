@@ -68,11 +68,15 @@ int main(int argc, char **argv){
     int fileArgIndex = registerArg(STRINGPUT, "file", 0, "", ' ');
     int arbitraryCodeExecuteArgIndex = registerArg(STRINGPUT, "execute", 0, "", ' ');
     int debugModeIndex = registerArg(BOOLEAN, "debug", 0, "false", ' '); //this switches to true, even though it's named default value??
+    int appInfoIndex = registerArg(BOOLEAN, "appInfo", 0, "false", ' ');
+    int versionIndex = registerArg(BOOLEAN, "version", 0, "false", ' ');
 
     //CHECK INPUTS!
     checkInuts(argc, argv);
 
     DEBUG_MODE = strcmp(getvalueByIndex(debugModeIndex), "true") == 0;
+    int appInfoShow = strcmp(getvalueByIndex(appInfoIndex), "true") == 0;
+    int version = strcmp(getvalueByIndex(versionIndex), "true") == 0;
 
     srand(time(NULL)); //for pseudo random Num
 
@@ -80,13 +84,18 @@ int main(int argc, char **argv){
     char* filePath = getvalueByIndex(fileArgIndex);
     char* arbitraryCodeExecute = getvalueByIndex(arbitraryCodeExecuteArgIndex);
 
+    if (version){
+        printf("%s v%s", getAppInfo().platform, getAppInfo().version);
+        exit(0);
+    }
+
+    if (appInfoShow || DEBUG_MODE){
+        getAppInfoOut();
+    }
+
     if (strcmp(filePath, "") == 0 && strcmp(arbitraryCodeExecute, "") == 0){
         repl(filePath);
         return 0;
-    }
-
-    if (DEBUG_MODE){
-        getAppInfoOut();
     }
 
     if (checkIfValidFileEnd(filePath) == 0 && strcmp(arbitraryCodeExecute, "") == 0){

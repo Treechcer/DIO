@@ -16,6 +16,8 @@ void initAppInfo(){
         app.platform = "FREEBSD";
     #elif defined(__ANDROID__)
         app.platform = "ANDROID";
+    #elif defined(__EMSCRIPTEN__) || defined(__wasm__)
+        app.platform = "WEB";
     #endif
 }
 

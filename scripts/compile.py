@@ -147,12 +147,15 @@ def makeRelease():
         print(f"Platform '{platform.system()}' is not planned to be supported, write your supported build or contact developers (via issue other means).")
 
     #Generate WASM files (all platfroms every release!)
-
-    os.mkdir("releases/webapp")
+    if not os.path.exists("releases/webapp"):
+        os.mkdir("releases/webapp")
 
     os.chdir("DIO-code")
-    subprocess.run(f"emcc {getFiles()} -o {os.path.join("..", "releases", "webapp", "dio.html")}", shell=True)
+    subprocess.run(f"emcc {getFiles()} -o {os.path.join("..", "releases", "webapp", "dio.html")} -s EXIT_RUNTIME=1", shell=True)
     os.chdir("..")
+    shutil.copyfile(os.path.join("scripts", "data", "dio-fe.html"), os.path.join("releases", "webapp", "dio-fe.html"))
+    shutil.copyfile(os.path.join("scripts", "data", "main.js"), os.path.join("releases", "webapp", "main.js"))
+    shutil.copyfile(os.path.join("scripts", "data", "worker.js"), os.path.join("releases", "webapp", "worker.js"))
 
 def makeSTDlib():
     std = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "..", "scripts", "data"), "STD.dio")
