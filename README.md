@@ -3,9 +3,9 @@
 <!-- markdownlint-disable MD033 -->
 # Dio (Programming language)
 
-<img src="https://img.shields.io/badge/version-0.1.0-blue.svg?style=flat-square" alt="Version shield">
-<img src="https://img.shields.io/badge/license-BSD_3-green?logo=open-source-initiative" alt="License shield">
-<img src="./scripts/data/logo.png" width=32px alt="Logo of Dio">
+![Version](https://img.shields.io/badge/version-0.1.0-blue.svg?style=flat-square)
+![License](https://img.shields.io/badge/license-BSD_3-green?logo=open-source-initiative)
+<img src="./scripts/data/logo.png" width=32px style="inline-block" alt="Logo of Dio">
 
 <!-- markdownlint-enable MD033 -->
 
