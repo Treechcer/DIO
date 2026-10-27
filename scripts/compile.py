@@ -156,6 +156,7 @@ def makeRelease():
     shutil.copyfile(os.path.join("scripts", "data", "dio-fe.html"), os.path.join("releases", "webapp", "dio-fe.html"))
     shutil.copyfile(os.path.join("scripts", "data", "main.js"), os.path.join("releases", "webapp", "main.js"))
     shutil.copyfile(os.path.join("scripts", "data", "worker.js"), os.path.join("releases", "webapp", "worker.js"))
+    shutil.copyfile(os.path.join("scripts", "data", "logo.png"), os.path.join("releases", "webapp", "logo.png"))
 
 def makeSTDlib():
     std = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "..", "scripts", "data"), "STD.dio")
