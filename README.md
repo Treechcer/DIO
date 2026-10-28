@@ -244,7 +244,7 @@ for (int i = 0; i < 10; i += 1) >> will become i = i + 1
     out(i)
 end
 
-for (int i = 0; i < 10; i -= 1) >> will become i = i - 1
+for (int i = 10; i > 0; i -= 1) >> will become i = i - 1
     out(i)
 end
 
@@ -265,7 +265,7 @@ for (int i = 0; i < 10; i = i++) >> will become i = i + 1
     out(i)
 end
 
-for (int i = 0; i < 10; i = i--) >> will become i = i - 1
+for (int i = 10; i > 0; i = i--) >> will become i = i - 1
     out(i)
 end
 
@@ -275,7 +275,7 @@ for (int i = 0; i < 10; i+++) >> will become i = i + 1
     out(i)
 end
 
-for (int i = 0; i < 10; i+++) >> will become i = i - 1
+for (int i = 10; i > 0; i+++) >> will become i = i - 1
     out(i)
 end
 
