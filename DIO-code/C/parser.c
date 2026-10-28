@@ -1020,6 +1020,8 @@ void parseFunctionCall_(Node* node){
         //printf("NEXT CALL\n");
         int inx__ = getFuncIndexByName(node->data.functionCall->nextCall->data.functionCall->name);
 
+        printf("%s\n", g_funcs.items[inx__].name);
+
         variableTypes funcRetType = g_funcs.items[inx__].returnType;
 
         if (funcRetType == UNKNOWNVARTYPE){
@@ -1037,8 +1039,24 @@ void parseFunctionCall_(Node* node){
                     node->data.functionCall->nextCall->data.functionCall->inputs.items[0]->data.numberNode->value = program.funcReturn->value.floatVar;
                 }
                 else{
-                    //TODO: check if there are other inputs, move them if there are other!
-                    node->data.functionCall->nextCall->data.functionCall->inputs.items[0]->data.numberNode->value = program.funcReturn->value.floatVar;
+                    dynamicNode inputNodes = {0,0,0};
+
+                    Node* currentInput = createNode();
+                    currentInput->type = NUMBERNODE;
+                    currentInput->pos = copyPos(node->data.functionCall->nextCall->pos);
+                    currentInput->data.numberNode = malloc(sizeof(NUMBERNODE));
+                    currentInput->data.numberNode->value = program.funcReturn->value.floatVar;
+
+                    DYN_PUSH(currentInput, inputNodes)
+
+                    for (size_t posIndex = 0; posIndex < node->data.functionCall->nextCall->data.functionCall->inputs.count; posIndex++){
+                        DYN_PUSH(node->data.functionCall->nextCall->data.functionCall->inputs.items[posIndex], inputNodes);
+                    }
+
+                    node->data.functionCall->nextCall->data.functionCall->inputs.count = inputNodes.count;
+                    node->data.functionCall->nextCall->data.functionCall->inputs.items = inputNodes.items;
+                    node->data.functionCall->nextCall->data.functionCall->inputs.size = inputNodes.size;
+
                 }
             }
             else if (program.funcReturn->varType == INTVAR){

@@ -178,7 +178,7 @@ def a()::int
 end
 
 def b()::string
-    return "dsadasdas"
+    return "something"
 end
 
 def c()
@@ -208,8 +208,6 @@ b(retVal)
 
 >>Writes out 7, because chain functions pair together so "a" returns 7 which then "c" adds 1 making it 8
 ```
-
->Note: currently this isn't fully implemented as when the function you chain into takes more inputs will just not work.
 
 ### Control Flow
 

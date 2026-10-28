@@ -1,0 +1,11 @@
+def a()::int
+    return 1
+end
+
+def b(int : number, int : number2)::int
+    return number + number2
+end
+
+int a = a():b(2)
+
+out(a)
