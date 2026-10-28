@@ -5,6 +5,7 @@ import sys
 import json
 import shutil
 import tests.dio_tests as tests
+import copy
 
 #testsPath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "tests"))
 #
@@ -115,6 +116,24 @@ def generateExecutableForRelease(releaseData):
     name = buildName(releaseData)
     shutil.copyfile(defaultFile, os.path.join("releases", name))
 
+def buildWASMRelease():
+    #Generate WASM files (when webrelease)
+    if not os.path.exists("releases/webapp"):
+        os.mkdir("releases/webapp")
+
+    os.chdir("DIO-code")
+    try:
+        subprocess.run(f"emcc {getFiles()} -o {os.path.join("..", "releases", "webapp", "dio.html")} -s EXIT_RUNTIME=1", shell=True)
+    except:
+        print("emcc might not be installed, try to install it?")
+        return
+        
+    os.chdir("..")
+    shutil.copyfile(os.path.join("scripts", "data", "dio-fe.html"), os.path.join("releases", "webapp", "dio-fe.html"))
+    shutil.copyfile(os.path.join("scripts", "data", "main.js"), os.path.join("releases", "webapp", "main.js"))
+    shutil.copyfile(os.path.join("scripts", "data", "worker.js"), os.path.join("releases", "webapp", "worker.js"))
+    shutil.copyfile(os.path.join("scripts", "data", "logo.png"), os.path.join("releases", "webapp", "logo.png"))
+
 def makeRelease():
     releaseData = {}
 
@@ -145,18 +164,6 @@ def makeRelease():
         pass
     else:
         print(f"Platform '{platform.system()}' is not planned to be supported, write your supported build or contact developers (via issue other means).")
-
-    #Generate WASM files (all platfroms every release!)
-    if not os.path.exists("releases/webapp"):
-        os.mkdir("releases/webapp")
-
-    os.chdir("DIO-code")
-    subprocess.run(f"emcc {getFiles()} -o {os.path.join("..", "releases", "webapp", "dio.html")} -s EXIT_RUNTIME=1", shell=True)
-    os.chdir("..")
-    shutil.copyfile(os.path.join("scripts", "data", "dio-fe.html"), os.path.join("releases", "webapp", "dio-fe.html"))
-    shutil.copyfile(os.path.join("scripts", "data", "main.js"), os.path.join("releases", "webapp", "main.js"))
-    shutil.copyfile(os.path.join("scripts", "data", "worker.js"), os.path.join("releases", "webapp", "worker.js"))
-    shutil.copyfile(os.path.join("scripts", "data", "logo.png"), os.path.join("releases", "webapp", "logo.png"))
 
 def makeSTDlib():
     std = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "..", "scripts", "data"), "STD.dio")
@@ -208,37 +215,52 @@ if os.path.abspath(os.curdir).split(s)[-1] != "DIO-code":
 arguments = {
     "debug" : {
         "data" : False,
-        "collect" : "switch"
+        "collect" : "switch",
+        "inherit" : "None"
     },
     "debugArg" : {
         "data" : False,
-        "collect" : "switch"
+        "collect" : "switch",
+        "inherit" : "None"
     },
     "release" : {
         "data" : False,
-        "collect" : "switch"
+        "collect" : "switch",
+        "inherit" : "None"
+    },
+    "webRelease" : {
+        "data" : False,
+        "collect" : "switch",
+        "inherit" : "release",
     },
     "version" : {
         "data" : "UNKNOWN",
-        "collect" : "inputData"
+        "collect" : "inputData",
+        "inherit" : "None"
     },
     "tests" : {
         "data" : True,
-        "collect" : "switch"
+        "collect" : "switch",
+        "inherit" : "None"
     },
     "timeTest" : {
         "data" : True,
-        "collect" : "switch"
+        "collect" : "switch",
+        "inherit" : "None"
     },
     "valgrind" : {
         "data" : False,
-        "collect" : "switch"
+        "collect" : "switch",
+        "inherit" : "None"
     },
     "crashTests" : {
         "data" : True,
-        "collect" : "switch"
+        "collect" : "switch",
+        "inherit" : "None"
     }
 }
+
+unchangedArgs = copy.deepcopy(arguments)
 
 for arg in sys.argv[1:]:
     arg = arg.split("--") if arg[1] == "-" else arg.split("-")
@@ -253,6 +275,15 @@ for arg in sys.argv[1:]:
 for arg in arguments:
     if isinstance(arguments[arg], dict):
         arguments[arg] = arguments[arg]["data"]
+
+#Inherit
+
+for arg in unchangedArgs:
+    if isinstance(unchangedArgs[arg], dict):
+        if unchangedArgs[arg]["inherit"] != "None" and arguments[arg] == unchangedArgs[arg]["data"]:
+            arguments[arg] = arguments[unchangedArgs[arg]["inherit"]]
+
+#print(arguments["webRelease"])
 
 makeSTDlib()
 
@@ -309,6 +340,9 @@ except Exception as e:
 
 if arguments["release"]:
     makeRelease()
+
+if arguments["webRelease"]:
+    buildWASMRelease()
 
 if arguments["tests"]:
     runTests()
