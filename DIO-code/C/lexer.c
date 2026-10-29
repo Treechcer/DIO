@@ -467,7 +467,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
 
                         toks = lex(g_macros.items[index].text, fileName, toks, 0);
                     }
-                    else if (strcmp(action.items, "WIN") == 0 || strcmp(action.items, "LINUX") == 0 || strcmp(action.items, "APPLE") == 0 || strcmp(action.items, "FREEBSD") == 0 || strcmp(action.items, "ANDROID") == 0){
+                    else if (strcmp(action.items, "WIN") == 0 || strcmp(action.items, "LINUX") == 0 || strcmp(action.items, "APPLE") == 0 || strcmp(action.items, "FREEBSD") == 0 || strcmp(action.items, "ANDROID") == 0 || strcmp(action.items, "WEB") == 0){
                         int canRun = 0;
                         #if defined(_WIN32)
                             canRun = strcmp(action.items, "WIN") == 0;
@@ -479,6 +479,8 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                             canRun = strcmp(action.items, "FREEBSD") == 0;
                         #elif defined(__ANDROID__)
                             canRun = strcmp(action.items, "ANDROID") == 0;
+                        #elif defined(__EMSCRIPTEN__) || defined(__wasm__)
+                            canRun = strcmp(action.items, "WEB") == 0
                         #endif
 
                         if (canRun) {

@@ -383,6 +383,7 @@ Middle processor is kind of middle ware used to add code or change how lexing wo
 - Using `#APPLE *valid dio code*` will make this piece of code run only on apple devices (Mac, iOS, possibly that watch thingy if terminal emulator exists..)
 - Using `#FREEBSD *valid dio code*` will make this piece of code run only and only on freeBSD
 - Using `#ANDROID *valid dio code*` will make this piece of code run only and only on Android
+- Using `#WEB *valid dio code*` will make this piece of code run only and only in the WebApp version
 
 #### Pragma
 
