@@ -6,6 +6,7 @@
 #include"../Headers/helper_functions.h"
 #include"../Headers/macros.h"
 #include"../Headers/token.h"
+#include"../Headers/errorsNew.h"
 #include"../Headers/lexer.h"
 
 int g_index = 0;

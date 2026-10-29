@@ -353,5 +353,5 @@ if arguments["timeTest"]:
 if arguments["valgrind"]:
     runValgrindTests(f"{executablePath} {fName}")
 
-if arguments["crashTests"]:
+if arguments["crashTest"]:
     testCrashed()

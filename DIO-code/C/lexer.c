@@ -4,6 +4,7 @@
 
 #include"../Headers/token.h"
 #include"../Headers/dynamic_array.h"
+#include"../Headers/errorsNew.h"
 #include"../Headers/helper_functions.h"
 #include"../Headers/appInfo.h"
 #include"../Headers/globals.h"

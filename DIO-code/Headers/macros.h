@@ -8,8 +8,6 @@ typedef struct {\
     size_t size;\
 } name;\
 
-#include "../Headers/errorsNew.h"
-
 #define DYN_PUSH(value, arr)\
     if (arr.count >= arr.size){\
         if (arr.size == 0) arr.size = 256;\
@@ -40,6 +38,9 @@ if (index < arr.count) {\
 
 #define raiseErrorMacro(POSITION, ERRORMESSAGE)\
     raiseError(__FILE_NAME__, POSITION, ERRORMESSAGE, -1);
+
+#define raiseRuntimeErrorMacro(POSITION, ERRORMESSAGE, STACKTRACE)\
+    raiseRunTimeError(__FILE_NAME__, POSITION, ERRORMESSAGE, -1, STACKTRACE);
 
 #define raiseWarningMacro(POSITION, ERRORMESSAGE)\
     raiseWarning(__FILE_NAME__, POSITION, ERRORMESSAGE);

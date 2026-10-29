@@ -83,24 +83,23 @@ typedef struct {
     } arbitraryData;
 } binOpResult;
 
-/*
 typedef struct funcStack {
     char* name;
 } funcStack;
 
 typedef struct stackTrace {
-    funcStack trace[48]; //is this enough?
-    int currentMaxIndex; //index of newest function trace
+    funcStack trace[48]; //is this enough?, maybe dynamicFuncStack would be preffered?
+    int currentFuncIndex; //index of newest function trace
 } stackTrace;
-*/
 
 typedef struct programState{
     int isInFunc;
     binOpResult* funcReturn; //parse is void, I don't know if I can change it's type to something?
     int nodePos;
-    //stackTrace stack;
+    stackTrace stack;
 } programState;
 
+void entryPointParser(Node* ast);
 void parse(Node* ast);
 void createLowLevelFunc(char* name, dynamicNode inputs, variableTypes returnType, funcType funcType);
 void initLowLevelFuncs(void);

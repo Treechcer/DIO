@@ -8,6 +8,7 @@
 #include"../Headers/parser.h"
 #include"../Headers/helper_functions.h"
 #include"../Headers/globals.h"
+#include"../Headers/errorsNew.h"
 
 //predef
 
@@ -23,7 +24,7 @@ dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
 dynamicFunc g_funcs = {0,0,0};
 int g_skipelse = 0;
-programState program = {0,0,0};
+programState program = {0,0,0,0};
 
 int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes action){
     if ((action == INTSUM || action == SUB || action == MULT || action == DIVI) &&  (var1 == INTVAR || var1 == FLOATVAR) && (var2 == INTVAR || var2 == FLOATVAR)){
@@ -79,7 +80,7 @@ void callLowLevelFunc(int index, Node* node){
             printf("}\n");
         }
         else{
-            raiseErrorMacro(*node->pos, "Incorrect type in 'out' function call.");
+            raiseRuntimeErrorMacro(*node->pos, "Incorrect type in 'out' function call.", program.stack);
         }
     }
     else if (type == EXEC){
@@ -92,7 +93,7 @@ void callLowLevelFunc(int index, Node* node){
     }
     else if (type == ERROR){
         int varIndex = getVarIndexByName("a");
-        raiseErrorMacro(*node->pos, g_vars.items[varIndex].data.arrayVar.value.stringValue);
+        raiseRuntimeErrorMacro(*node->pos, g_vars.items[varIndex].data.arrayVar.value.stringValue, program.stack);
     }
     else if (type == LENGTH){
         int varIndex = getVarIndexByName("a");
@@ -102,7 +103,7 @@ void callLowLevelFunc(int index, Node* node){
             program.funcReturn->varType = INTVAR;
         }
         else {
-            raiseErrorMacro(*node->pos, "Incompatible type for 'length' as an argument");
+            raiseRuntimeErrorMacro(*node->pos, "Incompatible type for 'length' as an argument", program.stack);
         }
     }
     else if (type == INPUT){
@@ -125,19 +126,21 @@ void callLowLevelFunc(int index, Node* node){
         }
     }
     else if (type == NOTLOWLEVER){
-       raiseErrorMacro(*node->pos, "Low level func was called, but wasn't low level func?"); 
+       raiseRuntimeErrorMacro(*node->pos, "Low level func was called, but wasn't low level func?", program.stack); 
     }
     else{
-        raiseErrorMacro(*node->pos, "Type not implemented");
+        raiseRuntimeErrorMacro(*node->pos, "Type not implemented", program.stack);
     }
 
     if (program.funcReturn == NULL && g_funcs.items[index].returnType != UNKNOWNVARTYPE){
-        printf("Function '%s' should've returned something but didn't\n", g_funcs.items[index].name);
-        exit(1);
+        //printf("Function '%s' should've returned something but didn't\n", g_funcs.items[index].name);
+        //exit(1);
+        raiseRuntimeErrorMacro(*node->pos, "Function should've returned something but didn't", program.stack);
     }
     else if (program.funcReturn != NULL && g_funcs.items[index].returnType == UNKNOWNVARTYPE){
-        printf("Function '%s' returned something but shouldn't have\n", g_funcs.items[index].name);
-        exit(1);
+        //printf("Function '%s' returned something but shouldn't have\n", g_funcs.items[index].name);
+        //exit(1);
+        raiseRuntimeErrorMacro(*node->pos, "Function returned something but shouldn't have", program.stack);
     }
 }
 
@@ -287,7 +290,7 @@ binOpResult* evalBinOp(Node* node){
                     res->varType = FLOATVAR;
                     int indexArr = getIndexFromInput(node->data.variableNode->lastIndex);
                     if (indexArr == -1){
-                        raiseErrorMacro(*node->pos, "Incorrect input in array access.");
+                        raiseRuntimeErrorMacro(*node->pos, "Incorrect input in array access.", program.stack);
                     }
                     res->value.floatVar = g_vars.items[varIndex].data.arrayVar.value.numberValue[indexArr];
                     return res;
@@ -295,7 +298,7 @@ binOpResult* evalBinOp(Node* node){
             }
         }
         
-        raiseErrorMacro(*node->pos, "Incorrect var type for binary operations.");
+        raiseRuntimeErrorMacro(*node->pos, "Incorrect var type for binary operations.", program.stack);
     }
     if (node->type == MAYBENODE){
         res->varType = FLOATVAR;
@@ -346,7 +349,7 @@ binOpResult* evalBinOp(Node* node){
                     return res;
                 }
 
-                raiseErrorMacro(*node->pos, "Incorrect operation PLUS and types.");
+                raiseRuntimeErrorMacro(*node->pos, "Incorrect operation PLUS and types.", program.stack);
 
                 break;
             }
@@ -368,7 +371,7 @@ binOpResult* evalBinOp(Node* node){
                     return res;
                 }
 
-                raiseErrorMacro(*node->pos, "Incorrect operation MINUS and types.");
+                raiseRuntimeErrorMacro(*node->pos, "Incorrect operation MINUS and types.", program.stack);
 
                 break;
             }
@@ -390,7 +393,7 @@ binOpResult* evalBinOp(Node* node){
                     return res;
                 }
 
-                raiseErrorMacro(*node->pos, "Incorrect operation MULTIPLY and types.");
+                raiseRuntimeErrorMacro(*node->pos, "Incorrect operation MULTIPLY and types.", program.stack);
 
                 break;
             }
@@ -406,7 +409,7 @@ binOpResult* evalBinOp(Node* node){
                     else if (right->varType == FLOATVAR)
                         vRight = right->value.floatVar;
 
-                    if (vRight == 0) raiseErrorMacro(*node->pos, "You can't devide with zero.");
+                    if (vRight == 0) raiseRuntimeErrorMacro(*node->pos, "You can't devide with zero.", program.stack);
 
                     res->varType = FLOATVAR;
                     res->value.floatVar = vLeft / vRight;
@@ -414,7 +417,7 @@ binOpResult* evalBinOp(Node* node){
                     return res;
                 }
 
-                raiseErrorMacro(*node->pos, "Incorrect operation DIVIDE and types.");
+                raiseRuntimeErrorMacro(*node->pos, "Incorrect operation DIVIDE and types.", program.stack);
 
                 break;
             }
@@ -445,7 +448,7 @@ binOpResult* evalBinOp(Node* node){
                     return res;
                 }
 
-                raiseErrorMacro(*node->pos, "Incorrect operation MUL and types.");
+                raiseRuntimeErrorMacro(*node->pos, "Incorrect operation MUL and types.", program.stack);
             }
             case LESSTHAN:{
                 double vLeft = 0.0, vRight = 0.0;;
@@ -551,14 +554,14 @@ int getDataFromArrayAcessIndex(Node* inputNode){
             ret = getVariableFloatValue(getVarIndexByName(inputNode->data.variableNode->name));
         }
         else{
-            raiseErrorMacro(*inputNode->pos, "Unsupported variable type.");
+            raiseRuntimeErrorMacro(*inputNode->pos, "Unsupported variable type.", program.stack);
         }
     }
     else if (inputNode->type == NUMBERNODE){
         ret = inputNode->data.numberNode->value;
     }
     else{
-        raiseErrorMacro(*inputNode->pos, "No return type, maybe not yet added");
+        raiseRuntimeErrorMacro(*inputNode->pos, "No return type, maybe not yet added", program.stack);
     }
 
     if (ret != -1){
@@ -575,7 +578,7 @@ dynamicVar evalVariable(Node* node){
 
     int existingIndex = getVarIndexByName(name);
     if (varType == UNKNOWNVARTYPE && node->data.variableNode->initialise == 0){
-        raiseErrorMacro(*node->pos, "Unknown variable type.");
+        raiseRuntimeErrorMacro(*node->pos, "Unknown variable type.", program.stack);
     }
 
     //TODO: remake this, this kinda sucks
@@ -590,7 +593,7 @@ dynamicVar evalVariable(Node* node){
         //int funcIndex = getFuncIndexByName(node->data.variableNode->value->data.functionCall->name);
         //if (g_funcs.items[funcIndex].returnType == UNKNOWNVARTYPE){
         //    //TODO: make this work that it reutrns null-like / ghost value and doesn't change inputs in any way 
-        //    raiseErrorMacro(*node->data.variableNode->value->pos, "Function is void, can't be used because it returns nothing.");
+        //    raiseRuntimeErrorMacro(*node->data.variableNode->value->pos, "Function is void, can't be used because it returns nothing.");
         //}
 
         parseFunctionCall_(node->data.variableNode->value);
@@ -598,7 +601,7 @@ dynamicVar evalVariable(Node* node){
         //printf("%i : %i\n", node->data.variableNode->type, program.funcReturn->varType);
 
         if (checkCompatibleVarType(node->data.variableNode->type, program.funcReturn->varType, CONVERT) == 0){
-            raiseErrorMacro(*node->pos, "Function returned incompatible types");
+            raiseRuntimeErrorMacro(*node->pos, "Function returned incompatible types", program.stack);
         }
 
         if (program.funcReturn->varType == FLOATVAR){
@@ -614,7 +617,7 @@ dynamicVar evalVariable(Node* node){
             tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = program.funcReturn->value.numberArrayValue, .intialised = 1, .typedVar = NUMBERARRAY };
         }
         else{
-            raiseErrorMacro(*node->pos, "Function call type not yet implemented.")
+            raiseRuntimeErrorMacro(*node->pos, "Function call type not yet implemented.", program.stack)
         }
     }
     else if (varType == INTVAR || varType == FLOATVAR){
@@ -622,7 +625,7 @@ dynamicVar evalVariable(Node* node){
         if (value->varType == FLOATVAR){
             //https://stackoverflow.com/questions/570669/checking-if-a-double-or-float-is-nan-in-c
             if (value->value.floatVar != value->value.floatVar){
-                raiseErrorMacro(*node->pos, "Unknown variable type.");
+                raiseRuntimeErrorMacro(*node->pos, "Unknown variable type.", program.stack);
             }
             tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = name, .data.floatVal = value->value.floatVar, .intialised = 1, .typedVar = FLOATVAR };
         }
@@ -706,7 +709,7 @@ dynamicVar evalVariable(Node* node){
         }
     }
     else{
-        raiseErrorMacro(*node->pos, "Variable could not be parsed.");
+        raiseRuntimeErrorMacro(*node->pos, "Variable could not be parsed.", program.stack);
     }
 
     if (existingIndex >= 0){
@@ -742,7 +745,7 @@ int isGotoIncialised(char* name, dynamicGoto* dg){
 
 int parseGotoNameNode(Node* node, dynamicGoto* dg, Node* ast){
     if (isGotoIncialised(node->data.gotoNode->name, dg) == -1){
-        raiseErrorMacro(*node->pos, "Unknown goto name call.");
+        raiseRuntimeErrorMacro(*node->pos, "Unknown goto name call.", program.stack);
     }
 
     binOpResult* res = evalBinOp(node->data.gotoNode->binOpNode);
@@ -754,7 +757,7 @@ int parseGotoNameNode(Node* node, dynamicGoto* dg, Node* ast){
         cond = res->value.floatVar;
     }
     else{
-        raiseErrorMacro(*node->pos, "Incorrect var type in goto.");
+        raiseRuntimeErrorMacro(*node->pos, "Incorrect var type in goto.", program.stack);
     }
 
     if (!cond){
@@ -774,7 +777,7 @@ int parseGotoNameNode(Node* node, dynamicGoto* dg, Node* ast){
         }
     }
 
-    raiseErrorMacro(*node->pos, "This should not happen. GOTO");
+    raiseRuntimeErrorMacro(*node->pos, "This should not happen. GOTO", program.stack);
 }
 
 dynamicGoto prescanForGotos(Node* wholeAst, dynamicGoto dg){
@@ -803,7 +806,7 @@ void parseCondition_(Node* node){
 
 void parseFunction(Node* node){
     if (getFuncIndexByName(node->data.function->name) != -1){
-        raiseErrorMacro(*node->pos, "Function intialisation twice.");
+        raiseRuntimeErrorMacro(*node->pos, "Function intialisation twice.", program.stack);
     }
 
     dynamicNode input = {0,0,0};
@@ -835,14 +838,14 @@ void parseLoopNode(Node *node){
 void parseFunctionCall_(Node* node){
     int index = getFuncIndexByName(node->data.functionCall->name);
     if (index == -1){
-        raiseErrorMacro(*node->pos, "Can't call uninitialised functions.");
+        raiseRuntimeErrorMacro(*node->pos, "Can't call uninitialised functions.", program.stack);
     }
 
     if (node->data.functionCall->inputs.count > g_funcs.items[index].inputs.count){
-        raiseErrorMacro(*node->pos, "Too much inputs were inputed into the function.");
+        raiseRuntimeErrorMacro(*node->pos, "Too much inputs were inputed into the function.", program.stack);
     }
     else if (node->data.functionCall->inputs.count < g_funcs.items[index].inputs.count){
-        raiseErrorMacro(*node->pos, "Too little inputs were inputed into the function.");
+        raiseRuntimeErrorMacro(*node->pos, "Too little inputs were inputed into the function.", program.stack);
     }
 
     dynamicVar l_vars = {0,0,0};
@@ -896,7 +899,7 @@ void parseFunctionCall_(Node* node){
                             index_ = getVariableIntValue(index_);
                         }
                         else{
-                            raiseErrorMacro(*node->pos, "Incorrect var type.");
+                            raiseRuntimeErrorMacro(*node->pos, "Incorrect var type.", program.stack);
                         }
                     }
                     
@@ -921,7 +924,7 @@ void parseFunctionCall_(Node* node){
                     int indexArr = getIndexFromInput(node->data.functionCall->inputs.items[i]->data.variableNode->lastIndex);
 
                     if (index == -1){
-                        raiseErrorMacro(*node->pos, "Inline array declaration not implemented yet.");
+                        raiseRuntimeErrorMacro(*node->pos, "Inline array declaration not implemented yet.", program.stack);
                     }
                     double* value = getVariableNumArrayValue(index);
                     if (indexArr != -1){
@@ -953,11 +956,11 @@ void parseFunctionCall_(Node* node){
                     //}
                 }
                 else{
-                    raiseErrorMacro(*node->pos, "Incorrect binary operator return.");
+                    raiseRuntimeErrorMacro(*node->pos, "Incorrect binary operator return.", program.stack);
                 } 
             }
             else{
-                raiseErrorMacro(*node->pos, "Incorrect var type while parsing function call, need implementation.");
+                raiseRuntimeErrorMacro(*node->pos, "Incorrect var type while parsing function call, need implementation.", program.stack);
             }
         }
         else if (node->data.functionCall->inputs.items[i]->type == BINOPNODE){
@@ -980,7 +983,7 @@ void parseFunctionCall_(Node* node){
             tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = generateRandomMaybeNode(), .intialised = 1, .typedVar = FLOATVAR };
         }
         else{
-            raiseErrorMacro(*node->pos, "Incorrect var type while parsing function call, implementation needed.");
+            raiseRuntimeErrorMacro(*node->pos, "Incorrect var type while parsing function call, implementation needed.", program.stack);
         }
 
         int _inx = getVarIndexByName(tempVar.name);
@@ -994,12 +997,15 @@ void parseFunctionCall_(Node* node){
         }
 
         if (!checkCompatibleVarType(tempVar.typedVar, g_funcs.items[index].inputs.items[i]->data.variableNode->type, FCALL)){
-            raiseErrorMacro(*node->pos, "Incorrect function call type.");
+            raiseRuntimeErrorMacro(*node->pos, "Incorrect function call type.", program.stack);
             //printf("%i : %i\n", tempVar.typedVar, g_funcs.items[index].inputs.items[i]->data.variableNode->type);
             //printf("TODO: RAISE ERROR, INCORRECT CALL FUNCTION TYPE");
             //exit(1);
         }
     }
+
+    program.stack.trace[program.stack.currentFuncIndex].name = node->data.functionCall->name;
+    program.stack.currentFuncIndex += 1;
 
     if (g_funcs.items[index].funcType != NOTLOWLEVER){
         callLowLevelFunc(index, node);
@@ -1025,7 +1031,7 @@ void parseFunctionCall_(Node* node){
         variableTypes funcRetType = g_funcs.items[inx__].returnType;
 
         if (funcRetType == UNKNOWNVARTYPE){
-            raiseErrorMacro(*node->pos, "Void can't return anything, variable can't be equal to nothing.");
+            raiseRuntimeErrorMacro(*node->pos, "Void can't return anything, variable can't be equal to nothing.", program.stack);
         }
 
         if (g_funcs.items[inx__].inputs.count > 0){
@@ -1066,12 +1072,15 @@ void parseFunctionCall_(Node* node){
                 //pass
             }
             else{
-                raiseErrorMacro(*node->data.functionCall->nextCall->pos, "Temp func call error");
+                raiseRuntimeErrorMacro(*node->data.functionCall->nextCall->pos, "Temp func call error", program.stack);
             }
         }
 
         parseFunctionCall_(node->data.functionCall->nextCall);
     }
+
+    program.stack.currentFuncIndex -= 1;
+    program.stack.trace->name = NULL;
 }
 
 Node* astToNode(Node* ast){
@@ -1114,7 +1123,7 @@ void parseGeneric(Node* node){
             if (DEBUG_MODE){
                 printf("%i\n", node->type);
             }
-            raiseErrorMacro(*node->pos, "Node type was incorrect, maybe not implemented?");
+            raiseRuntimeErrorMacro(*node->pos, "Node type was incorrect, maybe not implemented?", program.stack);
             break;
     }
 }
@@ -1126,13 +1135,6 @@ void writeOutTypesDebug(Node* ast){
 }
 
 void parse(Node* ast){
-    if (DEBUG_MODE){
-        writeOutTypesDebug(ast);
-    }
-
-    //printf("PARSER");
-    //TODO: this might be problem? g_gotos will have duplicit values if codeblock?
-    g_gotos = prescanForGotos(ast, g_gotos);
     for (size_t i = 0; i < ast->data.programNode->nodes.count; i++){
         program.nodePos = i;
         Node* node = ast->data.programNode->nodes.items[i];
@@ -1151,4 +1153,19 @@ void parse(Node* ast){
             parseGeneric(node);
         }
     }
+}
+
+
+void entryPointParser(Node* ast){
+    if (DEBUG_MODE){
+        writeOutTypesDebug(ast);
+    }
+
+    program.stack.trace[0].name = "__main__";
+    program.stack.currentFuncIndex++;
+
+    //TODO: this might be problem? g_gotos will have duplicit values if codeblock?
+    g_gotos = prescanForGotos(ast, g_gotos);
+
+    parse(ast);
 }

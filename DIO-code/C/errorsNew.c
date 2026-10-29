@@ -5,6 +5,7 @@
 #include "../Headers/token.h"
 #include "../Headers/helper_functions.h"
 #include "../Headers/errorsNew.h"
+#include "../Headers/parser.h"
 
 #ifdef _WIN32
     #include <direct.h>
@@ -172,4 +173,25 @@ void raiseWarning(char* file, Position pos, char* errorMessage){
     char* codeLine = getLine(pos);
 
     printOutArrows(codeLine, pos, errorMessage, file, 1);
+}
+
+void raiseRunTimeError(char* file, Position pos, char* errorMessage, int errorCode, stackTrace st){
+    pos = checkIfValidPos(pos);
+    //char* processName = scanForFileName(file);
+    char* codeLine = getLine(pos);
+
+    printOutArrows(codeLine, pos, errorMessage, file, 0);
+
+    if (errorCode == -1){
+        errorCode = getErrorType(file);
+    }
+
+    printf("\nSTACK TRACE:\n");
+    for (int i = st.currentFuncIndex - 1; i > 0; i--){
+        printf("%s() <- ", st.trace[i]);
+    }
+
+    printf("%s()\n", st.trace[0]);
+    
+    exit(errorCode);
 }

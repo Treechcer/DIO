@@ -14,6 +14,7 @@ void repl(char* filePath){
 
     initLowLevelFuncs();
     while (1){
+        int inputCount = 0;
         char buffer[4096];
         dynamicToken STD = (dynamicToken){0,0,0};
         lex(getSTD(), "STDlib.dio", STD, 0);
@@ -32,8 +33,15 @@ void repl(char* filePath){
             }
 
             if (canSkip == 0){
-                parse(buildAst(lex(buffer, "REPL.dio", STD, 0)));
+                if (inputCount == 0){
+                    entryPointParser(buildAst(lex(buffer, "REPL.dio", STD, 0)));
+                }
+                else{
+                    parse((buildAst(lex(buffer, "REPL.dio", STD, 0))));
+                }
             }
+
+            inputCount++;
         }
         else {
             break;

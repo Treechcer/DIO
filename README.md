@@ -28,9 +28,9 @@ Dio is small open-source scripting programming language made in C that's suppose
 |Linux|✅|Yes||
 |Android|✅|Yes|Termux needs to be used|
 |FreeBSD|✅|Compiled, more testing needed||
-|iOS|✅|Compiled, more testing needed|a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works|
-|Mac (Intel)|✅|Yes||
-|Mac (Apple silicone)|✅|Compiled, more testing needed||
+|iOS|🟨|Compiled, more testing needed|a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works|
+|Mac (Intel)|🟨|Yes||
+|Mac (Apple silicone)|🟨|Compiled, more testing needed||
 |WebApp|🟨|Untested|can technically run through WASM (more novelty than actual release) - full support not promised|
 |OpenBSD|🟨|Was compiled but test haven't ran correctly (13 passed, 16 failed)||
 |NetBSD|❌|Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled||

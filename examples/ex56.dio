@@ -1,0 +1,23 @@
+>>stacktrace test
+
+def func1()::void
+    func2()
+end
+
+def func2()::void
+    func3()
+end
+
+def func3()::void
+    func4()
+end
+
+def func4()::void
+    func1(67)
+end
+
+def main()::void
+    func1()
+end
+
+main()
