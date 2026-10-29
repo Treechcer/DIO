@@ -239,24 +239,24 @@ arguments = {
         "inherit" : "None"
     },
     "tests" : {
-        "data" : True,
+        "data" : False,
         "collect" : "switch",
         "inherit" : "None"
     },
     "timeTest" : {
-        "data" : True,
+        "data" : False,
         "collect" : "switch",
-        "inherit" : "None"
+        "inherit" : "tests"
     },
     "valgrind" : {
         "data" : False,
         "collect" : "switch",
         "inherit" : "None"
     },
-    "crashTests" : {
-        "data" : True,
+    "crashTest" : {
+        "data" : False,
         "collect" : "switch",
-        "inherit" : "None"
+        "inherit" : "tests"
     }
 }
 

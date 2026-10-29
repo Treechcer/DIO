@@ -425,6 +425,9 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                     //printf("%s\n", arg.items);
 
                     if (strcmp(action.items, "get") == 0) {
+                        if (strcmp(arg.items, "alife") == 0){
+                            printf("Touch grass.\n");
+                        }
                         fileReadReturn fileNext = readFile(arg.items);
                         if (fileNext.exists == 0) {
                             raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName), "File does not exist or could not be access by the OS.");
