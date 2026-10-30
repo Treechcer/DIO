@@ -5,6 +5,7 @@ import sys
 import json
 import shutil
 import tests.dio_tests as tests
+import parsers.markdownParse as mp
 import copy
 
 #testsPath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "tests"))
@@ -133,6 +134,9 @@ def buildWASMRelease():
     shutil.copyfile(os.path.join("scripts", "data", "main.js"), os.path.join("releases", "webapp", "main.js"))
     shutil.copyfile(os.path.join("scripts", "data", "worker.js"), os.path.join("releases", "webapp", "worker.js"))
     shutil.copyfile(os.path.join("scripts", "data", "logo.png"), os.path.join("releases", "webapp", "logo.png"))
+
+    mp.parse("README.md", os.path.join("scripts", "parsers", "wiki.json"))
+    shutil.copyfile(os.path.join("scripts", "parsers", "wiki.json"), os.path.join("releases", "webapp", "wiki.json"))
 
 def makeRelease():
     releaseData = {}
