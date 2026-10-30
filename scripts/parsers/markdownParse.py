@@ -61,4 +61,4 @@ def parse(filePath, output):
         json.dump(parsedObj, f, indent=4)
 
 if __name__ == "__main__":
-    parse("README.md", "./scripts/parsers/markdown.json")
+    parse("README.md", "./scripts/parsers/wiki.json")

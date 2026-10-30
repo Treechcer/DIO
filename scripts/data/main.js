@@ -39,3 +39,8 @@ function runDio() {
 function clearOutput() {
     document.getElementById("outputText").value = ""
 }
+
+function generateWiki() {
+    //like bro what even
+    fetch("wiki.json").then(response => {return response.json()}).then(data => {console.log(data)})
+}
