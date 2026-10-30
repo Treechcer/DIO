@@ -1,0 +1,232 @@
+[
+    {
+        "level": 1,
+        "headerText": " Dio (Programming language)\n",
+        "textInParagraph": "\n![Version](https://img.shields.io/badge/version-0.1.0-blue.svg?style=flat-square)\n![License](https://img.shields.io/badge/license-BSD_3-green?logo=open-source-initiative)\n<img src=\"./scripts/data/logo.png\" width=48px style=\"inline-block\" alt=\"Logo of Dio\">\n\n<!-- markdownlint-enable MD033 -->\n\n<!--\n\nNon-HTML images\n\n![Version](https://img.shields.io/badge/version-0.1.0-blue.svg?style=flat-square)\n![License](https://img.shields.io/badge/license-BSD_3-green?logo=open-source-initiative)\n![Dio](./scripts/data/logo.png)\n-->\n\nDio is small open-source scripting programming language made in C that's supposed to run on most modern computer systems.\n\n"
+    },
+    {
+        "level": 2,
+        "headerText": " Current OS compatibility\n",
+        "textInParagraph": "\n|OS|Status (tested)|Runs as should|notes|\n|-|-|-|-|\n|Windows|\u2705|Yes||\n|Linux|\u2705|Yes||\n|Android|\u2705|Yes|Termux needs to be used|\n|FreeBSD|\u2705|Compiled, more testing needed||\n|iOS|\ud83d\udfe8|Compiled, more testing needed|a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works|\n|Mac (Intel)|\ud83d\udfe8|Yes||\n|Mac (Apple silicone)|\ud83d\udfe8|Compiled, more testing needed||\n|WebApp|\ud83d\udfe8|Untested|can technically run through WASM (more novelty than actual release) - full support not promised|\n|OpenBSD|\ud83d\udfe8|Was compiled but test haven't ran correctly (13 passed, 16 failed)||\n|NetBSD|\u274c|Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled||\n|HaikuOS|\u274c|Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled||\n|ReactOS|\u274c|Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled||\n\n"
+    },
+    {
+        "level": 2,
+        "headerText": " Release Cycle\n",
+        "textInParagraph": "\nRelease cycle ins't set in any way. Time between any versions can be as long (or as short) as needed for that version. Any code in main branch ('Development' branch) is not meant as stable code and can be unfinished and may not run correctly, **only stable code is in the release**. Version are if format: **Major.Minor.Patch**.\n\nCurrent platforms in releases (current and future):\n\n- Windows\n- Linux\n- MacOS (Intel CPU)\n- Android\n- iOS (Dio version 0.1.1+)\n- FreeBSD\n- WebApp (Dio version 0.1.1+)\n\n> NOTE: although Apple Silicone **should** work, I can't reliably compile for it, I don't own any Apple silicone machine.\n\n"
+    },
+    {
+        "level": 2,
+        "headerText": " Compiling and Running\n",
+        "textInParagraph": "\n"
+    },
+    {
+        "level": 3,
+        "headerText": " Stable version\n",
+        "textInParagraph": "\nStable is only version in releases. Currently there is only one release (0.1.0).\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " Compiling\n",
+        "textInParagraph": "\nTo compile it run in the root of this repository command:\n\n```sh\npython3 ./scripts/compile.py\n```\n\nThis automatically runs the language with params from ./scripts/CompileRunParams.txt (which is usually examples/ex[num].dio).\n\n> Note: more info in ![Readme.md](./scripts/readme.md)\n\n"
+    },
+    {
+        "level": 2,
+        "headerText": " Documentation\n",
+        "textInParagraph": "\nDio is procedural, statically typed programming language. Working directory is generated through \"-file\" input, if you input \"-file example/ex2.dio\", DIO uses ./examples/ as it's working directory.\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " Origins\n",
+        "textInParagraph": "\nThe name `Dio` comes from ancient Greek philosopher [Diogenes of Sinope](https://en.wikipedia.org/wiki/Diogenes) and his [bowl story](https://medium.com/@ricosutioso/diogenes-the-beggar-philosopher-fdd71946f641). Essentially, Diogenes saw kid drinking water from river with his hands, so he threw away his bowl (one of two things he owned). It's called `Dio` because it's trying to be minimalistic language.\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " File extensions\n",
+        "textInParagraph": "\nDIO supports three file extensions:\n\n- .dio (original)\n- .diogenes\n- .diogenesdesinope\n\nEverything else should raise error.\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " launch Params\n",
+        "textInParagraph": "\n"
+    },
+    {
+        "level": 4,
+        "headerText": " -f / --file\n",
+        "textInParagraph": "\nThis parametre tells dio which file to use.\n\n> If this parametre isn't technically needed, it'll open \"REPL\" mode, which isn't finished, so it doesn't fully works, please don't use it, it's not finished.\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " -d / --debug\n",
+        "textInParagraph": "\nThis is now only used for writing out some values for this software (like version etc.).\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " -e / --execute\n",
+        "textInParagraph": "\nThis executes whatever you type as next param. This was added for WebApp support.\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " -v / --version\n",
+        "textInParagraph": "\nThis outputs current platform and version, immediately stops execution with exit code 0.\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " -a / --appInfo\n",
+        "textInParagraph": "\nThis is used to print out just info about the app (platform, version, source).\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " Variable types\n",
+        "textInParagraph": "\n- [x] int - basic number type, it's internally used as float.\n- [x] float - basic number type, can be used with +, -, *, /, <, >, <=, >=, ==.\n- [x] string - basic text (can only be used as output and be concatenated with \"+\").\n- [x] bool - integer that's ONLY checked while creating if has bool values, after initialization it can have ANY int/float value.\n- [x] number arrays - part of int.\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " Comments\n",
+        "textInParagraph": "\n"
+    },
+    {
+        "level": 4,
+        "headerText": " Single-line comments\n",
+        "textInParagraph": "\nDio uses `>>` as the symbols for single-line comments. Comments end when lexer either find end of the line or the file ends.\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " Multi-line comments\n",
+        "textInParagraph": "\nDio uses construction of `>*` (start) and `*<` (end) as multi-line comment, or the so called 'cat symbol' (**>* *<**). These comments end either when the file ends or when it finds the end symbol.\n\n> Note: if you only ues `>*` everything afterwards will be taken af part of the comment.\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " Variables\n",
+        "textInParagraph": "\n```py\n>>Initialize \nint a = 10;\n\n>>Using var\nint b = a + 1;\n\n>>Creating array\nint arr = {1,2,3.5,7}\n```\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " Booleans\n",
+        "textInParagraph": "\nAll normal booleans (true, false) are here, represented by either the word \"**true**\" or \"**false**\" (this is changed in lexer to 1 and 0 respectively). Dio also has special boolean, maybe, which is either 1 or 0 (determined in the parser - same \"line\" different result).\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " Functions\n",
+        "textInParagraph": "\n```py\n>>Declare\ndef name()::void\n    >>code\nend\n\ndef withParams(type : name, type2 : name2 ...)::void\n    >>they can have any amount of inputs\nend\n\n>>call\nname()\nwithParams(a, 10) >> example, use variable and 10\n```\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " Function Return Types\n",
+        "textInParagraph": "\nFunctions can return values, they must return a value of the type specified. If no type is specified `::void` is being used as default value.\n\n```py\n\ndef a()::int\n    return 7;\nend\n\ndef b()::string\n    return \"something\"\nend\n\ndef c()\n    >>return can't be used!\nend\n```\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " Function chain functions\n",
+        "textInParagraph": "\nTraditionally in programming, you can used functions as inputs and they get interpreted as a value. This language does not support that (at least yet*), instead there is chaining which always places result as first input of the next function and moves all inputs that are already in the function. This is used mostly to assign values to variables that can then be used later.\n\n```py\ndef a()::int\n    return 7\nend\n\ndef b(int : a)::void\n    out(a)\nend\n\ndef c(int : a)::int\n    return a + 1\nend\n\nint retVal = a():c()\nb(retVal)\n\n>>Writes out 7, because chain functions pair together so \"a\" returns 7 which then \"c\" adds 1 making it 8\n```\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " Control Flow\n",
+        "textInParagraph": "\n"
+    },
+    {
+        "level": 4,
+        "headerText": " WHILE Loops\n",
+        "textInParagraph": "\n```py\nint i = 0;\nwhile(i < 10)\n    i = i + 1\n    out(i)\nend\n\n>>outputs 1 -> 10\n```\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " FOR Loops\n",
+        "textInParagraph": "\n```py\nfor (int i = 0; i < 10; i = i + 1)\n    out(i)\nend\n\n>>outputs 0 -> 9\n```\n\n"
+    },
+    {
+        "level": 5,
+        "headerText": " Loops with walrus operators, increments and loopers\n",
+        "textInParagraph": "\n> Note: All these can be used elsewhere but I believe this is where they shine the most.\n\n```py\n>>Walrus operators\n\nfor (int i = 0; i < 10; i += 1) >> will become i = i + 1\n    out(i)\nend\n\nfor (int i = 10; i > 0; i -= 1) >> will become i = i - 1\n    out(i)\nend\n\n>*\n\nAll walrus operators:\n\n+=\n-=\n*=\n/=\n\n*<\n\n>>Increment / decrement\n\nfor (int i = 0; i < 10; i = i++) >> will become i = i + 1\n    out(i)\nend\n\nfor (int i = 10; i > 0; i = i--) >> will become i = i - 1\n    out(i)\nend\n\n>>Loopers\n\nfor (int i = 0; i < 10; i+++) >> will become i = i + 1\n    out(i)\nend\n\nfor (int i = 10; i > 0; i+++) >> will become i = i - 1\n    out(i)\nend\n\n```\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " Branching\n",
+        "textInParagraph": "\nAs in standart languages:\nIf -> elseif -> else\n\n```py\n\nif (condition)\n>>code\nelseif (condition)\n>>code\nelse\n>>code\nend\n```\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " Goto\n",
+        "textInParagraph": "\nGoto-s are not not recommend to be used, they might have some specific use cases, they were added as 'first feature'.\n\n```py\n\n>>this is without any condition\n\n::gotoName::\n\n>>code\n\ngoto ::gotoName::\n\n\n>> goto with condition\n\n::gotoName::\n\n>>code\n\ngoto (condition) ::gotoName::\n\n```\n\n> NOTE: if you don't use condition, it will run always\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " Standard Library\n",
+        "textInParagraph": "\n"
+    },
+    {
+        "level": 4,
+        "headerText": " out(something : anyType)::void\n",
+        "textInParagraph": "\n```py\nint a = 5\nout(a)\n```\n\nOut is print function that prints out the variables or what you put into it.\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " length(something : arrayType)::int\n",
+        "textInParagraph": "\n```py\nint a = {1,2,3}\n\nint len = length(a)\n\nout(len)\n```\n\nLength returns the integer length of array type variables (string or number array).\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " error(text : string)::void\n",
+        "textInParagraph": "\nRaises error, similarly as the language does errors. This makes the program instantly exit with some error code.\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " warning(text : string)::void\n",
+        "textInParagraph": "\nRaises warning, this only writes out text but does not stop executing other code.\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " exec(text : string)::void\n",
+        "textInParagraph": "\nExecutes shell commands.\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " input(text : string)::string\n",
+        "textInParagraph": "\nWrites out the text input and takes input, which is then returned as what the user writes.\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " middle-processor\n",
+        "textInParagraph": "\nMiddle processor is kind of middle ware used to add code or change how lexing works. This is imitating (in a way\\*) pre-processor from C (or that's the idea behind itq*). All mid processor calls are prefixed with '#'.\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " get\n",
+        "textInParagraph": "\n- Takes argument of file.\n- Adds the file into the program you're making, this is used to import to other file for multi-file support.\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " def and use\n",
+        "textInParagraph": "\n- `#def *name*: *valid dio code*` this makes macro which can be used with command `#use *name*`\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " specific OS code\n",
+        "textInParagraph": "\n- Using `#WIN *valid dio code*` will make this piece of code run only and only on windows\n- Using `#LINUX *valid dio code*` will make this piece of code run only and only on linux\n- Using `#APPLE *valid dio code*` will make this piece of code run only on apple devices (Mac, iOS, possibly that watch thingy if terminal emulator exists..)\n- Using `#FREEBSD *valid dio code*` will make this piece of code run only and only on freeBSD\n- Using `#ANDROID *valid dio code*` will make this piece of code run only and only on Android\n- Using `#WEB *valid dio code*` will make this piece of code run only and only in the WebApp version\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " Pragma\n",
+        "textInParagraph": "\n"
+    },
+    {
+        "level": 5,
+        "headerText": " Once\n",
+        "textInParagraph": "\n- declaring \"#pragma once\" at the start of the programme it'll make it so it can be loaded only once\n\n"
+    },
+    {
+        "level": 3,
+        "headerText": " Special Variables\n",
+        "textInParagraph": "\nThese work in similar way as macros, except they are used with prefix \"$\". They are SIMILAR as if you used some macro except they don't need anything else to be invoked than **$** + **name**.\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " $PLATFORM (string)\n",
+        "textInParagraph": "\nThis will add tokens of values: \", PLATFORM-NAME (APPLE, ANDROID, LINUX...), \"\n\n```py\nstring platform = $PLATFORM\n\n>>This can be also used in ifs etc.\n```\n\n"
+    },
+    {
+        "level": 4,
+        "headerText": " $VERSION (string)\n",
+        "textInParagraph": "\nThis will add tokens of values? \", VERSION-NUMBERS (0.1.0, 1.0.0, etc.), \"\n\n```py\nstring version = $VERSION\n```\n"
+    }
+]
