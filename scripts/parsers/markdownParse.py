@@ -1,15 +1,5 @@
 import json
 
-class HeaderedParagraph:
-    level = 0
-    headerText = ""
-    textUnderParagraph = ""
-
-    def __init__(self, level, headerText, textUnderParagraph):
-        self.level = level
-        self.headerText = headerText
-        self.textUnderParagraph = textUnderParagraph
-
 def parse(filePath, output):
     parsedObj = []
 
@@ -32,7 +22,6 @@ def parse(filePath, output):
 
             i = i + 1
             continue
-            
 
         if line[0] == "#":
             for j in range(6):
@@ -57,8 +46,6 @@ def parse(filePath, output):
             pass
 
         i = i + num - 1
-
-        print(textInParagraph)
 
         tempMap = {
             "level" : level,
