@@ -50,5 +50,5 @@ function drawWiki(wikiJson) {
 
 function generateWiki() {
     //like bro what even
-    fetch("wiki.json").then(response => {return response.json()}).then(data => {console.log(data); drawWiki(data);})
+    fetch("wiki.json").then(response => {return response.json()}).then(data => {/*console.log(data);*/ drawWiki(data);})
 }
