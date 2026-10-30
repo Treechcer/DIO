@@ -37,9 +37,15 @@ def parse(filePath, output):
 
         textInParagraph = ""
         num = 0
-        i += 1
+        i += 2 #skipping \n
         try:
             while (content[i + num][0] != "#"):
+                line = content[i + num]
+
+                if line.strip() == "" or line == "" or (line[0] == "!" and line[1] == "[") or (line[0] == "<" and line[-2] == ">"):
+                    num = num + 1
+                    continue
+
                 textInParagraph += content[i + num]
                 num = num + 1
         except IndexError:
