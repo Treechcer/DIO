@@ -40,7 +40,15 @@ function clearOutput() {
     document.getElementById("outputText").value = ""
 }
 
+function drawWiki(wikiJson) {
+    div = document.getElementById("wiki")
+    for (i = 0; i < wikiJson.length; i++){
+        div.insertAdjacentHTML("beforeend", `<h${wikiJson[i].level}> ${wikiJson[i].headerText} </h${wikiJson[i].level}>`)
+        div.insertAdjacentHTML("beforeend", `<pre>${wikiJson[i].textInParagraph}</pre>`)
+    }
+}
+
 function generateWiki() {
     //like bro what even
-    fetch("wiki.json").then(response => {return response.json()}).then(data => {console.log(data)})
+    fetch("wiki.json").then(response => {return response.json()}).then(data => {console.log(data); drawWiki(data);})
 }
