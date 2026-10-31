@@ -484,7 +484,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                         #elif defined(__ANDROID__)
                             canRun = strcmp(action.items, "ANDROID") == 0;
                         #elif defined(__EMSCRIPTEN__) || defined(__wasm__)
-                            canRun = strcmp(action.items, "WEB") == 0
+                            canRun = strcmp(action.items, "WEB") == 0;
                         #endif
 
                         if (canRun) {

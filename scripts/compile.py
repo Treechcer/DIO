@@ -130,7 +130,8 @@ def buildWASMRelease():
         return
         
     os.chdir("..")
-    shutil.copyfile(os.path.join("scripts", "data", "dio-fe.html"), os.path.join("releases", "webapp", "dio-fe.html"))
+    shutil.copyfile(os.path.join("scripts", "data", "index.html"), os.path.join("releases", "webapp", "index.html"))
+    shutil.copyfile(os.path.join("scripts", "data", "wiki.html"), os.path.join("releases", "webapp", "wiki.html"))
     shutil.copyfile(os.path.join("scripts", "data", "main.js"), os.path.join("releases", "webapp", "main.js"))
     shutil.copyfile(os.path.join("scripts", "data", "worker.js"), os.path.join("releases", "webapp", "worker.js"))
     shutil.copyfile(os.path.join("scripts", "data", "logo.png"), os.path.join("releases", "webapp", "logo.png"))
