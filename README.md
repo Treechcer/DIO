@@ -146,11 +146,38 @@ int b = a + 1;
 
 >>Creating array
 int arr = {1,2,3.5,7}
+
+>>Creating string
+string str = "Hello, World from double quoted string!"
+string str2 = 'Hello, World from single quoted string!'
 ```
 
 #### Booleans
 
 All normal booleans (true, false) are here, represented by either the word "**true**" or "**false**" (this is changed in lexer to 1 and 0 respectively). Dio also has special boolean, maybe, which is either 1 or 0 (determined in the parser - same "line" different result).
+
+#### Array / String indexing
+
+String and number arrays are index both from 0 to length-1 as is standard in programming languages, although they can have additive property when trying to change value.
+
+```py
+>>Both works for num arrays and strings
+
+int a = {1,4,2,6}
+
+>>Updates property at index 1 to 2
+a[1] = 2;
+
+>> {1.0, 2.0, 2.0, 6.0}
+out(a)
+
+>>rewrites index 2 to 1st number from array and expands the array to fit the other numbers
+a[2] = {3,4,5}
+
+>> {1.0, 2.0, 3.0, 4.0, 5.0, 6.0}
+out(a)
+
+```
 
 ### Functions
 
@@ -355,7 +382,7 @@ out(a)
 
 Out is print function that prints out the variables or what you put into it.
 
-#### length(something : arrayType)::int
+#### length(something : string/intArr)::int
 
 ```py
 int a = {1,2,3}
@@ -382,6 +409,10 @@ Executes shell commands.
 #### input(text : string)::string
 
 Writes out the text input and takes input, which is then returned as what the user writes.
+
+#### type(var : any)::string
+
+Returns string variable based on what's passed in.
 
 ### middle-processor
 

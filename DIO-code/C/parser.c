@@ -1059,7 +1059,7 @@ void parseFunctionCall_(Node* node){
         //printf("NEXT CALL\n");
         int inx__ = getFuncIndexByName(node->data.functionCall->nextCall->data.functionCall->name);
 
-        printf("%s\n", g_funcs.items[inx__].name);
+        //printf("%s\n", g_funcs.items[inx__].name);
 
         variableTypes funcRetType = g_funcs.items[inx__].returnType;
 
