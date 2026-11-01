@@ -257,6 +257,12 @@ binOpResult* evalBinOp(Node* node){
         res->value.floatVar = NAN;
         return res;
     }
+    if (node->type == STRINGNODE){
+        res->varType = STRINGVAR;
+        res->value.stringVal = node->data.stringNode->value;
+        res->arbitraryData.lenght = node->data.stringNode->length;
+        return res;
+    }
     if (node->type == NUMBERNODE) {
         res->varType = FLOATVAR;
         res->value.floatVar = node->data.numberNode->value;
@@ -1079,8 +1085,8 @@ void parseFunctionCall_(Node* node){
         parseFunctionCall_(node->data.functionCall->nextCall);
     }
 
+    program.stack.trace[program.stack.currentFuncIndex].name = NULL;
     program.stack.currentFuncIndex -= 1;
-    program.stack.trace->name = NULL;
 }
 
 Node* astToNode(Node* ast){

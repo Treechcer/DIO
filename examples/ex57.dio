@@ -1,0 +1,8 @@
+def a()::string
+    return "hello"
+end
+
+string retVal = a()
+out(retVal)
+int len = length(retVal)
+out(len)

@@ -73,7 +73,9 @@ This automatically runs the language with params from ./scripts/CompileRunParams
 
 ## Documentation
 
-Dio is procedural, statically typed programming language. Working directory is generated through "-file" input, if you input "-file example/ex2.dio", DIO uses ./examples/ as it's working directory.
+Dio is procedural, statically typed programming language with optional semicolon. Working directory is generated through "-file" input, if you input "-file example/ex2.dio", DIO uses ./examples/ as it's working directory.
+
+> Note: semicolon (;) is only needed when you try to do more statements one line.
 
 ### Origins
 
@@ -206,7 +208,7 @@ end
 int retVal = a():c()
 b(retVal)
 
->>Writes out 7, because chain functions pair together so "a" returns 7 which then "c" adds 1 making it 8
+>>Writes out 8, because chain functions pair together so "a" returns 7 which then "c" adds 1 making it 8
 ```
 
 ### Control Flow
