@@ -1,14 +1,15 @@
 import subprocess
 import os
 import time
+import platform
 
 # seems to work
-
-try:
-    import psutil
-except:
-    print("psutil not install or isn't being able to be imported for some reason, this is essential, ending.")
-    exit(1)
+if platform.system() != "Android":
+    try:
+        import psutil
+    except:
+        print("psutil not install or isn't being able to be imported for some reason, this is essential, ending.")
+        exit(1)
 
 class objectTransfer:
     def __init__(self, errorcode, stdout):
@@ -33,11 +34,15 @@ class dioTalker:
 
         time.sleep(0.01) #this prevents issue, without this test were faiking (likely because rewring may have not finished but not sure)
         return objectTransfer(returner.returncode, returner.stdout)
+    
+    if platform.system() != "Android":
+        def disconnect(self):
+            os.remove(self.fileName)
 
-    def disconnect(self):
-        os.remove(self.fileName)
-
-        for process in psutil.process_iter(['name', 'pid', 'username']):
-            if process.info["name"] == "dio":
-                p = psutil.Process(process.info["pid"])
-                p.terminate()
+            for process in psutil.process_iter(['name', 'pid', 'username']):
+                if process.info["name"] == "dio":
+                    p = psutil.Process(process.info["pid"])
+                    p.terminate()
+    else:
+        def disconnect(self):
+            os.remove(self.fileName)
