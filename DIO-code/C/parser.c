@@ -83,6 +83,33 @@ void callLowLevelFunc(int index, Node* node){
             raiseRuntimeErrorMacro(*node->pos, "Incorrect type in 'out' function call.", program.stack);
         }
     }
+    else if (type == TYPE){
+        int varIndex = getVarIndexByName("a");
+        program.funcReturn = malloc(sizeof(binOpResult*));
+        program.funcReturn->varType = STRINGVAR;
+
+        char* NORMALISEDNAME = "";
+        int len;
+
+        if (g_vars.items[varIndex].typedVar == STRINGVAR){
+            NORMALISEDNAME = "STRING";
+        }
+        else if (g_vars.items[varIndex].typedVar == INTVAR){
+            NORMALISEDNAME = "INT";
+        }
+        else if (g_vars.items[varIndex].typedVar == FLOATVAR){
+            NORMALISEDNAME = "FLOAT";
+        }
+        else if (g_vars.items[varIndex].typedVar == NUMBERARRAY){
+            NORMALISEDNAME = "INT[]";
+        }
+        else {
+            NORMALISEDNAME = "UNKNOWN";
+        }
+
+        program.funcReturn->value.stringVal = NORMALISEDNAME;
+        program.funcReturn->arbitraryData.lenght = strlen(NORMALISEDNAME);
+    }
     else if (type == EXEC){
         system(getVariableStringValue(getVarIndexByName("a")));
     }

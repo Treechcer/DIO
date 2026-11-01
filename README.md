@@ -169,6 +169,8 @@ name()
 withParams(a, 10) >> example, use variable and 10
 ```
 
+> Note: type can be any type that variable can be declared with (float, string...)
+
 #### Function Return Types
 
 Functions can return values, they must return a value of the type specified. If no type is specified `::void` is being used as default value.
@@ -209,6 +211,22 @@ int retVal = a():c()
 b(retVal)
 
 >>Writes out 8, because chain functions pair together so "a" returns 7 which then "c" adds 1 making it 8
+```
+
+#### Unknown input type
+
+If you ever want to get any type of input, write type "any" with this type it's possible to get any input type (int, float, string...), you should use function "type" with it returning string representation of the type that you got as a input.
+
+```py
+def a(any : b)
+    string typeName = type(b)
+    out(typeName)
+end
+
+a(10)
+a("Hello, World!")
+
+>>Write out "FLOAT" and then "STRING"
 ```
 
 ### Control Flow

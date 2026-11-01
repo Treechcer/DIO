@@ -1,0 +1,7 @@
+def a(any : b)
+    string typeName = type(b)
+    out(typeName)
+end
+
+a(10)
+a("Hello, World!")
