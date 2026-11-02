@@ -326,11 +326,6 @@ try:
 
     if os.path.exists(os.path.join("DIO-code", filename)):
         subprocess.run(f"mv {os.path.abspath(os.path.join("DIO-code", filename))} .{slash}{filename}")
-
-    #TODO: test
-    
-    if platform.system() == "iOS":
-        os.chdir("..") # No idea why but it's in incorrect folder after this and crashes later???
     
     with open(os.path.abspath(os.path.join("scripts", "data", "CompileRunParams.txt")), "r") as f:
         executablePath = os.path.abspath(filename)
