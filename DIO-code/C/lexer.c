@@ -247,9 +247,10 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                     tok = createToken("/", DIV, createPosition(charPos_, charPos_, line, fileName));
                 }
                 break;
-            case '^':
-                tok = createToken("^", POW, createPosition(charPos_, charPos_, line, fileName));
-                break;
+            //I don't even know if it works, but it seems pointless
+            //case '^':
+            //    tok = createToken("^", POW, createPosition(charPos_, charPos_, line, fileName));
+            //    break;
             case '(':
                 tok = createToken("(", LPAREN, createPosition(charPos_, charPos_, line, fileName));
                 break;
