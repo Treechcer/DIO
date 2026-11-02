@@ -13,6 +13,8 @@ import copy
 #if testsPath not in sys.path:
 #    sys.path.append(testsPath)
 
+ROOTFOLDER = os.path.abspath(os.curdir)
+
 def getFiles():
     curPath = os.path.join(os.path.abspath(os.path.curdir), "C")
     legacyPath = ""
@@ -326,7 +328,9 @@ try:
 
     if os.path.exists(os.path.join("DIO-code", filename)):
         subprocess.run(f"mv {os.path.abspath(os.path.join("DIO-code", filename))} .{slash}{filename}")
-    
+
+    os.chdir(ROOTFOLDER)
+
     with open(os.path.abspath(os.path.join("scripts", "data", "CompileRunParams.txt")), "r") as f:
         executablePath = os.path.abspath(filename)
         #normalises slashes to whatever the OS uses, or should at least lol
