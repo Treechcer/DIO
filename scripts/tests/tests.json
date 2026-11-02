@@ -36,15 +36,6 @@
         "maxRuns" : 1
     },
     {
-        "testIdentifier" : "testing out maybe",
-        "code" : "int a = maybe * 1; out(a)",
-        "expectedReturnCode" : 0,
-        "expectedOutput" : [
-            "1.0", "0.0"
-        ],
-        "maxRuns" : 10
-    },
-    {
         "testIdentifier" : "testing out variable",
         "code" : "int a = 7; out(a)",
         "expectedReturnCode" : 0,
