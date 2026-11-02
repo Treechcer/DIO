@@ -4,7 +4,7 @@ import time
 import platform
 
 # seems to work
-if platform.system() != "Android":
+if platform.system() != "Android" and platform.system() != "iOS":
     try:
         import psutil
     except:
@@ -35,7 +35,7 @@ class dioTalker:
         time.sleep(0.01) #this prevents issue, without this test were faiking (likely because rewring may have not finished but not sure)
         return objectTransfer(returner.returncode, returner.stdout)
     
-    if platform.system() != "Android":
+    if platform.system() != "Android" and platform.system() != "iOS":
         def disconnect(self):
             os.remove(self.fileName)
 
