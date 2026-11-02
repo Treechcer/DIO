@@ -13,6 +13,11 @@ import copy
 #if testsPath not in sys.path:
 #    sys.path.append(testsPath)
 
+if platform.system() == "iOS":
+    print("---------------------")
+    print("iOS is supported and work but compile script\nis finecky, I'd recommend running it\nwithout any parametres and don't\nlook at errors while compiling\nit seems like a husstle to mainain it properly")
+    print("---------------------")
+
 ROOTFOLDER = os.path.abspath(os.curdir)
 
 def getFiles():
