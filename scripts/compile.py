@@ -308,12 +308,15 @@ try:
     
     command = ""
 
+    #Not sure if '-std=c28' is correct everywhere, will have to test and report! that can wait though
+    #TODO: test
+
     if platform.system() == "iOS":
-        command = f"clang ./C/*.c -o .{slash}{filename} {macros}"
+        command = f"clang -std=c23 ./C/*.c -o .{slash}{filename} {macros}"
     elif platform.system() == "OpenBSD":
-        command = f"egcc -g {getFiles()} -o ..{slash}{filename} {macros}"
+        command = f"egcc -std=c23 -g {getFiles()} -o ..{slash}{filename} {macros}"
     else:
-        command = f"gcc -g {getFiles()} -o ..{slash}{filename} {macros}"
+        command = f"gcc -std=c23 -g {getFiles()} -o ..{slash}{filename} {macros}"
     
     #maybe this p could be used?
     #subprocess.run("gcc -pg " + getFiles() + f" -o ..{slash}{filename} {macros}", shell=True, check=True)
@@ -324,6 +327,11 @@ try:
     if os.path.exists(os.path.join("DIO-code", filename)):
         subprocess.run(f"mv {os.path.abspath(os.path.join("DIO-code", filename))} .{slash}{filename}")
 
+    #TODO: test
+    
+    if platform.system() == "iOS":
+        os.chdir("..") # No idea why but it's in incorrect folder after this and crashes later???
+    
     with open(os.path.abspath(os.path.join("scripts", "data", "CompileRunParams.txt")), "r") as f:
         executablePath = os.path.abspath(filename)
         #normalises slashes to whatever the OS uses, or should at least lol
