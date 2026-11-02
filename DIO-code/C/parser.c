@@ -761,6 +761,7 @@ gotoStruct createNewGoto(char* name){
 }
 
 dynamicGoto parseGotoNode(Node* node, dynamicGoto dg){
+    printf("%s\n", node->data.gotoNode->name);
     DYN_PUSH(createNewGoto(node->data.gotoNode->name), dg);
     return dg;
 }

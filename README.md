@@ -3,7 +3,7 @@
 <!-- markdownlint-disable MD033 -->
 # Dio (Programming language)
 
-![Version](https://img.shields.io/badge/version-0.1.0-blue.svg?style=flat-square)
+![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
 ![License](https://img.shields.io/badge/license-BSD_3-green?logo=open-source-initiative)
 <img src="./scripts/data/logo.png" width=48px style="inline-block" alt="Logo of Dio">
 
