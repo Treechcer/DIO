@@ -322,5 +322,32 @@
             "3.5"
         ],
         "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "int func return",
+        "code" : "def a()::int; return 6; end; int output = a(); out(output);",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "6.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "float func return",
+        "code" : "def a()::float; return 7.0; end; float output = a(); out(output);",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "7.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "string func return",
+        "code" : "def a()::string; return \"Hello, Dio!\"; end; string output = a(); out(output);",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "Hello, Dio!"
+        ],
+        "maxRuns" : 1
     }
 ]

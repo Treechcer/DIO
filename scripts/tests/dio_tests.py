@@ -15,13 +15,18 @@ def runTests():
     failed = 0
     warning = 0
 
+    times = []
+
     for test in tests:
         returnObj = []
         outputs = []
         failedOuts = []
 
         for i in range(test["maxRuns"]):
+            start = time.time()
             returnObj.append(dio.executeCode(test["code"]))
+            end = time.time()
+            times.append({"len" : end - start, "file" : test["testIdentifier"]})
 
         for output in test["expectedOutput"]:
             if output[-1] != "\n":
@@ -60,6 +65,9 @@ def runTests():
     print(f"Failed {failed} out of {len(tests)}")
     print(f"Warning for {warning} out of {len(tests)}")
 
+    print("----\nLongest test times:")
+    printLongestTimes(10, times)
+
     dio.disconnect()
 
 def timeTest():
@@ -90,15 +98,25 @@ def timeTest():
 
             times.append({"len" : end - start, "file" : fileName_})
 
+    printLongestTimes(10, times)
+
+    dio.disconnect()
+
+def printLongestTimes(N, times):
+    longest = getNLongestTimes(N, times)
+
+    for i in range(len(longest)):
+        #This makes the text the same length so it's formated better
+        maxLen = 15
+        print(f"{longest[i]["file"] + (" " * ((maxLen+2) - len(longest[i]["file"]))) if len(longest[i]["file"]) < maxLen else longest[i]["file"][0:maxLen-1] + "..."} : {longest[i]["len"]:.4f}s")
+
+def getNLongestTimes(N, times):
     longest = []
-    for i in range(3):
+    for i in range(N):
         times, longTemp = getLongestTime(times)
         longest.append(longTemp)
 
-    for i in range(len(longest)):
-        print(f"{longest[i]["file"]} : {longest[i]["len"]}s")
-
-    dio.disconnect()
+    return longest
 
 def getLongestTime(times):
     maxTimeCopy = times[0]

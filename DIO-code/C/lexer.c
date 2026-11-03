@@ -495,7 +495,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                                 c = moveByChar(&code, &line, &charPos_, 1);
                             }
 
-                            printf("%s\n", text.items);
+                            //printf("%s\n", text.items);
                             toks = lex(text.items, fileName, lex(arg.items, fileName, toks, 0), 0);
                         }
                         else{
