@@ -578,7 +578,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                     }
                     else if (c == '$'){
                         dynamicChar name = {0,0,0};
-                        while (c != ' ' && c != '\n'){
+                        while (c != ' ' && c != '\n' && c != ';'){
                             c = moveByChar(&code, &line, &charPos_, 1);
                             DYN_PUSH(c, name);
                         }

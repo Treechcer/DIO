@@ -349,5 +349,14 @@
             "Hello, Dio!"
         ],
         "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "special variables",
+        "code" : "string pat = $PLATFORM; out(pat)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "LINUX"
+        ],
+        "maxRuns" : 1
     }
 ]
