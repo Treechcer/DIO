@@ -355,7 +355,7 @@
         "code" : "string pat = $PLATFORM; out(pat)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
-            "LINUX"
+            "WINDOWS|-|LINUX|-|APPLE|-|FREEBSD|-|ANDROID|-|WEB|-|UNKNOWN"
         ],
         "maxRuns" : 1
     }

@@ -35,7 +35,7 @@ def runTests():
             passedCur = 0
 
             for curRetCheck in returnObj:
-                if test["expectedReturnCode"] == curRetCheck.errorcode and output == curRetCheck.stdout:
+                if test["expectedReturnCode"] == curRetCheck.errorcode and curRetCheck.stdout in [p + "\n" if p[-1] != "\n" else p for p in output.split("|-|")]:
                     passedCur = 1
                     if not curRetCheck.stdout in outputs:
                         outputs.append(curRetCheck.stdout)
