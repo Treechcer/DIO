@@ -103,7 +103,7 @@ int main(int argc, char **argv){
     }
 
     if (checkIfValidFileEnd(filePath) == 0 && strcmp(arbitraryCodeExecute, "") == 0){
-        raiseErrorMacro(createPosition(0, 0, 1, filePath), "File does not end with one of valid file extensions");
+        raiseErrorMacro(createPosition(0, 0, 1, filePath, ""), "File does not end with one of valid file extensions");
     }
 
     if (filePath != NULL && strlen(filePath) > 0 && strcmp(arbitraryCodeExecute, "") == 0){
@@ -126,12 +126,12 @@ int main(int argc, char **argv){
 
         initLowLevelFuncs();
         dynamicToken toks = {0,0,0};
-        entryPointParser(buildAst(lex(code, realName, lex(getSTD(), "STDlib.dio", toks, 0), 1)));
+        entryPointParser(buildAst(lex(code, realName, lex(getSTD(), "STDlib.dio", toks, 0, "STD"), 1, "")));
     }
     else if (strcmp(arbitraryCodeExecute, "") != 0){
         initLowLevelFuncs();
         dynamicToken toks = {0,0,0};
-        entryPointParser(buildAst(lex(arbitraryCodeExecute, "CLI.dio", lex(getSTD(), "STDlib.dio", toks, 0), 1)));
+        entryPointParser(buildAst(lex(arbitraryCodeExecute, "CLI.dio", lex(getSTD(), "STDlib.dio", toks, 0, "STD"), 1, "")));
     }
     
     return 0;

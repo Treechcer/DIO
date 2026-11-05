@@ -6,6 +6,7 @@ typedef struct {
     int end;
     int line;
     char* file;
+    char* nameSpace;
 } Position;
 
 #include "../Headers/macros.h"

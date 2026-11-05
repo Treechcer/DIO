@@ -53,8 +53,8 @@ Token createToken(char* value, TokenType identifier, Position pos){
     return (Token) {.value = value, .identifier = identifier, .pos = pos};
 }
 
-Position createPosition(int start, int end, int line, char* file) {
-    return (Position) { .start = start, .end = end, .line = line, .file = file };
+Position createPosition(int start, int end, int line, char* file, char* namespace) {
+    return (Position) { .start = start, .end = end, .line = line, .file = file, namespace = namespace};
 }
 
 size_t getStringSize(const char* string){

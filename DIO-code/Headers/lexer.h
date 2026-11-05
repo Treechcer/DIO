@@ -3,7 +3,7 @@
 
 #include "../Headers/dynamic_array.h"
 
-dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast);
+dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast, char* namespace);
 //void freeToks(dynamicToken toks);
 
 #endif
