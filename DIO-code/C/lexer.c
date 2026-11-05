@@ -434,7 +434,13 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                         if (fileNext.exists == 0) {
                             raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "File does not exist or could not be access by the OS.");
                         }
+
+                        //todo: test if copy correct
+
+                        char* namespaceCopy = strdup(namespace);
                         toks = lex(fileNext.content, arg.items, toks, 0, namespace);
+                        namespace = strdup(namespace);
+                        free(namespaceCopy);
                     }
                     else if (strcmp(action.items, "def") == 0){
                         c = moveByChar(&code, &line, &charPos_, 1);
@@ -520,6 +526,10 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                         else{
                             raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "Unknown pragma argument.")
                         }
+                    }
+                    else if (strcmp(action.items, "namespace") == 0) {
+                        //is this all that needs to be done?
+                        namespace = arg.items;
                     }
                     else{
                         raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "Unknown middleware processor command.")
