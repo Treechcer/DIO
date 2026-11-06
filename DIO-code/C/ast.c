@@ -734,6 +734,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
 
         //pNode = createFunctionParams(toks, pNode);
         pNode->data.function->name = name;
+        pNode->data.function->namespace = checkCurrenToken(toks).pos.nameSpace;
         pNode->data.function->codeBlock = parseCodeBlock(toks, FUNCTION);
         if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(checkCurrenToken(toks).value, "end") == 0) {
             shiftToken(toks);
@@ -747,6 +748,15 @@ Node* parseFunctionCreate(dynamicToken* toks){
 
 Node* parseFunctionCall(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
+
+    char* namespaceAccessor = "";
+    if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == ARROWACCESSOR){
+        namespaceAccessor = tok.value;
+
+        shiftToken(toks);
+        Token tok = shiftToken(toks);
+    }
+
     if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == LPAREN){
         char* functionName = shiftToken(toks).value;
         Node* pNode = createNode();
@@ -756,6 +766,7 @@ Node* parseFunctionCall(dynamicToken* toks){
         pNode->pos = copyPos(&tok.pos);
         pNode->data.functionCall->inputs = createFunctionParams(toks);
         pNode->data.functionCall->nextCall = NULL;
+        pNode->data.functionCall->namespace = namespaceAccessor;
 
         if (strcmp(checkCurrenToken(toks).value, ":") == 0){
             shiftToken(toks);
