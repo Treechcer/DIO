@@ -214,6 +214,9 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                     DYN_PUSH(varName, toks);
                     DYN_PUSH(createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName, namespace)), toks);
                 }
+                else if (c == '>'){
+                    DYN_PUSH(createToken("->", ARROWACCESSOR, createPosition(charPos_, charPos_, line, fileName, namespace)), toks);
+                }
                 else{
                     c = moveByChar(&code, &line, &charPos_, -1);
                     tok = createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName, namespace));

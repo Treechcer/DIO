@@ -44,6 +44,7 @@ typedef enum {
     RSQUIGLYPAREN,
     FUNCTIONRETURNTYPE,
     STRING,
+    ARROWACCESSOR,
 } TokenType;
 
 typedef struct Token{
