@@ -26,5 +26,6 @@ fileReadReturn readFile(char* fName);
 int getIndexFromInput(char* name);
 Position* copyPos(Position* input);
 int checkIfValidFileEnd(char* fileName);
+int getNamespaceMap(char* namespace);
 
 #endif

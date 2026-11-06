@@ -7,6 +7,9 @@
 #include "../Headers/helper_functions.h"
 #include "../Headers/errorsNew.h"
 
+//this has to be here because createpos is used in main and maybe elsewhere?
+dynamicStr g_namespaceNames = {0,0,0};
+
 int getVarIndexByName(char* name);
 
 long int convertToLongInt(char* value){
@@ -53,8 +56,24 @@ Token createToken(char* value, TokenType identifier, Position pos){
     return (Token) {.value = value, .identifier = identifier, .pos = pos};
 }
 
+//this is used so this doesn't need to be done in runtime, making lexer slower but parser much faster, maybe make something like this for functions in ast?
+int getNamespaceMap(char* namespace){
+    for (int i = 0; i < g_namespaceNames.count; i++){
+        if (strcmp(namespace, g_namespaceNames.items[i]) == 0){
+            //printf("|%i\n", i);
+            return i;
+        }
+    }
+
+    DYN_PUSH(namespace, g_namespaceNames)
+    //printf("=%i\n"), g_namespaceNames.count;
+    return g_namespaceNames.count;
+
+    //TODO: test this func and thing adjasoned to it more!
+}
+
 Position createPosition(int start, int end, int line, char* file, char* namespace) {
-    return (Position) { .start = start, .end = end, .line = line, .file = file, namespace = namespace};
+    return (Position) { .start = start, .end = end, .line = line, .file = file, .nameSpace = getNamespaceMap(namespace)};
 }
 
 size_t getStringSize(const char* string){

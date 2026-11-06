@@ -749,12 +749,12 @@ Node* parseFunctionCreate(dynamicToken* toks){
 Node* parseFunctionCall(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
 
-    char* namespaceAccessor = "";
+    int namespaceAccessor = 0;
     if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == ARROWACCESSOR){
-        namespaceAccessor = tok.value;
+        namespaceAccessor = getNamespaceMap(tok.value);
 
         shiftToken(toks);
-        Token tok = shiftToken(toks);
+        tok = shiftToken(toks);
     }
 
     if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == LPAREN){

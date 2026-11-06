@@ -1,12 +1,12 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-typedef struct {
+typedef struct Position{
     int start;
     int end;
     int line;
+    int nameSpace;
     char* file;
-    char* nameSpace;
 } Position;
 
 #include "../Headers/macros.h"

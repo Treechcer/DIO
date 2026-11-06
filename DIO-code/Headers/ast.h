@@ -92,7 +92,7 @@ typedef struct condition{
 } condition;
 
 typedef struct function{
-    char* namespace;
+    int namespace;
     char* name;
     Node* codeBlock;
     dynamicNode inputs;
@@ -100,7 +100,7 @@ typedef struct function{
 } function;
 
 typedef struct functionCall {
-    char* namespace;
+    int namespace;
     char* name;
     dynamicNode inputs;
     Node* nextCall;
