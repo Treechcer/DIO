@@ -57,6 +57,7 @@ typedef struct {
 typedef struct {
     int index;
     int initialised;
+    int nameSpace;
     funcType funcType;
     char* name;
     Node* codeBlock;

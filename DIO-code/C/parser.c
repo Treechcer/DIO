@@ -45,7 +45,7 @@ int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes a
 }
 
 void createLowLevelFunc(char* name, dynamicNode inputs, variableTypes returnType, funcType funcType){
-    funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .funcType = funcType, .returnType = returnType};
+    funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .funcType = funcType, .returnType = returnType, .nameSpace = getNamespaceMap("STD")};
     tempFunc.inputs = inputs;
     DYN_PUSH(tempFunc, g_funcs);
 }
@@ -181,10 +181,10 @@ int getFuncIndexByName(char* name){
     return -1;
 }
 
-void callFunctionByName(char* name){
+void callFunctionByName(char* name, int namespace){
     program.isInFunc = 1;
     for(int i = 0; i < g_funcs.count; i++){
-        if (strcmp(name, g_funcs.items[i].name) == 0){
+        if (strcmp(name, g_funcs.items[i].name) == 0 && namespace == g_funcs.items[i].nameSpace){
             program.funcReturn = NULL;
             parse(g_funcs.items[i].codeBlock);
 
@@ -849,7 +849,7 @@ void parseFunction(Node* node){
         DYN_PUSH(node->data.function->inputs.items[i], input);
     }
 
-    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = NOTLOWLEVER, .codeBlock = node->data.function->codeBlock, .funcType = 0, .inputs = input, .returnType = node->data.function->returnType};
+    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = NOTLOWLEVER, .codeBlock = node->data.function->codeBlock, .funcType = 0, .inputs = input, .returnType = node->data.function->returnType, .nameSpace = node->data.function->namespace};
     DYN_PUSH(tempFunc, g_funcs);
 }
 
@@ -1045,7 +1045,7 @@ void parseFunctionCall_(Node* node){
         callLowLevelFunc(index, node);
     }
     else{
-        callFunctionByName(node->data.functionCall->name);
+        callFunctionByName(node->data.functionCall->name, node->data.functionCall->namespace);
     }
 
     for (size_t i = 0; i < l_vars.count; i++){
