@@ -192,8 +192,13 @@ def withParams(type : name, type2 : name2 ...)::void
 end
 
 >>call
-name()
-withParams(a, 10) >> example, use variable and 10
+nameSpace->name()
+nameSpace->withParams(a, 10) >> example, use variable and 10
+
+>*
+NOTE: if namespace is same as current file, function can be called by just "name()"
+without the nameSpace->... More about namespaces in `middle-processor` part of this documentation
+*<
 ```
 
 > Note: type can be any type that variable can be declared with (float, string...)
@@ -227,7 +232,7 @@ def a()::int
 end
 
 def b(int : a)::void
-    out(a)
+    STD->out(a)
 end
 
 def c(int : a)::int
@@ -264,7 +269,7 @@ a("Hello, World!")
 int i = 0;
 while(i < 10)
     i = i + 1
-    out(i)
+    STD->out(i)
 end
 
 >>outputs 1 -> 10
@@ -274,7 +279,7 @@ end
 
 ```py
 for (int i = 0; i < 10; i = i + 1)
-    out(i)
+    STD->out(i)
 end
 
 >>outputs 0 -> 9
@@ -288,11 +293,11 @@ end
 >>Walrus operators
 
 for (int i = 0; i < 10; i += 1) >> will become i = i + 1
-    out(i)
+    STD->out(i)
 end
 
 for (int i = 10; i > 0; i -= 1) >> will become i = i - 1
-    out(i)
+    STD->out(i)
 end
 
 >*
@@ -309,21 +314,21 @@ All walrus operators:
 >>Increment / decrement
 
 for (int i = 0; i < 10; i = i++) >> will become i = i + 1
-    out(i)
+    STD->out(i)
 end
 
 for (int i = 10; i > 0; i = i--) >> will become i = i - 1
-    out(i)
+    STD->out(i)
 end
 
 >>Loopers
 
 for (int i = 0; i < 10; i+++) >> will become i = i + 1
-    out(i)
+    STD->out(i)
 end
 
 for (int i = 10; i > 0; i+++) >> will become i = i - 1
-    out(i)
+    STD->out(i)
 end
 
 ```
@@ -346,7 +351,7 @@ end
 
 #### Goto
 
-Goto-s are not not recommend to be used, they might have some specific use cases, they were added as 'first feature'.
+Goto-s are not not recommend to be used, they might have some specific use cases, they were added as 'first feature'. Goto also has to be created in the same codeblock as it's trying to be called in, it will pop out some general error.
 
 ```py
 
@@ -377,7 +382,7 @@ goto (condition) ::gotoName::
 
 ```py
 int a = 5
-out(a)
+STD->out(a)
 ```
 
 Out is print function that prints out the variables or what you put into it.
@@ -387,9 +392,9 @@ Out is print function that prints out the variables or what you put into it.
 ```py
 int a = {1,2,3}
 
-int len = length(a)
+int len = STD->length(a)
 
-out(len)
+STD->out(len)
 ```
 
 Length returns the integer length of array type variables (string or number array).
@@ -441,6 +446,26 @@ Middle processor is kind of middle ware used to add code or change how lexing wo
 ##### Once
 
 - declaring "#pragma once" at the start of the programme it'll make it so it can be loaded only once
+
+#### namespace
+
+After namespace you have to add the namespace name. This can be used as:
+
+file main.dio:
+
+```py
+namespace main
+>>code
+```
+
+file side.dio:
+
+```py
+namespace side
+>>code
+```
+
+When you import it with #get side.dio, you'll be able to use side functions.
 
 ### Special Variables
 

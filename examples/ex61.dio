@@ -1,0 +1,19 @@
+#namespace test
+
+def a(int : a)::int
+    STD->out(a)
+
+    return a
+end
+
+#namespace ex61
+
+def a()::int
+    return 1
+end
+
+>>chain doesn't work?  have to fix later
+
+int b = ex61->a():test->a()
+
+STD->out(b)
