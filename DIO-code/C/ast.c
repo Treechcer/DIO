@@ -754,7 +754,11 @@ Node* parseFunctionCall(dynamicToken* toks){
         namespaceAccessor = getNamespaceMap(tok.value);
 
         shiftToken(toks);
-        tok = shiftToken(toks);
+        shiftToken(toks);
+        tok = checkCurrenToken(toks);
+    }
+    else {
+        namespaceAccessor = tok.pos.nameSpace;
     }
 
     if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == LPAREN){

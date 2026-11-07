@@ -1,7 +1,7 @@
 [
     {
         "testIdentifier" : "testing out",
-        "code" : "out(\"a\")",
+        "code" : "STD->out(\"a\")",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "a"
@@ -10,7 +10,7 @@
     },
     {
         "testIdentifier" : "testing out int",
-        "code" : "out(15)",
+        "code" : "STD->out(15)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "15.0"
@@ -19,7 +19,7 @@
     },
     {
         "testIdentifier" : "testing out true",
-        "code" : "out(true)",
+        "code" : "STD->out(true)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "1.0"
@@ -28,7 +28,7 @@
     },
     {
         "testIdentifier" : "testing out false",
-        "code" : "out(false)",
+        "code" : "STD->out(false)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "0.0"
@@ -37,7 +37,7 @@
     },
     {
         "testIdentifier" : "testing out variable",
-        "code" : "int a = 7; out(a)",
+        "code" : "int a = 7; STD->out(a)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "7.0"
@@ -46,7 +46,7 @@
     },
     {
         "testIdentifier" : "testing out binary operator (+)",
-        "code" : "out(7 + 5)",
+        "code" : "STD->out(7 + 5)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "12.0"
@@ -55,7 +55,7 @@
     },
     {
         "testIdentifier" : "testing out binary operator (-)",
-        "code" : "out(7 - 5)",
+        "code" : "STD->out(7 - 5)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "2.0"
@@ -64,7 +64,7 @@
     },
     {
         "testIdentifier" : "testing out binary operator (*)",
-        "code" : "out(7 * 5)",
+        "code" : "STD->out(7 * 5)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "35.0"
@@ -73,7 +73,7 @@
     },
     {
         "testIdentifier" : "testing out binary operator (/)",
-        "code" : "out(10 / 5)",
+        "code" : "STD->out(10 / 5)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "2.0"
@@ -82,7 +82,7 @@
     },
     {
         "testIdentifier" : "for loop teting",
-        "code" : "for (int i = 0; i < 3; i = i + 1); out(i); end",
+        "code" : "for (int i = 0; i < 3; i = i + 1); STD->out(i); end",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "0.0\n1.0\n2.0"
@@ -91,7 +91,7 @@
     },
     {
         "testIdentifier" : "for loop teting (reverse)",
-        "code" : "for (int i = 3; i > 0; i = i - 1); out(i); end",
+        "code" : "for (int i = 3; i > 0; i = i - 1); STD->out(i); end",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "3.0\n2.0\n1.0\n"
@@ -100,7 +100,7 @@
     },
     {
         "testIdentifier" : "while loop teting",
-        "code" : "int i = 0; while (i < 3); out(i); i = i + 1; end",
+        "code" : "int i = 0; while (i < 3); STD->out(i); i = i + 1; end",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "0.0\n1.0\n2.0"
@@ -109,7 +109,7 @@
     },
     {
         "testIdentifier" : "while loop teting (rev)",
-        "code" : "int i = 3; while (i > 0); out(i); i = i - 1; end",
+        "code" : "int i = 3; while (i > 0); STD->out(i); i = i - 1; end",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "3.0\n2.0\n1.0\n"
@@ -118,7 +118,7 @@
     },
     {
         "testIdentifier" : "while loop teting (float)",
-        "code" : "int i = 0; while (i < 0.6); out(i); i = i + 0.2; end",
+        "code" : "int i = 0; while (i < 0.6); STD->out(i); i = i + 0.2; end",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "0.0\n0.2\n0.4\n"
@@ -127,7 +127,7 @@
     },
     {
         "testIdentifier" : "goto loop testing",
-        "code" : "int i = 0; ::loopstart::; out(i); i = i + 1; goto (i < 3) ::loopstart::;",
+        "code" : "int i = 0; ::loopstart::; STD->out(i); i = i + 1; goto (i < 3) ::loopstart::;",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "0.0\n1.0\n2.0"
@@ -136,7 +136,7 @@
     },
     {
         "testIdentifier" : "branching test (IF)",
-        "code" : "int i = 0; if (i == 0); out(\"if\"); elseif (i == 1); out(\"elseif\"); else out(\"else\") end;",
+        "code" : "int i = 0; if (i == 0); STD->out(\"if\"); elseif (i == 1); STD->out(\"elseif\"); else STD->out(\"else\") end;",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "if"
@@ -145,7 +145,7 @@
     },
     {
         "testIdentifier" : "branching test (ELSEIF)",
-        "code" : "int i = 1; if (i == 0); out(\"if\"); elseif (i == 1); out(\"elseif\"); else out(\"else\") end;",
+        "code" : "int i = 1; if (i == 0); STD->out(\"if\"); elseif (i == 1); STD->out(\"elseif\"); else STD->out(\"else\") end;",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "elseif"
@@ -154,7 +154,7 @@
     },
     {
         "testIdentifier" : "branching test (ELSE)",
-        "code" : "int i = 3; if (i == 0); out(\"if\"); elseif (i == 7); out(\"elseif\"); else out(\"else\") end;",
+        "code" : "int i = 3; if (i == 0); STD->out(\"if\"); elseif (i == 7); STD->out(\"elseif\"); else STD->out(\"else\") end;",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "else"
@@ -163,7 +163,7 @@
     },
     {
         "testIdentifier" : "function call (non-std)",
-        "code" : "def a(); out(7); end; a();",
+        "code" : "def a(); STD->out(7); end; a();",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "7.0"
@@ -172,7 +172,7 @@
     },
     {
         "testIdentifier" : "function call param (non-std)",
-        "code" : "def a(int : b); out(b); end; a(12);",
+        "code" : "def a(int : b); STD->out(b); end; a(12);",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "12.0"
@@ -181,7 +181,7 @@
     },
     {
         "testIdentifier" : "function call multi param (non-std)",
-        "code" : "def a(int : b, int : c); out(b + c); end; a(12, 3);",
+        "code" : "def a(int : b, int : c); STD->out(b + c); end; a(12, 3);",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "15.0"
@@ -190,7 +190,7 @@
     },
     {
         "testIdentifier" : "chain function call",
-        "code" : "def a()::int; return 7; end; def b(int : a)::void; out(a); end; def c(int : a)::int; return a + 1; end; int retVal = a():c(); b(retVal)",
+        "code" : "def a()::int; return 7; end; def b(int : a)::void; STD->out(a); end; def c(int : a)::int; return a + 1; end; int retVal = a():c(); b(retVal)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "8.0"
@@ -217,7 +217,7 @@
     },
     {
         "testIdentifier" : "array adding",
-        "code" : "int arr = {1,2,3,4}; arr[1] = 67; out(arr);",
+        "code" : "int arr = {1,2,3,4}; arr[1] = 67; STD->out(arr);",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "{1.0, 67.0, 3.0, 4.0}"
@@ -226,7 +226,7 @@
     },
     {
         "testIdentifier" : "array adding array",
-        "code" : "int arr = {1,2,3,4}; arr[1] = {1, 2, 3}; out(arr);",
+        "code" : "int arr = {1,2,3,4}; arr[1] = {1, 2, 3}; STD->out(arr);",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "{1.0, 1.0, 2.0, 3.0, 3.0, 4.0}"
@@ -235,7 +235,7 @@
     },
     {
         "testIdentifier" : "string adding",
-        "code" : "string a = \"Hello\"; a[2] = \"L\"; out(a)",
+        "code" : "string a = \"Hello\"; a[2] = \"L\"; STD->out(a)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "HeLlo"
@@ -244,7 +244,7 @@
     },
     {
         "testIdentifier" : "string adding more chars",
-        "code" : "string a = \"Hello\"; a[2] = \"LAL\"; out(a)",
+        "code" : "string a = \"Hello\"; a[2] = \"LAL\"; STD->out(a)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "HeLALlo"
@@ -253,7 +253,7 @@
     },
     {
         "testIdentifier" : "Increment test",
-        "code" : "int a = 7; out(a++)",
+        "code" : "int a = 7; STD->out(a++)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "8.0"
@@ -262,7 +262,7 @@
     },
     {
         "testIdentifier" : "decrement test",
-        "code" : "int a = 7; out(a--)",
+        "code" : "int a = 7; STD->out(a--)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "6.0"
@@ -271,7 +271,7 @@
     },
     {
         "testIdentifier" : "Looper increment test",
-        "code" : "for (int i = 0; i < 3; i+++); out(i); end",
+        "code" : "for (int i = 0; i < 3; i+++); STD->out(i); end",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "0.0\n1.0\n2.0\n"
@@ -280,7 +280,7 @@
     },
     {
         "testIdentifier" : "Looper decremenet test",
-        "code" : "for (int i = 3; i > 0; i---); out(i); end",
+        "code" : "for (int i = 3; i > 0; i---); STD->out(i); end",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "3.0\n2.0\n1.0\n"
@@ -289,7 +289,7 @@
     },
     {
         "testIdentifier" : "walrus test (+)",
-        "code" : "int a = 7; a += 2; out(a)",
+        "code" : "int a = 7; a += 2; STD->out(a)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "9.0"
@@ -298,7 +298,7 @@
     },
     {
         "testIdentifier" : "walrus test (-)",
-        "code" : "int a = 7; a -= 2; out(a)",
+        "code" : "int a = 7; a -= 2; STD->out(a)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "5.0"
@@ -307,7 +307,7 @@
     },
         {
         "testIdentifier" : "walrus test (*)",
-        "code" : "int a = 7; a *= 2; out(a)",
+        "code" : "int a = 7; a *= 2; STD->out(a)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "14.0"
@@ -316,7 +316,7 @@
     },
     {
         "testIdentifier" : "walrus test (/)",
-        "code" : "int a = 7; a /= 2; out(a)",
+        "code" : "int a = 7; a /= 2; STD->out(a)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "3.5"
@@ -325,7 +325,7 @@
     },
     {
         "testIdentifier" : "int func return",
-        "code" : "def a()::int; return 6; end; int output = a(); out(output);",
+        "code" : "def a()::int; return 6; end; int output = a(); STD->out(output);",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "6.0"
@@ -334,7 +334,7 @@
     },
     {
         "testIdentifier" : "float func return",
-        "code" : "def a()::float; return 7.0; end; float output = a(); out(output);",
+        "code" : "def a()::float; return 7.0; end; float output = a(); STD->out(output);",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "7.0"
@@ -343,7 +343,7 @@
     },
     {
         "testIdentifier" : "string func return",
-        "code" : "def a()::string; return \"Hello, Dio!\"; end; string output = a(); out(output);",
+        "code" : "def a()::string; return \"Hello, Dio!\"; end; string output = a(); STD->out(output);",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "Hello, Dio!"
@@ -352,7 +352,7 @@
     },
     {
         "testIdentifier" : "special variables",
-        "code" : "string pat = $PLATFORM; out(pat)",
+        "code" : "string pat = $PLATFORM; STD->out(pat)",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "WINDOWS|-|LINUX|-|APPLE|-|FREEBSD|-|ANDROID|-|WEB|-|UNKNOWN"

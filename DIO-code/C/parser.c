@@ -171,9 +171,9 @@ void callLowLevelFunc(int index, Node* node){
     }
 }
 
-int getFuncIndexByName(char* name){
+int getFuncIndexByName(char* name, int namespace){
     for(int i = 0; i < g_funcs.count; i++){
-        if (strcmp(name, g_funcs.items[i].name) == 0){
+        if (strcmp(name, g_funcs.items[i].name) == 0 && namespace == g_funcs.items[i].nameSpace){
             return g_funcs.items[i].index;
         }
     }
@@ -839,7 +839,7 @@ void parseCondition_(Node* node){
 }
 
 void parseFunction(Node* node){
-    if (getFuncIndexByName(node->data.function->name) != -1){
+    if (getFuncIndexByName(node->data.function->name, node->data.function->namespace) != -1){
         raiseRuntimeErrorMacro(*node->pos, "Function intialisation twice.", program.stack);
     }
 
@@ -870,7 +870,7 @@ void parseLoopNode(Node *node){
 }
 
 void parseFunctionCall_(Node* node){
-    int index = getFuncIndexByName(node->data.functionCall->name);
+    int index = getFuncIndexByName(node->data.functionCall->name, node->data.functionCall->namespace);
     if (index == -1){
         raiseRuntimeErrorMacro(*node->pos, "Can't call uninitialised functions.", program.stack);
     }
@@ -1058,7 +1058,7 @@ void parseFunctionCall_(Node* node){
 
     if (node->data.functionCall->nextCall != NULL){
         //printf("NEXT CALL\n");
-        int inx__ = getFuncIndexByName(node->data.functionCall->nextCall->data.functionCall->name);
+        int inx__ = getFuncIndexByName(node->data.functionCall->nextCall->data.functionCall->name, node->data.functionCall->nextCall->data.functionCall->namespace);
 
         //printf("%s\n", g_funcs.items[inx__].name);
 

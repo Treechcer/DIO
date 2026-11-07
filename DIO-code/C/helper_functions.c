@@ -67,7 +67,7 @@ int getNamespaceMap(char* namespace){
 
     DYN_PUSH(namespace, g_namespaceNames)
     //printf("=%i\n"), g_namespaceNames.count;
-    return g_namespaceNames.count;
+    return g_namespaceNames.count - 1;
 
     //TODO: test this func and thing adjasoned to it more!
 }
@@ -130,6 +130,7 @@ Position* copyPos(Position* input){
     ret->start = input->start;
     ret->line = input->line;
     ret->file = input->file;
+    ret->nameSpace = input->nameSpace;
     return ret;
 }
 
