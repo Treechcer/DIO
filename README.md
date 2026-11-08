@@ -449,7 +449,7 @@ Middle processor is kind of middle ware used to add code or change how lexing wo
 
 #### namespace
 
-After namespace you have to add the namespace name. This can be used as:
+Namespaces changes the "name" before using "->" when calling functions, one file can have more namespaces and they apply to code under them.After namespace you have to add the namespace name. This can be used as:
 
 file main.dio:
 
