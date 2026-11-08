@@ -1,0 +1,11 @@
+#namespace test
+
+def private test()::void
+    STD->out("test")
+end
+
+>>uncomment this for fail!
+
+>>#namespace nottest
+
+test->test()

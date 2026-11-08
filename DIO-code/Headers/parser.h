@@ -58,6 +58,7 @@ typedef struct {
     int index;
     int initialised;
     int nameSpace;
+    int publicity;
     funcType funcType;
     char* name;
     Node* codeBlock;

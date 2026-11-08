@@ -673,6 +673,16 @@ Node* parseFunctionCreate(dynamicToken* toks){
         pNode->pos = copyPos(&tempT.pos);
 
         shiftToken(toks); //def
+        int publicity = 1; // 1 public, 0 private
+
+        Token pubTok = checkCurrenToken(toks);
+        if (strcmp(pubTok.value, "public") == 0 || strcmp(pubTok.value, "private") == 0){
+            publicity = (strcmp(pubTok.value, "public") == 0 || !strcmp(pubTok.value, "private") == 0);
+            shiftToken(toks);
+        }
+
+        pNode->data.function->publicity = publicity;
+
         char* name = checkCurrenToken(toks).value;
         shiftToken(toks); //name
         shiftToken(toks); //(

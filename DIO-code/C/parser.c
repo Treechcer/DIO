@@ -45,7 +45,7 @@ int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes a
 }
 
 void createLowLevelFunc(char* name, dynamicNode inputs, variableTypes returnType, funcType funcType){
-    funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .funcType = funcType, .returnType = returnType, .nameSpace = getNamespaceMap("STD")};
+    funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .funcType = funcType, .returnType = returnType, .nameSpace = getNamespaceMap("STD"), .publicity = 1};
     tempFunc.inputs = inputs;
     DYN_PUSH(tempFunc, g_funcs);
 }
@@ -181,22 +181,29 @@ int getFuncIndexByName(char* name, int namespace){
     return -1;
 }
 
-void callFunctionByName(char* name, int namespace){
+void callFunctionByName(char* name, int namespace, Position* pos){
     program.isInFunc = 1;
     for(int i = 0; i < g_funcs.count; i++){
         if (strcmp(name, g_funcs.items[i].name) == 0 && namespace == g_funcs.items[i].nameSpace){
+
+            if (g_funcs.items[i].publicity == 0 && g_funcs.items[i].nameSpace != pos->nameSpace){
+                char buffer[50];
+                snprintf(buffer, 50, "Function '%s' is not public and is not called from it's namespace\n", name);
+                raiseErrorMacro(*pos, buffer)
+            }
+
             program.funcReturn = NULL;
             parse(g_funcs.items[i].codeBlock);
 
-            //TODO: add proper error, where should I get the pos? add pos maybe for codeblock?
-
             if (program.funcReturn == NULL && g_funcs.items[i].returnType != UNKNOWNVARTYPE){
-                printf("Function '%s' should've returned something but didn't\n", name);
-                exit(1);
+                char buffer[50];
+                snprintf(buffer, 50, "Function '%s' should've returned something but didn't\n", name);
+                raiseErrorMacro(*pos, buffer)
             }
             else if (program.funcReturn != NULL && g_funcs.items[i].returnType == UNKNOWNVARTYPE){
-                printf("Function '%s' returned something but shouldn't have\n", name);
-                exit(1);
+                char buffer[50];
+                snprintf(buffer, 50, "Function '%s' returned something but shouldn't have\n", name);
+                raiseErrorMacro(*pos, buffer)
             }
             else if (program.funcReturn == NULL && g_funcs.items[i].returnType == UNKNOWNVARTYPE){
                 program.funcReturn = malloc(sizeof(NULLVAR));
@@ -849,7 +856,7 @@ void parseFunction(Node* node){
         DYN_PUSH(node->data.function->inputs.items[i], input);
     }
 
-    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = NOTLOWLEVER, .codeBlock = node->data.function->codeBlock, .funcType = 0, .inputs = input, .returnType = node->data.function->returnType, .nameSpace = node->data.function->namespace};
+    funcStruct tempFunc = {.index = g_funcs.count, .name = node->data.function->name, .initialised = NOTLOWLEVER, .codeBlock = node->data.function->codeBlock, .funcType = 0, .inputs = input, .returnType = node->data.function->returnType, .nameSpace = node->data.function->namespace, .publicity = node->data.function->publicity};
     DYN_PUSH(tempFunc, g_funcs);
 }
 
@@ -1045,7 +1052,7 @@ void parseFunctionCall_(Node* node){
         callLowLevelFunc(index, node);
     }
     else{
-        callFunctionByName(node->data.functionCall->name, node->data.functionCall->namespace);
+        callFunctionByName(node->data.functionCall->name, node->data.functionCall->namespace, node->pos);
     }
 
     for (size_t i = 0; i < l_vars.count; i++){

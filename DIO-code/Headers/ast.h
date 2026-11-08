@@ -93,6 +93,7 @@ typedef struct condition{
 
 typedef struct function{
     int namespace;
+    int publicity;
     char* name;
     Node* codeBlock;
     dynamicNode inputs;
