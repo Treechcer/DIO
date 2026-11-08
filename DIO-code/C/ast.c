@@ -332,7 +332,7 @@ Node* parseNewVariable(dynamicToken* toks){
 
         tokT = UNKNOWNVARTYPE;
     }
-    else if (checkTokenAt(toks, 3).identifier == IDENTIFIER && checkTokenAt(toks, 4).identifier == LPAREN) {
+    else if (checkTokenAt(toks, 5).identifier == IDENTIFIER && checkTokenAt(toks, 6).identifier == LPAREN) {
         //function is found
         createNodeBool = 1;
         Token expectedType = shiftToken(toks);

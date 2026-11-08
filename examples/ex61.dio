@@ -1,7 +1,7 @@
 #namespace test
 
 def a(int : a)::int
-    STD->out(a)
+    STD->out(a + 1)
 
     return a
 end
@@ -9,10 +9,8 @@ end
 #namespace ex61
 
 def a()::int
-    return 1
+    return 5
 end
-
->>chain doesn't work?  have to fix later
 
 int b = ex61->a():test->a()
 
