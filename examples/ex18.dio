@@ -1,11 +1,11 @@
 string a = "Hello "
 string b = "World"
 
-out(a)
-out(b)
+STD->out(a)
+STD->out(b)
 
 >>prints: Hello\nWorld
 
-out(a + b)
+STD->out(a + b)
 
 >>prints: Hello World

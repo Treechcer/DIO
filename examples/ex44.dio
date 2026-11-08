@@ -1,5 +1,5 @@
 def a(int : p)::void
-    out(p)
+    STD->out(p)
 end
 
 def b()::int

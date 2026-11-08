@@ -8,4 +8,4 @@ end
 
 >>This doesn't work because out is void
 
-int test = a():b():out()
+int test = a():b():STD->out()

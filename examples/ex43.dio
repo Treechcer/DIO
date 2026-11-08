@@ -1,5 +1,5 @@
 int a = {1,0,2,0}
 
-int len = length(a)
+int len = STD->length(a)
 
-out(len)
+STD->out(len)

@@ -10,4 +10,4 @@ for (int x = 1; x < 8; x = x + 1)
     end
 end
 
-out(a);
+STD->out(a);

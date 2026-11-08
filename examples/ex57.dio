@@ -3,6 +3,6 @@ def a()::string
 end
 
 string retVal = a()
-out(retVal)
-int len = length(retVal)
-out(len)
+STD->out(retVal)
+int len = STD->length(retVal)
+STD->out(len)

@@ -2,4 +2,4 @@ int a = {1,2,3}
 
 a[1] = 5
 
-out(a)
+STD->out(a)

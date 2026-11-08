@@ -2,4 +2,4 @@ int a = 5;
 
 a += 7;
 
-out(a)
+STD->out(a)

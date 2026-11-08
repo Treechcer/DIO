@@ -1,5 +1,5 @@
 def outOne(int : input)
-    out(input)
+    STD->out(input)
 end
 
 int arr = {6,7,8.5,7}

@@ -1,1 +1,1 @@
-exec("echo hello")
+STD->exec("echo hello")

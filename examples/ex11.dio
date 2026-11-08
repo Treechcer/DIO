@@ -1,5 +1,5 @@
-out(5)
+STD->out(5)
 
-out(a)
+STD->out(a)
 
 >>out creates in itself variable 'a' making it possible to print it right after it 

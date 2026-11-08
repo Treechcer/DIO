@@ -1,7 +1,7 @@
 string pla = $PLATFORM
 
-out(pla)
+STD->out(pla)
 
 string ver = $VERSION
 
-out(ver)
+STD->out(ver)

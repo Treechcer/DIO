@@ -1,5 +1,5 @@
 def arTake(int : arr)
-    out(arr)
+    STD->out(arr)
 end
 
 int ar = {1,2,3} 

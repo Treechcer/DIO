@@ -1,2 +1,2 @@
-#WIN int a = 5; out(a);
-#LINUX int a = 7; out(a);
+#WIN int a = 5; STD->out(a);
+#LINUX int a = 7; STD->out(a);

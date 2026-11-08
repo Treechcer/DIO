@@ -1,5 +1,5 @@
 def a(int : a)
-    out(a)
+    STD->out(a)
 end
 
 a(10)

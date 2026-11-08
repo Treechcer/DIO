@@ -1,4 +1,4 @@
 >> negative numbers work now!
 
 int a = -5
-out(a)
+STD->out(a)

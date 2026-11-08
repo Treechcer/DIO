@@ -3,7 +3,7 @@ def a()::int
 end
 
 def b(int : a)::void
-    out(a)
+    STD->out(a)
 end
 
 def c(int : a)::int

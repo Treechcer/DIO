@@ -2,4 +2,4 @@ string a = "Heo, World!"
 
 a[2] = "ll"
 
-out(a)
+STD->out(a)

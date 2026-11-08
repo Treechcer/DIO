@@ -169,13 +169,13 @@ int a = {1,4,2,6}
 a[1] = 2;
 
 >> {1.0, 2.0, 2.0, 6.0}
-out(a)
+STD->out(a)
 
 >>rewrites index 2 to 1st number from array and expands the array to fit the other numbers
 a[2] = {3,4,5}
 
 >> {1.0, 2.0, 3.0, 4.0, 5.0, 6.0}
-out(a)
+STD->out(a)
 
 ```
 
@@ -252,7 +252,7 @@ If you ever want to get any type of input, write type "any" with this type it's 
 ```py
 def a(any : b)
     string typeName = type(b)
-    out(typeName)
+    STD->out(typeName)
 end
 
 a(10)
@@ -377,6 +377,8 @@ goto (condition) ::gotoName::
 > NOTE: if you don't use condition, it will run always
 
 ### Standard Library
+
+Standard library uses the namespace of STD.
 
 #### out(something : anyType)::void
 

@@ -1,6 +1,6 @@
 def a(any : b)
     string typeName = type(b)
-    out(typeName)
+    STD->out(typeName)
 end
 
 a(10)

@@ -3,8 +3,8 @@ def a()::int
 end
 
 def b()::void
-    out("....")
+    STD->out("....")
 end
 
 int u = b():a()
-out(u)
+STD->out(u)
