@@ -183,12 +183,13 @@ int getFuncIndexByName(char* name, int namespace){
 
 void callFunctionByName(char* name, int namespace, Position* pos){
     program.isInFunc = 1;
+
     for(int i = 0; i < g_funcs.count; i++){
         if (strcmp(name, g_funcs.items[i].name) == 0 && namespace == g_funcs.items[i].nameSpace){
 
             if (g_funcs.items[i].publicity == 0 && g_funcs.items[i].nameSpace != pos->nameSpace){
-                char buffer[50];
-                snprintf(buffer, 50, "Function '%s' is not public and is not called from it's namespace\n", name);
+                char buffer[100];
+                snprintf(buffer, 100, "Function '%s' is not public and is not called from it's namespace\n", name);
                 raiseErrorMacro(*pos, buffer)
             }
 
@@ -196,13 +197,13 @@ void callFunctionByName(char* name, int namespace, Position* pos){
             parse(g_funcs.items[i].codeBlock);
 
             if (program.funcReturn == NULL && g_funcs.items[i].returnType != UNKNOWNVARTYPE){
-                char buffer[50];
-                snprintf(buffer, 50, "Function '%s' should've returned something but didn't\n", name);
+                char buffer[100];
+                snprintf(buffer, 100, "Function '%s' should've returned something but didn't\n", name);
                 raiseErrorMacro(*pos, buffer)
             }
             else if (program.funcReturn != NULL && g_funcs.items[i].returnType == UNKNOWNVARTYPE){
-                char buffer[50];
-                snprintf(buffer, 50, "Function '%s' returned something but shouldn't have\n", name);
+                char buffer[100];
+                snprintf(buffer, 100, "Function '%s' returned something but shouldn't have\n", name);
                 raiseErrorMacro(*pos, buffer)
             }
             else if (program.funcReturn == NULL && g_funcs.items[i].returnType == UNKNOWNVARTYPE){
