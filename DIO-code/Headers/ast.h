@@ -66,6 +66,7 @@ typedef struct variableNode {
     struct dataFlags { // struct should do it better? Otherwise there could only be one flag
         int isBool; //used for bools so they can't get numbers outside of 0 and 1
         int isFuncCall; //used when the value in AST is function or function chain
+        int funcNameSpace; //if namespace exists
     } dataFlags;
 } variableNode;
 

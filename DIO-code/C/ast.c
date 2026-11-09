@@ -325,6 +325,27 @@ Node* parseNewVariable(dynamicToken* toks){
     Node* value;
 
     if (checkCurrenToken(toks).identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == EQUALS){
+        if ((checkTokenAt(toks, 2).identifier == IDENTIFIER && checkTokenAt(toks, 3).identifier == LPAREN) || (checkTokenAt(toks, 2).identifier == IDENTIFIER && checkTokenAt(toks, 3).identifier == ARROWACCESSOR && checkTokenAt(toks, 4).identifier == IDENTIFIER && checkTokenAt(toks, 5).identifier == LPAREN)){
+            name = checkCurrenToken(toks).value;
+            Position pos = shiftToken(toks).pos; // skips name
+            shiftToken(toks); // skips =
+
+            //TODO: implement namespaces, because not yet done!
+
+            Node* retNode = createNode();
+            retNode->pos = copyPos(&pos);
+            retNode->type = VARIABLENODE;
+            retNode->data.variableNode = malloc(sizeof(variableNode));
+            retNode->data.variableNode->name = name;
+            retNode->data.variableNode->type = UNKNOWNVARTYPE;
+            retNode->data.variableNode->value = parseFunctionCall(toks);
+            retNode->data.variableNode->initialise = 0;
+            retNode->data.variableNode->dataFlags.isFuncCall = 1;
+            retNode->data.variableNode->arrayAcessIndex = NULL;
+
+            return retNode;
+        }
+
         createNodeBool = 1;
         name = checkCurrenToken(toks).value;
         Position pos = shiftToken(toks).pos; // skips name
@@ -332,7 +353,7 @@ Node* parseNewVariable(dynamicToken* toks){
 
         tokT = UNKNOWNVARTYPE;
     }
-    else if (checkTokenAt(toks, 5).identifier == IDENTIFIER && checkTokenAt(toks, 6).identifier == LPAREN) {
+    else if (checkTokenAt(toks, 1).identifier == IDENTIFIER && checkTokenAt(toks, 2).identifier == EQUALS && ((checkTokenAt(toks, 3).identifier == IDENTIFIER && checkTokenAt(toks, 4).identifier == LPAREN) || (checkTokenAt(toks, 3).identifier == IDENTIFIER && checkTokenAt(toks, 4).identifier == ARROWACCESSOR && checkTokenAt(toks, 5).identifier == IDENTIFIER && checkTokenAt(toks, 6).identifier == LPAREN))) {
         //function is found
         createNodeBool = 1;
         Token expectedType = shiftToken(toks);
@@ -782,7 +803,7 @@ Node* parseFunctionCall(dynamicToken* toks){
         pNode->data.functionCall->nextCall = NULL;
         pNode->data.functionCall->namespace = namespaceAccessor;
 
-        if (strcmp(checkCurrenToken(toks).value, ":") == 0){
+        if (checkCurrenToken(toks).value != NULL && checkCurrenToken(toks).identifier == COLON){
             shiftToken(toks);
             pNode->data.functionCall->nextCall = parseFunctionCall(toks);
 
