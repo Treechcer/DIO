@@ -7,7 +7,7 @@
     {
         "level": 2,
         "headerText": " Current OS compatibility\n",
-        "textInParagraph": "<table><tr><th></th><th>OS</th><th>Status (tested)</th><th>Runs as should</th><th>notes</th><th></th></tr><tr><td></td><td>Windows</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Linux</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Android</td><td>\u2705</td><td>Yes</td><td>Termux needs to be used</td><td></td></tr><tr><td></td><td>FreeBSD</td><td>\u2705</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>iOS</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td>a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works</td><td></td></tr><tr><td></td><td>Mac (Intel)</td><td>\ud83d\udfe8</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Mac (Apple silicone)</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>WebApp</td><td>\ud83d\udfe8</td><td>Untested</td><td>can technically run through WASM (more novelty than actual release) - full support not promised</td><td></td></tr><tr><td></td><td>OpenBSD</td><td>\ud83d\udfe8</td><td>Was compiled but test haven't ran correctly (13 passed, 16 failed)</td><td></td><td></td></tr><tr><td></td><td>NetBSD</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>HaikuOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>ReactOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td></tr></table>"
+        "textInParagraph": "<table class=\"table\"><tr><th scope=\"col\"></th><th scope=\"col\">OS</th><th scope=\"col\">Status (tested)</th><th scope=\"col\">Runs as should</th><th scope=\"col\">notes</th><th scope=\"col\"></th></tr><tr><td></td><td>Windows</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Linux</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Android</td><td>\u2705</td><td>Yes</td><td>Termux needs to be used</td><td></td></tr><tr><td></td><td>FreeBSD</td><td>\u2705</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>iOS</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td>a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works</td><td></td></tr><tr><td></td><td>Mac (Intel)</td><td>\ud83d\udfe8</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Mac (Apple silicone)</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>WebApp</td><td>\ud83d\udfe8</td><td>Untested</td><td>can technically run through WASM (more novelty than actual release) - full support not promised</td><td></td></tr><tr><td></td><td>OpenBSD</td><td>\ud83d\udfe8</td><td>Was compiled but test haven't ran correctly (13 passed, 16 failed)</td><td></td><td></td></tr><tr><td></td><td>NetBSD</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>HaikuOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>ReactOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr></table>"
     },
     {
         "level": 2,
@@ -27,7 +27,7 @@
     {
         "level": 3,
         "headerText": " Compiling\n",
-        "textInParagraph": "To compile it run in the root of this repository command:\n```sh\npython3 ./scripts/compile.py\n```\nThis automatically runs the language with params from ./scripts/CompileRunParams.txt (which is usually examples/ex[num].dio).\n> Note: more info in ![Readme.md](./scripts/readme.md)\n"
+        "textInParagraph": "To compile it run in the root of this repository command:\n```sh\npython3 ./scripts/compile.py\n</code></pre>This automatically runs the language with params from ./scripts/CompileRunParams.txt (which is usually examples/ex[num].dio).\n> Note: more info in ![Readme.md](./scripts/readme.md)\n"
     },
     {
         "level": 2,
@@ -97,7 +97,7 @@
     {
         "level": 3,
         "headerText": " Variables\n",
-        "textInParagraph": "```py\n>>Initialize \nint a = 10;\n>>Using var\nint b = a + 1;\n>>Creating array\nint arr = {1,2,3.5,7}\n>>Creating string\nstring str = \"Hello, World from double quoted string!\"\nstring str2 = 'Hello, World from single quoted string!'\n```\n"
+        "textInParagraph": "<pre><code>>>Initialize \nint a = 10;\n>>Using var\nint b = a + 1;\n>>Creating array\nint arr = {1,2,3.5,7}\n>>Creating string\nstring str = \"Hello, World from double quoted string!\"\nstring str2 = 'Hello, World from single quoted string!'\n</code></pre>"
     },
     {
         "level": 4,
@@ -107,27 +107,27 @@
     {
         "level": 4,
         "headerText": " Array / String indexing\n",
-        "textInParagraph": "String and number arrays are index both from 0 to length-1 as is standard in programming languages, although they can have additive property when trying to change value.\n```py\n>>Both works for num arrays and strings\nint a = {1,4,2,6}\n>>Updates property at index 1 to 2\na[1] = 2;\n>> {1.0, 2.0, 2.0, 6.0}\nSTD->out(a)\n>>rewrites index 2 to 1st number from array and expands the array to fit the other numbers\na[2] = {3,4,5}\n>> {1.0, 2.0, 3.0, 4.0, 5.0, 6.0}\nSTD->out(a)\n```\n"
+        "textInParagraph": "String and number arrays are index both from 0 to length-1 as is standard in programming languages, although they can have additive property when trying to change value.\n<pre><code>>>Both works for num arrays and strings\nint a = {1,4,2,6}\n>>Updates property at index 1 to 2\na[1] = 2;\n>> {1.0, 2.0, 2.0, 6.0}\nSTD->out(a)\n>>rewrites index 2 to 1st number from array and expands the array to fit the other numbers\na[2] = {3,4,5}\n>> {1.0, 2.0, 3.0, 4.0, 5.0, 6.0}\nSTD->out(a)\n</code></pre>"
     },
     {
         "level": 3,
         "headerText": " Functions\n",
-        "textInParagraph": "```py\n>>Declare\ndef name()::void\n    >>code\nend\ndef withParams(type : name, type2 : name2 ...)::void\n    >>they can have any amount of inputs\nend\n>>call\nnameSpace->name()\nnameSpace->withParams(a, 10) >> example, use variable and 10\n>*\nNOTE: if namespace is same as current parsed part, function can be called by just \"name()\"\nwithout the nameSpace->... More about namespaces in `middle-processor` part of this documentation\n*<\n```\n> Note: type can be any type that variable can be declared with (float, string...)\n"
+        "textInParagraph": "<pre><code>>>Declare\ndef name()::void\n    >>code\nend\ndef withParams(type : name, type2 : name2 ...)::void\n    >>they can have any amount of inputs\nend\n>>call\nnameSpace->name()\nnameSpace->withParams(a, 10) >> example, use variable and 10\n>*\nNOTE: if namespace is same as current parsed part, function can be called by just \"name()\"\nwithout the nameSpace->... More about namespaces in `middle-processor` part of this documentation\n*<\n</code></pre>> Note: type can be any type that variable can be declared with (float, string...)\n"
     },
     {
         "level": 4,
         "headerText": " Function Return Types\n",
-        "textInParagraph": "Functions can return values, they must return a value of the type specified. If no type is specified `::void` is being used as default value.\n```py\ndef a()::int\n    return 7;\nend\ndef b()::string\n    return \"something\"\nend\ndef c()\n    >>return can't be used!\nend\n```\n"
+        "textInParagraph": "Functions can return values, they must return a value of the type specified. If no type is specified `::void` is being used as default value.\n<pre><code>def a()::int\n    return 7;\nend\ndef b()::string\n    return \"something\"\nend\ndef c()\n    >>return can't be used!\nend\n</code></pre>"
     },
     {
         "level": 4,
         "headerText": " Function chain functions\n",
-        "textInParagraph": "Traditionally in programming, you can used functions as inputs and they get interpreted as a value. This language does not support that (at least yet*), instead there is chaining which always places result as first input of the next function and moves all inputs that are already in the function. This is used mostly to assign values to variables that can then be used later.\n```py\ndef a()::int\n    return 7\nend\ndef b(int : a)::void\n    STD->out(a)\nend\ndef c(int : a)::int\n    return a + 1\nend\nint retVal = a():c()\nb(retVal)\n>>Writes out 8, because chain functions pair together so \"a\" returns 7 which then \"c\" adds 1 making it 8\n```\n"
+        "textInParagraph": "Traditionally in programming, you can used functions as inputs and they get interpreted as a value. This language does not support that (at least yet*), instead there is chaining which always places result as first input of the next function and moves all inputs that are already in the function. This is used mostly to assign values to variables that can then be used later.\n<pre><code>def a()::int\n    return 7\nend\ndef b(int : a)::void\n    STD->out(a)\nend\ndef c(int : a)::int\n    return a + 1\nend\nint retVal = a():c()\nb(retVal)\n>>Writes out 8, because chain functions pair together so \"a\" returns 7 which then \"c\" adds 1 making it 8\n</code></pre>"
     },
     {
         "level": 4,
         "headerText": " Unknown input type\n",
-        "textInParagraph": "If you ever want to get any type of input, write type \"any\" with this type it's possible to get any input type (int, float, string...), you should use function \"type\" with it returning string representation of the type that you got as a input.\n```py\ndef a(any : b)\n    string typeName = type(b)\n    STD->out(typeName)\nend\na(10)\na(\"Hello, World!\")\n>>Write out \"FLOAT\" and then \"STRING\"\n```\n"
+        "textInParagraph": "If you ever want to get any type of input, write type \"any\" with this type it's possible to get any input type (int, float, string...), you should use function \"type\" with it returning string representation of the type that you got as a input.\n<pre><code>def a(any : b)\n    string typeName = type(b)\n    STD->out(typeName)\nend\na(10)\na(\"Hello, World!\")\n>>Write out \"FLOAT\" and then \"STRING\"\n</code></pre>"
     },
     {
         "level": 3,
@@ -137,27 +137,27 @@
     {
         "level": 4,
         "headerText": " WHILE Loops\n",
-        "textInParagraph": "```py\nint i = 0;\nwhile(i < 10)\n    i = i + 1\n    STD->out(i)\nend\n>>outputs 1 -> 10\n```\n"
+        "textInParagraph": "<pre><code>int i = 0;\nwhile(i < 10)\n    i = i + 1\n    STD->out(i)\nend\n>>outputs 1 -> 10\n</code></pre>"
     },
     {
         "level": 4,
         "headerText": " FOR Loops\n",
-        "textInParagraph": "```py\nfor (int i = 0; i < 10; i = i + 1)\n    STD->out(i)\nend\n>>outputs 0 -> 9\n```\n"
+        "textInParagraph": "<pre><code>for (int i = 0; i < 10; i = i + 1)\n    STD->out(i)\nend\n>>outputs 0 -> 9\n</code></pre>"
     },
     {
         "level": 5,
         "headerText": " Loops with walrus operators, increments and loopers\n",
-        "textInParagraph": "> Note: All these can be used elsewhere but I believe this is where they shine the most.\n```py\n>>Walrus operators\nfor (int i = 0; i < 10; i += 1) >> will become i = i + 1\n    STD->out(i)\nend\nfor (int i = 10; i > 0; i -= 1) >> will become i = i - 1\n    STD->out(i)\nend\n>*\nAll walrus operators:\n+=\n-=\n*=\n/=\n*<\n>>Increment / decrement\nfor (int i = 0; i < 10; i = i++) >> will become i = i + 1\n    STD->out(i)\nend\nfor (int i = 10; i > 0; i = i--) >> will become i = i - 1\n    STD->out(i)\nend\n>>Loopers\nfor (int i = 0; i < 10; i+++) >> will become i = i + 1\n    STD->out(i)\nend\nfor (int i = 10; i > 0; i+++) >> will become i = i - 1\n    STD->out(i)\nend\n```\n"
+        "textInParagraph": "> Note: All these can be used elsewhere but I believe this is where they shine the most.\n<pre><code>>>Walrus operators\nfor (int i = 0; i < 10; i += 1) >> will become i = i + 1\n    STD->out(i)\nend\nfor (int i = 10; i > 0; i -= 1) >> will become i = i - 1\n    STD->out(i)\nend\n>*\nAll walrus operators:\n+=\n-=\n*=\n/=\n*<\n>>Increment / decrement\nfor (int i = 0; i < 10; i = i++) >> will become i = i + 1\n    STD->out(i)\nend\nfor (int i = 10; i > 0; i = i--) >> will become i = i - 1\n    STD->out(i)\nend\n>>Loopers\nfor (int i = 0; i < 10; i+++) >> will become i = i + 1\n    STD->out(i)\nend\nfor (int i = 10; i > 0; i+++) >> will become i = i - 1\n    STD->out(i)\nend\n</code></pre>"
     },
     {
         "level": 4,
         "headerText": " Branching\n",
-        "textInParagraph": "As in standart languages:\nIf -> elseif -> else\n```py\nif (condition)\n>>code\nelseif (condition)\n>>code\nelse\n>>code\nend\n```\n"
+        "textInParagraph": "As in standart languages:\nIf -> elseif -> else\n<pre><code>if (condition)\n>>code\nelseif (condition)\n>>code\nelse\n>>code\nend\n</code></pre>"
     },
     {
         "level": 4,
         "headerText": " Goto\n",
-        "textInParagraph": "Goto-s are not not recommend to be used, they might have some specific use cases, they were added as 'first feature'. Goto also has to be created in the same codeblock as it's trying to be called in, it will pop out some general error.\n```py\n>>this is without any condition\n::gotoName::\n>>code\ngoto ::gotoName::\n>> goto with condition\n::gotoName::\n>>code\ngoto (condition) ::gotoName::\n```\n> NOTE: if you don't use condition, it will run always\n"
+        "textInParagraph": "Goto-s are not not recommend to be used, they might have some specific use cases, they were added as 'first feature'. Goto also has to be created in the same codeblock as it's trying to be called in, it will pop out some general error.\n<pre><code>>>this is without any condition\n::gotoName::\n>>code\ngoto ::gotoName::\n>> goto with condition\n::gotoName::\n>>code\ngoto (condition) ::gotoName::\n</code></pre>> NOTE: if you don't use condition, it will run always\n"
     },
     {
         "level": 3,
@@ -167,12 +167,12 @@
     {
         "level": 4,
         "headerText": " out(something : anyType)::void\n",
-        "textInParagraph": "```py\nint a = 5\nSTD->out(a)\n```\nOut is print function that prints out the variables or what you put into it.\n"
+        "textInParagraph": "<pre><code>int a = 5\nSTD->out(a)\n</code></pre>Out is print function that prints out the variables or what you put into it.\n"
     },
     {
         "level": 4,
         "headerText": " length(something : string/intArr)::int\n",
-        "textInParagraph": "```py\nint a = {1,2,3}\nint len = STD->length(a)\nSTD->out(len)\n```\nLength returns the integer length of array type variables (string or number array).\n"
+        "textInParagraph": "<pre><code>int a = {1,2,3}\nint len = STD->length(a)\nSTD->out(len)\n</code></pre>Length returns the integer length of array type variables (string or number array).\n"
     },
     {
         "level": 4,
@@ -232,7 +232,7 @@
     {
         "level": 4,
         "headerText": " namespace\n",
-        "textInParagraph": "Namespaces changes the \"name\" before using \"->\" when calling functions, one file can have more namespaces and they apply to code under them.After namespace you have to add the namespace name. This can be used as:\nfile main.dio:\n```py\nnamespace main\n>>code\n```\nfile side.dio:\n```py\nnamespace side\n>>code\n```\nWhen you import it with #get side.dio, you'll be able to use side functions.\n"
+        "textInParagraph": "Namespaces changes the \"name\" before using \"->\" when calling functions, one file can have more namespaces and they apply to code under them.After namespace you have to add the namespace name. This can be used as:\nfile main.dio:\n<pre><code>namespace main\n>>code\n</code></pre>file side.dio:\n<pre><code>namespace side\n>>code\n</code></pre>When you import it with #get side.dio, you'll be able to use side functions.\n"
     },
     {
         "level": 3,
@@ -242,11 +242,11 @@
     {
         "level": 4,
         "headerText": " $PLATFORM (string)\n",
-        "textInParagraph": "This will add tokens of values: \", PLATFORM-NAME (APPLE, ANDROID, LINUX...), \"\n```py\nstring platform = $PLATFORM\n>>This can be also used in ifs etc.\n```\n"
+        "textInParagraph": "This will add tokens of values: \", PLATFORM-NAME (APPLE, ANDROID, LINUX...), \"\n<pre><code>string platform = $PLATFORM\n>>This can be also used in ifs etc.\n</code></pre>"
     },
     {
         "level": 4,
         "headerText": " $VERSION (string)\n",
-        "textInParagraph": "This will add tokens of values? \", VERSION-NUMBERS (0.1.0, 1.0.0, etc.), \"\n```py\nstring version = $VERSION\n```\n"
+        "textInParagraph": "This will add tokens of values? \", VERSION-NUMBERS (0.1.0, 1.0.0, etc.), \"\n<pre><code>string version = $VERSION\n</code></pre>"
     }
 ]

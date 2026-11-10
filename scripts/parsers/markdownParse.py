@@ -5,17 +5,20 @@ def parseTable(txt : str):
         return txt
     
     if txt[0] == '|':
-        retText = "<table>"
+        retText = "<table class=\"table\">"
         count = 0
 
         for line in txt.split("\n"):
             if count == 1:
                 count += 1
                 continue
-                
+
+            if count+1 == len(txt.split("\n")):
+                break
+            
             retText += "<tr>"
 
-            element = ["<th>", "</th>"] if count == 0 else ["<td>", "</td>"]
+            element = ["<th scope=\"col\">", "</th>"] if count == 0 else ["<td>", "</td>"]
 
             retText += "".join([element[0] + part + element[1] for part in line.split("|")])
 
@@ -85,7 +88,7 @@ def parse(filePath, output):
         tempMap = {
             "level" : level,
             "headerText" : headerText,
-            "textInParagraph" : parseTable(textInParagraph)
+            "textInParagraph" : parseTable(textInParagraph).replace("\n\n", "\n").replace("```py\n", "<pre><code>").replace("```\n", "</code></pre>")
         }
 
         parsedObj.append(tempMap)
