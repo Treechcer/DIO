@@ -196,7 +196,7 @@ nameSpace->name()
 nameSpace->withParams(a, 10) >> example, use variable and 10
 
 >*
-NOTE: if namespace is same as current file, function can be called by just "name()"
+NOTE: if namespace is same as current parsed part, function can be called by just "name()"
 without the nameSpace->... More about namespaces in `middle-processor` part of this documentation
 *<
 ```

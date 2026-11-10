@@ -14,5 +14,7 @@ def c(int : a)::int
     return a + 1
 end
 
-int retVal = t->a():a->c()
+>> C doesn't need the "a->" because it's in called in the same namespace!
+
+int retVal = t->a():c()
 t->b(retVal)
