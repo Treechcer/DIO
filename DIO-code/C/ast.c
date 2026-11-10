@@ -329,9 +329,7 @@ Node* parseNewVariable(dynamicToken* toks){
             name = checkCurrenToken(toks).value;
             Position pos = shiftToken(toks).pos; // skips name
             shiftToken(toks); // skips =
-
-            //TODO: implement namespaces, because not yet done!
-
+            
             Node* retNode = createNode();
             retNode->pos = copyPos(&pos);
             retNode->type = VARIABLENODE;

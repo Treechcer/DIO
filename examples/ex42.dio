@@ -1,3 +1,5 @@
+#namespace t
+
 def a()::int
     return 7
 end
@@ -6,9 +8,11 @@ def b(int : a)::void
     STD->out(a)
 end
 
+#namespace a
+
 def c(int : a)::int
     return a + 1
 end
 
-int retVal = a():c()
-b(retVal)
+int retVal = t->a():a->c()
+t->b(retVal)
