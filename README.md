@@ -9,9 +9,7 @@
 
 <!-- markdownlint-enable MD033 -->
 
-<!--
-
-Non-HTML images
+<!--Non-HTML images
 
 ![Version](https://img.shields.io/badge/version-0.1.0-blue.svg?style=flat-square)
 ![License](https://img.shields.io/badge/license-BSD_3-green?logo=open-source-initiative)

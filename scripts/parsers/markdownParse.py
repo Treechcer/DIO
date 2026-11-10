@@ -1,5 +1,34 @@
 import json
 
+def parseTable(txt : str):
+    if len(txt) == 0:
+        return txt
+    
+    if txt[0] == '|':
+        retText = "<table>"
+        count = 0
+
+        for line in txt.split("\n"):
+            if count == 1:
+                count += 1
+                continue
+                
+            retText += "<tr>"
+
+            element = ["<th>", "</th>"] if count == 0 else ["<td>", "</td>"]
+
+            retText += "".join([element[0] + part + element[1] for part in line.split("|")])
+
+            retText += "</tr>"
+
+            count += 1
+
+        retText += "</table>"
+
+        return retText
+
+    return txt
+
 def parse(filePath, output):
     parsedObj = []
 
@@ -56,7 +85,7 @@ def parse(filePath, output):
         tempMap = {
             "level" : level,
             "headerText" : headerText,
-            "textInParagraph" : textInParagraph
+            "textInParagraph" : parseTable(textInParagraph)
         }
 
         parsedObj.append(tempMap)
