@@ -85,7 +85,7 @@ void callLowLevelFunc(int index, Node* node){
     }
     else if (type == TYPE){
         int varIndex = getVarIndexByName("a");
-        program.funcReturn = malloc(sizeof(binOpResult*));
+        program.funcReturn = malloc(sizeof(binOpResult));
         program.funcReturn->varType = STRINGVAR;
 
         char* NORMALISEDNAME = "";
@@ -125,7 +125,7 @@ void callLowLevelFunc(int index, Node* node){
     else if (type == LENGTH){
         int varIndex = getVarIndexByName("a");
         if (g_vars.items[varIndex].typedVar == NUMBERARRAY || g_vars.items[varIndex].typedVar == STRINGVAR){
-            program.funcReturn = malloc(sizeof(binOpResult*));
+            program.funcReturn = malloc(sizeof(binOpResult));
             program.funcReturn->value.intVal = g_vars.items[varIndex].data.arrayVar.length;
             program.funcReturn->varType = INTVAR;
         }
@@ -141,7 +141,7 @@ void callLowLevelFunc(int index, Node* node){
         char* input = fgets(buffer, sizeof(buffer), stdin);
 
         if (input != NULL){
-            program.funcReturn = malloc(sizeof(binOpResult*));
+            program.funcReturn = malloc(sizeof(binOpResult));
             int len = strlen(input);
             input[len-1] = '\0'; // removes the enter '\n'
             program.funcReturn->value.stringVal = input;
@@ -207,7 +207,7 @@ void callFunctionByName(char* name, int namespace, Position* pos){
                 raiseErrorMacro(*pos, buffer)
             }
             else if (program.funcReturn == NULL && g_funcs.items[i].returnType == UNKNOWNVARTYPE){
-                program.funcReturn = malloc(sizeof(NULLVAR));
+                program.funcReturn = malloc(sizeof(binOpNode));
                 program.funcReturn->varType = NULLVAR;
                 program.funcReturn->value.nullVal = NULL; //is this best value?
             }

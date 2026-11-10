@@ -696,7 +696,7 @@ Node* parseFunctionCreate(dynamicToken* toks){
 
         Token pubTok = checkCurrenToken(toks);
         if (strcmp(pubTok.value, "public") == 0 || strcmp(pubTok.value, "private") == 0){
-            publicity = (strcmp(pubTok.value, "public") == 0 || !strcmp(pubTok.value, "private") == 0);
+            publicity = (strcmp(pubTok.value, "public") == 0 || !(strcmp(pubTok.value, "private") == 0));
             shiftToken(toks);
         }
 
@@ -910,12 +910,12 @@ Node* parseStringGeneral(dynamicToken* toks){
 
         Token end = shiftToken(toks); //'
 
-        Node* stringNode = malloc(sizeof(stringNode));
+        Node* stringNode = malloc(sizeof(*stringNode));
         stringNode->pos = copyPos(&start.pos);
         stringNode->pos->end = end.pos.end;
 
         stringNode->type = STRINGNODE;
-        stringNode->data.stringNode = malloc(sizeof(stringNode));
+        stringNode->data.stringNode = malloc(sizeof(*stringNode));
         stringNode->data.stringNode->value = value;
         stringNode->data.stringNode->length = len;
 

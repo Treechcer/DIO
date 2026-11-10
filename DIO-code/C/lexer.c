@@ -45,7 +45,7 @@ char* stringifyText(char* text){
     return retText;
 }
 
-dynamicSpecialVars initSpecialVars(){
+void initSpecialVars(){
     dynamicToken dynToks = {0,0,0};
 
     char* lexThis = stringifyText(VERSION);

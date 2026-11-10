@@ -188,10 +188,10 @@ void raiseRunTimeError(char* file, Position pos, char* errorMessage, int errorCo
 
     printf("\nSTACK TRACE:\n");
     for (int i = st.currentFuncIndex - 1; i > 0; i--){
-        printf("%s() <- ", st.trace[i]);
+        printf("%s() <- ", st.trace[i].name);
     }
 
-    printf("%s()\n", st.trace[0]);
+    printf("%s()\n", st.trace[0].name);
     
     exit(errorCode);
 }
