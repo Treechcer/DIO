@@ -40,11 +40,19 @@ def runTests():
                     if not curRetCheck.stdout in outputs:
                         outputs.append(curRetCheck.stdout)
                     break
-                elif test["expectedReturnCode"] == curRetCheck.errorcode and output == "ERROR\n":
-                    passedCur = 2
-                    if not curRetCheck.stdout in outputs:
-                        outputs.append(curRetCheck.stdout)
-                    break
+                elif len(output.split("ERROR:")) > 1:
+                    out = output.split("ERROR:")[1].strip()
+                    if out in curRetCheck.stdout:
+                        passedCur = 1
+                    else:
+                        passedCur = 0
+
+                    outputs.append(curRetCheck.stdout)
+                #elif test["expectedReturnCode"] == curRetCheck.errorcode and output == "ERROR\n":
+                #    passedCur = 2
+                #    if not curRetCheck.stdout in outputs:
+                #        outputs.append(curRetCheck.stdout)
+                #    break
                 else:
                     failedOuts.append(curRetCheck.stdout)
             

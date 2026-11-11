@@ -202,7 +202,7 @@
         "code" : "a",
         "expectedReturnCode" : 3,
         "expectedOutput" : [
-            "ERROR"
+            "ERROR: parser.c"
         ],
         "maxRuns" : 1
     },
@@ -211,7 +211,7 @@
         "code" : "a()",
         "expectedReturnCode" : 3,
         "expectedOutput" : [
-            "ERROR"
+            "ERROR: parser.c"
         ],
         "maxRuns" : 1
     },
