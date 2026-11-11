@@ -358,5 +358,117 @@
             "WINDOWS|-|LINUX|-|APPLE|-|FREEBSD|-|ANDROID|-|WEB|-|UNKNOWN"
         ],
         "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "unsupported character crash",
+        "code" : "~",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: lexer.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "fake file",
+        "code" : "#use notarealfile",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: lexer.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "duplicate macro",
+        "code" : "#def macro: 1\n#def macro: 2",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: lexer.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "macro does not exist",
+        "code" : "#use fakeMacro",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: lexer.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "pragma argument does not exist",
+        "code" : "#pragma doesNotExist",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: lexer.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "unknown middle-processor thing",
+        "code" : "#doesNotExist",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: lexer.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "two dot float",
+        "code" : "float a = 1..5",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: lexer.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "special var does not exist",
+        "code" : "$specialVarNotReal",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: lexer.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "Incorrect File End",
+        "code" : "STD->out(\"Should never run!\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: main.c"
+        ],
+        "maxRuns" : 1,
+        "fileName" : "fake.notDio"
+    },
+    {
+        "testIdentifier" : "Dio file end (.dio)",
+        "code" : "STD->out(\"Should work\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "Should work"
+        ],
+        "maxRuns" : 1,
+        "fileName" : "real.dio"
+    },
+    {
+        "testIdentifier" : "Dio file end (.diogenes)",
+        "code" : "STD->out(\"Should work\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "Should work"
+        ],
+        "maxRuns" : 1,
+        "fileName" : "real.diogenes"
+    },
+    {
+        "testIdentifier" : "Dio file end (.diogenesdesinope)",
+        "code" : "STD->out(\"Should work\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "Should work"
+        ],
+        "maxRuns" : 1,
+        "fileName" : "real.diogenesdesinope"
     }
 ]

@@ -18,7 +18,13 @@ class objectTransfer:
 
 class dioTalker:
     fileName = "temp.dio"
-
+    allFileNames = []
+    
+    def changeFileName(self, fName):
+        if not (fName in self.allFileNames):
+            self.allFileNames.append(fName)
+            self.fileName = fName
+    
     def __init__(self, exePos, fileName = "temp.dio"):
         self.fileName = fileName
         self.exePos = exePos
@@ -34,10 +40,17 @@ class dioTalker:
 
         time.sleep(0.01) #this prevents issue, without this test were faiking (likely because rewring may have not finished but not sure)
         return objectTransfer(returner.returncode, returner.stdout)
+
+    def removeAllFiles(self):
+        for fileName in self.allFileNames:
+            try:
+                os.remove(fileName)
+            except:
+                pass
     
     if platform.system() != "Android" and platform.system() != "iOS":
         def disconnect(self):
-            os.remove(self.fileName)
+            self.removeAllFiles()
 
             for process in psutil.process_iter(['name', 'pid', 'username']):
                 if process.info["name"] == "dio":
@@ -45,4 +58,4 @@ class dioTalker:
                     p.terminate()
     else:
         def disconnect(self):
-            os.remove(self.fileName)
+            self.removeAllFiles()

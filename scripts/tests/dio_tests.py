@@ -24,6 +24,12 @@ def runTests():
 
         for i in range(test["maxRuns"]):
             start = time.time()
+
+            try:
+                dio.changeFileName(test["fileName"])
+            except:
+                dio.changeFileName("temp.dio")
+            
             returnObj.append(dio.executeCode(test["code"]))
             end = time.time()
             times.append({"len" : end - start, "file" : test["testIdentifier"]})
