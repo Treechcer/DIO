@@ -19,6 +19,7 @@ char* getVariableStringValue(int index);
 void parseGeneric(Node* node);
 double* getVariableNumArrayValue(int index);
 void parseFunctionCall_(Node* node);
+void parseExitNode();
 
 dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
@@ -154,6 +155,9 @@ void callLowLevelFunc(int index, Node* node){
     }
     else if (type == NOTLOWLEVER){
        raiseRuntimeErrorMacro(*node->pos, "Low level func was called, but wasn't low level func?", program.stack); 
+    }
+    else if (type == EXIT){
+        parseExitNode();
     }
     else{
         raiseRuntimeErrorMacro(*node->pos, "Type not implemented", program.stack);
@@ -1125,7 +1129,7 @@ void parseFunctionCall_(Node* node){
     program.stack.currentFuncIndex -= 1;
 }
 
-void parseExitNode(Node* node){
+void parseExitNode(){
     printf("Exiting.\n");
     exit(0);
 }
@@ -1167,7 +1171,7 @@ void parseGeneric(Node* node){
             parseLoopNode(node);
             break;
         case EXITNODE:
-            parseExitNode(node);
+            parseExitNode();
         default:
             if (DEBUG_MODE){
                 printf("%i\n", node->type);

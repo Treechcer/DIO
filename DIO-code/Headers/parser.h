@@ -23,6 +23,7 @@ typedef enum {
     LENGTH,
     INPUT,
     TYPE,
+    EXIT,
 } funcType;
 
 typedef enum {
