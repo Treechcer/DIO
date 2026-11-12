@@ -419,6 +419,10 @@ Writes out the text input and takes input, which is then returned as what the us
 
 Returns string variable based on what's passed in.
 
+#### exit()::void
+
+Immediately stops the execution in parser.c with printing out "Exiting." and returning code 0 to the OS.
+
 ### middle-processor
 
 Middle processor is kind of middle ware used to add code or change how lexing works. This is imitating (in a way\*) pre-processor from C (or that's the idea behind itq*). All mid processor calls are prefixed with '#'.
