@@ -35,7 +35,9 @@ def runTests():
             times.append({"len" : end - start, "file" : test["testIdentifier"]})
 
         for output in test["expectedOutput"]:
-            if output[-1] != "\n":
+            if len(output) < 1 or output == "":
+                output = "\n"
+            elif output[-1] != "\n":
                 output += "\n"
 
             passedCur = 0

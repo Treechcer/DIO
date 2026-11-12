@@ -30,8 +30,10 @@ class dioTalker:
         self.exePos = exePos
 
     def executeCode(self, code, text=True, maxTimeout = 5):
-        with open(self.fileName, "w") as f:
-            f.write(code)
+        if self.fileName != "DO NOT CREATE FILE":
+            with open(self.fileName, "w") as f:
+                f.write(code)
+                
         try:
             returner = subprocess.run(f"{self.exePos} -f {self.fileName}", capture_output=True, shell=True, timeout=maxTimeout, text=text) #5 seems like solid? worst time I've got on example was like 0.2s on iphone
         except subprocess.TimeoutExpired:

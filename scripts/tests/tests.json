@@ -470,5 +470,15 @@
         ],
         "maxRuns" : 1,
         "fileName" : "real.diogenesdesinope"
+    },
+    {
+        "testIdentifier" : "Dio file end (file does not exist)",
+        "code" : "STD->out(\"Should work\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: main.c"
+        ],
+        "maxRuns" : 1,
+        "fileName" : "DO NOT CREATE FILE"
     }
 ]
