@@ -987,6 +987,20 @@ Node* parseProgram(dynamicToken* toks) {
     return pNode;
 }
 
+Node* exitNodeParse(dynamicToken* toks){
+    Token tok = checkCurrenToken(toks);
+
+    if (tok.identifier == KEYWORD && strcmp(tok.value, "exit") == 0){
+        shiftToken(toks);
+        Node* retNode = createNode();
+        retNode->type = EXITNODE;
+
+        return retNode;
+    }
+
+    return NULL;
+}
+
 Node* parseGenericNode(dynamicToken* toks){
     Node* node = parseFunctionCall(toks);
 
@@ -1013,6 +1027,9 @@ Node* parseGenericNode(dynamicToken* toks){
     }
     if (node == NULL){
         node = parseReturn(toks);
+    }
+    if (node == NULL){
+        node = exitNodeParse(toks);
     }
     if (node == NULL){
         //this should probably stay last?

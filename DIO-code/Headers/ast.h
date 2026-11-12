@@ -35,6 +35,7 @@ typedef enum {
     RETRUNNODE,
     UNKNOWNNODE,
     NULLNODE,
+    EXITNODE,
 } nodeType;
 
 typedef struct programNode {
@@ -147,6 +148,11 @@ typedef struct nullNode {
     
 } nullNode;
 
+typedef struct exitNode {
+    
+} exitNode;
+
+
 typedef struct Node {
     nodeType type;
     union {
@@ -167,6 +173,7 @@ typedef struct Node {
         struct numberArrayNode* numberArrayNode;
         struct returnNode* nodeRetun;
         struct nullNode* nullNode;
+        struct exitNode* exitNode;
     } data;
     Position* pos;
 } Node;

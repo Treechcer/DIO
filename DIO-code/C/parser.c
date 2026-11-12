@@ -1125,6 +1125,11 @@ void parseFunctionCall_(Node* node){
     program.stack.currentFuncIndex -= 1;
 }
 
+void parseExitNode(Node* node){
+    printf("Exiting.\n");
+    exit(0);
+}
+
 Node* astToNode(Node* ast){
     return &(Node){.type = ast->type, .data = ast->data};
 }
@@ -1161,6 +1166,8 @@ void parseGeneric(Node* node){
             /*printf("LOOPNODE\n");*/
             parseLoopNode(node);
             break;
+        case EXITNODE:
+            parseExitNode(node);
         default:
             if (DEBUG_MODE){
                 printf("%i\n", node->type);
