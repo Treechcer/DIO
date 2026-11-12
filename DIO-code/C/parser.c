@@ -190,7 +190,7 @@ void callFunctionByName(char* name, int namespace, Position* pos){
             if (g_funcs.items[i].publicity == 0 && g_funcs.items[i].nameSpace != pos->nameSpace){
                 char buffer[256];
                 snprintf(buffer, sizeof(buffer) / sizeof(char), "Function '%s' is not public and is not called from it's namespace\n", name);
-                raiseErrorMacro(*pos, buffer)
+                raiseRuntimeErrorMacro(*pos, buffer, program.stack)
             }
 
             program.funcReturn = NULL;
@@ -199,12 +199,12 @@ void callFunctionByName(char* name, int namespace, Position* pos){
             if (program.funcReturn == NULL && g_funcs.items[i].returnType != UNKNOWNVARTYPE){
                 char buffer[256];
                 snprintf(buffer, sizeof(buffer) / sizeof(char), "Function '%s' should've returned something but didn't\n", name);
-                raiseErrorMacro(*pos, buffer)
+                raiseRuntimeErrorMacro(*pos, buffer, program.stack)
             }
             else if (program.funcReturn != NULL && g_funcs.items[i].returnType == UNKNOWNVARTYPE){
                 char buffer[256];
                 snprintf(buffer, sizeof(buffer) / sizeof(char), "Function '%s' returned something but shouldn't have\n", name);
-                raiseErrorMacro(*pos, buffer)
+                raiseRuntimeErrorMacro(*pos, buffer, program.stack)
             }
             else if (program.funcReturn == NULL && g_funcs.items[i].returnType == UNKNOWNVARTYPE){
                 program.funcReturn = malloc(sizeof(binOpNode));

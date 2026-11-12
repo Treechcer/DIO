@@ -480,5 +480,14 @@
         ],
         "maxRuns" : 1,
         "fileName" : "DO NOT CREATE FILE"
+    },
+    {
+        "testIdentifier" : "Dio file end (file does not exist)",
+        "code" : "def private a()::void\nend\n#namespace test\nc()",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: parser.c"
+        ],
+        "maxRuns" : 1
     }
 ]

@@ -23,7 +23,8 @@ class dioTalker:
     def changeFileName(self, fName):
         if not (fName in self.allFileNames):
             self.allFileNames.append(fName)
-            self.fileName = fName
+        
+        self.fileName = fName
     
     def __init__(self, exePos, fileName = "temp.dio"):
         self.fileName = fileName
