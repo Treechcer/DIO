@@ -482,8 +482,8 @@
         "fileName" : "DO NOT CREATE FILE"
     },
     {
-        "testIdentifier" : "Dio file end (file does not exist)",
-        "code" : "def private a()::void\nend\n#namespace test\nc()",
+        "testIdentifier" : "private function call",
+        "code" : "#namespace priv\ndef private c()::void\n\nend\n#namespace test\npriv->c()",
         "expectedReturnCode" : 0,
         "expectedOutput" : [
             "ERROR: parser.c"

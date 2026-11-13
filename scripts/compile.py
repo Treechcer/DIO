@@ -255,7 +255,7 @@ arguments = {
         "inherit" : "None"
     },
     "timeTest" : {
-        "data" : False,
+        "data" : True,
         "collect" : "switch",
         "inherit" : "tests"
     },
@@ -265,7 +265,7 @@ arguments = {
         "inherit" : "None"
     },
     "crashTest" : {
-        "data" : False,
+        "data" : True,
         "collect" : "switch",
         "inherit" : "tests"
     }
