@@ -49,10 +49,37 @@ def runTests():
                     break
                 elif len(output.split("ERROR:")) > 1:
                     out = output.split("ERROR:")[1].strip()
+
+                    errorMap = {
+                        "lexer.c" : 1,
+                        "ast.c" : 2,
+                        "parser.c" : 3,
+                    #    "helper_functions.c" : 4,
+                    }
+
                     if out in curRetCheck.stdout:
                         passedCur = 1
                     else:
                         passedCur = 0
+
+                    if test["expectedReturnCode"] == 0:
+                        errorCode = 5
+                        try:
+                            errorCode = errorMap[out]
+                        except:
+                            pass
+
+                        print(errorCode, curRetCheck.errorcode)
+
+                        if errorCode == curRetCheck.errorcode:
+                            pass
+                        else:
+                            passedCur = 2
+                    else:
+                        if test["expectedReturnCode"] == curRetCheck.errorcode:
+                            pass
+                        else:
+                            passedCur = 2
 
                     outputs.append(curRetCheck.stdout)
                 #elif test["expectedReturnCode"] == curRetCheck.errorcode and output == "ERROR\n":
