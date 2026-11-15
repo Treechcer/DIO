@@ -462,7 +462,7 @@ Returns string variable based on what's passed in.
 STD->out("foo")
 
 >> Exiting.
-exit()
+STD->exit()
 
 STD->out("bar")
 ```
