@@ -1,3 +1,4 @@
+import shared.bcolors as bc
 import tests.dioLib as dioLib
 import platform
 import json
@@ -69,17 +70,17 @@ def runTests():
                         except:
                             pass
 
-                        print(errorCode, curRetCheck.errorcode)
+                        #print(errorCode, curRetCheck.errorcode)
 
                         if errorCode == curRetCheck.errorcode:
                             pass
                         else:
-                            passedCur = 2
+                            passedCur = 3
                     else:
                         if test["expectedReturnCode"] == curRetCheck.errorcode:
                             pass
                         else:
-                            passedCur = 2
+                            passedCur = 3
 
                     outputs.append(curRetCheck.stdout)
                 #elif test["expectedReturnCode"] == curRetCheck.errorcode and output == "ERROR\n":
@@ -91,18 +92,22 @@ def runTests():
                     failedOuts.append(curRetCheck.stdout)
             
             if passedCur == 0 or len(test["expectedOutput"]) != len(outputs):
-                print(f"{test["testIdentifier"]} : Failed")
+                print(f"{bc.bcolors.FAIL} {test["testIdentifier"]} : Failed {bc.bcolors.ENDC}")
                 print(f"({curRetCheck.errorcode})", test["expectedOutput"], "|", failedOuts)
                 failed += 1
                 break
 
         if passedCur == 1:
-            print(f"{test["testIdentifier"]} : Passed")
+            print(f"{bc.bcolors.OKGREEN}{test["testIdentifier"]} : Passed {bc.bcolors.ENDC}")
             passed += 1
         if passedCur == 2:
-            print(f"{test["testIdentifier"]} : Passed [err type]")
+            print(f"{bc.bcolors.WARNING}{test["testIdentifier"]} : Passed [err type] {bc.bcolors.ENDC}")
             passed += 1
-
+        if passedCur == 3:
+            print(f"{bc.bcolors.WARNING}{ test["testIdentifier"]} : Warning {bc.bcolors.ENDC}")
+            warning += 1
+    
+    print()
     print(f"Passed {passed} out of {len(tests)}")
     print(f"Failed {failed} out of {len(tests)}")
     print(f"Warning for {warning} out of {len(tests)}")
