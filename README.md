@@ -401,25 +401,71 @@ Length returns the integer length of array type variables (string or number arra
 
 #### error(text : string)::void
 
+```py
+int a = {1,2,3}
+
+int index = 4
+int len = STD->length(a)
+
+if (index > len)
+   STD->error("out of bounds")
+end
+```
+
 Raises error, similarly as the language does errors. This makes the program instantly exit with some error code.
 
 #### warning(text : string)::void
+
+```py
+int a = 10
+
+if (a <= 20) 
+   STD->warning("the number needs to be >= 20")
+end
+```
 
 Raises warning, this only writes out text but does not stop executing other code.
 
 #### exec(text : string)::void
 
+```py
+STD->exec("echo DIO")
+```
+
 Executes shell commands.
 
 #### input(text : string)::string
+
+```py
+string a = STD->input("enter a phrase: ")
+
+STD->out(a)
+```
 
 Writes out the text input and takes input, which is then returned as what the user writes.
 
 #### type(var : any)::string
 
+```py
+int a = {1,2,3}
+
+string b = STD->type(a)
+
+STD->out(b)
+```
+
 Returns string variable based on what's passed in.
 
 #### exit()::void
+
+```py
+STD->out("foo")
+
+>> Exiting.
+STD->exit()
+
+STD->out("bar")
+```
 
 Immediately stops the execution in parser.c with printing out "Exiting." and returning code 0 to the OS.
 
