@@ -63,7 +63,7 @@ void initLowLevelFuncs(){
     createLowLevelFunc("type", inputs, STRINGVAR, TYPE);
 
     inputs = (dynamicNode){0,0,0};
-    createLowLevelFunc("type", inputs, STRINGVAR, EXIT);
+    createLowLevelFunc("exit", inputs, STRINGVAR, EXIT);
 }
 
 int main(int argc, char **argv){
