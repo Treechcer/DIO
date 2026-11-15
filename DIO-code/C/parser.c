@@ -139,13 +139,10 @@ void callLowLevelFunc(int index, Node* node){
         char buffer[4096];
         printf("%s", g_vars.items[varIndex].data.arrayVar.value.stringValue);
 
-        char* input = fgets(buffer, sizeof(buffer), stdin);
-
-        if (input != NULL){
+        if (fgets(buffer, sizeof(buffer), stdin)){
             program.funcReturn = malloc(sizeof(binOpResult));
-            int len = strlen(input);
-            input[len-1] = '\0'; // removes the enter '\n'
-            program.funcReturn->value.stringVal = input;
+            buffer[strcspn(buffer, "\n")] = '\0'; // removes the enter '\n'
+            program.funcReturn->value.stringVal = strdup(buffer);
             program.funcReturn->varType = STRINGVAR;   
         }
         else{
