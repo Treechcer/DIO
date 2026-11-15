@@ -10,9 +10,6 @@ import parsers.parseExamples as pe
 import parsers.combineJsons as co
 import copy
 
-co.combine()
-exit(0)
-
 
 #testsPath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "tests"))
 #
@@ -154,10 +151,10 @@ def buildWASMRelease():
 
     #mp.parse("README.md", os.path.join("scripts", "parsers", "wiki.json")) #moved to parseAll
     co.combine()
-    shutil.copyfile(os.path.join("scripts", "parsers", "wiki.json"), os.path.join("releases", "webapp", "wiki.json"))
+    #shutil.copyfile(os.path.join("scripts", "parsers", "wiki.json"), os.path.join("releases", "webapp", "wiki.json"))
 
     #change it to the conbined JSon even for the showcases or whatever
-    #shutil.copyfile(os.path.join("scripts", "parsers", "combined.json"), os.path.join("releases", "webapp", "combined.json"))
+    shutil.copyfile(os.path.join("scripts", "parsers", "combined.json"), os.path.join("releases", "webapp", "combined.json"))
 
 def makeRelease():
     releaseData = {}

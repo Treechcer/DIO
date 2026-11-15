@@ -1,7 +1,7 @@
 let dio = null
 
-function getArgs(){
-    input = document.getElementById("inputText")
+function getArgs(inputId){
+    input = document.getElementById(inputId)
     let arrOut = ["-e", input.value];
 
     if (document.getElementById("debug").checked){
@@ -19,10 +19,10 @@ function getArgs(){
     return arrOut;
 }
 
-function runDio() {
-    dio?.terminate();
+function runDio(inputId, outputId) {
+    dio?.terminate(inputId);
 
-    arg = getArgs()
+    arg = getArgs(inputId)
 
     if (arg[1].trim() == "" || !arg[1]){
         return
@@ -30,7 +30,7 @@ function runDio() {
 
     dio = new Worker("worker.js");
     dio.onmessage = ({ data }) => {
-        document.getElementById("outputText").value += "DIO>>: " + data.text + "\n";
+        document.getElementById(outputId).value += "DIO>>: " + data.text + "\n";
     };
 
     dio.postMessage({ args: arg });
@@ -48,7 +48,43 @@ function drawWiki(wikiJson) {
     }
 }
 
+function drawExamples(exJson) {
+    exJson.sort(function (a, b) {
+        return a.file - b.file   })
+
+    div = document.getElementById("example")
+    for (i = 0; i < exJson.length; i++){
+        div.insertAdjacentHTML("beforeend", `<h2>Example ${exJson[i].file} </h2>`)
+        div.insertAdjacentHTML("beforeend", `<div class="row">
+            <button type="button" class="btn btn-primary position-relative px-4" onclick="runDio('inputText${exJson[i].file}', 'outputText${exJson[i].file}')">Run</button>
+                <div class="col-6">
+                    <div class="card border border-warning rounded">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="inputText">Code input</label>
+                                <textarea class="form-control" id="inputText${exJson[i].file}" rows="15" readonly>${exJson[i].content}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card border border-warning rounded">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="outputText">Code output</label>
+                                <textarea class="form-control" id="outputText${exJson[i].file}" rows="15" readonly></textarea>
+                            </div>
+                        </div>
+                    </div>
+        `)
+    }
+}
+
 function generateWiki() {
     //like bro what even
-    fetch("wiki.json").then(response => {return response.json()}).then(data => {/*console.log(data);*/ drawWiki(data);})
+    fetch("combined.json").then(response => {return response.json()}).then(data => {drawWiki(data["wiki"]);})
+}
+
+function generateExamples() {
+    fetch("combined.json").then(response => {return response.json()}).then(data => {drawExamples(data["examples"]);})
 }
