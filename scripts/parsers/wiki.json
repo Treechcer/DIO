@@ -177,27 +177,32 @@
     {
         "level": 4,
         "headerText": " error(text : string)::void\n",
-        "textInParagraph": "Raises error, similarly as the language does errors. This makes the program instantly exit with some error code.\n"
+        "textInParagraph": "<pre><code>int a = {1,2,3}\nint index = 4\nint len = STD->length(a)\nif (index > len)\n   STD->error(\"out of bounds\")\nend\n</code></pre>Raises error, similarly as the language does errors. This makes the program instantly exit with some error code.\n"
     },
     {
         "level": 4,
         "headerText": " warning(text : string)::void\n",
-        "textInParagraph": "Raises warning, this only writes out text but does not stop executing other code.\n"
+        "textInParagraph": "<pre><code>int a = 10\nif (a <= 20) \n   STD->warning(\"the number needs to be >= 20\")\nend\n</code></pre>Raises warning, this only writes out text but does not stop executing other code.\n"
     },
     {
         "level": 4,
         "headerText": " exec(text : string)::void\n",
-        "textInParagraph": "Executes shell commands.\n"
+        "textInParagraph": "<pre><code>STD->exec(\"echo DIO\")\n</code></pre>Executes shell commands.\n"
     },
     {
         "level": 4,
         "headerText": " input(text : string)::string\n",
-        "textInParagraph": "Writes out the text input and takes input, which is then returned as what the user writes.\n"
+        "textInParagraph": "<pre><code>string a = STD->input(\"enter a phrase: \")\nSTD->out(a)\n</code></pre>Writes out the text input and takes input, which is then returned as what the user writes.\n"
     },
     {
         "level": 4,
         "headerText": " type(var : any)::string\n",
-        "textInParagraph": "Returns string variable based on what's passed in.\n"
+        "textInParagraph": "<pre><code>int a = {1,2,3}\nstring b = STD->type(a)\nSTD->out(b)\n</code></pre>Returns string variable based on what's passed in.\n"
+    },
+    {
+        "level": 4,
+        "headerText": " exit()::void\n",
+        "textInParagraph": "<pre><code>STD->out(\"foo\")\n>> Exiting.\nSTD->exit()\nSTD->out(\"bar\")\n</code></pre>Immediately stops the execution in parser.c with printing out \"Exiting.\" and returning code 0 to the OS.\n"
     },
     {
         "level": 3,

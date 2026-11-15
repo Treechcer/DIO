@@ -6,7 +6,13 @@ import json
 import shutil
 import tests.dio_tests as tests
 import parsers.markdownParse as mp
+import parsers.parseExamples as pe
+import parsers.combineJsons as co
 import copy
+
+co.combine()
+exit(0)
+
 
 #testsPath = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "tests"))
 #
@@ -19,6 +25,10 @@ if platform.system() == "iOS":
     print("---------------------")
 
 ROOTFOLDER = os.path.abspath(os.curdir)
+
+def allParsers():
+    mp.parse("README.md", os.path.join(".", "scripts", "parsers", "wiki.json"))
+    pe.parse("./scripts/parsers/examples.json")
 
 def getFiles():
     curPath = os.path.join(os.path.abspath(os.path.curdir), "C")
@@ -142,8 +152,12 @@ def buildWASMRelease():
     shutil.copyfile(os.path.join("scripts", "data", "worker.js"), os.path.join("releases", "webapp", "worker.js"))
     shutil.copyfile(os.path.join("scripts", "data", "logo.png"), os.path.join("releases", "webapp", "logo.png"))
 
-    mp.parse("README.md", os.path.join("scripts", "parsers", "wiki.json"))
+    #mp.parse("README.md", os.path.join("scripts", "parsers", "wiki.json")) #moved to parseAll
+    co.combine()
     shutil.copyfile(os.path.join("scripts", "parsers", "wiki.json"), os.path.join("releases", "webapp", "wiki.json"))
+
+    #change it to the conbined JSon even for the showcases or whatever
+    #shutil.copyfile(os.path.join("scripts", "parsers", "combined.json"), os.path.join("releases", "webapp", "combined.json"))
 
 def makeRelease():
     releaseData = {}
@@ -268,6 +282,11 @@ arguments = {
         "data" : True,
         "collect" : "switch",
         "inherit" : "tests"
+    },
+    "parse" : {
+        "data" : False,
+        "collect" : "switch",
+        "inherit" : "release"
     }
 }
 
@@ -353,6 +372,9 @@ except Exception as e:
     print(e)
     print("failed in compilation process")
     exit(1)
+
+if arguments["parse"]:
+    allParsers()
 
 if arguments["release"]:
     makeRelease()
