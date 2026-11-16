@@ -53,6 +53,13 @@ Current platforms in releases (current and future):
 
 ## Compiling and Running
 
+### Web Release
+
+Some version of Dio will be running through github pages on URL: <https://treechcer.github.io/DIO/>
+
+> Note: After the release of 0.2.0 Web Release will have the newest stable version uploaded and should have only stable on it.
+> Note 2: The github pages are hosted from the branch "web-app".
+
 ### Stable version
 
 Stable is only version in releases. Currently there is only one release (0.1.0).
