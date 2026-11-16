@@ -150,7 +150,7 @@ def timeTest():
     dio.disconnect()
 
 def printLongestTimes(N, times):
-    longest = getNLongestTimes(N, times)
+    longest = getNLongestTimes(N if N >= len(times) else len(times), times)
 
     for i in range(len(longest)):
         #This makes the text the same length so it's formated better
@@ -176,11 +176,11 @@ def getLongestTime(times):
     maxTimeCopy = times.pop(index)
     return times, maxTimeCopy
 
-def testCrashes():
+def testCrashes(folder = os.path.join(".", "examples")):
     counter = 0
     dio = dioLib.dioTalker("./dio.exe" if platform.system() == "Windows" else "./dio")
 
-    ex = os.listdir("./examples")
+    ex = os.listdir(folder)
 
     for example in ex:
         if example[-3::] == "dio":

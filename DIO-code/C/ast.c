@@ -429,13 +429,16 @@ Node* parseNewVariable(dynamicToken* toks){
         int len = 0;
         int pos_ = g_index;
 
-        while (toks->items[pos_++].identifier != QUOTE){
+        while (toks->items[pos_].identifier != QUOTE){
             len += strlen(toks->items[pos_].value);
+            pos_++;
         }
         char* value = "";
         if (len > 0){
             char* buffer = malloc(len);
             
+            //printf("%s %i\n", checkCurrenToken(toks).value, len);
+
             strcpy(buffer, checkCurrenToken(toks).value);
             shiftToken(toks);
             while(checkCurrenToken(toks).identifier != QUOTE){
