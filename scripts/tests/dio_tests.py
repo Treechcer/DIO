@@ -150,7 +150,7 @@ def timeTest():
     dio.disconnect()
 
 def printLongestTimes(N, times):
-    longest = getNLongestTimes(N if N >= len(times) else len(times), times)
+    longest = getNLongestTimes(N if N <= len(times) else len(times), times)
 
     for i in range(len(longest)):
         #This makes the text the same length so it's formated better
@@ -176,15 +176,15 @@ def getLongestTime(times):
     maxTimeCopy = times.pop(index)
     return times, maxTimeCopy
 
-def testCrashes(folder = os.path.join(".", "examples")):
-    counter = 0
+def executeFolder(counter = 0, folder = os.path.join(".", "examples")):
     dio = dioLib.dioTalker("./dio.exe" if platform.system() == "Windows" else "./dio")
-
     ex = os.listdir(folder)
 
     for example in ex:
-        if example[-3::] == "dio":
-            with open(os.path.join(".", "examples", example), "r") as f:
+        if os.path.isdir(os.path.join(folder, example)):
+            counter = executeFolder(counter, os.path.join(folder, example))
+        elif example[-3::] == "dio":
+            with open(os.path.join(folder, example), "r") as f:
                 content = f.read()
 
             returnObj = dio.executeCode(content, False, 0.75)
@@ -193,9 +193,12 @@ def testCrashes(folder = os.path.join(".", "examples")):
                 print(f"{example} (RC: {returnObj.errorcode})")
                 counter += 1
 
-    print(f"Crashed count: {counter}")
-
     dio.disconnect()
+    return counter
+
+def testCrashes():
+    print(f"Crashed count: {executeFolder()}")
+
 
 if __name__ == "__main__":
     runTests()
