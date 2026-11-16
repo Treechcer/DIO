@@ -1,0 +1,5 @@
+#namespace lib
+
+def public libraryFunc()
+    STD->out("In library")
+end

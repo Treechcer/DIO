@@ -1,0 +1,4 @@
+>> STD is namespace of Standard Library functions
+>> Function out takes any input that will be printed to the console
+
+STD->out("Hello, World!")

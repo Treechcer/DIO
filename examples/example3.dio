@@ -1,0 +1,9 @@
+>> Dio supports all basic binary oprators and brackets
+
+int insert = 3
+
+>> thanks to the brackets the result is 8.0
+
+int a = (insert - 1 + 2) * 2
+
+STD->out(a)

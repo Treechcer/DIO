@@ -1,0 +1,37 @@
+
+
+>>Running this = malloc fail fix later
+
+
+>>Variables have 2 main types
+
+>> 1. Number types
+
+>> a)
+
+int a = 1
+
+>> b)
+
+float b = 2.0
+
+>> c) array structure (takes both floats and integers)
+
+int c = {1, 2.1, 1}
+
+>> 2. String type
+
+>> stores text
+
+string d = "Hello, World!"
+
+string e = 'Single quotes can be used!'
+
+string f = "Quotes can be combined :d'
+
+STD->out(a)
+STD->out(b)
+STD->out(c)
+STD->out(d)
+STD->out(e)
+STD->out(f)

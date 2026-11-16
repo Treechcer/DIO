@@ -1,0 +1,58 @@
+>> functions and namespaces
+
+>*
+All funtions have namespaces, as we used the length or out
+we used "STD->out" where the STD is the namespaces
+namespaces before the -> has to be passed when we are in
+different namespaces (well, because we haven't defined
+any namespace we technically were in STD and didn't need
+to use the STD-> but it's bad practice). Namespaces are
+defined with middle-processor with command:
+*<
+
+#namespace nm
+>>this creates namespace nm
+
+def public func(int : a)::void
+
+>*
+functions are defined with keyword def then you can say public / private
+if you say nothing it's by default public which means it can be called from
+other namespaces (private can only be called from the same namespace)
+
+intputs are defined by 'type : name', nire can be defined in the same
+way separated by commans
+
+possible types:
+ int (arrays and int)
+ string (string only)
+ any (all types, string, num etc.)
+*<
+
+    STD->out(a)
+end
+
+def private func2()::void
+    STD->out("Pricate function")
+end
+
+def public returnF()::int
+    return 6
+end
+
+nm->func(10)
+
+>>can be called without namespace identifier
+int n = returnF()
+
+STD->out(n) >> 6.0
+
+#namespace crash
+
+>>because func is public it be called from namespace crash
+nm->func(16)
+
+>>if you uncomment this function call it will crash because it's
+>>private functio
+
+>>nm->func2()

@@ -1,0 +1,15 @@
+>> loops
+
+int c = 5
+while (c > 0) >>checks is c is bigger than 0
+    STD->out(c) >> 5.0, 4.0, 3.0, 2.0, 1.0
+    c -= 1 >> short for c = c - 1
+end
+
+STD->out("-----")
+
+for (int i = 0; i < 10; i+++) >>i+++ is the same as i = i + 1
+    STD->out(i)
+end
+
+>>note i++ is just i + 1 without the =

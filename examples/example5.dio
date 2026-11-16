@@ -1,0 +1,12 @@
+>>conditions
+
+int s = 4
+int b = 10
+
+if (s > b)
+    STD->out("S > B")
+elseif (s < b)
+    STD->out("S < B")
+else
+    STD->out("S = B")
+end

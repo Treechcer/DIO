@@ -1,0 +1,17 @@
+>> working with lists and arrays
+
+string str = "Hello"
+int len = STD->length(str)
+STD->out(len) >> 5.0
+
+>>changing string
+
+str[2] = "O"
+STD->out(str) >> HeOlo
+
+>>currently broken
+
+str[1] = "el"
+STD->out(str) >> hello
+
+>>number arrays work the same

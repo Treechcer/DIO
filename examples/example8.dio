@@ -1,0 +1,20 @@
+>*
+To use code from other library we have to import it
+the way to import it is with middle processor command
+#get name
+
+> NOTE: for this to work you have to execute this in correct folder
+if you try to execute it from root of repo it'll not work
+
+*<
+
+#get LIBCODE.dio
+
+#namespace notLib
+
+>>defining namespace AFTER importing (importing could change your namespace!!)
+
+>>We know that the library uses namespace 'lib' and that it defines
+>>public functio 'libraryFunc()', we can now call it as:
+
+lib->libraryFunc()
