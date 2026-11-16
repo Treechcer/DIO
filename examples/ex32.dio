@@ -1,4 +1,0 @@
->> negative numbers work now!
-
-int a = -5
-STD->out(a)

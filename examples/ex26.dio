@@ -1,9 +1,0 @@
->>This prints 0, but at least OUT works!
-def b(int : c)
-    STD->out(c)
-end
-
-int a = {1,2,3}
-b(a[0])
-STD->out(a[2])
-STD->out(a)

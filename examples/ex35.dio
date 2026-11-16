@@ -1,2 +1,0 @@
-#WIN int a = 5; STD->out(a);
-#LINUX int a = 7; STD->out(a);

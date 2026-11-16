@@ -1,5 +1,0 @@
-int x = maybe + maybe * 10;
-
-STD->out(x)
-
->>this code writes any number from 0 to 3

@@ -1,8 +1,0 @@
-string b = "Hello, World!"
-
-for (int i = 0; i < 13; i = i + 1)
-    STD->out(b[i])
-    >>STD->out(i)
-end
-
->>This prints our the string char by char

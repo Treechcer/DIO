@@ -1,6 +1,0 @@
-int a = 2
-::aaa::
-a = a * 2
-goto (a < 10000) ::aaa::
-
->> This makes infinite loop, making 5 * n until it becomes 10000 (or more)

@@ -1,5 +1,0 @@
-string a = "Hello"
-
-a[2] = "L"
-
-STD->out(a)

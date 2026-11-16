@@ -1,5 +1,0 @@
-#def a: int a = 7;
-
-#use a
-
-STD->out(a)

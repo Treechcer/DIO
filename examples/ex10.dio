@@ -1,7 +1,0 @@
-def a(int : b, float : c)
-    b = b + c;
-end
-
-a(6, 7)
-
->>holy damn

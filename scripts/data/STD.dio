@@ -1,5 +1,0 @@
-#namespace STD
-
-def SUMOUT(int : a, int : b)
-    STD->out(a + b)
-end

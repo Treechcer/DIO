@@ -1,9 +1,0 @@
-def a(int : p)::void
-    STD->out(p)
-end
-
-def b()::int
-    return 1
-end
-
-a(b())

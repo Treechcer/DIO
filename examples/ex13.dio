@@ -1,5 +1,0 @@
-for (int i = 2; i < 5; i = i + 1)
-    STD->out(i)
-end
-
->>this goes from 2 to 4

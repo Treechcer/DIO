@@ -1,5 +1,0 @@
-def a(int : b)
-    STD->out(b)
-end
-
-a({1,2,3})

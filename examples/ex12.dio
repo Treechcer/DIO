@@ -1,5 +1,0 @@
-int a = 0
-while (a < 10)
-    STD->out(a)
-    a = a + 1
-end

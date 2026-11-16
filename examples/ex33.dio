@@ -1,3 +1,0 @@
-int a = maybe * 1
-
-STD->out(a)

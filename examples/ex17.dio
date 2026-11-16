@@ -1,3 +1,0 @@
-string a = "aaa   a  a"
-
-STD->out(a)

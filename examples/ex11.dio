@@ -1,5 +1,0 @@
-STD->out(5)
-
-STD->out(a)
-
->>out creates in itself variable 'a' making it possible to print it right after it 

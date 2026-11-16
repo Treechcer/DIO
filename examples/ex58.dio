@@ -1,7 +1,0 @@
-def a(any : b)
-    string typeName = type(b)
-    STD->out(typeName)
-end
-
-a(10)
-a("Hello, World!")

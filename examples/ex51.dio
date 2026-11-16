@@ -1,8 +1,0 @@
-int a = -67.0
-
-def f(int : n1)
-    STD->out(n1)
-end
-
-
-f(10)

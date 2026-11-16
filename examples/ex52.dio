@@ -1,4 +1,0 @@
-int i = 1;
-
-STD->out(i++)
-STD->out(i--)

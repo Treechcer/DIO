@@ -1,5 +1,0 @@
-string a = "Heo, World!"
-
-a[2] = "ll"
-
-STD->out(a)
