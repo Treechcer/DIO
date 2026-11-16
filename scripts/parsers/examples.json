@@ -67,7 +67,7 @@
         "file": "15",
         "content": "int a = 0;\n\nfor (int i = 0; i < 10; i = i + 1)\n    a = maybe;\n    STD->out(a);\nend",
         "output": {
-            "stdout": "0.0\n0.0\n0.0\n1.0\n0.0\n0.0\n0.0\n0.0\n1.0\n0.0\n",
+            "stdout": "1.0\n1.0\n1.0\n0.0\n1.0\n1.0\n0.0\n0.0\n0.0\n0.0\n",
             "stderr": 0
         }
     },
@@ -75,7 +75,7 @@
         "file": "54",
         "content": "STD->out(maybe)",
         "output": {
-            "stdout": "0.0\n",
+            "stdout": "1.0\n",
             "stderr": 0
         }
     },
@@ -267,7 +267,7 @@
         "file": "29",
         "content": ">>NOTE: bools are \"reskinned\" integers, they only have constrain while creating them, not after! Meaning you **can** make bool equal non boolean values!\n\nbool a = 0\nSTD->out(a)\na = true\nSTD->out(a)\na = 7\nSTD->out(a)\na = maybe\nSTD->out(a)\n\n>> add negative numbers!\n>>a = -7\n>>STD->out(a)",
         "output": {
-            "stdout": "0.0\n1.0\n7.0\n1.0\n",
+            "stdout": "0.0\n1.0\n7.0\n0.0\n",
             "stderr": 0
         }
     },
@@ -315,7 +315,7 @@
         "file": "59",
         "content": "STD->out(maybe)",
         "output": {
-            "stdout": "1.0\n",
+            "stdout": "0.0\n",
             "stderr": 0
         }
     },
@@ -355,7 +355,7 @@
         "file": "33",
         "content": "int a = maybe * 1\n\nSTD->out(a)",
         "output": {
-            "stdout": "1.0\n",
+            "stdout": "0.0\n",
             "stderr": 0
         }
     },
@@ -411,7 +411,7 @@
         "file": "14",
         "content": "int x = maybe + maybe * 10;\n\nSTD->out(x)\n\n>>this code writes any number from 0 to 3",
         "output": {
-            "stdout": "11.0\n",
+            "stdout": "10.0\n",
             "stderr": 0
         }
     }

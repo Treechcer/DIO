@@ -55,8 +55,14 @@ function drawExamples(exJson) {
     div = document.getElementById("example")
     for (i = 0; i < exJson.length; i++){
         div.insertAdjacentHTML("beforeend", `<h2>Example ${exJson[i].file} </h2>`)
-        div.insertAdjacentHTML("beforeend", `<div class="row">
-            <button type="button" class="btn btn-primary position-relative px-4" onclick="runDio('inputText${exJson[i].file}', 'outputText${exJson[i].file}')">Run</button>
+        div.insertAdjacentHTML("beforeend", `<div class="row"> 
+                    <div class="col-3 mx-auto">
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary position-relative px-4 w-100" onclick="runDio('inputText${exJson[i].file}', 'outputText${exJson[i].file}')">Run</button>
+                        </div>
+                    </div> 
+                </div>
+            <div class="row">
                 <div class="col-6">
                     <div class="card border border-warning rounded">
                         <div class="card-body">

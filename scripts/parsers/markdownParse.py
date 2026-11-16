@@ -62,7 +62,7 @@ def parse(filePath, output):
                 else:
                     break
 
-        print(f"{i}: {line}")
+        #print(f"{i}: {line}")
         #print(line.split("#" * (level)))
         
         headerText = line.split("#" * level)[1]

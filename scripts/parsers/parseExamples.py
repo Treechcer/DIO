@@ -19,8 +19,11 @@ def parse(output : str):
 
     fs = os.listdir("examples")
 
-    preJson = []    
+    preJson = []
+    count = 0
     for file in fs:
+        count += 1
+        print(f"Progress: {(count/len(fs))*100:.2f}%", end="\r")
         with open(os.path.join(".", "examples", file)) as f:
             try:
                 num = re.findall("\\d+", file)[0]
@@ -39,6 +42,7 @@ def parse(output : str):
         json.dump(preJson, f, indent=4)
 
     dio.disconnect()
+    print()
 
 if __name__ == "__main__":
     parse("./scripts/parsers/examples.json")
