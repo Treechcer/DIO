@@ -9,6 +9,14 @@
             }
         },
         {
+            "file": "4",
+            "content": ">> working with lists and arrays\n\nstring str = \"Hello\"\nint len = STD->length(str)\nSTD->out(len) >> 5.0\n\n>>changing string\n\nstr[2] = \"O\"\nSTD->out(str) >> HeOlo\n\n>>currently broken\n\nstr[1] = \"el\"\nSTD->out(str) >> hello\n\n>>number arrays work the same",
+            "output": {
+                "stdout": "5.0\nHeOlo\n`elllll\n",
+                "stderr": 0
+            }
+        },
+        {
             "file": "3",
             "content": ">> Dio supports all basic binary oprators and brackets\n\nint insert = 3\n\n>> thanks to the brackets the result is 8.0\n\nint a = (insert - 1 + 2) * 2\n\nSTD->out(a)",
             "output": {
@@ -135,7 +143,7 @@
                 "file": "15",
                 "content": "int a = 0;\n\nfor (int i = 0; i < 10; i = i + 1)\n    a = maybe;\n    STD->out(a);\nend",
                 "output": {
-                    "stdout": "0.0\n1.0\n1.0\n0.0\n0.0\n1.0\n1.0\n0.0\n0.0\n1.0\n",
+                    "stdout": "0.0\n1.0\n0.0\n1.0\n0.0\n0.0\n0.0\n1.0\n0.0\n1.0\n",
                     "stderr": 0
                 }
             },
@@ -423,7 +431,7 @@
                 "file": "59",
                 "content": "STD->out(maybe)",
                 "output": {
-                    "stdout": "0.0\n",
+                    "stdout": "1.0\n",
                     "stderr": 0
                 }
             },
@@ -471,7 +479,7 @@
                 "file": "33",
                 "content": "int a = maybe * 1\n\nSTD->out(a)",
                 "output": {
-                    "stdout": "0.0\n",
+                    "stdout": "1.0\n",
                     "stderr": 0
                 }
             },
@@ -543,7 +551,7 @@
                 "file": "14",
                 "content": "int x = maybe + maybe * 10;\n\nSTD->out(x)\n\n>>this code writes any number from 0 to 3",
                 "output": {
-                    "stdout": "10.0\n",
+                    "stdout": "1.0\n",
                     "stderr": 0
                 }
             }

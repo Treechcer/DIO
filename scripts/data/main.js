@@ -57,7 +57,7 @@ function drawExamples(exJson, type) {
         return a.file - b.file   })
 
     div = document.getElementById("example")
-    div.insertAdjacentHTML("beforeend", `<h1> ${type} Examples </h1>`)
+    div.insertAdjacentHTML("beforeend", `<h1 class="text-center"> ${type} Examples </h1>`)
     for (i = 0; i < exJson.length; i++){
         div.insertAdjacentHTML("beforeend", `<h2>Example ${exJson[i].file} </h2>`)
         div.insertAdjacentHTML("beforeend", `<div class="row"> 
@@ -68,7 +68,7 @@ function drawExamples(exJson, type) {
                     </div> 
                 </div>
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                     <div class="card border border-warning rounded">
                         <div class="card-body">
                             <div class="form-group">
@@ -78,7 +78,7 @@ function drawExamples(exJson, type) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                     <div class="card border border-warning rounded">
                         <div class="card-body">
                             <div class="form-group">
@@ -89,13 +89,13 @@ function drawExamples(exJson, type) {
                     </div>
                 </div>
             <div class="row">
-                <div class="col-3"
+                <div class="col-12">
                     <p>
-                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        <button class="btn btn-primary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample-${i}" aria-expanded="false" aria-controls="collapseExample-${i}">
                             Show expected output.
                         </button>
                     </p>
-                    <div class="collapse" id="collapseExample">
+                    <div class="collapse" id="collapseExample-${i}">
                         <div class="card card-body">
                             Output:${exJson[i].output.stdout.replace("\n", "\\n").slice(0,exJson[i].output.stdout.length - 1 )} <br>
                             Should finish whole script: ${exJson[i].output.stderr ? "No": "Yes"}
@@ -113,5 +113,5 @@ function generateWiki() {
 }
 
 function generateExamples() {
-    fetch("combined.json").then(response => {return response.json()}).then(data => {drawExamples(data["examples"]["main"], "main"); for (var i = 0; i < data["examples"]["side"].length; i++){drawExamples(data["examples"]["side"][i], "side")}})
+    fetch("combined.json").then(response => {return response.json()}).then(data => {drawExamples(data["examples"]["main"], "Main"); for (var i = 0; i < data["examples"]["side"].length; i++){drawExamples(data["examples"]["Side"][i], "side")}})
 }
