@@ -9,7 +9,7 @@ def generateJsonProperty(fName : str, fileConten : str, expectedOutput : str, ex
         "file" : fName,
         "content" : fileConten,
         "output" : {
-            "stdout" : expectedOutput,
+            "stdout" : expectedOutput if expectedError == 0 else "",
             "stderr" : expectedError
         }
     }
@@ -24,6 +24,9 @@ def parse(output : str):
     for file in fs:
         count += 1
         print(f"Progress: {(count/len(fs))*100:.2f}%", end="\r")
+        if os.path.isdir(os.path.join(".", "examples", file)):
+            #temp skip
+            continue
         with open(os.path.join(".", "examples", file)) as f:
             try:
                 num = re.findall("\\d+", file)[0]
@@ -32,8 +35,6 @@ def parse(output : str):
             fileC = f.read()
             try:
                 out = dio.executeCode(fileC)
-                if out.errorcode != 0:
-                    continue    
                 preJson.append(generateJsonProperty(num, fileC, out.stdout, out.errorcode))
             except:
                 continue

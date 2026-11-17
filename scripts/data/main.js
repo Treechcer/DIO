@@ -3,6 +3,10 @@ let dio = null
 function getArgs(inputId){
     input = document.getElementById(inputId)
     let arrOut = ["-e", input.value];
+    
+    if (inputId != "inputText-1"){
+        return arrOut
+    }
 
     if (document.getElementById("debug").checked){
         arrOut.push("-d")
@@ -82,6 +86,22 @@ function drawExamples(exJson) {
                             </div>
                         </div>
                     </div>
+                </div>
+            <div class="row">
+                <div class="col-3"
+                    <p>
+                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            Show expected output.
+                        </button>
+                    </p>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card card-body">
+                            Output:${exJson[i].output.stdout.replace("\n", "\\n").slice(0,exJson[i].output.stdout.length - 1 )} <br>
+                            Should finish whole script: ${exJson[i].output.stderr ? "No": "Yes"}
+                        </div>
+                    </div>
+                </div>
+            </div
         `)
     }
 }
