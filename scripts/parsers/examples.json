@@ -135,7 +135,7 @@
                 "file": "15",
                 "content": "int a = 0;\n\nfor (int i = 0; i < 10; i = i + 1)\n    a = maybe;\n    STD->out(a);\nend",
                 "output": {
-                    "stdout": "0.0\n1.0\n1.0\n1.0\n0.0\n0.0\n1.0\n1.0\n1.0\n0.0\n",
+                    "stdout": "0.0\n1.0\n1.0\n0.0\n0.0\n1.0\n1.0\n0.0\n0.0\n1.0\n",
                     "stderr": 0
                 }
             },
@@ -543,7 +543,7 @@
                 "file": "14",
                 "content": "int x = maybe + maybe * 10;\n\nSTD->out(x)\n\n>>this code writes any number from 0 to 3",
                 "output": {
-                    "stdout": "0.0\n",
+                    "stdout": "10.0\n",
                     "stderr": 0
                 }
             }

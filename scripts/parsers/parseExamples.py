@@ -43,7 +43,7 @@ def parseFolder(input : str = "examples", recCall = 0):
                 continue
             fileC = f.read()
             try:
-                out = dio.executeCode(fileC)
+                out = dio.executeCode(fileC, maxTimeout=1)
                 preJson.append(generateJsonProperty(num, fileC, out.stdout, out.errorcode))
             except:
                 continue

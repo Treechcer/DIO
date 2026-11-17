@@ -52,11 +52,12 @@ function drawWiki(wikiJson) {
     }
 }
 
-function drawExamples(exJson) {
+function drawExamples(exJson, type) {
     exJson.sort(function (a, b) {
         return a.file - b.file   })
 
     div = document.getElementById("example")
+    div.insertAdjacentHTML("beforeend", `<h1> ${type} Examples </h1>`)
     for (i = 0; i < exJson.length; i++){
         div.insertAdjacentHTML("beforeend", `<h2>Example ${exJson[i].file} </h2>`)
         div.insertAdjacentHTML("beforeend", `<div class="row"> 
@@ -112,5 +113,5 @@ function generateWiki() {
 }
 
 function generateExamples() {
-    fetch("combined.json").then(response => {return response.json()}).then(data => {drawExamples(data["examples"]);})
+    fetch("combined.json").then(response => {return response.json()}).then(data => {drawExamples(data["examples"]["main"], "main"); for (var i = 0; i < data["examples"]["side"].length; i++){drawExamples(data["examples"]["side"][i], "side")}})
 }
