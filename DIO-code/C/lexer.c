@@ -192,6 +192,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                 c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '-'){
                     c = moveByChar(&code, &line, &charPos_, 1);
+                    printf("%c", c);
                     //increment
                     if (c != '-'){
                         c = moveByChar(&code, &line, &charPos_, -1);
@@ -216,6 +217,42 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                 }
                 else if (c == '>'){
                     DYN_PUSH(createToken("->", ARROWACCESSOR, createPosition(charPos_, charPos_, line, fileName, namespace)), toks);
+                }
+                else if (c == 'o'){
+                    c = moveByChar(&code, &line, &charPos_, 1);
+                    if (c == 'r'){
+                        tok = createToken("||", OROPERATOR, createPosition(charPos_ - 2, charPos_, line, fileName, namespace));
+                        c = moveByChar(&code, &line, &charPos_, 1);
+
+                        if (c != ' ' && c != '\n'){
+                            raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "Incorrect minus operator, did you mean '-or'?")
+                        }
+                        c = moveByChar(&code, &line, &charPos_, -1);
+                    }
+                    else{
+                        raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "Incorrect minus operator, did you mean '-or'?")
+                    }
+                }
+                else if (c == 'a'){
+                    c = moveByChar(&code, &line, &charPos_, 1);
+                    if (c == 'n'){
+                        c = moveByChar(&code, &line, &charPos_, 1);
+                        if (c == 'd'){
+                            tok = createToken("&&", ANDOPERATOR, createPosition(charPos_ - 2, charPos_, line, fileName, namespace));
+                            c = moveByChar(&code, &line, &charPos_, 1);
+
+                            if (c != ' ' && c != '\n'){
+                                raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "Incorrect minus operator, did you mean '-and'?")
+                            }
+                            c = moveByChar(&code, &line, &charPos_, -1);
+                        }
+                        else{
+                            raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "Incorrect minus operator, did you mean '-and'?")
+                        }
+                    }
+                    else{
+                        raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "Incorrect minus operator, did you mean '-and'?")
+                    }
                 }
                 else{
                     c = moveByChar(&code, &line, &charPos_, -1);

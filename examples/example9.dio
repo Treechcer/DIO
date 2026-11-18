@@ -1,4 +1,4 @@
-STD->out(0 || 0)
-STD->out(0 || 1)
-STD->out(0 && 1)
-STD->out(1 && 1)
+STD->out(0 -or 0)
+STD->out(0 -or 1)
+STD->out(0 -and 1)
+STD->out(1 -and 1)
