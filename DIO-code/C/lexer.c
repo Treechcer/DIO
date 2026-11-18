@@ -9,7 +9,7 @@
 #include"../Headers/appInfo.h"
 #include"../Headers/globals.h"
 
-typedef struct SpecialVars{
+typedef struct {
     char* name;
     dynamicToken toks;
 } SpecialVars;
@@ -275,8 +275,30 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
             case ',':
                 tok = createToken(",", COMMA, createPosition(charPos_, charPos_, line, fileName, namespace));
                 break;
-            case '.':
+            case '|':
+                c = moveByChar(&code, &line, &charPos_, 1);
+                if (c == '|'){
+                    tok = createToken("||", OROPERATOR, createPosition(charPos_ - 1, charPos_, line, fileName, namespace));
+                }
+                else{
+                    c = moveByChar(&code, &line, &charPos_, -1);
+                    raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "'|' is not valid token, perhaps you were thinking about '||'?");
+                }
+                break;
+            case '&':
+                c = moveByChar(&code, &line, &charPos_, 1);
+                if (c == '&'){
+                    tok = createToken("&&", ANDOPERATOR, createPosition(charPos_ - 1, charPos_, line, fileName, namespace));
+                }
+                else{
+                    c = moveByChar(&code, &line, &charPos_, -1);
+                    raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "'&' is not valid token, perhaps you were thinking about '&&'?");
+                }
+                break;
             case '!':
+                tok = createToken("!", NOTOPERATOR, createPosition(charPos_, charPos_, line, fileName, namespace));
+                break;
+            case '.': // I believe this is redundand?
             case '?':{ //had to do {} for it to compile and run on MAC btw.
                 char* buf = malloc(2 * sizeof(char));
                 buf[0] = c;

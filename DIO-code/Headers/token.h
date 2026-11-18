@@ -45,20 +45,23 @@ typedef enum {
     FUNCTIONRETURNTYPE,
     STRING,
     ARROWACCESSOR,
+    NOTOPERATOR,
+    OROPERATOR,
+    ANDOPERATOR
 } TokenType;
 
-typedef struct Token{
+typedef struct {
     char* value; //can this point to array? We will see
     TokenType identifier;
     Position pos;
 } Token;
 
-typedef struct Macro {
+typedef struct {
     char* name;
     char* text;
 } Macro;
 
-typedef struct FileImport {
+typedef struct {
     char* name;
     int loadedTimes;
     int canLoadMoreThanOnce;
