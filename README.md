@@ -19,7 +19,7 @@
 Dio is small open-source scripting programming language made in C that's supposed to run on most modern computer systems.
 
 > [!IMPORTANT]
-> This repository is still actively being worked on and it's not full version. Any contributions and feedback is welcomed.
+> This repository is still actively being worked on. Any contributions and feedback is welcomed.
 
 ## Current OS compatibility
 
