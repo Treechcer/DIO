@@ -1,6 +1,7 @@
->>STD->out(0 -or 0)
->>STD->out(0 -or 1)
->>STD->out(0 -and 1)
->>STD->out(1 -and 1)
+STD->out(0 -or 0)
+STD->out(0 -or 1)
+STD->out(0 -and 1)
+STD->out(1 -and 1)
 
-STD->out(!11 - !11)
+STD->out(!0)
+STD->out(!1)

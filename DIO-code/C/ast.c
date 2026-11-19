@@ -127,6 +127,8 @@ Node* parseTerm(dynamicToken* toks){
     Node* left = parseFactor(toks);
     if (left == NULL) return NULL;
 
+    left->arbitraryData.isNegation = not;
+
     while (checkCurrenToken(toks).identifier == MUL || checkCurrenToken(toks).identifier == DIV || checkCurrenToken(toks).identifier == OROPERATOR || checkCurrenToken(toks).identifier == ANDOPERATOR) {
         Token tokOp = shiftToken(toks);
         Node* right = parseFactor(toks);

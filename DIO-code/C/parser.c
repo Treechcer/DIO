@@ -294,6 +294,9 @@ binOpResult* evalBinOp(Node* node){
         return res;
     }
     if (node->type == STRINGNODE){
+        if (node->arbitraryData.isNegation == 1){
+            raiseRuntimeErrorMacro(*node->pos, "Strings cannot be negated.");
+        }
         res->varType = STRINGVAR;
         res->value.stringVal = node->data.stringNode->value;
         res->arbitraryData.lenght = node->data.stringNode->length;
@@ -302,25 +305,46 @@ binOpResult* evalBinOp(Node* node){
     if (node->type == NUMBERNODE) {
         res->varType = FLOATVAR;
         res->value.floatVar = node->data.numberNode->value;
+        if (node->arbitraryData.isNegation == 1){
+            res->value.floatVar = !node->data.numberNode->value;
+        }
         return res;
     }
     if (node->type == VARIABLENODE) {
         int varIndex = getVarIndexByName(node->data.variableNode->name);
         if (varIndex != -1) {
             if (g_vars.items[varIndex].typedVar == STRINGVAR) {
+                if (node->arbitraryData.isNegation == 1){
+                    raiseRuntimeErrorMacro(*node->pos, "Strings cannot be negated.");
+                }
+
                 res->varType = STRINGVAR;
                 res->value.stringVal = getVariableStringValue(varIndex);
                 return res;
             } else if (g_vars.items[varIndex].typedVar == INTVAR) {
                 res->varType = INTVAR;
                 res->value.intVal = getVariableIntValue(varIndex);
+
+                if (node->arbitraryData.isNegation == 1){
+                    res->value.intVal = !res->value.intVal;
+                }
+
                 return res;
             } else if (g_vars.items[varIndex].typedVar == FLOATVAR) {
                 res->varType = FLOATVAR;
                 res->value.floatVar = getVariableFloatValue(varIndex);
+
+                if (node->arbitraryData.isNegation == 1){
+                    res->value.floatVar = !res->value.floatVar;
+                }
+
                 return res;
             }
             else if (g_vars.items[varIndex].typedVar == NUMBERARRAY){
+                if (node->arbitraryData.isNegation == 1){
+                    raiseRuntimeErrorMacro(*node->pos, "Number arrays cannot be negated.");
+                }
+
                 if (node->data.variableNode->lastIndex == NULL){
                     res->varType = NUMBERARRAY;
                     //res->value.floatVar = getVariableNumArrayValue(varIndex)[g_vars.items[varIndex].data.arrayVar.value.];
@@ -929,7 +953,11 @@ void parseFunctionCall_(Node* node){
     for (size_t i = 0; i < node->data.functionCall->inputs.count; i++){
         varStruct tempVar;
         if (node->data.functionCall->inputs.items[i]->type == NUMBERNODE){
-            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = node->data.functionCall->inputs.items[i]->data.numberNode->value, .intialised = 1, .typedVar = FLOATVAR };
+            float val = node->data.functionCall->inputs.items[i]->data.numberNode->value;
+            if (node->data.functionCall->inputs.items[i]->arbitraryData.isNegation == 1){
+                val = !val;
+            }
+            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = val, .intialised = 1, .typedVar = FLOATVAR };
         }
         else if (node->data.functionCall->inputs.items[i]->type == VARIABLENODE){
             if (g_funcs.items[index].inputs.items[i]->data.variableNode->type == INTVAR || g_funcs.items[index].inputs.items[i]->data.variableNode->type == FLOATVAR || g_funcs.items[index].inputs.items[i]->data.variableNode->type == BOOLVAR){

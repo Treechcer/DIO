@@ -152,6 +152,9 @@ typedef struct exitNode {
     
 } exitNode;
 
+typedef struct arbitraryData {
+    int isNegation;
+} arbitraryData;
 
 typedef struct Node {
     nodeType type;
@@ -175,6 +178,7 @@ typedef struct Node {
         struct nullNode* nullNode;
         struct exitNode* exitNode;
     } data;
+    struct arbitraryData arbitraryData;
     Position* pos;
 } Node;
 
