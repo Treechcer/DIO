@@ -118,6 +118,12 @@ Node* parseFactor(dynamicToken* toks){
 }
 
 Node* parseTerm(dynamicToken* toks){
+    int not = 0;
+    if (checkCurrenToken(toks).identifier == NOTOPERATOR){
+        not = 1;
+        shiftToken(toks);
+    }
+    
     Node* left = parseFactor(toks);
     if (left == NULL) return NULL;
 
