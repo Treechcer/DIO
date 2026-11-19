@@ -254,6 +254,27 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                         raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "Incorrect minus operator, did you mean '-and'?")
                     }
                 }
+                else if (c == 'n'){
+                    c = moveByChar(&code, &line, &charPos_, 1);
+                    if (c == 'o'){
+                        c = moveByChar(&code, &line, &charPos_, 1);
+                        if (c == 't'){
+                            tok = createToken("!", NOTOPERATOR, createPosition(charPos_ - 2, charPos_, line, fileName, namespace));
+                            c = moveByChar(&code, &line, &charPos_, 1);
+
+                            if (c != ' ' && c != '\n'){
+                                raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "Incorrect minus operator, did you mean '-not'?")
+                            }
+                            c = moveByChar(&code, &line, &charPos_, -1);
+                        }
+                        else{
+                            raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "Incorrect minus operator, did you mean '-not'?")
+                        }
+                    }
+                    else{
+                        raiseErrorMacro(createPosition(charPos_, charPos_, line, fileName, namespace), "Incorrect minus operator, did you mean '-not'?")
+                    }
+                }
                 else{
                     c = moveByChar(&code, &line, &charPos_, -1);
                     tok = createToken("-", MINUS, createPosition(charPos_, charPos_, line, fileName, namespace));
