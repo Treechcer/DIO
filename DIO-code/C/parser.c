@@ -896,7 +896,8 @@ dynamicGoto prescanForGotos(Node* wholeAst, dynamicGoto dg){
 }
 
 void parseCondition_(Node* node){
-    if (evalBinOp(node->data.condition->binOpNode)->value.floatVar){
+    binOpResult* res = evalBinOp(node->data.condition->binOpNode);
+    if (res->value.floatVar){
         parse(node->data.condition->codeBlock);
     }
     else if (node->data.condition->alternative != NULL){

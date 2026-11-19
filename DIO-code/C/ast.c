@@ -81,6 +81,7 @@ Node* parseFactor(dynamicToken* toks){
         node->type = NUMBERNODE;
         node->data.numberNode = malloc(sizeof(numberNode));
         node->data.numberNode->value = convertToDouble(tok.value);
+        node->arbitraryData.isNegation = checkTokenAt(toks, -2).identifier == NOTOPERATOR;
         node->pos = copyPos(&tok.pos);
 
         return node;
@@ -126,8 +127,9 @@ Node* parseTerm(dynamicToken* toks){
     
     Node* left = parseFactor(toks);
     if (left == NULL) return NULL;
-
-    left->arbitraryData.isNegation = not;
+    if (left->arbitraryData.isNegation == 0){
+        left->arbitraryData.isNegation = not;
+    }
 
     while (checkCurrenToken(toks).identifier == MUL || checkCurrenToken(toks).identifier == DIV || checkCurrenToken(toks).identifier == OROPERATOR || checkCurrenToken(toks).identifier == ANDOPERATOR) {
         Token tokOp = shiftToken(toks);
@@ -619,6 +621,7 @@ Node* parseCondition(dynamicToken* toks){
         else {
             pNode->data.condition->binOpNode = parseExpression(toks);
         }
+
         pNode->data.condition->codeBlock = parseCodeBlock(toks, CONDITION);
 
         if (if_){
