@@ -192,7 +192,7 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                 c = moveByChar(&code, &line, &charPos_, 1);
                 if (c == '-'){
                     c = moveByChar(&code, &line, &charPos_, 1);
-                    printf("%c", c);
+                    //printf("%c", c);
                     //increment
                     if (c != '-'){
                         c = moveByChar(&code, &line, &charPos_, -1);

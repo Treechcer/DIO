@@ -137,7 +137,7 @@ void callLowLevelFunc(int index, Node* node){
     else if (type == INPUT){
         int varIndex = getVarIndexByName("a");
         char buffer[4096];
-        printf("%s", g_vars.items[varIndex].data.arrayVar.value.stringValue);
+        //printf("%s", g_vars.items[varIndex].data.arrayVar.value.stringValue);
 
         if (fgets(buffer, sizeof(buffer), stdin)){
             program.funcReturn = malloc(sizeof(binOpResult));
