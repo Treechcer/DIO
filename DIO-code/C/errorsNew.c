@@ -136,7 +136,7 @@ Position checkIfValidPos(Position pos){
 }
 
 ErrorType getErrorType(char* process){
-    if (strcmp(process, "lex.c") == 0){
+    if (strcmp(process, "lexer.c") == 0){
         return LEXERERROR;
     }
     else if (strcmp(process, "ast.c") == 0){
