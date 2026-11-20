@@ -61,7 +61,8 @@ Current platforms in releases (current and future):
 Some version of Dio will be running through github pages on URL: <https://treechcer.github.io/DIO/>
 
 > Note: After the release of 0.2.0 Web Release will have the newest stable version uploaded and should have only stable on it.
-> Note 2: The github pages are hosted from the branch "web-app".
+> Note 2: The github pages are hosted from the branch "web-app".
+
 
 ### Compiling
 
@@ -352,6 +353,22 @@ else
 >>code
 end
 ```
+
+##### Condition Operators
+
+Dio uses standard operators:
+
+- == (comparison)
+- >= (greater or equal than)
+- > (greater than)
+- <= (less than or equal to)
+- < (less than)
+- || (binary logical operator OR)
+- && (binary logical operator AND)
+- ! (unary logical operator NOT)
+- -or (binary logical operator OR)
+- -and (binary logical operator AND)
+- -not (unary logical operator NOT)
 
 #### Goto
 
