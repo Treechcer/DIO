@@ -63,7 +63,6 @@ Some version of Dio will be running through github pages on URL: <https://treech
 > Note: After the release of 0.2.0 Web Release will have the newest stable version uploaded and should have only stable on it.
 > Note 2: The github pages are hosted from the branch "web-app".
 
-
 ### Compiling
 
 To compile it run in the root of this repository command:
