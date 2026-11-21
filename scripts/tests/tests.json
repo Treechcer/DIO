@@ -905,6 +905,15 @@
         "maxRuns" : 1
     },
     {
+        "testIdentifier" : "comparison (!=)",
+        "code" : "STD->out(2 != 2)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "0.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
         "testIdentifier" : "logical operators",
         "code" : "STD->out(1 && 0)\nSTD->out(1 || 0)",
         "expectedReturnCode" : 0,

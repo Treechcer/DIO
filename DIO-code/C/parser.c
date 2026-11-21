@@ -628,6 +628,22 @@ binOpResult* evalBinOp(Node* node){
 
                 return res;
             }
+            case NOTEQUAL:{
+                double vLeft = 0.0, vRight = 0.0;;
+                if (left->varType == INTVAR)
+                    vLeft = left->value.intVal;
+                else if (left->varType == FLOATVAR)
+                    vLeft = left->value.floatVar;
+                if (right->varType == INTVAR)
+                    vRight = right->value.intVal;
+                else if (right->varType == FLOATVAR)
+                    vRight = right->value.floatVar;
+
+                res->varType = FLOATVAR;
+                res->value.floatVar = (vLeft != vRight);
+
+                return res;
+            }
             default:
                 raiseRuntimeErrorMacro(*node->pos, "Binop was not correct");
                 break;

@@ -24,6 +24,7 @@ typedef enum {
     LESSOREQAUL,
     MOREOREQUAL,
     LEFTRIGHTEQUAL,
+    NOTEQUAL,
     LPAREN,
     RPAREN,
     IDENTIFIER,

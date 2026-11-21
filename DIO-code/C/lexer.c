@@ -354,7 +354,14 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                 }
                 break;
             case '!':
-                tok = createToken("!", NOTOPERATOR, createPosition(charPos_, charPos_, line, fileName, namespace));
+                c = moveByChar(&code, &line, &charPos_, 1);
+                if (c == '='){
+                    tok = createToken("!", NOTEQUAL, createPosition(charPos_, charPos_, line, fileName, namespace));
+                }
+                else{
+                    c = moveByChar(&code, &line, &charPos_, -1);
+                    tok = createToken("!", NOTOPERATOR, createPosition(charPos_, charPos_, line, fileName, namespace));
+                }
                 break;
             case '.': // I believe this is redundand?
             case '?':{ //had to do {} for it to compile and run on MAC btw.
