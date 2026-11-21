@@ -19,6 +19,7 @@ Node* parseArrayAcessNode(dynamicToken* toks);
 Node* parseFunctionCall(dynamicToken* toks);
 Node* parseStringGeneral(dynamicToken* toks);
 Node* createNumArray(dynamicToken* toks, Position pos);
+Node* parseEnumAccess(dynamicToken* toks);
 
 //Node* parseExpression(dynamicToken toks);
 
@@ -245,6 +246,11 @@ Node* parseExpression(dynamicToken* toks){
         pNode->pos = copyPos(value->pos);
         pNode->pos->start = nameTok.pos.start;
 
+        return pNode;
+    }
+
+    Node* pNode = parseEnumAccess(toks);
+    if (pNode != NULL){
         return pNode;
     }
 
@@ -793,7 +799,7 @@ Node* parseFunctionCall(dynamicToken* toks){
     Token tok = checkCurrenToken(toks);
 
     int namespaceAccessor = 0;
-    if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == ARROWACCESSOR){
+    if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == ARROWACCESSOR && checkTokenAt(toks, 3).identifier == LPAREN){
         namespaceAccessor = getNamespaceMap(tok.value);
 
         shiftToken(toks);
@@ -971,6 +977,43 @@ Node* parseArrayAcessNode(dynamicToken* toks){
     return indexNode;
 }
 
+Node* parseEnum(dynamicToken* toks){
+    return NULL;
+}
+
+Node* parseEnumAccess(dynamicToken* toks){
+    Token tok = checkCurrenToken(toks);
+
+    int nameSpace = tok.pos.nameSpace;
+    int mv = 0;
+    if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == ARROWACCESSOR && checkTokenAt(toks, 2).identifier == IDENTIFIER && checkTokenAt(toks, 3).identifier == ARROWACCESSOR){
+        nameSpace = getNamespaceMap(tok.value);
+        mv = 1;
+    }
+
+    if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == ARROWACCESSOR && !(checkTokenAt(toks, 3).identifier == LPAREN)){
+        if (mv){
+            shiftToken(toks);
+            shiftToken(toks);
+        }
+
+        Node* retNode = createNode();
+        retNode->type = ENUMACESS;
+        retNode->data.enumAccessNode = malloc(sizeof(enumAccessNode*));
+        retNode->data.enumAccessNode->namespace = nameSpace;
+        retNode->data.enumAccessNode->enumName = tok.value;
+        shiftToken(toks);
+        shiftToken(toks);
+        retNode->data.enumAccessNode->accessorName = checkCurrenToken(toks).value;
+        shiftToken(toks);
+
+
+        return retNode;
+    }
+
+    return NULL;
+}
+
 Node* parseProgram(dynamicToken* toks) {
     //printf("AST!\n");
     Node* pNode = createNode();
@@ -1044,6 +1087,9 @@ Node* parseGenericNode(dynamicToken* toks){
     }
     if (node == NULL){
         node = exitNodeParse(toks);
+    }
+    if (node == NULL){
+        node = parseEnum(toks);
     }
     if (node == NULL){
         //this should probably stay last?

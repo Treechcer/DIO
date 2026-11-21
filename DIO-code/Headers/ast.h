@@ -36,6 +36,8 @@ typedef enum {
     UNKNOWNNODE,
     NULLNODE,
     EXITNODE,
+    ENUMACESS,
+    ENUMCREATE,
 } nodeType;
 
 typedef struct programNode {
@@ -156,6 +158,18 @@ typedef struct arbitraryData {
     int isNegation;
 } arbitraryData;
 
+typedef struct enumAccessNode {
+    int namespace;
+    char* enumName;
+    char* accessorName;
+} enumAccessNode;
+
+typedef struct enumTypeNode {
+    int namespace;
+    char* enumName;
+    //TODO: think more about data structure
+} enumTypeNode;
+
 typedef struct Node {
     nodeType type;
     union {
@@ -177,6 +191,8 @@ typedef struct Node {
         struct returnNode* nodeRetun;
         struct nullNode* nullNode;
         struct exitNode* exitNode;
+        struct enumAccessNode* enumAccessNode;
+        struct enumTypeNode* enumTypeNode;
     } data;
     struct arbitraryData arbitraryData;
     Position* pos;

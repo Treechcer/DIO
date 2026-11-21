@@ -1104,6 +1104,7 @@ void parseFunctionCall_(Node* node){
             tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = generateRandomMaybeNode(), .intialised = 1, .typedVar = FLOATVAR };
         }
         else{
+            printf("%i\n", node->data.functionCall->inputs.items[i]->type);
             raiseRuntimeErrorMacro(*node->pos, "Incorrect var type while parsing function call, implementation needed.");
         }
 
