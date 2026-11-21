@@ -978,6 +978,29 @@ Node* parseArrayAcessNode(dynamicToken* toks){
 }
 
 Node* parseEnum(dynamicToken* toks){
+
+    if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(checkCurrenToken(toks).value, "typedef") == 0 && strcmp(checkTokenAt(toks, 1).value, "enum") == 0){
+        Position pos = checkCurrenToken(toks).pos;
+        shiftToken(toks); //typedef
+        shiftToken(toks); //enum
+
+        Node* pNode = createNode();
+        pNode->pos = copyPos(&pos);
+        pNode->type = ENUMCREATE;
+        pNode->data.enumTypeNode = malloc(sizeof(enumTypeNode*));
+        pNode->data.enumTypeNode->enumName = checkCurrenToken(toks).value;
+        pNode->data.enumTypeNode->enumName = checkCurrenToken(toks).pos.nameSpace;
+
+        shiftToken(toks); //name
+        shiftToken(toks); //{
+
+        while (checkCurrenToken(toks).identifier != RSQUIGLYPAREN){
+            //TODO: FINISI LOGIC
+        }
+
+        return pNode;
+    }
+
     return NULL;
 }
 
@@ -992,12 +1015,13 @@ Node* parseEnumAccess(dynamicToken* toks){
     }
 
     if (tok.identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == ARROWACCESSOR && !(checkTokenAt(toks, 3).identifier == LPAREN)){
+        Node* retNode = createNode();
+        retNode->pos = copyPos(&tok.pos);
         if (mv){
             shiftToken(toks);
             shiftToken(toks);
         }
 
-        Node* retNode = createNode();
         retNode->type = ENUMACESS;
         retNode->data.enumAccessNode = malloc(sizeof(enumAccessNode*));
         retNode->data.enumAccessNode->namespace = nameSpace;
@@ -1006,7 +1030,7 @@ Node* parseEnumAccess(dynamicToken* toks){
         shiftToken(toks);
         retNode->data.enumAccessNode->accessorName = checkCurrenToken(toks).value;
         shiftToken(toks);
-
+        retNode->pos->end = checkCurrenToken(toks).pos.end;
 
         return retNode;
     }

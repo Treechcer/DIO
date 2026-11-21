@@ -164,10 +164,15 @@ typedef struct enumAccessNode {
     char* accessorName;
 } enumAccessNode;
 
+typedef struct enumValues {
+    char* name;
+    int value;
+};
+
 typedef struct enumTypeNode {
     int namespace;
     char* enumName;
-    //TODO: think more about data structure
+    dynamicNode enumValues;
 } enumTypeNode;
 
 typedef struct Node {

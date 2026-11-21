@@ -1,12 +1,11 @@
 #namespace test
 
->*
 typedef enum EnumTest{
     ONE=1,
     TWO,
     THREE,
 }
-*<
+
 >*
 typedef strcuct StructTest{
     int id = 0, >> type, name, default value (has to have default value!)
