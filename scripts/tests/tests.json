@@ -489,5 +489,455 @@
             "ERROR: parser.c"
         ],
         "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "single line comment",
+        "code" : "STD->out(\"pre\") >> ignoring\nSTD->out(\"after\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "pre\nafter"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "inline multi line comment",
+        "code" : ">* ignoring *< STD->out(\"after\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "after"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "multi line comment",
+        "code" : ">*\nignoring\n*<\nSTD->out(\"ok\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ok"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "single quoted string",
+        "code" : "STD->out('hello')",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "hello"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "float variable",
+        "code" : "float a = 2.5\nSTD->out(a)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "2.5"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "float variable two dot",
+        "code" : "float a = 2..5",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "ERROR: lexer.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "false bool",
+        "code" : "bool a = false\nSTD->out(a)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "0.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "negative number",
+        "code" : "STD->out(-5)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "-5.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "bracket in binop",
+        "code" : "int a = (3 - 1 + 2) * 2\nSTD->out(a)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "8.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "array index",
+        "code" : "int a = {1,2,3}\nSTD->out(a[1])",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "2.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "empty array STD out",
+        "code" : "int a = {}\nSTD->out(a)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "{}"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "condition operator (>=)",
+        "code" : "if (2 >= 2) STD->out(\"yes\") else STD->out(\"no\") end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "yes"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "condition operator (<=)",
+        "code" : "if (2 <= 1) STD->out(\"yes\") else STD->out(\"no\") end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "no"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "condition operator (||)",
+        "code" : "if (0 || 1) STD->out(\"yes\") else STD->out(\"no\") end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "yes"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "condition operator (&&)",
+        "code" : "if (1 && 0) STD->out(\"yes\") else STD->out(\"no\") end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "no"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "condition operator (!)",
+        "code" : "if (!0) STD->out(\"yes\") else STD->out(\"no\") end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "yes"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "condition operator (-or)",
+        "code" : "if (0 -or 1) STD->out(\"yes\") else STD->out(\"no\") end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "yes"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "condition operator (-and)",
+        "code" : "if (1 -and 1) STD->out(\"yes\") else STD->out(\"no\") end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "yes"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "condition operator (-not)",
+        "code" : "if (-not 1) STD->out(\"yes\") else STD->out(\"no\") end",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "no"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "nested if",
+        "code" : "if (1)\nif (1) STD->out(\"inside\") end\nend",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "inside"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "walrus operator while loop",
+        "code" : "int i = 0\nwhile (i < 3)\nSTD->out(i)\ni += 1\nend",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "0.0\n1.0\n2.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "multiple statements one line",
+        "code" : "int a = 1; int b = 2; STD->out(a + b)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "3.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "STD->length (num array)",
+        "code" : "int a = {1,2,3}\nint len = STD->length(a)\nSTD->out(len)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "3.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "STD->length (string)",
+        "code" : "string s = \"Hello\"\nint len = STD->length(s)\nSTD->out(len)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "5.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "STD->type (int)",
+        "code" : "int a = 1\nstring t = STD->type(a)\nSTD->out(t)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "FLOAT"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "STD->type (string)",
+        "code" : "string a = \"x\"\nstring t = STD->type(a)\nSTD->out(t)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "STRING"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "STD->type (num array)",
+        "code" : "int a = {1,2}\nstring t = STD->type(a)\nSTD->out(t)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "INT[]"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "any func param",
+        "code" : "def a(any : b)\nstring t = STD->type(b)\nSTD->out(t)\nend\na(10)\na(\"Hi\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "FLOAT\nSTRING"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "STD->exec",
+        "code" : "STD->exec(\"echo hi\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "hi"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "STD->error",
+        "code" : "STD->error(\"oopy doopy\")",
+        "expectedReturnCode" : 3,
+        "expectedOutput" : [
+            "ERROR: parser.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "STD->exit",
+        "code" : "STD->out(\"before\")\nSTD->exit()\nSTD->out(\"after\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "before\nExiting."
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "exit keyword",
+        "code" : "STD->out(\"before\")\nexit\nSTD->out(\"after\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "before\nExiting."
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "special var VERSION",
+        "code" : "string v = $VERSION\nSTD->out(v)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "0.1.0|-|0.1.1|-|0.2.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "macro def and use",
+        "code" : "#def x: STD->out(\"macro test\")\n#use x",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "macro test"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "get file and test the code (examples/LIBCODE.dio)",
+        "code" : "#get examples/LIBCODE.dio\nlib->libraryFunc()",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "In library"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "private function fail call",
+        "code" : "#namespace a\ndef private f()\nSTD->out(\"private\")\nend\n#namespace b\na->f()",
+        "expectedReturnCode" : 3,
+        "expectedOutput" : [
+            "ERROR: parser.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "division by zero",
+        "code" : "STD->out(5 / 0)",
+        "expectedReturnCode" : 3,
+        "expectedOutput" : [
+            "ERROR: parser.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "return void function",
+        "code" : "def a()\nreturn 5\nend\na()",
+        "expectedReturnCode" : 3,
+        "expectedOutput" : [
+            "ERROR: parser.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "string concat",
+        "code" : "string a = \"ac\"\nstring b = \"dc\"\nSTD->out(a + b)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "acdc"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "non conditional goto",
+        "code" : "goto ::skip::\nSTD->out(\"bad\")\n::skip::\nSTD->out(\"good\")",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "good"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "maybe bool",
+        "code" : "STD->out(maybe)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "0.0|-|1.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "public function call",
+        "code" : "#namespace a\ndef public f()\nSTD->out(\"pub\")\nend\n#namespace b\na->f()",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "pub"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "walrus operator for loop",
+        "code" : "for (int i = 0; i < 3; i += 1)\nSTD->out(i)\nend",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "0.0\n1.0\n2.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "bool non 1 or 0 declaration",
+        "code" : "bool b = 5\nSTD->out(b)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "1.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "comparison (>=)",
+        "code" : "STD->out(2 >= 3)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "0.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "comparison (<=)",
+        "code" : "STD->out(2 <= 2)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "1.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "logical operators",
+        "code" : "STD->out(1 && 0)\nSTD->out(1 || 0)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "0.0\n1.0"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "too few arguments",
+        "code" : "def a(int : x)\nSTD->out(x)\nend\na()",
+        "expectedReturnCode" : 3,
+        "expectedOutput" : [
+            "ERROR: parser.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "duplicate func definition",
+        "code" : "def a()\nSTD->out(\"x\")\nend\ndef a()\nSTD->out(\"y\")\nend\na()",
+        "expectedReturnCode" : 3,
+        "expectedOutput" : [
+            "ERROR: parser.c"
+        ],
+        "maxRuns" : 1
+    },
+    {
+        "testIdentifier" : "float function parameter",
+        "code" : "def a(float : x)\nSTD->out(x)\nend\na(1.5)",
+        "expectedReturnCode" : 0,
+        "expectedOutput" : [
+            "1.5"
+        ],
+        "maxRuns" : 1
     }
 ]
