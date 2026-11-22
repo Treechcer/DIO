@@ -17,7 +17,7 @@ typedef strcuct StructTest{
 
 >>first Enum value write out
 
-int a = test->EnumTest->THREE
+int a = test->EnumTest->THREE + 1
 
 STD->out(test->EnumTest->ONE)
 STD->out(EnumTest->TWO)

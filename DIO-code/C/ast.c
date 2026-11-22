@@ -52,6 +52,11 @@ Token checkTokenAt(dynamicToken* toks, int offset){
 }
 
 Node* parseFactor(dynamicToken* toks){
+    Node* pNode = parseEnumAccess(toks);
+    if (pNode != NULL){
+        return pNode;
+    }
+
     Token tok = checkCurrenToken(toks);
 
     if (tok.identifier == MINUS){
@@ -246,11 +251,6 @@ Node* parseExpression(dynamicToken* toks){
         pNode->pos = copyPos(value->pos);
         pNode->pos->start = nameTok.pos.start;
 
-        return pNode;
-    }
-
-    Node* pNode = parseEnumAccess(toks);
-    if (pNode != NULL){
         return pNode;
     }
 
