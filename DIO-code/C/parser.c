@@ -46,6 +46,20 @@ int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes a
     return 0;
 }
 
+double getEnumValue(int namespace, char* name, char* valueCall, Position* pos){
+    for (int i = 0; i < g_enums.count; i++){
+        if (g_enums.items[i].namespace == namespace && strcmp(g_enums.items[i].name, name) == 0){
+            for (int j = 0; j < g_enums.items[i].enumValues.count; j++){
+                if (strcmp(valueCall, g_enums.items[i].enumValues.items[j]->data.enumValuesNode->name) == 0){
+                    return g_enums.items[i].enumValues.items[j]->data.enumValuesNode->value;
+                }
+            }
+        }
+    }
+
+    raiseRuntimeErrorMacro(*pos, "Could not find specified enum or it's value in the namespace");
+}
+
 void createLowLevelFunc(char* name, dynamicNode inputs, variableTypes returnType, funcType funcType){
     funcStruct tempFunc = {.index = g_funcs.count, .name = name, .initialised = 1, .codeBlock = NULL, .funcType = funcType, .returnType = returnType, .nameSpace = getNamespaceMap("STD"), .publicity = 1};
     tempFunc.inputs = inputs;
@@ -1103,6 +1117,11 @@ void parseFunctionCall_(Node* node){
         }
         else if (node->data.functionCall->inputs.items[i]->type == MAYBENODE){
             tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = generateRandomMaybeNode(), .intialised = 1, .typedVar = FLOATVAR };
+        }
+        else if (node->data.functionCall->inputs.items[i]->type == ENUMACESS){
+            enumAccessNode* ref = node->data.functionCall->inputs.items[i]->data.enumAccessNode;
+
+            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = ref->accessorName, .data.floatVal = getEnumValue(ref->namespace, ref->enumName, ref->accessorName, node->data.functionCall->inputs.items[i]->pos), .intialised = 1, .typedVar = FLOATVAR };
         }
         else{
             printf("%i\n", node->data.functionCall->inputs.items[i]->type);
