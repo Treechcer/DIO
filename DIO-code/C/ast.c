@@ -1066,6 +1066,22 @@ Node* parseEnumAccess(dynamicToken* toks){
     return NULL;
 }
 
+Node* parseStruct(dynamicToken* toks){
+    if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(checkCurrenToken(toks).value, "typedef") == 0 && strcmp(checkTokenAt(toks, 1).value, "struct") == 0){
+
+    }
+
+    return NULL;
+}
+
+Node* parseStrcutAcess(dynamicToken* toks){
+    if (checkCurrenToken(toks).identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == COLON){
+
+    }
+
+    return NULL;
+}
+
 Node* parseProgram(dynamicToken* toks) {
     //printf("AST!\n");
     Node* pNode = createNode();
@@ -1142,6 +1158,9 @@ Node* parseGenericNode(dynamicToken* toks){
     }
     if (node == NULL){
         node = parseEnum(toks);
+    }
+    if (node == NULL){
+        node = parseStruct(toks);
     }
     if (node == NULL){
         //this should probably stay last?

@@ -176,6 +176,16 @@ typedef struct enumTypeNode {
     dynamicNode enumValues;
 } enumTypeNode;
 
+typedef struct structTypeNode {
+    int namespace;
+    char* structName;
+    dynamicNode structAttribute;
+} structTypeNode;
+
+typedef struct structAttribute {
+    variableNode atributeValue;
+} structAttribute;
+
 typedef struct Node {
     nodeType type;
     union {
@@ -200,6 +210,8 @@ typedef struct Node {
         struct enumAccessNode* enumAccessNode;
         struct enumTypeNode* enumTypeNode;
         struct enumValuesNode* enumValuesNode;
+        struct structTypeNode* structTypeNode;
+        struct structAttribute* structAttribute;
     } data;
     struct arbitraryData arbitraryData;
     Position* pos;
