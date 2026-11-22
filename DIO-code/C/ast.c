@@ -987,17 +987,44 @@ Node* parseEnum(dynamicToken* toks){
         Node* pNode = createNode();
         pNode->pos = copyPos(&pos);
         pNode->type = ENUMCREATE;
-        pNode->data.enumTypeNode = malloc(sizeof(enumTypeNode*));
-        pNode->data.enumTypeNode->enumName = checkCurrenToken(toks).value;
-        pNode->data.enumTypeNode->enumName = checkCurrenToken(toks).pos.nameSpace;
+        pNode->data.enumTypeNode = malloc(sizeof(enumTypeNode));
+        pNode->data.enumTypeNode->enumName = shiftToken(toks).value; //name
+        pNode->data.enumTypeNode->namespace = checkCurrenToken(toks).pos.nameSpace;
+        pNode->data.enumTypeNode->enumValues = (dynamicNode){0,0,0};
 
-        shiftToken(toks); //name
         shiftToken(toks); //{
+        shiftToken(toks);
+
+        double nextVal = 0;
 
         while (checkCurrenToken(toks).identifier != RSQUIGLYPAREN){
-            //TODO: FINISI LOGIC
-        }
+            char* name = shiftToken(toks).value;
+            if (checkCurrenToken(toks).identifier == EQUALS){
+                shiftToken(toks);
+                Token t = shiftToken(toks);
+                nextVal = convertToDouble(t.value);
+                //printf("%s", t.value);
+            }
 
+            Node* enumNode = createNode();
+            enumNode->type = ENUMVALUE;
+            Token tok = checkTokenAt(toks, -1);
+            enumNode->pos = copyPos(&tok.pos);
+            enumNode->data.enumValuesNode = malloc(sizeof(enumValuesNode));
+            enumNode->data.enumValuesNode->name = name;
+            enumNode->data.enumValuesNode->value = nextVal;
+            //printf("%s : %f\n", name, nextVal);
+            if (checkCurrenToken(toks).identifier == COMMA){
+                shiftToken(toks);
+            }
+            while (checkCurrenToken(toks).identifier == END){
+                shiftToken(toks);
+            }
+
+            DYN_PUSH(enumNode, pNode->data.enumTypeNode->enumValues);
+            nextVal++;
+        }
+        shiftToken(toks); // }
         return pNode;
     }
 

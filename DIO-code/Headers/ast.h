@@ -38,6 +38,7 @@ typedef enum {
     EXITNODE,
     ENUMACESS,
     ENUMCREATE,
+    ENUMVALUE,
 } nodeType;
 
 typedef struct programNode {
@@ -164,10 +165,10 @@ typedef struct enumAccessNode {
     char* accessorName;
 } enumAccessNode;
 
-typedef struct enumValues {
+typedef struct enumValuesNode {
     char* name;
-    int value;
-};
+    double value;
+} enumValuesNode;
 
 typedef struct enumTypeNode {
     int namespace;
@@ -198,6 +199,7 @@ typedef struct Node {
         struct exitNode* exitNode;
         struct enumAccessNode* enumAccessNode;
         struct enumTypeNode* enumTypeNode;
+        struct enumValuesNode* enumValuesNode;
     } data;
     struct arbitraryData arbitraryData;
     Position* pos;
