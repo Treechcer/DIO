@@ -1047,6 +1047,7 @@ Node* parseEnumAccess(dynamicToken* toks){
         if (mv){
             shiftToken(toks);
             shiftToken(toks);
+            tok = checkCurrenToken(toks);
         }
 
         retNode->type = ENUMACESS;

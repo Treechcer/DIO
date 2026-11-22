@@ -96,6 +96,7 @@ void callLowLevelFunc(int index, Node* node){
             printf("}\n");
         }
         else{
+            printf("\n%i\n", g_vars.items[varIndex].typedVar);
             raiseRuntimeErrorMacro(*node->pos, "Incorrect type in 'out' function call.");
         }
     }
@@ -1121,7 +1122,7 @@ void parseFunctionCall_(Node* node){
         else if (node->data.functionCall->inputs.items[i]->type == ENUMACESS){
             enumAccessNode* ref = node->data.functionCall->inputs.items[i]->data.enumAccessNode;
 
-            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = ref->accessorName, .data.floatVal = getEnumValue(ref->namespace, ref->enumName, ref->accessorName, node->data.functionCall->inputs.items[i]->pos), .intialised = 1, .typedVar = FLOATVAR };
+            tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = getEnumValue(ref->namespace, ref->enumName, ref->accessorName, node->data.functionCall->inputs.items[i]->pos), .intialised = 1, .typedVar = FLOATVAR };
         }
         else{
             printf("%i\n", node->data.functionCall->inputs.items[i]->type);
