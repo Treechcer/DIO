@@ -326,6 +326,12 @@ binOpResult* evalBinOp(Node* node){
         }
         return res;
     }
+    if (node->type == ENUMACESS){
+        res->varType = FLOATVAR;
+        res->value.floatVar = getEnumValue(node->data.enumAccessNode->namespace, node->data.enumAccessNode->enumName, node->data.enumAccessNode->accessorName, node->pos);
+
+        return res;
+    }
     if (node->type == VARIABLENODE) {
         int varIndex = getVarIndexByName(node->data.variableNode->name);
         if (varIndex != -1) {
