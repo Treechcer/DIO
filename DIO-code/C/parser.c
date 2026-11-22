@@ -24,6 +24,7 @@ void parseExitNode();
 dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
 dynamicFunc g_funcs = {0,0,0};
+dynamicEnums g_enums = {0,0,0};
 int g_skipelse = 0;
 programState program = {0,0,0,0};
 
@@ -1205,6 +1206,11 @@ void parseFunctionCall_(Node* node){
     program.stack.currentFuncIndex -= 1;
 }
 
+void parseEnumCreation(Node* node){
+    enumStruct enumCreation = (enumStruct){.name = node->data.enumTypeNode->enumName, .namespace = node->data.enumTypeNode->namespace, .enumValues = node->data.enumTypeNode->enumValues};
+    DYN_PUSH(enumCreation, g_enums);
+}
+
 void parseExitNode(){
     printf("Exiting.\n");
     exit(0);
@@ -1245,6 +1251,9 @@ void parseGeneric(Node* node){
         case LOOPNODE:
             /*printf("LOOPNODE\n");*/
             parseLoopNode(node);
+            break;
+        case ENUMCREATE:
+            parseEnumCreation(node);
             break;
         case EXITNODE:
             parseExitNode();
