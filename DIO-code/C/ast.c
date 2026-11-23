@@ -1075,8 +1075,51 @@ Node* parseStruct(dynamicToken* toks){
 }
 
 Node* parseStrcutAcess(dynamicToken* toks){
-    if (checkCurrenToken(toks).identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == COLON){
+    if (checkCurrenToken(toks).identifier == IDENTIFIER && checkTokenAt(toks, 1).identifier == COLON && checkTokenAt(toks, 2).identifier == IDENTIFIER){
+        Node* pNode = createNode();
+        pNode->type = STRUCTACCESS;
+        Token tok = checkCurrenToken(toks);
+        pNode->pos = copyPos(&tok.pos);
+        pNode->data.structAccessNode = malloc(sizeof(structAccessNode));
+        pNode->data.structAccessNode->variableName = checkCurrenToken(toks).value;
+        
+        shiftToken(toks); //name
+        shiftToken(toks); // :
 
+        int namespace = checkCurrenToken(toks).pos.nameSpace;
+    
+        if (checkTokenAt(toks, 1).identifier == ARROWACCESSOR){
+            namespace = getNamespaceMap(checkCurrenToken(toks).value);
+            shiftToken(toks); //namespace name
+            shiftToken(toks); //->
+        }
+
+        pNode->data.structAccessNode->namespace = namespace;
+        pNode->data.structAccessNode->structMemberName = checkCurrenToken(toks).value;
+
+        shiftToken(toks); // memberName
+
+        if (checkTokenAt(toks, 0).identifier == EQUALS){
+            if (checkTokenAt(toks, 2).identifier == END){
+                //Numeric value? Maybe?
+                shiftToken(toks); // =
+                pNode->data.structAccessNode->addValue.numericValue = convertToDouble(checkCurrenToken(toks).value);
+                shiftToken(toks); //numeric value
+            }
+            else if (checkTokenAt(toks, 1).identifier == QUOTE){
+                shiftToken(toks); // =
+            }
+            else{
+                Token tok = checkCurrenToken(toks);
+                printf("%s\n", tok.value);
+                raiseErrorMacro(tok.pos, "Not parsed value in struct asigned");
+            }
+        }
+        else{
+            pNode->data.structAccessNode->addValue.noValue = 1;
+        }
+
+        return pNode;
     }
 
     return NULL;
@@ -1129,6 +1172,9 @@ Node* exitNodeParse(dynamicToken* toks){
 Node* parseGenericNode(dynamicToken* toks){
     Node* node = parseFunctionCall(toks);
 
+    if (node == NULL){
+        node = parseStrcutAcess(toks);
+    }
     if (node == NULL){
         node = parseStringGeneral(toks);
     }

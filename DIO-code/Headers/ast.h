@@ -39,6 +39,7 @@ typedef enum {
     ENUMACESS,
     ENUMCREATE,
     ENUMVALUE,
+    STRUCTACCESS,
 } nodeType;
 
 typedef struct programNode {
@@ -182,6 +183,17 @@ typedef struct structTypeNode {
     dynamicNode structAttribute;
 } structTypeNode;
 
+typedef struct structAccessNode {
+    char* variableName;
+    char* structMemberName;
+    int namespace;
+    union addValue {
+        int noValue;
+        double numericValue;
+        char* stringvalue;
+    } addValue;
+} structAccessNode;
+
 typedef struct structAttribute {
     variableNode atributeValue;
 } structAttribute;
@@ -212,6 +224,7 @@ typedef struct Node {
         struct enumValuesNode* enumValuesNode;
         struct structTypeNode* structTypeNode;
         struct structAttribute* structAttribute;
+        struct structAccessNode* structAccessNode;
     } data;
     struct arbitraryData arbitraryData;
     Position* pos;
