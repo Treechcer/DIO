@@ -7,6 +7,8 @@
 ![License](https://img.shields.io/badge/license-BSD_3-green?logo=open-source-initiative)
 <img src="./scripts/data/logo.png" width=48px style="inline-block" alt="Logo of Dio">
 
+[![OctoCounts](https://api.octocounts.com/badge/Treechcer/DIO/branch/development)](https://octocounts.com/github/Treechcer/DIO/tree/development)
+
 <!-- markdownlint-enable MD033 -->
 
 <!--Non-HTML images
@@ -28,7 +30,7 @@ Dio is small open-source scripting programming language made in C that's suppose
 |Windows|✅|Yes||
 |Linux|✅|Yes||
 |Android|✅|Yes|Termux needs to be used|
-|FreeBSD|✅|Compiled, more testing needed||
+|FreeBSD|🟨|Compiled, more testing needed||
 |iOS|🟨|Compiled, more testing needed|a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works|
 |Mac (Intel)|🟨|Yes||
 |Mac (Apple silicone)|🟨|Compiled, more testing needed||
