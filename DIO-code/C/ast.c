@@ -1100,14 +1100,25 @@ Node* parseStrcutAcess(dynamicToken* toks){
         shiftToken(toks); // memberName
 
         if (checkTokenAt(toks, 0).identifier == EQUALS){
+            printf("//");
             if (checkTokenAt(toks, 2).identifier == END){
                 //Numeric value? Maybe?
                 shiftToken(toks); // =
                 pNode->data.structAccessNode->addValue.numericValue = convertToDouble(checkCurrenToken(toks).value);
                 shiftToken(toks); //numeric value
+
+                pNode->data.structAccessNode->varType = INTVAR;
             }
             else if (checkTokenAt(toks, 1).identifier == QUOTE){
+                //Incorrect!!
+
+                pNode->data.structAccessNode->varType = STRINGVAR;
                 shiftToken(toks); // =
+                //shiftToken(toks); // "
+
+                pNode->data.structAccessNode->addValue.stringvalue = checkCurrenToken(toks).value;
+
+                //shiftToken(toks); // "
             }
             else{
                 Token tok = checkCurrenToken(toks);

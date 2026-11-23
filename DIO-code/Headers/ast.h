@@ -187,6 +187,7 @@ typedef struct structAccessNode {
     char* variableName;
     char* structMemberName;
     int namespace;
+    variableTypes varType;
     union addValue {
         int noValue;
         double numericValue;
