@@ -1068,7 +1068,40 @@ Node* parseEnumAccess(dynamicToken* toks){
 
 Node* parseStruct(dynamicToken* toks){
     if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(checkCurrenToken(toks).value, "typedef") == 0 && strcmp(checkTokenAt(toks, 1).value, "struct") == 0){
+        shiftToken(toks); //typedef
+        shiftToken(toks); //struct
 
+        Node* pNode = createNode();
+        pNode->type = STRUCTCREATE;
+        pNode->data.structTypeNode = malloc(sizeof(structTypeNode));
+
+        pNode->data.structTypeNode->namespace = checkCurrenToken(toks).pos.nameSpace;
+        pNode->data.structTypeNode->structName = checkCurrenToken(toks).value;
+        pNode->data.structTypeNode->structAttribute = (dynamicNode){0,0,0};
+
+        shiftToken(toks); //name
+        shiftToken(toks); //{
+        shiftToken(toks); //end
+
+        while (checkCurrenToken(toks).identifier != RSQUIGLYPAREN){
+            //printf("%s\n", checkCurrenToken(toks).value);
+            //printf("%i\n", checkCurrenToken(toks).identifier);
+            Node* atrNode = parseNewVariable(toks);
+            DYN_PUSH(atrNode, pNode->data.structTypeNode->structAttribute);
+            while (checkCurrenToken(toks).identifier == END) {
+                shiftToken(toks);
+            }
+            
+            if (checkCurrenToken(toks).identifier == COMMA){
+                shiftToken(toks);
+            }
+
+            while (checkCurrenToken(toks).identifier == END) {
+                shiftToken(toks);
+            }
+        }
+
+        shiftToken(toks);
     }
 
     return NULL;

@@ -5,14 +5,13 @@ typedef enum EnumTest{
     TWO,
     THREE,
 }
->*
+
 typedef struct StructTest{
     int id = 0, >> type, name, default value (has to have default value!)
     string name = "Name",
     >>functions/struct methods? Declared mazbe something like (better way maybe?):
     >>name(params)::returnType = code << has to end with end keyword?
 }
-*<
 
 >>first Enum value write out
 
@@ -24,6 +23,6 @@ STD->out(a)
 
 >> testing Structs
 
->>StructTest a;
+StructTest a;
 a:id = 17
 a:name = "aa"

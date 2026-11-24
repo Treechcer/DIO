@@ -40,6 +40,7 @@ typedef enum {
     ENUMCREATE,
     ENUMVALUE,
     STRUCTACCESS,
+    STRUCTCREATE,
 } nodeType;
 
 typedef struct programNode {
@@ -194,10 +195,6 @@ typedef struct structAccessNode {
         char* stringvalue;
     } addValue;
 } structAccessNode;
-
-typedef struct structAttribute {
-    variableNode atributeValue;
-} structAttribute;
 
 typedef struct Node {
     nodeType type;
