@@ -1242,11 +1242,16 @@ void parseExitNode(){
     exit(0);
 }
 
+void createStruct(Node* nide){
+    //TODO: finish
+}
+
 Node* astToNode(Node* ast){
     return &(Node){.type = ast->type, .data = ast->data};
 }
 
 void parseGeneric(Node* node){
+    printf("%i\n", node->type);
     switch (node->type) {
         case BINOPNODE:
             /*printf("BINOPNODE\n");*/
@@ -1283,6 +1288,9 @@ void parseGeneric(Node* node){
             break;
         case EXITNODE:
             parseExitNode();
+        case STRUCTCREATE:
+            createStruct(node);
+            break;
         default:
             if (DEBUG_MODE){
                 printf("%i\n", node->type);

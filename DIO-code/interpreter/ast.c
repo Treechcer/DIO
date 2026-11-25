@@ -510,8 +510,6 @@ Node* parseNewVariable(dynamicToken* toks){
         retNode->data.variableNode->type = STRUCTTYPE;
 
         shiftToken(toks); //name
-        
-        printf("%s", checkCurrenToken(toks).value);
     }
 
     if (createNodeBool){
@@ -1092,9 +1090,11 @@ Node* parseStruct(dynamicToken* toks){
     if (checkCurrenToken(toks).identifier == KEYWORD && strcmp(checkCurrenToken(toks).value, "typedef") == 0 && strcmp(checkTokenAt(toks, 1).value, "struct") == 0){
         shiftToken(toks); //typedef
         shiftToken(toks); //struct
+        Token t = checkCurrenToken(toks);
 
         Node* pNode = createNode();
         pNode->type = STRUCTCREATE;
+        pNode->pos = copyPos(&t.pos);
         pNode->data.structTypeNode = malloc(sizeof(structTypeNode));
 
         pNode->data.structTypeNode->namespace = checkCurrenToken(toks).pos.nameSpace;
@@ -1124,6 +1124,8 @@ Node* parseStruct(dynamicToken* toks){
         }
 
         shiftToken(toks);
+
+        return pNode;
     }
 
     return NULL;

@@ -1,10 +1,12 @@
 #namespace test
 
+>*
 typedef enum EnumTest{
     ONE=1,
     TWO,
     THREE,
 }
+*<
 
 typedef struct StructTest{
     int id = 0, >> type, name, default value (has to have default value!)
@@ -14,13 +16,13 @@ typedef struct StructTest{
 }
 
 >>first Enum value write out
-
+>*
 int a = test->EnumTest->THREE + 1
 
 STD->out(test->EnumTest->ONE)
 STD->out(EnumTest->TWO)
 STD->out(a)
-
+*<
 >> testing Structs
 
 @StructTest a;
