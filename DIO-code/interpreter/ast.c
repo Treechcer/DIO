@@ -1,13 +1,13 @@
 #include<stdio.h>
 #include<string.h>
 
-#include"../Headers/dynamic_array.h"
-#include"../Headers/ast.h"
-#include"../Headers/helper_functions.h"
-#include"../Headers/macros.h"
-#include"../Headers/token.h"
-#include"../Headers/errorsNew.h"
-#include"../Headers/lexer.h"
+#include"../libraries/dynamic_array.h"
+#include"./ast.h"
+#include"../libraries/helper_functions.h"
+#include"../libraries/data/macros.h"
+#include"./token.h"
+#include"../libraries/errors.h"
+#include"./lexer.h"
 
 int g_index = 0;
 

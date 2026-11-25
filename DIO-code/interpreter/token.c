@@ -1,0 +1,55 @@
+#include<stdio.h>
+#include<string.h>
+
+#include "token.h"
+
+const char* keywords[] = {
+    //for and while are commented out because goto can do theirs job, maybe I'll add them later
+    "if", "elseif", "else", "for", "while", "int", "float", "string", "bool", "goto", "end", "def", "return", 
+    "public", "private", "exit", "typedef", "typedef", "struct", "enum"
+};
+
+int getKeyWord(char* possibleKeyWord){
+    //This has a few more runs, but it's okay, it won't bottleneck lexing!
+
+    for (int i = 0; i < (sizeof(keywords) / sizeof(keywords[0])); i++) {
+        if (strcmp(keywords[i], possibleKeyWord) == 0) {
+            return 1; // Found
+        }
+    }
+
+    return 0;
+}
+
+int isBool(char* word){
+    char* bools[] = {"false", "true"};
+    for (int i = 0; i < (sizeof(bools) / sizeof(bools[0])); i++) {
+        if (strcmp(bools[i], word) == 0) {
+            return 1; // returns bool value as int
+        }
+    }
+
+    return 0;
+}
+
+int isMaybe(char* word){
+    if (strcmp("maybe", word) == 0) {
+        return 1;
+    }
+
+    return 0;
+}
+
+char* strToBoolStr(char* str){//this returns 1 if input string is true
+    if (strcmp(str, "true") == 0) {
+        return "1";
+    }
+    return "0";
+}
+
+char* switcherooBool(char* str){
+    if (strcmp(str, "true") == 0) {
+        return "false";
+    }
+    return "true";
+}

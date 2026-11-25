@@ -27,14 +27,14 @@ def allParsers():
     mp.parse("README.md", os.path.join(".", "scripts", "parsers", "wiki.json"))
     pe.parse("./scripts/parsers/examples.json")
 
-def getFiles():
-    curPath = os.path.join(os.path.abspath(os.path.curdir), "C")
+def getFiles(file = ""):
+    curPath = os.path.join(os.path.abspath(os.path.curdir), file)
     legacyPath = ""
     if os.path.exists(os.path.join(os.path.abspath(os.path.curdir), "legacy")):
         legacyPath = os.path.join(os.path.abspath(os.path.curdir), "legacy")
     files = os.listdir(curPath)
     string = ""
-    for o in files: string += os.path.join(curPath, o) + " "
+    for o in files: string += os.path.join(curPath, o) + " " if not os.path.isdir(os.path.join(curPath, o)) else getFiles(os.path.join(file, o)) + " "
     if legacyPath != "":
         for o in os.listdir(legacyPath): string += os.path.join(legacyPath, o) + " "
     return string[:-1]
@@ -189,8 +189,8 @@ def makeRelease():
 
 def makeSTDlib():
     std = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "..", "scripts", "data"), "STD.dio")
-    stdC = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "C"), "STD.c")
-    stdH = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "Headers"), "STD.h")
+    stdC = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "libraries", "data"), "STD.c")
+    stdH = os.path.join(os.path.join(os.path.abspath(os.path.curdir), "libraries", "data"), "STD.h")
     strStd = """char* getSTD(){
     return \"\\
 """

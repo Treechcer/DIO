@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "../Headers/appInfo.h"
-#include "../Headers/macros.h"
+#include "./app_info.h"
+#include "../libraries/data/macros.h"
 
 appInfo app = {.appName = "dio", .version = VERSION, .platform = "UNKNOWN", .buildType = BUILDTYPE};
 

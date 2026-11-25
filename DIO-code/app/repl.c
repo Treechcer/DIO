@@ -1,12 +1,12 @@
 #include <string.h>
 
-#include"../Headers/token.h"
-#include"../Headers/dynamic_array.h"
-#include"../Headers/helper_functions.h"
-#include"../Headers/errorsNew.h"
-#include"../Headers/lexer.h"
-#include"../Headers/parser.h"
-#include"../Headers/STD.h"
+#include"../interpreter/token.h"
+#include"../libraries/dynamic_array.h"
+#include"../libraries/helper_functions.h"
+#include"../libraries/errors.h"
+#include"../interpreter/lexer.h"
+#include"../interpreter/parser.h"
+#include"../libraries/data/STD.h"
 
 void repl(char* filePath){
     //TODO: fix???

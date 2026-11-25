@@ -1,7 +1,7 @@
 #ifndef AST__H
 #define AST__H
 
-#include"../Headers/dynamic_array.h"
+#include"../libraries/dynamic_array.h"
 
 typedef struct Node Node;
 STRUCT_DYNAMIC_ARR_MACRO(Node*, dynamicNode);

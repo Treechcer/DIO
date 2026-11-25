@@ -1,0 +1,180 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+#include "../interpreter/token.h"
+#include "helper_functions.h"
+#include "errors.h"
+
+//this has to be here because createpos is used in main and maybe elsewhere?
+dynamicStr g_namespaceNames = {0,0,0};
+
+int getVarIndexByName(char* name);
+
+long int convertToLongInt(char* value){
+    return atol(value);
+}
+
+int convertToInt(char* value){
+    return atoi(value);
+}
+
+float convertToFloat(char* value){
+    return atof(value);
+}
+
+double convertToDouble(char* value){
+    char* endptr;
+    return strtod(value, &endptr);
+}
+
+bool isDigit(char c){
+    if (c >= '0' && c <= '9'){
+        return true;
+    }
+    return false;
+}
+
+bool isAlpha(char c){
+    return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+}
+
+bool isAlphaString(char* c){
+    for (int i = 0; i < strlen(c); i++){
+        char ch = *c;
+        if (!isAlpha(ch)){
+            return 0;
+        }
+        c++;
+    }
+
+    return 1;
+}
+
+Token createToken(char* value, TokenType identifier, Position pos){
+    return (Token) {.value = value, .identifier = identifier, .pos = pos};
+}
+
+//this is used so this doesn't need to be done in runtime, making lexer slower but parser much faster, maybe make something like this for functions in ast?
+int getNamespaceMap(char* namespace){
+    for (int i = 0; i < g_namespaceNames.count; i++){
+        if (strcmp(namespace, g_namespaceNames.items[i]) == 0){
+            //printf("|%i\n", i);
+            return i;
+        }
+    }
+
+    DYN_PUSH(namespace, g_namespaceNames)
+    //printf("=%i\n"), g_namespaceNames.count;
+    return g_namespaceNames.count - 1;
+
+    //TODO: test this func and thing adjasoned to it more!
+}
+
+Position createPosition(int start, int end, int line, char* file, char* namespace) {
+    return (Position) { .start = start, .end = end, .line = line, .file = file, .nameSpace = getNamespaceMap(namespace)};
+}
+
+size_t getStringSize(const char* string){
+    if (string == NULL) return 0;
+    const char *ch = string;
+    size_t len = 0;
+    
+    while (*ch != '\0'){
+        ch++;
+        len++;
+    }
+
+    return len;
+}
+
+fileReadReturn readFile(char* fName){
+    // FILE READ source (modified):
+    // Source - https://stackoverflow.com/a/14002993
+    // Posted by user529758, modified by community. See post 'Timeline' for change history
+    // Retrieved 2026-07-04, License - CC BY-SA 4.0
+    FILE* filePointer = fopen(fName, "rb");
+    if (filePointer == NULL){
+        fileReadReturn ret = (fileReadReturn){.size = -1, .content = "", .exists = 0};
+        return ret;
+    }
+
+    fseek(filePointer, 0, SEEK_END);
+    long fsize = ftell(filePointer);
+    fseek(filePointer, 0, SEEK_SET);
+
+    char *mainFile = malloc(fsize + 1);
+    fread(mainFile, fsize, 1, filePointer);
+    fclose(filePointer);
+
+    mainFile[fsize] = '\0';
+
+    fileReadReturn ret = (fileReadReturn){.size = fsize, .content = mainFile, .exists = 1};
+    return ret;
+}
+
+int getIndexFromInput(char* name){
+    if (name == NULL){
+        return -1;
+    }
+    int indexArr = getVarIndexByName(name);
+    indexArr = (indexArr == -1) ? atoi(name) : indexArr;
+
+    return indexArr;
+}
+
+Position* copyPos(Position* input){
+    Position* ret = malloc(sizeof(Position));
+    ret->end = input->end;
+    ret->start = input->start;
+    ret->line = input->line;
+    ret->file = input->file;
+    ret->nameSpace = input->nameSpace;
+    return ret;
+}
+
+int checkIfValidFileEnd(char* fileName){
+    char* fName = malloc(sizeof(char));
+    int startIndex = 0;
+    int size = 0;
+
+    for (int i = strlen(fileName)-1; i >= 0; i--){
+        if (fileName[i] == '.'){
+            startIndex = i;
+            break;
+        }
+        size += 1;
+        fName = realloc(fName, size + 1);
+        fName[size-1] = fileName[i];
+    }
+
+    fName[size] = '\0';
+
+    char* rev = malloc(sizeof(char) * (size + 1));
+    int c = 0;
+
+    for (int i = size-1; i >= 0; i--){
+        rev[c++] = fName[i];
+    }
+    rev[size] = '\0';
+    fName = rev;
+
+    char* names[] = arrayOfFileExtensions();
+    int count = sizeof(names) / sizeof(names[0]);
+    
+    int canContinue = 0;
+
+    for (int i = 0; i < count; i++){
+        if (strcmp(names[i], fName) == 0){
+            canContinue = 1;
+            break;
+        }
+    }
+
+    return canContinue;
+
+    //for (int i = startIndex; i <= strlen(fileName)-1; i++){
+    //    printf("%c", fileName[i]);
+    //}
+}

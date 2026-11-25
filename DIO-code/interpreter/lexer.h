@@ -1,0 +1,9 @@
+#ifndef LEXER_H
+#define LEXER_H
+
+#include "../libraries/dynamic_array.h"
+
+dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast, char* namespace);
+//void freeToks(dynamicToken toks);
+
+#endif
