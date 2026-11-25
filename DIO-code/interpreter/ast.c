@@ -491,6 +491,28 @@ Node* parseNewVariable(dynamicToken* toks){
 
         return retNode;
     }
+    else if (checkCurrenToken(toks).identifier == ATSIGN){
+        shiftToken(toks); //@
+
+        Node* retNode = createNode();
+        Token t = checkCurrenToken(toks);
+        retNode->pos = copyPos(&t.pos);
+        retNode->type = VARIABLENODE;
+        retNode->data.variableNode = malloc(sizeof(variableNode));
+        retNode->data.variableNode->dataFlags.structType = checkCurrenToken(toks).value;
+
+        shiftToken(toks); //struct name
+
+        retNode->data.variableNode->name = checkCurrenToken(toks).value;
+        retNode->data.variableNode->initialise = 1;
+        retNode->data.variableNode->arrayAcessIndex = NULL;
+        retNode->data.variableNode->value = NULL;
+        retNode->data.variableNode->type = STRUCTTYPE;
+
+        shiftToken(toks); //name
+        
+        printf("%s", checkCurrenToken(toks).value);
+    }
 
     if (createNodeBool){
         value = parseExpression(toks);

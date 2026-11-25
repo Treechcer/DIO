@@ -23,6 +23,6 @@ STD->out(a)
 
 >> testing Structs
 
-StructTest a;
+@StructTest a;
 a:id = 17
 a:name = "aa"

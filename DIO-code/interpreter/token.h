@@ -48,7 +48,8 @@ typedef enum {
     ARROWACCESSOR,
     NOTOPERATOR,
     OROPERATOR,
-    ANDOPERATOR
+    ANDOPERATOR,
+    ATSIGN,
 } TokenType;
 
 typedef struct {

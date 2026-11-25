@@ -13,6 +13,7 @@ typedef enum variableTypes {
     BOOLVAR,
     NUMBERARRAY,
     NULLVAR,
+    STRUCTTYPE,
     UNKNOWNVARTYPE,
 } variableTypes;
 
@@ -73,6 +74,7 @@ typedef struct variableNode {
         int isBool; //used for bools so they can't get numbers outside of 0 and 1
         int isFuncCall; //used when the value in AST is function or function chain
         int funcNameSpace; //if namespace exists
+        char* structType; //structName
     } dataFlags;
 } variableNode;
 

@@ -460,6 +460,9 @@ dynamicToken lex(const char* code, char* fileName, dynamicToken toks, int isLast
                     moveByChar(&code, &line, &charPos_, -1);
                 }
                 break;
+            case '@':
+                tok = createToken("@", ATSIGN, createPosition(charPos_, charPos_, line, fileName, namespace));
+                break;
             case '\r':
             case '\t':
                 break;
