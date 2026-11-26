@@ -51,6 +51,7 @@ typedef struct {
         double floatVal;
         //char* stringVal;
         arrayVar arrayVar;
+        dynamicNode structValues;
     } data;
     variableTypes typedVar;
 } varStruct;

@@ -48,6 +48,16 @@ int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes a
     return 0;
 }
 
+int getStructGIndex(char* name, int namespace, Position* pos){
+    for (int i = 0; i < g_structs.count; i++){
+        if (g_structs.items[i].namespace == namespace && strcmp(g_structs.items[i].name, name) == 0){
+            return i;
+        }
+    }
+
+    raiseRuntimeErrorMacro(*pos, "Could not find specified enum or it's value in the namespace"); 
+}
+
 double getEnumValue(int namespace, char* name, char* valueCall, Position* pos){
     for (int i = 0; i < g_enums.count; i++){
         if (g_enums.items[i].namespace == namespace && strcmp(g_enums.items[i].name, name) == 0){
@@ -847,7 +857,16 @@ dynamicVar evalVariable(Node* node){
             tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.arrayVar.value.numberValue = newNumArr, .data.arrayVar.length = wholeLen, .intialised = 1, .typedVar = NUMBERARRAY };
         }
     }
+    else if (node->type == VARIABLENODE){
+        if (node->data.variableNode->type == STRUCTTYPE){
+            tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.structValues = g_structs.items[getStructGIndex(node->data.variableNode->dataFlags.structType, node->pos->nameSpace, node->pos)].structAttribute, .intialised = 1, .typedVar = STRUCTTYPE };
+        }
+        else{
+            raiseRuntimeErrorMacro(*node->pos, "Var type of a variable could not be parsed.");
+        }
+    }
     else{
+        //printf("%i", node->type);
         raiseRuntimeErrorMacro(*node->pos, "Variable could not be parsed.");
     }
 
