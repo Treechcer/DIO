@@ -26,5 +26,6 @@ STD->out(a)
 >> testing Structs
 
 @StructTest a;
-a:id = 17
+>>STD->out(a:id)
+a:id = 17 - 2
 a:name = "aa"

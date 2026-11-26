@@ -1253,6 +1253,52 @@ void parseFunctionCall_(Node* node){
     program.stack.currentFuncIndex -= 1;
 }
 
+void parseStructAccess(Node* node){
+    int index = getVarIndexByName(node->data.structAccessNode->variableName);
+    if (index == -1){
+        raiseRuntimeErrorMacro(*node->pos, "Variable not found");
+    }
+
+    varStruct* ref = &g_vars.items[index];
+    
+    for (int i = 0; i < ref->data.structValues.count ; i++){
+        if (strcmp(node->data.structAccessNode->structMemberName, ref->data.structValues.items[i]->data.variableNode->name) == 0){
+            
+            if (checkCompatibleVarType(node->data.structAccessNode->varType, ref->data.structValues.items[i]->data.variableNode->type, CONVERT)){
+                if (ref->data.structValues.items[i]->data.variableNode->type == INTVAR || ref->data.structValues.items[i]->data.variableNode->type == FLOATVAR){
+                    ref->data.structValues.items[i]->data.variableNode->value->data.numberNode->value = node->data.structAccessNode->addValue.numericValue;
+                    return;
+                }
+                else if (ref->data.structValues.items[i]->data.variableNode->type == STRINGVAR) {
+                    ref->data.structValues.items[i]->data.variableNode->value->data.stringNode->value = node->data.structAccessNode->addValue.stringvalue;
+                    ref->data.structValues.items[i]->data.variableNode->value->data.stringNode->length = strlen(ref->data.structValues.items[i]->data.variableNode->value->data.stringNode->value);
+                    return;
+                }
+                else {
+                    raiseRuntimeErrorMacro(*node->pos, "struct access was not parsed correctly (convert passed)");
+                }
+            }
+            else if (node->data.structAccessNode->varType == BINOP){
+                binOpResult* res = evalBinOp(node->data.structAccessNode->addValue.binaryOperator);
+                if (res->varType == INTVAR || res->varType == FLOATVAR){
+                    double value = (res->varType == INTVAR) ? res->value.intVal : (res->varType == FLOATVAR) ? res->value.floatVar : 0;
+
+                    if (checkCompatibleVarType(res->varType, ref->data.structValues.items[i]->data.variableNode->type, CONVERT)){
+                        ref->data.structValues.items[i]->data.variableNode->value->data.numberNode->value = value;
+                        return;
+                    }
+                    else {
+                        raiseRuntimeErrorMacro(*node->pos, "struct access was not parsed correctly (binop)");
+                    }
+                }
+            }
+
+        }
+    }
+
+    raiseRuntimeErrorMacro(*node->pos, "struct access was not parsed correctly");
+}
+
 void parseEnumCreation(Node* node){
     enumStruct enumCreation = (enumStruct){.name = node->data.enumTypeNode->enumName, .namespace = node->data.enumTypeNode->namespace, .enumValues = node->data.enumTypeNode->enumValues};
     DYN_PUSH(enumCreation, g_enums);
@@ -1273,7 +1319,7 @@ Node* astToNode(Node* ast){
 }
 
 void parseGeneric(Node* node){
-    printf("%i\n", node->type);
+    //printf("%i\n", node->type);
     switch (node->type) {
         case BINOPNODE:
             /*printf("BINOPNODE\n");*/
@@ -1310,6 +1356,9 @@ void parseGeneric(Node* node){
             break;
         case EXITNODE:
             parseExitNode();
+            break;
+        case STRUCTACCESS:
+            parseStructAccess(node);
             break;
         case STRUCTCREATE:
             parseStructCreation(node);

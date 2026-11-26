@@ -14,6 +14,7 @@ typedef enum variableTypes {
     NUMBERARRAY,
     NULLVAR,
     STRUCTTYPE,
+    BINOP,
     UNKNOWNVARTYPE,
 } variableTypes;
 
@@ -195,6 +196,7 @@ typedef struct structAccessNode {
         int noValue;
         double numericValue;
         char* stringvalue;
+        Node* binaryOperator;
     } addValue;
 } structAccessNode;
 

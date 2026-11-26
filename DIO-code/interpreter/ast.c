@@ -1158,8 +1158,14 @@ Node* parseStrcutAcess(dynamicToken* toks){
 
         shiftToken(toks); // memberName
 
-        if (checkTokenAt(toks, 0).identifier == EQUALS){
-            if (checkTokenAt(toks, 2).identifier == END){
+        if (checkCurrenToken(toks).identifier == EQUALS){
+            shiftToken(toks); // =
+            Node* node = parseExpression(toks);
+            if (node != NULL){
+                pNode->data.structAccessNode->addValue.binaryOperator = node;
+                pNode->data.structAccessNode->varType = BINOP;
+            }
+            else if (checkTokenAt(toks, 1).identifier == END){
                 //Numeric value? Maybe?
                 shiftToken(toks); // =
                 pNode->data.structAccessNode->addValue.numericValue = convertToDouble(checkCurrenToken(toks).value);
@@ -1167,7 +1173,7 @@ Node* parseStrcutAcess(dynamicToken* toks){
 
                 pNode->data.structAccessNode->varType = INTVAR;
             }
-            else if (checkTokenAt(toks, 1).identifier == QUOTE){
+            else if (checkCurrenToken(toks).identifier == QUOTE){
                 pNode->data.structAccessNode->varType = STRINGVAR;
                 shiftToken(toks); // =
                 shiftToken(toks); // "
