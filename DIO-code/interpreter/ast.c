@@ -510,6 +510,8 @@ Node* parseNewVariable(dynamicToken* toks){
         retNode->data.variableNode->type = STRUCTTYPE;
 
         shiftToken(toks); //name
+
+        return retNode;
     }
 
     if (createNodeBool){

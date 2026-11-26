@@ -25,8 +25,10 @@ dynamicVar g_vars = {0,0,0};
 dynamicGoto g_gotos = {0,0,0};
 dynamicFunc g_funcs = {0,0,0};
 dynamicEnums g_enums = {0,0,0};
-int g_skipelse = 0;
+dynamicStructs g_structs = {0,0,0};
 programState program = {0,0,0,0};
+
+int g_skipelse = 0;
 
 int checkCompatibleVarType(variableTypes var1, variableTypes var2, actionTypes action){
     if ((action == INTSUM || action == SUB || action == MULT || action == DIVI) &&  (var1 == INTVAR || var1 == FLOATVAR) && (var2 == INTVAR || var2 == FLOATVAR)){
@@ -1242,8 +1244,9 @@ void parseExitNode(){
     exit(0);
 }
 
-void createStruct(Node* nide){
-    //TODO: finish
+void parseStructCreation(Node* node){
+    structStruct stru = {.name = node->data.structTypeNode->structName, .namespace = node->data.structTypeNode->namespace, .structAttribute = node->data.structTypeNode->structAttribute};
+    DYN_PUSH(stru, g_structs);
 }
 
 Node* astToNode(Node* ast){
@@ -1288,8 +1291,9 @@ void parseGeneric(Node* node){
             break;
         case EXITNODE:
             parseExitNode();
+            break;
         case STRUCTCREATE:
-            createStruct(node);
+            parseStructCreation(node);
             break;
         default:
             if (DEBUG_MODE){

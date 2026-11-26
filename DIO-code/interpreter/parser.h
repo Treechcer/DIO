@@ -80,6 +80,12 @@ typedef struct {
 } enumStruct;
 
 typedef struct {
+    int namespace;
+    char* name;
+    dynamicNode structAttribute;
+} structStruct;
+
+typedef struct {
     variableTypes varType;
     union {
         char* stringVal;
@@ -118,5 +124,6 @@ STRUCT_DYNAMIC_ARR_MACRO(varStruct, dynamicVar)
 STRUCT_DYNAMIC_ARR_MACRO(funcStruct, dynamicFunc)
 STRUCT_DYNAMIC_ARR_MACRO(gotoStruct, dynamicGoto)
 STRUCT_DYNAMIC_ARR_MACRO(enumStruct, dynamicEnums)
+STRUCT_DYNAMIC_ARR_MACRO(structStruct, dynamicStructs)
 
 #endif
