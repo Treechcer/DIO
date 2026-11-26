@@ -859,7 +859,7 @@ dynamicVar evalVariable(Node* node){
     }
     else if (node->type == VARIABLENODE){
         if (node->data.variableNode->type == STRUCTTYPE){
-            tempVar = (varStruct){.index = g_vars.count, .type = "numArr", .name = name, .data.structValues = g_structs.items[getStructGIndex(node->data.variableNode->dataFlags.structType, node->pos->nameSpace, node->pos)].structAttribute, .intialised = 1, .typedVar = STRUCTTYPE };
+            tempVar = (varStruct){.index = g_vars.count, .type = "struct", .name = name, .data.structValues = g_structs.items[getStructGIndex(node->data.variableNode->dataFlags.structType, node->pos->nameSpace, node->pos)].structAttribute, .intialised = 1, .typedVar = STRUCTTYPE };
         }
         else{
             raiseRuntimeErrorMacro(*node->pos, "Var type of a variable could not be parsed.");
@@ -1150,6 +1150,34 @@ void parseFunctionCall_(Node* node){
             enumAccessNode* ref = node->data.functionCall->inputs.items[i]->data.enumAccessNode;
 
             tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = getEnumValue(ref->namespace, ref->enumName, ref->accessorName, node->data.functionCall->inputs.items[i]->pos), .intialised = 1, .typedVar = FLOATVAR };
+        }
+        else if (node->data.functionCall->inputs.items[i]->type == STRUCTACCESS) {
+            structAccessNode* ref = node->data.functionCall->inputs.items[i]->data.structAccessNode;
+            varStruct* varRef = &g_vars.items[getVarIndexByName(ref->variableName)];
+            int structRefIndex = -1;
+
+            for (int j = 0; j < varRef->data.structValues.count; j++){
+                //printf("%s ", ref->variableName);
+                if (strcmp(varRef->data.structValues.items[j]->data.variableNode->name, ref->structMemberName) == 0){
+                    structRefIndex = j;
+                    break;
+                }
+            }
+
+            if (structRefIndex == -1){
+                raiseRuntimeErrorMacro(*node->pos, "Incorrect type var while parsing function call");
+            }
+
+            if (varRef->data.structValues.items[structRefIndex]->data.variableNode->type == FLOATVAR){
+                tempVar = (varStruct){.index = g_vars.count, .type = "float", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = varRef->data.structValues.items[structRefIndex]->data.variableNode->value->data.numberNode->value, .intialised = 1, .typedVar = FLOATVAR };
+            }
+            else if (varRef->data.structValues.items[structRefIndex]->data.variableNode->type == INTVAR){
+                tempVar = (varStruct){.index = g_vars.count, .type = "int", .name = g_funcs.items[index].inputs.items[i]->data.variableNode->name, .data.floatVal = varRef->data.structValues.items[structRefIndex]->data.variableNode->value->data.numberNode->value, .intialised = 1, .typedVar = FLOATVAR };
+            }
+            else{
+                printf("%i", varRef->data.structValues.items[structRefIndex]->data.variableNode->type);
+                raiseRuntimeErrorMacro(*node->pos, "Func call struct var type not implemented");
+            }
         }
         else{
             printf("%i\n", node->data.functionCall->inputs.items[i]->type);
