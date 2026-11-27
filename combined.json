@@ -3,17 +3,17 @@
         {
             "level": 1,
             "headerText": " Dio (Programming language)\n",
-            "textInParagraph": "<!--Non-HTML images\n-->\nDio is small open-source scripting programming language made in C that's supposed to run on most modern computer systems.\n"
+            "textInParagraph": "[![OctoCounts](https://api.octocounts.com/badge/Treechcer/DIO/branch/development)](https://octocounts.com/github/Treechcer/DIO/tree/development)\n<!--Non-HTML images\n-->\nDio is small open-source scripting programming language made in C that's supposed to run on most modern computer systems.\n> [!IMPORTANT]\n> This repository is still actively being worked on. Any contributions and feedback is welcomed.\n"
         },
         {
             "level": 2,
             "headerText": " Current OS compatibility\n",
-            "textInParagraph": "<table class=\"table\"><tr><th scope=\"col\"></th><th scope=\"col\">OS</th><th scope=\"col\">Status (tested)</th><th scope=\"col\">Runs as should</th><th scope=\"col\">notes</th><th scope=\"col\"></th></tr><tr><td></td><td>Windows</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Linux</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Android</td><td>\u2705</td><td>Yes</td><td>Termux needs to be used</td><td></td></tr><tr><td></td><td>FreeBSD</td><td>\u2705</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>iOS</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td>a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works</td><td></td></tr><tr><td></td><td>Mac (Intel)</td><td>\ud83d\udfe8</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Mac (Apple silicone)</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>WebApp</td><td>\ud83d\udfe8</td><td>Untested</td><td>can technically run through WASM (more novelty than actual release) - full support not promised</td><td></td></tr><tr><td></td><td>OpenBSD</td><td>\ud83d\udfe8</td><td>Was compiled but test haven't ran correctly (13 passed, 16 failed)</td><td></td><td></td></tr><tr><td></td><td>NetBSD</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>HaikuOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>ReactOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr></table>"
+            "textInParagraph": "<table class=\"table\"><tr><th scope=\"col\"></th><th scope=\"col\">OS</th><th scope=\"col\">Status (tested)</th><th scope=\"col\">Runs as should</th><th scope=\"col\">notes</th><th scope=\"col\"></th></tr><tr><td></td><td>Windows</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Linux</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Android</td><td>\u2705</td><td>Yes</td><td>Termux needs to be used</td><td></td></tr><tr><td></td><td>FreeBSD</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>iOS</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td>a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works</td><td></td></tr><tr><td></td><td>Mac (Intel)</td><td>\ud83d\udfe8</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Mac (Apple silicone)</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>WebApp</td><td>\ud83d\udfe8</td><td>Untested</td><td>can technically run through WASM (more novelty than actual release) - full support not promised</td><td></td></tr><tr><td></td><td>OpenBSD</td><td>\ud83d\udfe8</td><td>Was compiled but test haven't ran correctly (13 passed, 16 failed)</td><td></td><td></td></tr><tr><td></td><td>NetBSD</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>HaikuOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>ReactOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr></table>"
         },
         {
             "level": 2,
             "headerText": " Release Cycle\n",
-            "textInParagraph": "Release cycle ins't set in any way. Time between any versions can be as long (or as short) as needed for that version. Any code in main branch ('Development' branch) is not meant as stable code and can be unfinished and may not run correctly, **only stable code is in the release**. Version are if format: **Major.Minor.Patch**.\nCurrent platforms in releases (current and future):\n- Windows\n- Linux\n- MacOS (Intel CPU)\n- Android\n- iOS (Dio version 0.1.1+)\n- FreeBSD\n- WebApp (Dio version 0.1.1+)\n> NOTE: although Apple Silicone **should** work, I can't reliably compile for it, I don't own any Apple silicone machine.\n"
+            "textInParagraph": "Release cycle ins't set in any way. Time between any versions can be as long (or as short) as needed for that version. Any code in main branch ('Development' branch) is not meant as stable code and can be unfinished and may not run correctly, **only stable code is in the release**. Version are in format: **Major.Minor.Patch**.\nCurrent platforms in releases (current and future):\n- Windows\n- Linux\n- MacOS (Intel CPU)\n- Android\n- iOS (Dio version 0.1.1+)\n- FreeBSD\n- WebApp (Dio version 0.1.1+)\n> NOTE: although Apple Silicone **should** work, I can't reliably compile for it, I don't own any Apple silicone machine.\n"
         },
         {
             "level": 2,
@@ -24,11 +24,6 @@
             "level": 3,
             "headerText": " Web Release\n",
             "textInParagraph": "Some version of Dio will be running through github pages on URL: <https://treechcer.github.io/DIO/>\n> Note: After the release of 0.2.0 Web Release will have the newest stable version uploaded and should have only stable on it.\n> Note 2: The github pages are hosted from the branch \"web-app\".\n"
-        },
-        {
-            "level": 3,
-            "headerText": " Stable version\n",
-            "textInParagraph": "Stable is only version in releases. Currently there is only one release (0.1.0).\n"
         },
         {
             "level": 3,
@@ -48,17 +43,17 @@
         {
             "level": 3,
             "headerText": " File extensions\n",
-            "textInParagraph": "DIO supports three file extensions:\n- .dio (original)\n- .diogenes\n- .diogenesdesinope\nEverything else should raise error.\n"
+            "textInParagraph": "DIO supports three file extensions:\n- .dio\n- .diogenes\n- .diogenesdesinope\nEverything else should raise error.\n"
         },
         {
             "level": 3,
-            "headerText": " launch Params\n",
+            "headerText": " Launch Params\n",
             "textInParagraph": ""
         },
         {
             "level": 4,
             "headerText": " -f / --file\n",
-            "textInParagraph": "This parametre tells dio which file to use.\n> If this parametre isn't technically needed, it'll open \"REPL\" mode, which isn't finished, so it doesn't fully works, please don't use it, it's not finished.\n"
+            "textInParagraph": "This parametre tells dio which file to use.\n> If this parametre isn't technically needed, it'll open \"REPL\" mode.\n"
         },
         {
             "level": 4,
@@ -159,6 +154,11 @@
             "level": 4,
             "headerText": " Branching\n",
             "textInParagraph": "As in standart languages:\nIf -> elseif -> else\n<pre><code>if (condition)\n>>code\nelseif (condition)\n>>code\nelse\n>>code\nend\n</code></pre>"
+        },
+        {
+            "level": 5,
+            "headerText": " Condition Operators\n",
+            "textInParagraph": "Dio uses standard operators:\n- == (comparison)\n- >= (greater or equal than)\n- > (greater than)\n- <= (less than or equal to)\n- < (less than)\n- || (binary logical operator OR)\n- && (binary logical operator AND)\n- ! (unary logical operator NOT)\n- -or (binary logical operator OR)\n- -and (binary logical operator AND)\n- -not (unary logical operator NOT)\n"
         },
         {
             "level": 4,
@@ -264,6 +264,14 @@
     "examples": {
         "main": [
             {
+                "file": "9",
+                "content": ">>To be continued.....",
+                "output": {
+                    "stdout": "",
+                    "stderr": 0
+                }
+            },
+            {
                 "file": "2",
                 "content": ">>Variables have 2 main types\n\n>> 1. Number types\n\n>> a)\n\nint a = 1\n\n>> b)\n\nfloat b = 2.0\n\n>> c) array structure (takes both floats and integers)\n\nint c = {1, 2.1, 1}\n\n>> 2. String type\n\n>> stores text\n\nstring d = \"Hello, World!\"\n\nstring e = 'Single quotes can be used!'\n\nstring f = \"Quotes can be combined :d'\n\nSTD->out(a)\nSTD->out(b)\nSTD->out(c)\nSTD->out(d)\nSTD->out(e)\nSTD->out(f)",
                 "output": {
@@ -272,10 +280,10 @@
                 }
             },
             {
-                "file": "4",
-                "content": ">> working with lists and arrays\n\nstring str = \"Hello\"\nint len = STD->length(str)\nSTD->out(len) >> 5.0\n\n>>changing string\n\nstr[2] = \"O\"\nSTD->out(str) >> HeOlo\n\n>>currently broken\n\nstr[1] = \"el\"\nSTD->out(str) >> hello\n\n>>number arrays work the same",
+                "file": "0",
+                "content": ">> signifies single-line commend\n\n>*\nsignifies\nmulti-\nline\ncomment\n*<",
                 "output": {
-                    "stdout": "5.0\nHeOlo\n`elllll\n",
+                    "stdout": "",
                     "stderr": 0
                 }
             },
@@ -316,7 +324,7 @@
                 "content": ">*\nTo use code from other library we have to import it\nthe way to import it is with middle processor command\n#get name\n\n> NOTE: for this to work you have to execute this in correct folder\nif you try to execute it from root of repo it'll not work\n\n*<\n\n#get LIBCODE.dio\n\n#namespace notLib\n\n>>defining namespace AFTER importing (importing could change your namespace!!)\n\n>>We know that the library uses namespace 'lib' and that it defines\n>>public functio 'libraryFunc()', we can now call it as:\n\nlib->libraryFunc()",
                 "output": {
                     "stdout": "",
-                    "stderr": 5
+                    "stderr": 1
                 }
             },
             {
@@ -390,7 +398,7 @@
                     "file": "46",
                     "content": "string a = \"Hello\"\n\na[2] = \"L\"\n\nSTD->out(a)",
                     "output": {
-                        "stdout": "HeLlo\n",
+                        "stdout": "HeLl\n",
                         "stderr": 0
                     }
                 },
@@ -406,7 +414,7 @@
                     "file": "15",
                     "content": "int a = 0;\n\nfor (int i = 0; i < 10; i = i + 1)\n    a = maybe;\n    STD->out(a);\nend",
                     "output": {
-                        "stdout": "0.0\n1.0\n0.0\n1.0\n0.0\n0.0\n0.0\n1.0\n0.0\n1.0\n",
+                        "stdout": "0.0\n1.0\n1.0\n0.0\n0.0\n1.0\n1.0\n0.0\n0.0\n0.0\n",
                         "stderr": 0
                     }
                 },
@@ -535,7 +543,7 @@
                     "content": "#get ex20.dio\n\n>> does whatever is in ex20",
                     "output": {
                         "stdout": "",
-                        "stderr": 5
+                        "stderr": 1
                     }
                 },
                 {
@@ -591,7 +599,7 @@
                     "content": ">>File ex37.dio imports this file, which should make it \"loop\", but because ex37.dio has \"pragma once\" it cannot be imported again.\n\nSTD->out(\"x\")\n\n#get ex37.dio",
                     "output": {
                         "stdout": "",
-                        "stderr": 5
+                        "stderr": 1
                     }
                 },
                 {
@@ -607,6 +615,14 @@
                     "content": "int a = -67.0\n\ndef f(int : n1)\n    STD->out(n1)\nend\n\n\nf(10)",
                     "output": {
                         "stdout": "10.0\n",
+                        "stderr": 0
+                    }
+                },
+                {
+                    "file": "47",
+                    "content": "string a = \"Heo, World!\"\n\na[2] = \"ll\"\n\nSTD->out(a)",
+                    "output": {
+                        "stdout": "Hell\n",
                         "stderr": 0
                     }
                 },
@@ -638,7 +654,7 @@
                     "file": "29",
                     "content": ">>NOTE: bools are \"reskinned\" integers, they only have constrain while creating them, not after! Meaning you **can** make bool equal non boolean values!\n\nbool a = 0\nSTD->out(a)\na = true\nSTD->out(a)\na = 7\nSTD->out(a)\na = maybe\nSTD->out(a)\n\n>> add negative numbers!\n>>a = -7\n>>STD->out(a)",
                     "output": {
-                        "stdout": "0.0\n1.0\n7.0\n0.0\n",
+                        "stdout": "0.0\n1.0\n7.0\n1.0\n",
                         "stderr": 0
                     }
                 },
@@ -759,6 +775,14 @@
                     "content": "string b = \"Hello, World!\"\n\nfor (int i = 0; i < 13; i = i + 1)\n    STD->out(b[i])\n    >>STD->out(i)\nend\n\n>>This prints our the string char by char",
                     "output": {
                         "stdout": "H\ne\nl\nl\no\n,\n \nW\no\nr\nl\nd\n!\n",
+                        "stderr": 0
+                    }
+                },
+                {
+                    "file": "63",
+                    "content": "#namespace test\n\n>*\ntypedef enum EnumTest{\n    ONE=1,\n    TWO,\n    THREE,\n}\n*<\n\ntypedef struct StructTest{\n    int id = 1, >> type, name, default value (has to have default value!)\n    string name = \"Name\",\n    >>functions/struct methods? Declared mazbe something like (better way maybe?):\n    >>name(params)::returnType = code << has to end with end keyword?\n}\n\n>>first Enum value write out\n>*\nint a = test->EnumTest->THREE + 1\n\nSTD->out(test->EnumTest->ONE)\nSTD->out(EnumTest->TWO)\nSTD->out(a)\n*<\n>> testing Structs\n\n@StructTest a;\nSTD->out(a:id)\na:id = 17 - 2\nSTD->out(a:id)\na:name = \"aa\"",
+                    "output": {
+                        "stdout": "1.0\n15.0\n",
                         "stderr": 0
                     }
                 },
