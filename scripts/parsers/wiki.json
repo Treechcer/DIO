@@ -2,17 +2,17 @@
     {
         "level": 1,
         "headerText": " Dio (Programming language)\n",
-        "textInParagraph": "<!--Non-HTML images\n-->\nDio is small open-source scripting programming language made in C that's supposed to run on most modern computer systems.\n"
+        "textInParagraph": "[![OctoCounts](https://api.octocounts.com/badge/Treechcer/DIO/branch/development)](https://octocounts.com/github/Treechcer/DIO/tree/development)\n<!--Non-HTML images\n-->\nDio is small open-source scripting programming language made in C that's supposed to run on most modern computer systems.\n> [!IMPORTANT]\n> This repository is still actively being worked on. Any contributions and feedback is welcomed.\n"
     },
     {
         "level": 2,
         "headerText": " Current OS compatibility\n",
-        "textInParagraph": "<table class=\"table\"><tr><th scope=\"col\"></th><th scope=\"col\">OS</th><th scope=\"col\">Status (tested)</th><th scope=\"col\">Runs as should</th><th scope=\"col\">notes</th><th scope=\"col\"></th></tr><tr><td></td><td>Windows</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Linux</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Android</td><td>\u2705</td><td>Yes</td><td>Termux needs to be used</td><td></td></tr><tr><td></td><td>FreeBSD</td><td>\u2705</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>iOS</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td>a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works</td><td></td></tr><tr><td></td><td>Mac (Intel)</td><td>\ud83d\udfe8</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Mac (Apple silicone)</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>WebApp</td><td>\ud83d\udfe8</td><td>Untested</td><td>can technically run through WASM (more novelty than actual release) - full support not promised</td><td></td></tr><tr><td></td><td>OpenBSD</td><td>\ud83d\udfe8</td><td>Was compiled but test haven't ran correctly (13 passed, 16 failed)</td><td></td><td></td></tr><tr><td></td><td>NetBSD</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>HaikuOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>ReactOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr></table>"
+        "textInParagraph": "<table class=\"table\"><tr><th scope=\"col\"></th><th scope=\"col\">OS</th><th scope=\"col\">Status (tested)</th><th scope=\"col\">Runs as should</th><th scope=\"col\">notes</th><th scope=\"col\"></th></tr><tr><td></td><td>Windows</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Linux</td><td>\u2705</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Android</td><td>\u2705</td><td>Yes</td><td>Termux needs to be used</td><td></td></tr><tr><td></td><td>FreeBSD</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>iOS</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td>a-shell needs to be used (with clang), seems to have some issue with python test script but seems that it works</td><td></td></tr><tr><td></td><td>Mac (Intel)</td><td>\ud83d\udfe8</td><td>Yes</td><td></td><td></td></tr><tr><td></td><td>Mac (Apple silicone)</td><td>\ud83d\udfe8</td><td>Compiled, more testing needed</td><td></td><td></td></tr><tr><td></td><td>WebApp</td><td>\ud83d\udfe8</td><td>Untested</td><td>can technically run through WASM (more novelty than actual release) - full support not promised</td><td></td></tr><tr><td></td><td>OpenBSD</td><td>\ud83d\udfe8</td><td>Was compiled but test haven't ran correctly (13 passed, 16 failed)</td><td></td><td></td></tr><tr><td></td><td>NetBSD</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>HaikuOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr><tr><td></td><td>ReactOS</td><td>\u274c</td><td>Was not tested in any way but is planned to be supported in either releases or as working on that platform if compiled</td><td></td><td></td></tr></table>"
     },
     {
         "level": 2,
         "headerText": " Release Cycle\n",
-        "textInParagraph": "Release cycle ins't set in any way. Time between any versions can be as long (or as short) as needed for that version. Any code in main branch ('Development' branch) is not meant as stable code and can be unfinished and may not run correctly, **only stable code is in the release**. Version are if format: **Major.Minor.Patch**.\nCurrent platforms in releases (current and future):\n- Windows\n- Linux\n- MacOS (Intel CPU)\n- Android\n- iOS (Dio version 0.1.1+)\n- FreeBSD\n- WebApp (Dio version 0.1.1+)\n> NOTE: although Apple Silicone **should** work, I can't reliably compile for it, I don't own any Apple silicone machine.\n"
+        "textInParagraph": "Release cycle ins't set in any way. Time between any versions can be as long (or as short) as needed for that version. Any code in main branch ('Development' branch) is not meant as stable code and can be unfinished and may not run correctly, **only stable code is in the release**. Version are in format: **Major.Minor.Patch**.\nCurrent platforms in releases (current and future):\n- Windows\n- Linux\n- MacOS (Intel CPU)\n- Android\n- iOS (Dio version 0.1.1+)\n- FreeBSD\n- WebApp (Dio version 0.1.1+)\n> NOTE: although Apple Silicone **should** work, I can't reliably compile for it, I don't own any Apple silicone machine.\n"
     },
     {
         "level": 2,
@@ -23,11 +23,6 @@
         "level": 3,
         "headerText": " Web Release\n",
         "textInParagraph": "Some version of Dio will be running through github pages on URL: <https://treechcer.github.io/DIO/>\n> Note: After the release of 0.2.0 Web Release will have the newest stable version uploaded and should have only stable on it.\n> Note 2: The github pages are hosted from the branch \"web-app\".\n"
-    },
-    {
-        "level": 3,
-        "headerText": " Stable version\n",
-        "textInParagraph": "Stable is only version in releases. Currently there is only one release (0.1.0).\n"
     },
     {
         "level": 3,
@@ -47,17 +42,17 @@
     {
         "level": 3,
         "headerText": " File extensions\n",
-        "textInParagraph": "DIO supports three file extensions:\n- .dio (original)\n- .diogenes\n- .diogenesdesinope\nEverything else should raise error.\n"
+        "textInParagraph": "DIO supports three file extensions:\n- .dio\n- .diogenes\n- .diogenesdesinope\nEverything else should raise error.\n"
     },
     {
         "level": 3,
-        "headerText": " launch Params\n",
+        "headerText": " Launch Params\n",
         "textInParagraph": ""
     },
     {
         "level": 4,
         "headerText": " -f / --file\n",
-        "textInParagraph": "This parametre tells dio which file to use.\n> If this parametre isn't technically needed, it'll open \"REPL\" mode, which isn't finished, so it doesn't fully works, please don't use it, it's not finished.\n"
+        "textInParagraph": "This parametre tells dio which file to use.\n> If this parametre isn't technically needed, it'll open \"REPL\" mode.\n"
     },
     {
         "level": 4,
@@ -158,6 +153,11 @@
         "level": 4,
         "headerText": " Branching\n",
         "textInParagraph": "As in standart languages:\nIf -> elseif -> else\n<pre><code>if (condition)\n>>code\nelseif (condition)\n>>code\nelse\n>>code\nend\n</code></pre>"
+    },
+    {
+        "level": 5,
+        "headerText": " Condition Operators\n",
+        "textInParagraph": "Dio uses standard operators:\n- == (comparison)\n- >= (greater or equal than)\n- > (greater than)\n- <= (less than or equal to)\n- < (less than)\n- || (binary logical operator OR)\n- && (binary logical operator AND)\n- ! (unary logical operator NOT)\n- -or (binary logical operator OR)\n- -and (binary logical operator AND)\n- -not (unary logical operator NOT)\n"
     },
     {
         "level": 4,

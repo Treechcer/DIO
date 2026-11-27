@@ -34,7 +34,13 @@ def getFiles(file = ""):
         legacyPath = os.path.join(os.path.abspath(os.path.curdir), "legacy")
     files = os.listdir(curPath)
     string = ""
-    for o in files: string += os.path.join(curPath, o) + " " if not os.path.isdir(os.path.join(curPath, o)) else getFiles(os.path.join(file, o)) + " "
+    for o in files: 
+        if not os.path.isdir(os.path.join(curPath, o)):
+            if (o.endswith(".h")):
+                continue
+            string += os.path.join(curPath, o) + " "
+        else:
+            string += getFiles(os.path.join(file, o)) + " "
     if legacyPath != "":
         for o in os.listdir(legacyPath): string += os.path.join(legacyPath, o) + " "
     return string[:-1]
@@ -138,6 +144,7 @@ def buildWASMRelease():
 
     os.chdir("DIO-code")
     try:
+        print(f"emcc {getFiles()} -o {os.path.join("..", "releases", "webapp", "dio.html")} -s EXIT_RUNTIME=1")
         subprocess.run(f"emcc {getFiles()} -o {os.path.join("..", "releases", "webapp", "dio.html")} -s EXIT_RUNTIME=1", shell=True)
     except:
         print("emcc might not be installed, try to install it?")
