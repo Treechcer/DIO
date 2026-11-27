@@ -361,6 +361,20 @@ binOpResult* evalBinOp(Node* node){
                 }
             }
         }
+        else if (res->varType == STRINGVAR){ // TODO TEST
+            int index = getVarIndexByName(node->data.structAccessNode->variableName);
+            if (index == -1){
+                raiseRuntimeErrorMacro(*node->pos, "Variable not found");
+            }
+
+            varStruct* ref = &g_vars.items[index];
+            for (int i = 0; i < ref->data.structValues.count; i++){
+                if (strcmp(ref->data.structValues.items[i]->data.variableNode->name, node->data.structAccessNode->structMemberName) == 0){
+                    res->value.stringVal = ref->data.structValues.items[i]->data.variableNode->value->data.stringNode->value;
+                    return res;
+                }
+            } 
+        }
         else{
             raiseRuntimeErrorMacro(*node->pos, "Struct acess type was not added into binop parser");
         }
