@@ -20,6 +20,7 @@ Node* parseFunctionCall(dynamicToken* toks);
 Node* parseStringGeneral(dynamicToken* toks);
 Node* createNumArray(dynamicToken* toks, Position pos);
 Node* parseEnumAccess(dynamicToken* toks);
+Node* parseStrcutAcess(dynamicToken* toks);
 
 //Node* parseExpression(dynamicToken toks);
 
@@ -53,6 +54,10 @@ Token checkTokenAt(dynamicToken* toks, int offset){
 
 Node* parseFactor(dynamicToken* toks){
     Node* pNode = parseEnumAccess(toks);
+    if (pNode == NULL){
+        pNode = parseStrcutAcess(toks);
+    }
+
     if (pNode != NULL){
         return pNode;
     }
@@ -1245,15 +1250,15 @@ Node* exitNodeParse(dynamicToken* toks){
 
 Node* parseGenericNode(dynamicToken* toks){
     Node* node = parseFunctionCall(toks);
-
-    if (node == NULL){
-        node = parseStrcutAcess(toks);
-    }
+    
     if (node == NULL){
         node = parseStringGeneral(toks);
     }
     if (node == NULL){
         node = parseExpression(toks);
+    }
+    if (node == NULL){
+        node = parseStrcutAcess(toks);
     }
     if (node == NULL){
         node = parseLoop(toks);

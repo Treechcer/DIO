@@ -344,6 +344,28 @@ binOpResult* evalBinOp(Node* node){
 
         return res;
     }
+    if (node->type == STRUCTACCESS){
+        res->varType = node->data.structAccessNode->varType;
+        if (res->varType == FLOATVAR || res->varType == INTVAR){
+            int index = getVarIndexByName(node->data.structAccessNode->variableName);
+            if (index == -1){
+                raiseRuntimeErrorMacro(*node->pos, "Variable not found");
+            }
+
+            res->varType = FLOATVAR;
+            varStruct* ref = &g_vars.items[index];
+            for (int i = 0; i < ref->data.structValues.count; i++){
+                if (strcmp(ref->data.structValues.items[i]->data.variableNode->name, node->data.structAccessNode->structMemberName) == 0){
+                    res->value.floatVar = ref->data.structValues.items[i]->data.variableNode->value->data.numberNode->value;
+                    return res;
+                }
+            }
+        }
+        else{
+            raiseRuntimeErrorMacro(*node->pos, "Struct acess type was not added into binop parser");
+        }
+    }
+
     if (node->type == VARIABLENODE) {
         int varIndex = getVarIndexByName(node->data.variableNode->name);
         if (varIndex != -1) {
